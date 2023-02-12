@@ -1,0 +1,140 @@
+
+##Firebase
+npm install --save @react-native-firebase/app
+npm install --save @react-native-firebase/auth
+
+##react-native Navigation
+npm install --save @react-navigation/native or --force --save
+npm install --save @react-navigation/stack
+npm install --save @react-navigation/native-stack or --force --save
+npm install --save @react-navigation/drawer
+npm install --save @react-navigation/bottom-tabs
+npm install --save @react-navigation/material-bottom-tabs react-native-paper react-native-vector-icons
+npm install --save @react-navigation/material-top-tabs react-native-tab-view
+
+##react-native Hooks
+
+
+##icons
+npm i react-native-vector-icons
+
+##Moment
+npm i moment
+dates
+
+##axios
+
+##CreateSplash
+npm install --save react-native-bootsplash
+https://github.com/zoontek/react-native-bootsplash
+npx react-native generate-bootsplash src/images/garliclogo.png \ --background-color=F6FBF4 \ --logo-width=200 \ --assets-path=src \ --flavor=main
+
+
+##react-native firebase
+npm install --save @react-native-firebase/app
+npm install --save @react-native-firebase/auth
+npm install --save @react-native-firebase/firestore
+npm install --save @react-native-firebase/storage
+npm install --save @react-native-firebase/analytics
+npm install --save @react-native-firebase/database
+
+
+SafeAreaView@npm i --save react-native-safe-area-context
+##SafeAreaProvider
+##SafeAreaView
+Style++SafeAreaView
+########flex1 edges:LRTB
+Style++ImageBackgroud
+########flex1
+
+
+!!NoCssStyle_variable_set_value_in_maincomponents_js
+Error@javascript_module 
+
+
+npm install react-native-image-picker --save
+npm react-native link react-native-image-picker
+
+e
+You can also try use "doctor" command. It will fix most cases.
+npx @react-native-community/cli doctor
+
+#Camera
+https://www.youtube.com/watch?v=mD59nVo-ZSA
+
+
+Upcoming Components@@@@@
+
+ProfilePic
+Custom component-ImageChange:props{props.name}
+Camera API-launchCamera:setImageCaptured(image/png)
+
+&&NavigationCameraTouchOpacityModal
+import launchCamera&UploadPic from component CameraNodePackage
+ex: const function(Smallbox&Bigbox--end export {Smallbox, Bigbox}
+
+react native bottom sheet:use react native modal
+https://www.npmjs.com/package/react-native-modal
+https://www.youtube.com/watch?v=RM2kowRqy9A
+or
+https://www.npmjs.com/package/react-native-raw-bottom-sheet
+0r
+https://www.npmjs.com/package/react-native-bottom-modal-scrollable
+
+
+react native:datepicker
+https://www.npmjs.com/package/react-native-date-picker
+
+React Native Loading Spinner Overlay:
+https://www.npmjs.com/package/react-native-loading-spinner-overlay
+
+React native Modal Selector
+https://www.npmjs.com/package/react-native-modal-selector
+
+react native Notification Alert
+https://www.npmjs.com/package/react-native-alert-notification
+
+
+
+##Get data from [object object]
+database()
+.ref('/userData/' + user.uid)
+.once('value')
+.then(snapshot => {
+     //console.log('UserD data: ', snapshot.val().Address);
+     const val = snapshot.val().Address;
+    setAddress(val)
+
+    //react native firebase realtime database 
+    // @useEffect will throw an error if useState-setvariable where  declared inside with
+    // the fetching reserved query code
+    // code up.. insert to a created function and declare it inside useEffect
+
+ });
+
+
+
+##Write data to realtime database
+  //create data to realtime database
+        // database()
+        //     .ref('userData/1112tsghtwehr3q')
+        //     .set({
+        //         userid: '1112tsghtwehr3q',
+        //         email: email,
+        //         Address: address,
+        //         dataSync: now,
+        //         userProfile: 'NONE'
+
+        //     }).then(() => {
+        //         console.log('Data synced')
+        //     });
+
+
+        //get userData using uid
+
+
+        npx react-native start --reset-cache
+
+
+c90f776ca6f447d182204634220807
+MuKf|A{S

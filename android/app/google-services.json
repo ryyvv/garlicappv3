@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "648624765084",
+    "project_id": "nicer-garlic-app",
+    "storage_bucket": "nicer-garlic-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:648624765084:android:01c5571c054435ceb1d559",
+        "android_client_info": {
+          "package_name": "com.garlicappv3"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "648624765084-a9pn32b876s6acr7boml92jh7rr30hng.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVseWNa0DMn9YTcFeEbn7G_f8GHHxRpH8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "648624765084-a9pn32b876s6acr7boml92jh7rr30hng.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
