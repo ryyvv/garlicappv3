@@ -7,13 +7,17 @@
  */
 
 import React from 'react';
+import { LocationProvider } from './Screens/Context/LocationProvider'
 import { AuthProvider } from './Screens/Context/AuthProvider';
+
 import Route from './Screens/Navigation/Route';
 
 export default function App() {
   return (
     <AuthProvider>
-      <Route />
+      <LocationProvider>
+        <Route />
+      </LocationProvider>
     </AuthProvider>
   );
 };

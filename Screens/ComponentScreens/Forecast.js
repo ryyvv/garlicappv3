@@ -324,7 +324,6 @@ function SearchLocation({ navigation }) {
             <StatusBar animated={true} backgroundColor="green" />
             <ScrollView>
                 <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start', alignItems: 'center', padding: 10 }}>
-
                     {
                         data.map((datalist, id) => {
                             return (

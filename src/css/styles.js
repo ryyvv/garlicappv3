@@ -43,6 +43,12 @@ export default globalStyles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center',
     },
+    div2Row2: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'flex-start',
+        // alignItems: 'center',
+    },
     div2RowDatalist: {
         paddingTop: 13,
         flexDirection: 'row',
@@ -82,6 +88,13 @@ export default globalStyles = StyleSheet.create({
         flexWrap: 'wrap',
         justifyContent: 'space-between',
         alignItems: 'center',
+    },
+
+    div2RowFlexStart: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        // justifyContent: 'space-between',
+        alignItems: 'flex-start',
     },
     div2RowSpaceEven: {
         flexDirection: 'row',
@@ -179,6 +192,20 @@ export default globalStyles = StyleSheet.create({
         shadowRadius: 3,
         elevation: 7,
     },
+    cardDashboardLocations: {
+        backgroundColor: 'white',
+        borderRadius: 8,
+        width: '100%',
+        marginTop: 5,
+        padding: 15,
+    },
+    cardDashboardLocationsProp: {
+        shadowColor: 'black',
+        shadowOffset: { width: -2, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+        elevation: 3,
+    },
     cardDashboardLocation: {
         backgroundColor: 'white',
         borderRadius: 8,
@@ -239,6 +266,20 @@ export default globalStyles = StyleSheet.create({
         shadowRadius: 3,
         elevation: 7,
     },
+    cardDashboardPestDisease: {
+        backgroundColor: 'white',
+        borderRadius: 8,
+        margin: 5,
+        marginVertical: 8,
+        width: '100%'
+    },
+    cardDashboardPestDiseaseProp: {
+        shadowColor: 'black',
+        shadowOffset: { width: -2, height: 4 },
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+        elevation: 5,
+    },
     dashboardAccountUser: {
         marginBottom: 25
     },
@@ -269,6 +310,12 @@ export default globalStyles = StyleSheet.create({
     dashboardForecastDay: {
         marginTop: 10,
         marginBottom: 10,
+        marginLeft: 15,
+        marginRight: 15,
+    },
+    dashboardLocationDay: {
+        // marginTop: 2,
+        // marginBottom: 2,
         marginLeft: 15,
         marginRight: 15,
     },
@@ -640,10 +687,11 @@ export default globalStyles = StyleSheet.create({
         color: '#276653',
     },
     textCamTitle: {
-        marginVertical: 10,
+        marginVertical: 2,
         // marginBottom: 10,
         fontWeight: 'bold',
-        fontSize: 16,
+        paddingLeft: 5,
+        fontSize: 18,
         color: '#276653',
     },
 
