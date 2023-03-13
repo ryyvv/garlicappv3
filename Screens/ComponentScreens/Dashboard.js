@@ -10,6 +10,7 @@ import styles from '../../src/css/styles';
 import { AuthContext } from '../Context/AuthProvider';
 import { LocationContext } from '../Context/LocationProvider';
 import RBSheet from "react-native-raw-bottom-sheet";
+import Carousel from 'react-native-reanimated-carousel';
 
 export default function Dashboard({ navigation }) {
   const refRBSheets = useRef();
@@ -47,6 +48,7 @@ export default function Dashboard({ navigation }) {
 
   useEffect(() => {
     PNDiseases();
+
   }, []);
 
 
@@ -59,11 +61,11 @@ export default function Dashboard({ navigation }) {
         spname: 'Alternaria, Ellis Lif',
         description: 'Disease',
         images: [
-          '../../src/images2/Purple1.JPG',
-          '../../src/images2/Purple2.JPG',
-          '../../src/images2/Purple3.JPG',
-          '../../src/images2/Purple4.JPG',
-          '../../src/images2/Purple5.JPG',
+          require('../../src/images/Purple1.jpg'),
+          require('../../src/images/Purple2.jpg'),
+          require('../../src/images/Purple3.jpg'),
+          require('../../src/images/Purple4.jpg'),
+          require('../../src/images/Purple5.jpg'),
 
         ]
 
@@ -75,11 +77,11 @@ export default function Dashboard({ navigation }) {
         spname: 'Aceria tulipae',
         description: 'Insect pest',
         images: [
-          '../../src/images2/Tangle1.JPG',
-          '../../src/images2/Tangle2.JPG',
-          '../../src/images2/Tangle3.JPG',
-          '../../src/images2/Tangle4.JPG',
-          '../../src/images2/Tangle5.JPG',
+          require('../../src/images/Tangle1.jpg'),
+          require('../../src/images/Tangle2.jpg'),
+          require('../../src/images/Tangle3.jpg'),
+          require('../../src/images/Tangle4.jpg'),
+          require('../../src/images/Tangle5.jpg'),
         ]
 
       },
@@ -90,11 +92,11 @@ export default function Dashboard({ navigation }) {
         spname: 'Worm',
         description: 'Insect pest',
         images: [
-          '../../src/images2/Purple1.JPG',
-          '../../src/images2/Purple2.JPG',
-          '../../src/images2/Purple3.JPG',
-          '../../src/images2/Purple4.JPG',
-          '../../src/images2/Purple5.JPG',
+          require('../../src/images/Worm1.jpg'),
+          require('../../src/images/Worm2.jpg'),
+          require('../../src/images/Worm3.jpg'),
+          require('../../src/images/Worm4.jpg'),
+          require('../../src/images/Worm5.jpg'),
         ]
 
       },
@@ -105,11 +107,11 @@ export default function Dashboard({ navigation }) {
         spname: 'Rust',
         description: 'Disease',
         images: [
-          '../../src/images2/Purple1.JPG',
-          '../../src/images2/Purple2.JPG',
-          '../../src/images2/Purple3.JPG',
-          '../../src/images2/Purple4.JPG',
-          '../../src/images2/Purple5.JPG',
+          require('../../src/images/Rust1.jpg'),
+          require('../../src/images/Rust2.jpg'),
+          require('../../src/images/Rust3.jpg'),
+          require('../../src/images/Rust4.jpg'),
+          require('../../src/images/Rust5.jpg'),
         ]
 
       },
@@ -120,58 +122,58 @@ export default function Dashboard({ navigation }) {
         spname: 'Fusarium & Sclerotium',
         description: 'Disease',
         images: [
-          '../../src/images2/Purple1.JPG',
-          '../../src/images2/Purple2.JPG',
-          '../../src/images2/Purple3.JPG',
-          '../../src/images2/Purple4.JPG',
-          '../../src/images2/Purple5.JPG',
+          require('../../src/images/Rootrot1.jpg'),
+          require('../../src/images/Rootrot2.jpg'),
+          require('../../src/images/Rootrot3.jpg'),
+          require('../../src/images/Rootrot4.jpg'),
+          require('../../src/images/Rootrot5.jpg'),
         ]
 
       },
       {
         id: 6,
-        pnd: 'Insect Pest',
-        name: 'Thrips',
-        spname: 'Thrips tabaci Lindeman',
-        description: 'Insect pest',
-        images: [
-          '../../src/images2/Purple1.JPG',
-          '../../src/images2/Purple2.JPG',
-          '../../src/images2/Purple3.JPG',
-          '../../src/images2/Purple4.JPG',
-          '../../src/images2/Purple5.JPG',
-        ]
-
-      },
-      {
-        id: 7,
         pnd: 'Disease',
         name: 'Cercospora leaf spot ',
         spname: 'Cercospora duddiae Welles',
         description: 'Disease',
         images: [
-          '../../src/images2/Purple1.JPG',
-          '../../src/images2/Purple2.JPG',
-          '../../src/images2/Purple3.JPG',
-          '../../src/images2/Purple4.JPG',
-          '../../src/images2/Purple5.JPG',
+          require('../../src/images/Leap1.jpg'),
+          require('../../src/images/Leap2.jpg'),
+          require('../../src/images/Leap3.jpg'),
+          require('../../src/images/Leap4.jpg'),
+          require('../../src/images/Leap5.jpg'),
         ]
 
       },
-      {
-        id: 8,
-        pnd: 'Disease',
-        name: 'Leafolder     ',
-        spname: 'Cercospora duddiae Welles',
-        description: 'Disease',
-        images: [
-          '../../src/images2/Purple1.JPG',
-          '../../src/images2/Purple2.JPG',
-          '../../src/images2/Purple3.JPG',
-          '../../src/images2/Purple4.JPG',
-          '../../src/images2/Purple5.JPG'
-        ],
-      }
+      // {
+      //   id: 7,
+      //   pnd: 'Insect Pest',
+      //   name: 'Thrips',
+      //   spname: 'Thrips tabaci Lindeman',
+      //   description: 'Insect pest',
+      //   images: [
+      //     require('../../src/images/Insect1.jpg'),
+      //     require('../../src/images/Insect2.jpg'),
+      //     require('../../src/images/Insect3.jpg'),
+      //     require('../../src/images/Insect4.jpg'),
+      //     require('../../src/images/Insect5.jpg'),
+      //   ]
+
+      // },
+      // {
+      //   id: 8,
+      //   pnd: 'Disease',
+      //   name: 'Leafolder     ',
+      //   spname: 'Cercospora duddiae Welles',
+      //   description: 'Disease',
+      //   images: [
+      //     require('../../src/images/Insect1.jpg'),
+      //     require('../../src/images/Insect2.jpg'),
+      //     require('../../src/images/Insect3.jpg'),
+      //     require('../../src/images/Insect4.jpg'),
+      //     require('../../src/images/Insect5.jpg'),
+      //   ],
+      // }
     ]
     setListPD(dataPD)
   }
@@ -1096,19 +1098,22 @@ export default function Dashboard({ navigation }) {
                         </View>
 
                         <View>
-                          <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 165, height: 180, borderTopRightRadius: 11, borderBottomRightRadius: 11 }} />
-                        </View>
-
-
-                        {/* {
-                          itemsD.map((itemsE, e) => {
-                            return (
-                              <View key={e}>
-                                <Image source={itemsE.images} style={{ width: 165, height: 180, borderTopRightRadius: 11, borderBottomRightRadius: 11 }} />
+                          {/* <Image source={itemsD.images[1]} style={{ width: 165, height: 180, borderTopRightRadius: 11, borderBottomRightRadius: 11 }} /> */}
+                          <Carousel
+                            loop
+                            width={165}
+                            height={180}
+                            autoPlay={true}
+                            data={[...new Array(4).keys()]}
+                            scrollAnimationDuration={3000}
+                            onSnapToItem={(index) => console.log('current index:', index)}
+                            renderItem={({ index }) => (
+                              <View>
+                                <Image source={itemsD.images[index]} style={{ width: 165, height: 180, borderTopRightRadius: 11, borderBottomRightRadius: 11 }} />
                               </View>
-                            )
-                          })
-                        } */}
+                            )}
+                          />
+                        </View>
                       </View>
                     </View>
                   )
