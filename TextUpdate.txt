@@ -137,4 +137,21 @@ database()
 
 
 c90f776ca6f447d182204634220807
-MuKf|A{S
+
+
+#March 13, 2023
+React native animatied coursel
+npm i react-native-reanimated-carousel
+https://www.npmjs.com/package/react-native-reanimated-carousel
+II: Remove <Text> {index} displayed
+II: change <Image> 
+
+
+
+Weather Icons: 
+::ThundeCloudRainAsset6.png 
+::TsunRAsset2.png 
+::SuncloudrainAsset5.png 
+::SuncloudrainAsset1.png
+::MooncloudrainAsset7.png
+::cloudAsset3.png  

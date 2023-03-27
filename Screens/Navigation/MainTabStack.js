@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import { LogBox } from 'react-native';
-import Dashboard from '../ComponentScreens/Dashboard';
+import Dashboardstack from '../Navigation/Dashboardstack';
 import Forecast from '../ComponentScreens/Forecast';
 import Plant from '../ComponentScreens/Plant';
 import Profile from '../ComponentScreens/Account';
@@ -26,8 +26,8 @@ export default function MainTabStack() {
         },
       }}>
       <Tab.Screen
-        name="Dashboard"
-        component={Dashboard}
+        name="Dashboardstack"
+        component={Dashboardstack}
         options={{
           headerShown: false,
           tabBarLabel: 'Dashboard',

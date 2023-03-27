@@ -144,6 +144,8 @@ function Wforecast({ navigation }) {
                                 })
                             }
                         </View>
+
+
                     </View>
                 </ScrollView>
             </ImageBackground>
