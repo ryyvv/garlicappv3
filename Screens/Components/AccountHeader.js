@@ -25,9 +25,10 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import BottomSheet from '../Components/BottomSheet'
 import styles from '../../src/css/styles';
-import database from '@react-native-firebase/database';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from '@react-native-firebase/storage';
 import { utils } from '@react-native-firebase/app';
+
+import database from '@react-native-firebase/database';
 
 
 export default function AccountHeader({ navigation }) {
@@ -204,8 +205,8 @@ export default function AccountHeader({ navigation }) {
     const UserEmail = () => {
         setEmail(user.email);
     }
+    
     // userAddress
-
     const UserAddress = async () => {
         await database().ref('/userData/' + user.uid).once('value').then(snapshot => {
             // console.log('UserD data: ', snapshot.val().Address);
@@ -237,19 +238,21 @@ export default function AccountHeader({ navigation }) {
 
 
 
-
+    // imageDefault
     const ImageDefault = () => {
         return (
             <Image source={require('../../src/icons/useraccount.png')} style={{ width: 33, height: 30, margin: 20 }} />
         )
     }
 
+    // ImageChange
     const ImageChange = (props) => {
         return (
             <Image source={{ uri: imagePathCapture }} style={{ width: '100%', height: 70, alignItems: 'center', borderRadius: 10 }} />
         )
     }
 
+    // CamProperties
     let optioncam = {
         saveToPhotos: true,
         mediaType: 'photo',
@@ -259,12 +262,14 @@ export default function AccountHeader({ navigation }) {
         // path: 'image',
     };
 
+    // UploadProperties
     let optionImageupload = {
         mediaType: 'photo',
         includeBase64: false,
         // path: 'image',
     };
 
+    // imageCameraPermission
     const AndroidPermissionCamera = async () => {
         try {
             const granted = await PermissionsAndroid.request(
@@ -295,6 +300,7 @@ export default function AccountHeader({ navigation }) {
         }
     }
 
+    // imageUploadPermission
     const imageLibrary = async () => {
 
         try {
@@ -316,6 +322,7 @@ export default function AccountHeader({ navigation }) {
                     alert('Please try again!')
                     // alert('No images in gallery selected!')
                 }
+                alert(imagePathCapture)
 
             } else {
                 console.log("Camera permission denied");
@@ -480,39 +487,3 @@ export default function AccountHeader({ navigation }) {
         </SafeAreaView >
     )
 }
-
-// const styles = StyleSheet.create({
-//     ImageSections: {
-//         display: 'flex',
-//         flexDirection: 'row',
-//         paddingHorizontal: 8,
-//         paddingVertical: 8,
-//         justifyContent: 'center'
-//     },
-//     images: {
-//         width: 150,
-//         height: 150,
-//         borderColor: 'black',
-//         borderWidth: 1,
-//         marginHorizontal: 3
-//     },
-//     btnParentSection: {
-//         alignItems: 'center',
-//         marginTop: 10
-//     },
-//     btnSection: {
-//         width: 225,
-//         height: 50,
-//         backgroundColor: '#DCDCDC',
-//         alignItems: 'center',
-//         justifyContent: 'center',
-//         borderRadius: 3,
-//         marginBottom: 10
-//     },
-//     btnText: {
-//         textAlign: 'center',
-//         color: 'gray',
-//         fontSize: 14,
-//         fontWeight: 'bold'
-//     }
-// });   

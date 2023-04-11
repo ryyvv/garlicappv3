@@ -34,7 +34,7 @@ import styles from '../../src/css/styles';
 
 import BSheet from '../ComponentScreens/BottomSheet'
 
-function PlantDash({route, navigation }) {
+function PlantDash({ route, navigation }) {
   const [plants, setPlants] = useState('');
 
   // const {plantData, setPlantData} =  route.params;
@@ -293,8 +293,8 @@ function PlantNew({ navigation }) {
 
 
   return (
-    <View  style={{ flex: 1, backgroundColor: '#AADCB6' }}>
-       <StatusBar backgroundColor="transparent" translucent={true} />
+    <View style={{ flex: 1, backgroundColor: '#AADCB6' }}>
+      <StatusBar backgroundColor="transparent" translucent={true} />
       {/* <ImageBackground source={require('../../src/images/garlicbg2.png')} resizeMode="cover" style={{ flex: 1, }}> */}
       {/* <ScrollView style={{ padding: 25 }}>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -340,97 +340,151 @@ function PlantNew({ navigation }) {
           <TextInput placeholder={'Address'} onChangeText={(value) => setPlantAddress(value)} value={plantAddress} style={{ width: '100%', borderBottomWidth: 1, borderBottomColor: '#276653', fontSize: 18, paddingLeft: 4, paddingTop: -3, paddingBottom: -3, fontWeight: 'bold' }} />
         </View >
       </ScrollView> */}
-      <View>
-        <Image />
+      <View style={{ position: 'absolute' , }}>
+        <Image source={require('../../src/images/Rootrot2.jpg')} style={{ flex: 1, width: '100%', height: undefined, aspectRatio: 0.8,borderBottomLeftRadius:60,borderBottomRightRadius:60 }} />
       </View>
-        <View>
-            <View style={{flexDirection:'row',justifyContent: 'space-between', alignItems:'center',marginTop:40,borderColor:'green',padding:13}}>
-                    {/* Header */}
-                    <View>
-                    <TouchableOpacity
-                        onPress={() => navigation.goBack()}>
-                        <View>
-                        <Icon name={'arrow-left'} color={'#276653'} size={27}  />
-                        </View>
-                    </TouchableOpacity>
-                    </View>
-                    {/* <View>
-                        <TouchableOpacity>
-                        <View>
-                            <Icon name={'check'} color={'#276653'} size={27}  />
-                            <Text>Submit</Text>
-                        </View>
-                        </TouchableOpacity>
-                    </View> */}
+      <View>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 40, borderColor: 'green', padding: 13 }}>
+          {/* Header */}
+          <View>
+            <TouchableOpacity
+              onPress={() => navigation.goBack()}>
+              <View>
+                <Icon name={'arrow-left'} color={'#276653'} size={27} />
+              </View>
+            </TouchableOpacity>
+          </View>
+          {/* <View>
+              <TouchableOpacity>
+                <View>
+                  <Icon name={'check'} color={'#276653'} size={27}  />
+                  <Text>Submit</Text>
                 </View>
-                {/* Content */}
-                <View style={{flex:2, padding:20}}>
-                    <ScrollView>
-                    {/* Images */}
-                        <View style={{ flexDirection: 'row', marginBottom: 30,justifyContent:'center',alignItems:'center' }}>
-                            <View style={{padding:60, borderWidth: 15, borderColor: 'white' ,backgroundColor:'#cbe6d1', borderRadius:25, width:300,justifyContent:'center',alignItems:'center',}}>
-                            <Icon name={"image-filter-hdr"} color={'#276653'} size={68}  style={{borderRadius:25}}/> 
-                            </View>
-                        </View>
+              </TouchableOpacity>
+          </View> */}
+        </View>
+        {/* Content */}
+        <View style={{ padding: 20, marginTop: 200 }}>
+          {/* <ScrollView> */}
+          {/* Images */}
 
-                    {/* TextInput */}
-                    <View style={[    styles.cardPlantcard, styles.cardPlantcardProp,{backgroundColor: 'white',padding:20, borderRadius:20}]}>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Icon name={"sprout"} color={'#276653'} size={28} style={{ marginTop: 3, marginRight: 15, marginLeft: 1 }} />
-                        <TextInput placeholder={'Title'} onChangeText={(value) => setPlantTitle(value)} value={plantTitle}
-                            style={{width: '86%', borderBottomWidth: 1, borderBottomColor: '#276653', fontSize: 18, paddingLeft: 4, paddingTop: -3, paddingBottom: -3, fontWeight: 'bold' }} />
-                        </View >
-
-                        <View style={{ alignItems: 'center', marginTop: 25, marginLeft: 44 }}>
-                            <TextInput placeholder={'Variety'} onChangeText={(value) => setPlantVariety(value)} value={plantVariety} o style={{ width: '100%', borderBottomWidth: 1, borderBottomColor: '#276653', fontSize: 18, paddingLeft: 4, paddingTop: -3, paddingBottom: -3, fontWeight: 'bold' }} />
-                            </View>
-                            <View style={{ alignItems: 'center', marginTop: 25 }}>
-                            <View style={{ flexDirection: 'row', alignItems: 'center', }}>
-                                <Icon name={"calendar"} color={'#276653'} size={28} style={{ marginTop: 3, marginRight: 15, marginLeft: 1 }} />
-                                <Text style={{ width: '86%', fontSize: 16, fontWeight: 'bold' }}>Dated planted:</Text>
-                            </View>
-                            <TouchableOpacity
-                                onPress={() => setOpen(true)}>
-                                <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#276653', marginLeft: 44, padding: 5 }}>
-                                <Text style={{ fontSize: 16, width: '100%', left: 0 }}>{moment(plantDate).format('ll')}</Text>
-                                </View>
-                            </TouchableOpacity>
-                            </View >
-                            <View>
-                            <DatePicker
-                                modal
-                                open={open}
-                                date={plantDate}
-                                mode={'date'}
-
-                                onConfirm={(date) => {
-                                setOpen(false)
-                                setPlantDate(date)
-                                }}
-                                onCancel={() => {
-                                setOpen(false)
-                                }}
-                                style={{ fontWeight: 'bold' }}
-                            />
-                            </View>
-                            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 25 }}>
-                            <Icon name={"map-marker"} color={'#276653'} size={28} style={{ marginTop: 3, marginRight: 15, marginLeft: 1 }} />
-                            <TextInput placeholder={'Address'} onChangeText={(value) => setPlantAddress(value)} value={plantAddress} style={{ width: '86%', borderBottomWidth: 1, borderBottomColor: '#276653', fontSize: 18, paddingLeft: 4, paddingTop: -3, paddingBottom: -3, fontWeight: 'bold' }} />
-                            </View >
-
-                            <View style={{marginTop: 25 }}>
-                            <TouchableOpacity>
-                                <View style={{justifyContent: 'center', alignItems:'center',padding:15, backgroundColor:'#76c788', borderRadius:25  }}>
-                                <Text style={{fontSize:16,fontWeight: 'bold', color:'white'}}>Submit</Text>
-                                </View>
-                            </TouchableOpacity>
-                            </View >
+          {/* <View style={{ flexDirection: 'row', marginBottom: 10, justifyContent: 'center', alignItems: 'center' }}>
+            <View>
+            <View style={{ padding: 10, borderWidth: 5, borderColor: 'white', backgroundColor: '#cbe6d1', borderRadius: 25, width: '100%' }}>
+              <Icon name={"image-filter-hdr"} color={'#276653'} size={68} style={{ borderRadius: 25 }} />
+              <View style={{ marginTop: 5, paddingLeft: 48, paddingRight: 25, flexDirection: 'row', }}>
+                <Text style={styles.textCamTitle}>
+                  Add Profile Picture
+                </Text>
+              </View>
+              <View style={{ marginTop: 5, paddingLeft: 25, paddingRight: 25, flexDirection: 'row', justifyContent: 'space-evenly' }}>
+                <TouchableOpacity
+                  // onPress={AndroidPermissionCamera}
+                  style={[styles.cardCamera, styles.cardCameraProps]}>
+                  <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                    <View style={{ padding: 16, backgroundColor: '#f0f9f6', borderRadius: 10 }}>
+                      <Icon name={"camera-plus-outline"} color={'#6fb591'} size={15} style={{ width: 50 }} />
                     </View>
-                    </ScrollView>
-                </View>
+                    <Text style={styles.textCam}>Take a photo</Text>
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  // onPress={imageLibrary}
+                  style={[styles.cardCamera, styles.cardCameraProps]}>
+                  <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                    <View style={{ padding: 16, backgroundColor: '#f0f9f6', borderRadius: 10 }}>
+                      <Icon name={"file-image-outline"} color={'#6fb591'} size={15} style={{ width: 50 }} />
+                    </View>
+                    <Text style={styles.textCam}>Upload a photo</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
             </View>
-            {/* </ImageBackground> */}
-        </View> 
+          </View> */}
+          
+          {/* Button Cam */}
+          <View style={{flexDirection:'row',justifyContent:'space-around' , width:'100%', marginBottom:10}}>
+              <View>
+                <TouchableOpacity
+                  // onPress={AndroidPermissionCamera}
+                  style={[styles.cardCamera2, styles.cardCameraProps2,{width:'100%'}]}>
+                      <View style={{flexDirection:'row',  justifyContent: 'center', alignItems: 'center',paddingLeft:5,paddingRight:10 }}>
+                        <Icon name={"camera-plus-outline"} color={'#6fb591'} size={25} style={{ marginRight: 5 }} />
+                        <Text style={styles.textCam2}>Take a photo</Text>
+                      </View>
+                </TouchableOpacity>
+              </View>
+
+              <View>
+                <TouchableOpacity
+                  // onPress={AndroidPermissionCamera}
+                  style={[styles.cardCamera2, styles.cardCameraProps2,{width:'100%'}]}>
+                     <View style={{flexDirection:'row',  justifyContent: 'center', alignItems: 'center',paddingLeft:5,paddingRight:10 }}>
+                        <Icon name={"file-image-outline"} color={'#6fb591'} size={25} style={{ marginRight: 5 }} />
+                        <Text style={styles.textCam2}>Upload a photo</Text>
+                      </View>
+                </TouchableOpacity>
+              </View>
+          </View>    
+
+          {/* TextInput */}
+          <View style={[styles.cardPlantcard, styles.cardPlantcardProp, { backgroundColor: 'white', padding: 20, borderRadius: 20 }]}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Icon name={"sprout"} color={'#276653'} size={28} style={{ marginTop: 3, marginRight: 15, marginLeft: 1 }} />
+              <TextInput placeholder={'Title'} onChangeText={(value) => setPlantTitle(value)} value={plantTitle}
+                style={{ width: '86%', borderBottomWidth: 1, borderBottomColor: '#276653', fontSize: 18, paddingLeft: 4, paddingTop: -3, paddingBottom: -3, fontWeight: 'bold' }} />
+            </View >
+
+            <View style={{ alignItems: 'center', marginTop: 25, marginLeft: 44 }}>
+              <TextInput placeholder={'Variety'} onChangeText={(value) => setPlantVariety(value)} value={plantVariety} o style={{ width: '100%', borderBottomWidth: 1, borderBottomColor: '#276653', fontSize: 18, paddingLeft: 4, paddingTop: -3, paddingBottom: -3, fontWeight: 'bold' }} />
+            </View>
+            <View style={{ alignItems: 'center', marginTop: 25 }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+                <Icon name={"calendar"} color={'#276653'} size={28} style={{ marginTop: 3, marginRight: 15, marginLeft: 1 }} />
+                <Text style={{ width: '86%', fontSize: 16, fontWeight: 'bold' }}>Dated planted:</Text>
+              </View>
+              <TouchableOpacity
+                onPress={() => setOpen(true)}>
+                <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#276653', marginLeft: 44, padding: 5 }}>
+                  <Text style={{ fontSize: 16, width: '100%', left: 0 }}>{moment(plantDate).format('ll')}</Text>
+                </View>
+              </TouchableOpacity>
+            </View >
+            <View>
+              <DatePicker
+                modal
+                open={open}
+                date={plantDate}
+                mode={'date'}
+
+                onConfirm={(date) => {
+                  setOpen(false)
+                  setPlantDate(date)
+                }}
+                onCancel={() => {
+                  setOpen(false)
+                }}
+                style={{ fontWeight: 'bold' }}
+              />
+            </View>
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 25 }}>
+              <Icon name={"map-marker"} color={'#276653'} size={28} style={{ marginTop: 3, marginRight: 15, marginLeft: 1 }} />
+              <TextInput placeholder={'Address'} onChangeText={(value) => setPlantAddress(value)} value={plantAddress} style={{ width: '86%', borderBottomWidth: 1, borderBottomColor: '#276653', fontSize: 18, paddingLeft: 4, paddingTop: -3, paddingBottom: -3, fontWeight: 'bold' }} />
+            </View >
+
+            <View style={{ marginTop: 25 }}>
+              <TouchableOpacity>
+                <View style={{ justifyContent: 'center', alignItems: 'center', padding: 15, backgroundColor: '#76c788', borderRadius: 25 }}>
+                  <Text style={{ fontSize: 16, fontWeight: 'bold', color: 'white' }}>Submit</Text>
+                </View>
+              </TouchableOpacity>
+            </View >
+          </View>
+          {/* </ScrollView> */}
+        </View>
+      </View>
+      {/* </ImageBackground> */}
+    </View>
   )
 }
 
@@ -499,7 +553,7 @@ function PlantNew({ navigation }) {
 //     'id 8',
 //     'id 9',
 //   ]
-  
+
 //   let AnimatedHeaderValue = new Animated.Value(0);
 //   const HEADER_MAX_HEIGHT = 350;
 //   const HEADER_MIN_HEIGHT = 100;

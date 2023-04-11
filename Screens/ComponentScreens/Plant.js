@@ -5,9 +5,13 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { FloatingAction } from "react-native-floating-action";
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import  Storage from '@react-native-firebase/storage';
 import DatePicker from 'react-native-date-picker'
 import database from '@react-native-firebase/database';
 import { AuthContext } from '../Context/AuthProvider';
+
+const dbRef = database().ref('images');
 
 import {
   SafeAreaView,
@@ -21,21 +25,25 @@ import {
   TextInput,
   FlatList,
   TouchableOpacity,
+  PermissionsAndroid,
   Dimensions,
   Pressable,
   LogBox,
   ImageBackground,
   Button,
   Animated,
-  Alert
+  Alert,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import styles from '../../src/css/styles';
 
-import BSheet from '../ComponentScreens/BottomSheet'
+import * as Progress from 'react-native-progress';
 
-function PlantDash({ navigation }) {
+function PlantDash({ route, navigation }) {
   const [plants, setPlants] = useState('');
+  const [plantData, setPlantData] = useState([])
+
+  // const {plantData, setPlantData} =  route.params;
 
   const hidden = false;
   const statusBarStyle = 'dark-content';
@@ -50,177 +58,379 @@ function PlantDash({ navigation }) {
         />
       ,
       headerTitle: props => <Text style={{ fontSize: 25, fontWeight: 'bold', color: '#276653' }}>My Plants</Text>,
-      // headerRight: props =>
-      //   <View style={styles.div2Row}>
-      //     <TouchableOpacity
-      //       onPress={() => {
-      //         navigation.navigate('PlantSearch')
-      //       }}>
-      //       <View style={[styles.div2Row, styles.searchbar]}>
-      //         <Icon name={"magnify"} color={'#276653'} size={19} style={{ marginRight: 1, marginLeft: 1 }} />
-      //         <Text style={{ fontSize: 12, fontWeight: 'bold', color: '#276653', }}>Search</Text>
-      //       </View>
-      //     </TouchableOpacity>
-      //   </View>,
     })
     const plantData = database().ref('/plants/');
     console.log(plantData)
-
   }, [navigation])
-  return (
+ 
+  useEffect(() => {
+    displayList();
+  }, []);
+  
+  const displayList = async () => {
+    const dbRef = database().ref('plants');
+    dbRef.on('value', (snapshot) => {
+      const firebaseData = snapshot.val();
+      if(firebaseData == null){
+        setPlantData(null);
+      }else {
+        const dataArray = Object.values(firebaseData);
+        setPlantData(dataArray);
+      }
+    });
+  }
 
-    <View style={{ flex: 1, backgroundColor: '#cbdeda' }}>
-      {/* <View style={{ flex: 1 }}>
-      <ImageBackground source={require('../../src/images/garlicbg2.png')} resizeMode="cover" style={{
-        flex: 1,
-        justifyContent: "center"
-      }}> */}
-      <StatusBar
-        animated={true}
-        barStyle={statusBarStyle}
-        translucent={true} />
-      <ScrollView>
-        <View style={styles.accountcontainer}>
-
-          <View>
-            <View style={styles.cardDataPlant}>
-              <View style={styles.div2RowSpaceEvenNoAlignItems}>
-                <TouchableOpacity
-                  onPress={() => {
-
-                  }}
-                >
-                  <View style={styles.div2Row}>
-                    <Image source={require('../../src/images/garlic2.png')} style={{ width: 50, height: 50, borderRadius: 50 / 2, marginRight: 10 }} />
-                    <View>
-                      <Text style={{ color: '#276653', fontWeight: 'bold', fontSize: 17 }}>Garlic1-Suyo</Text>
-                      <Text>Dec. 03, 2022</Text>
-                    </View>
-                  </View>
-                </TouchableOpacity>
-                <View style={styles.div2RowDatalist}>
-                  <Icon name={"bell-outline"} color={'#276653'} size={23} style={{ width: 20, marginRight: 20 }} />
-                  <TouchableOpacity>
-                    <Icon name={"dots-vertical"} color={'#276653'} size={23} style={{ width: 20 }} />
-                  </TouchableOpacity>
+  // datalist
+  const renderDisplayList = ({item }) => {
+    return (
+         <TouchableOpacity  onPress={() => {
+                        navigation.navigate('PlantID', {
+                          title: item.title,
+                          image: item.image,
+                          variety: item.variety,
+                          date: item.date,
+                          plantAddress: item.plantAddress,
+                        });
+                      }}>
+        <View style={styles.cardDataPlant}>
+          <View style={styles.div2RowSpaceEvenNoAlignItems}>
+            
+            {/* display list button */}
+            {/* <Pressable  > */}
+              <View style={styles.div2Row}>
+                <Image source={{uri: item.image}}
+                       style={{ width: 50, height: 50, borderRadius: 50 / 2, marginRight: 10 }} 
+                />
+                <View>
+                  <Text style={{ color: '#276653', fontWeight: 'bold', fontSize: 17 }}>{item.title}</Text>
+                  <Text>{moment(item.date).format('MMMM D, YYYY')}</Text>
                 </View>
               </View>
+            {/* </Pressable> */}
+            
+            {/* Button option */}
+            <View style={[styles.div2RowDatalist,{padding:10}]}>
+              <Icon name={"bell-outline"} color={'#276653'} size={23} style={{ width: 20, marginRight: 20 }} />
+              <TouchableOpacity>
+                <Icon name={"dots-vertical"} color={'#276653'} size={23} style={{ width: 20 }} />
+              </TouchableOpacity>
             </View>
-
           </View>
-          {/* </ScrollView> */}
+        </View>
+        </TouchableOpacity>
+    );
+  };
+  const showEmptyListView = () => {
+    return(
+      <View style={{marginTop: 200, flexDirection:'row', justifyContent:'center', alignItem: 'center'}}>
+        <Text style={{fontSize: 20, fontWeight:'bold',alignItem: 'center',justifyContent:'center',}}><Icon name={"plus-circle"} color={'#276653'} size={30} style={{ width: 20}} />Add a plant to get started!  </Text>
+      </View>
+    )
+  }
+
+  return (
+    <View style={{ flex: 1, backgroundColor: '#cbdeda' }}>
+      <StatusBar animated={true} barStyle={statusBarStyle} translucent={true} />
+      <ScrollView>
+        <View style={styles.accountcontainer}>
+        <FlatList
+          data={plantData}
+          renderItem={renderDisplayList}
+          keyExtractor={(item) => item.id} 
+          ListEmptyComponent={showEmptyListView()}/>
         </View>
       </ScrollView>
 
-      <TouchableOpacity
-        onPress={() => {
-          navigation.navigate('PlantNew')
-        }}
-      >
+       {/* Add button            */}
+      <TouchableOpacity onPress={() => {navigation.navigate('PlantNew')}}>
         <View style={styles.addBtn}>
           <Icon name={"plus"} color={'white'} size={23} style={{ fontWeight: 'bold' }} />
         </View>
       </TouchableOpacity>
-
-      {/* </ImageBackground> */}
-      {/* <View>
-        <TouchableOpacity
-          onPress={navigate.navigation('BottomSheet')}>
-          <Text>BottomSheet</Text>
-        </TouchableOpacity>
-      </View> */}
     </View >
 
   )
 }
 
-function PlantID({ navigation }) {
+function PlantID({ route, navigation }) {
 
-  const apiKey = 'c90f776ca6f447d182204634220807';
+  let AnimatedHeaderValue = new Animated.Value(0);
+  const HEADER_MAX_HEIGHT = 300;
+  const HEADER_MIN_HEIGHT = 200;
 
-  const newdate = new Date();
-  const [currentC, setCurrent] = useState('');
-  const [currentDay, setCurrentDay] = useState([]);
-  const [currentDayCondition, setCurrentDayCondition] = useState([]);
-  const [location, setLocation] = useState('');
-  const [localTime, setLocaTime] = useState('');
-  const [perDay, setperDay] = useState([]);
-  const [perHour, setperHour] = useState([]);
-  const [conditions, setCondition] = useState('');
-  const [datacollect, setDataColllected] = useState('');
-  const [dataArray, setDataArray] = useState([]);
-  const currentTimeCheck = moment(new Date().getHours()).format('hh:mm A');
+  const animatedHeaderBackgroundColor = AnimatedHeaderValue.interpolate({
+    inputRange: [5  , HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT],
+    outputRange: ['blue', 'red'],
+    extrapolate: 'clamp',
+  });
 
-  const getApiCurrent = async () => {
-    const response = await fetch('http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=batac city, ilocos Norte&days=10&aqi=yes&alerts=yes')
-      .then((response) => response.json())
-      .catch((error) => {
-        console.error(error);
-      });
-    setLocation(response?.location)
-    setCurrent(response?.current?.last_updated)
-    // setCondition(response?.forecast?.forecastday[0]?.day.condition)
-    // setLocaTime(response?.location)
-    setperHour(response?.forecast?.forecastday[0]?.hour)
-    setperDay(response?.forecast?.forecastday)
-    setCurrentDay(response?.forecast?.forecastday[0]?.day)
-    setCurrentDayCondition(response?.forecast?.forecastday[0]?.day?.condition)
+  const animatedHeaderHeight = AnimatedHeaderValue.interpolate({
+    inputRange: [60, HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT],
+    outputRange: [HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT],
+    extrapolate: 'clamp',
+  });
 
 
-    //check
-    console.log('Current Location: ', location.name)
-    console.log('CurrentDate: ', currentC)
-    console.log('DayDate: ', currentDay.avgtemp_c)
-    console.log('DayMaxTemp: ', currentC.maxtemp_c)
-    console.log('CurrentCondition: ', localTime.localtime)
-    console.log('CurrentCondition: ', perHour)
+  const { title, image, variety, date } = route.params;
 
-    return perHour;
-  };
+   return (
+    <SafeAreaView style={{ flex: 1 }}>
 
-  const addData = () => {
-    dataArray.push(datacollect.toString());
-    setDataColllected('')
+      <Animated.View
+        style={{
+          height: animatedHeaderHeight,
+          flex:1
+          // backgroundColor: animatedHeaderBackgroundColor,
+        }}>
 
-    if (dataArray != null) {
-      return dataArray
-    } else {
-      setDataColllected('')
-    }
-  }
-
-
-  useEffect(() => {
-    getApiCurrent();
-    // addData();
-  }, []);
-
-  return (
-    <View>
-      <StatusBar animated={true} backgroundColor="green" />
-      <SafeAreaView>
-        <ScrollView>
+        <ImageBackground
+          source={require('../../src/images/Insect4.jpg')}
+          resizeMode="cover"
+          style={{ flex: 1, justifyContent: 'center', }}>
+          {/* opacity: 0.1 */}
+        </ImageBackground>
+        <View style={{ position: 'absolute', bottom: 0, padding: 35 }}>
+          {/* <Image  source={require(JSON.stringify(images))}/> */}
+          <Text style={{ fontWeight: 'bold', fontSize: 30, color: 'white' }}>name</Text>
+          <Text style={{ fontWeight: 'bold', fontSize: 20, fontStyle: 'italic', color: 'white' }}>spname</Text>
+        </View>
+        <View
+          style={{ position: 'absolute', bottom: 0, paddingLeft: 60 }}></View>
+      </Animated.View>
+      <View style={{
+        flex:2,
+        padding: 20,
+        backgroundColor: '#7ABD87',
+        borderTopRightRadius: 25,
+        borderTopLeftRadius: 25,
+        paddingTop: 30,
+        marginTop: -20,
+        maxHeight: 400
+      }}>
+        <ScrollView
+          scrollEventThrottle={15}
+          showsVerticalScrollIndicator={false}
+          onScroll={Animated.event(
+            [
+              {
+                nativeEvent: {
+                  contentOffset: {
+                    y: AnimatedHeaderValue,
+                  },
+                },
+              },
+            ],
+            { useNativeDriver: false },
+          )}
+          >
           <View>
-            <Text>Screen 2</Text>
+            {/* Description */}
+            <View>
+              <Text style={{ color: 'white', marginBottom: 10, fontWeight: 'bold', fontSize: 20 }}>Timeline</Text>
+              <Text style={{color:'white', fontSize: 18 }}>
+                Timeline
+              </Text>
+            </View>
+
+            
           </View>
         </ScrollView>
-      </SafeAreaView>
-    </View>
-  )
+      </View>
+
+    </SafeAreaView>
+  );
 }
 
 function PlantNew({ navigation }) {
   const { logout, user } = useContext(AuthContext)
-  const [plantDate, setPlantDate] = useState(new Date())
+
+ 
   const [open, setOpen] = useState(false)
   const [plantTitle, setPlantTitle] = useState('')
   const [plantVariety, setPlantVariety] = useState('')
+  const [plantDate, setPlantDate] = useState(new Date())
   const [plantAddress, setPlantAddress] = useState('')
   const [dataloading, setDataloading] = useState(false);
+  const [image, setImage] = useState(null); //Test
+  const [imagePathCapture, setimagePathCapture] = useState(null);  //ImagePicker
+  const [uploading, setUploading] = useState(false);    //setUploaders
+  const [downloadURL, setDownloadURL] = useState(null);   //imagelink uploader getdownload image
+  const [transferred, setTransferred] = useState(0);    //Progress upload  image
+
+ 
+
+  // ImageDefault Display
+  const ImageDefault = () => {
+    return (
+      <View style={{ justifyContent: 'center', alignItems: 'center', width: '100%', backgroundColor: '#cbe6d1', height: 400, aspectRatio: 1, borderBottomRightRadius: 15, borderBottomLeftRadius: 15 }}>
+        <Icon name={'image-outline'} color={'#276653'} size={150} style={{ fontWeight: 'bolder' }} />
+      </View>
+    )
+
+ 
+  }
+
+  // ImageChange Display
+  const ImageChange = (props) => {
+    return (
+      <Image source={{ uri: imagePathCapture }} style={{ flex: 1, width: '100%', height: undefined, aspectRatio: 1, borderBottomRightRadius: 15, borderBottomLeftRadius: 15 }} />
+    )
+  }
+
+  let optioncam = {
+    saveToPhotos: true,
+    mediaType: 'photo',
+    cameraType: 'back',
+    selectionLimit: 1,
+    includeBase64: false,
+    path: 'images',
+  };
+
+  let optionImageupload = {
+    mediaType: 'photo',
+    includeBase64: false,
+    path: 'images ',
+
+    
+  };
 
 
-  const getData = () => {
-    if (!plantTitle.trim()) {
+  const AndroidPermissionCamera = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+        {
+          title: "Garlic photo App Camera Permission",
+          message:
+            "Garlic photo App needs access to your camera " +
+            "so you can take awesome pictures.",
+          buttonNeutral: "Ask Me Later",
+          buttonNegative: "Cancel",
+          buttonPositive: "OK"
+        }
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        const resultImageCaptured = await launchCamera(optioncam)
+        if (resultImageCaptured.didCancel == true) {
+          alert('Please try again!')
+        }
+        setimagePathCapture(resultImageCaptured.assets[0].uri);
+        // !!No error found!
+
+      } else {
+        console.log("Camera permission denied");
+        alert("Camera permission denied")
+      }
+    } catch (error) {
+      alert('Please try again!')
+    }
+  }
+
+  const imageLibrary = async () => {
+
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+        {
+          title: "Garlic App Camera Permission",
+          message: "Garlic App needs access to your Gallery ",
+          buttonNeutral: "Ask Me Later",
+          buttonNegative: "Cancel",
+          buttonPositive: "OK"
+        }
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        const resultImageToUpload = await launchImageLibrary(optioncam)
+        if (resultImageToUpload.didCancel == true) {
+          alert('Please try again! No image selected')
+        }
+
+        setimagePathCapture(resultImageToUpload.assets[0].uri);
+        // ::Warning message: backend display null value setImagepathCapture::Ignore first null
+
+      } else {
+        console.log("Camera permission denied");
+        alert("Camera permission denied")
+      }
+    } catch (error) {
+      alert('Please try again!', error)
+    }
+  }
+
+  const UserUpdate = async () => {
+    const uploadURI = imagePathCapture;
+    let filename = uploadURI.substring(uploadURI.lastIndexOf('/') + 1);
+    console.log(filename)
+
+    const pathToFile = `${utils.FilePath.PICTURES_DIRECTORY}/` + filename;
+    // uploads file
+    console.log(pathToFile)
+    await storage().ref('userProfilepic/').putFile(pathToFile);
+
+    const storage = getStorage();
+
+    // Create the file metadata
+    /** @type {any} */
+    const metadata = {
+      contentType: 'image/jpeg'
+    };
+
+    // Upload file and metadata to the object 'images/mountains.jpg'
+    const storageRef = ref(storage, 'images/' + file.name);
+    const uploadTask = uploadBytesResumable(storageRef, file, metadata);
+
+    // Listen for state changes, errors, and completion of the upload.
+    uploadTask.on('state_changed',
+      (snapshot) => {
+        // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log('Upload is ' + progress + '% done');
+        switch (snapshot.state) {
+          case 'paused':
+            console.log('Upload is paused');
+            break;
+          case 'running':
+            console.log('Upload is running');
+            break;
+        }
+      },
+      (error) => {
+        // A full list of error codes is available at
+        // https://firebase.google.com/docs/storage/web/handle-errors
+        switch (error.code) {
+          case 'storage/unauthorized':
+            // User doesn't have permission to access the object
+            break;
+          case 'storage/canceled':
+            // User canceled the upload
+            break;
+
+          // ...
+
+          case 'storage/unknown':
+            // Unknown error occurred, inspect error.serverResponse
+            break;
+        }
+      },
+      () => {
+        // Upload completed successfully, now we can get the download URL
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          console.log('File available at', downloadURL);
+        });
+      }
+    );
+  }
+
+
+  // uploading trigger
+  const imageUpload = async () => {
+    // LogBox.ignoreAllLogs();
+    
+    // Create Data plant
+    if (imagePathCapture === null) {
+      alert('Select image!');
+      return;
+    } else if (!plantTitle.trim()) {
       alert('Please enter title!');
       return;
     } else if (!plantVariety.trim()) {
@@ -230,272 +440,193 @@ function PlantNew({ navigation }) {
       alert('Please enter address!');
       return;
     }
-    // if (plantTitle == null || plantVariety == null || plantDate == null || plantAddress == null) {
-    //   alert('Error!')
-    // } 
     else {
-      database()
-        .ref('plants/' + user.uid + plantTitle)
-        .set({
-          title: plantTitle,
-          variety: plantVariety,
-          date: plantDate.toISOString(),
-          plantAddress: plantAddress
-        }).then(() => {
-          // console.log('Plant data stored successfully!')
-          // navigation.navigate('PlantID')
-          alert('Plant data stored successfully!')
+        const uri  = imagePathCapture;
+        const filename = uri.substring(uri.lastIndexOf('/') + 1);
+        const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
+        setUploading(true);
+        setTransferred(0);
 
+        // storagePath and imagePath
+        const task =   Storage().ref('images/'+filename).putFile(uploadUri)
+
+        // Process 
+        task.on('state_changed', snapshot => {
+          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log(`Upload is ${progress}% done`);
+
+          setTransferred(
+            Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          );
         });
 
+        // Task then
+        task.then(async () => {
+          // get imageDownloadURL
+          const downloadURL  = await Storage().ref('images/'+filename).getDownloadURL(); 
+    
+          // Test
+          // alert('downloadURL: ' + downloadURL);
+
+          // store data in realtime database
+          database().ref('/plants/' + user.uid + plantTitle)
+          .set({
+            image: downloadURL,
+            title: plantTitle,
+            variety: plantVariety,
+            date: plantDate.toISOString(),
+            plantAddress: plantAddress
+          })
+          .then( async() => { 
+            alert('Plant data stored successfully!')
+            navigation.goBack()
+          });
+        });
+
+          try {
+            await task;
+          } catch (e) {
+            console.error(e);
+          }
+
+          setUploading(false);
+          setImage(null);
     }
-
-
-    console.log('TITLE', plantTitle)
-    console.log('VARIETY', plantVariety)
-    console.log('DATE', plantDate.toISOString())
-    console.log('PLANT ADDRESS', plantAddress)
-
-    // }
-
-
+  }
+  const displayListplant = async () => {
+    const displayList =  database().ref('/plants')
   }
 
-
-  useEffect(() => {
-
-    navigation.setOptions({
-      headerLargeTitle: false,
-      // headerBackground: props =>
-      //   <Image
-      //     style={{ width: '100%' }}
-      //     source={require('../../src/images/garlicbg1.png')}
-      //   />
-      // ,
-      headerTitle: props => <Text style={{ fontSize: 25, fontWeight: 'bold', color: '#276653' }}>New Plant</Text>,
-      headerRight: props =>
-        <View style={styles.div2Row}>
-          <TouchableOpacity
-            onPress={() => {
-              // Submit Btn
-              // navigation.navigate('PlantDash')
-              getData();
-            }}>
-            <View style={{ marginRight: 20 }}>
-              <Icon name={"check-bold"} color={'#276653'} size={23} style={{ fontWeight: 'bolder' }} />
-            </View>
-          </TouchableOpacity>
-        </View>,
-    })
-
-    console.log(moment(plantDate).format('llll'))
-  }, [navigation])
-
-
   return (
-    <SafeAreaView edges={['top']} style={{ flex: 1, backgroundColor: 'white' }}>
-      {/* <ImageBackground source={require('../../src/images/garlicbg2.png')} resizeMode="cover" style={{ flex: 1, }}> */}
-      <ScrollView style={{ padding: 25 }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Icon name={"sprout"} color={'#276653'} size={28} style={{ marginTop: 3, marginRight: 15, marginLeft: 1 }} />
-          <TextInput placeholder={'Title'} onChangeText={(value) => setPlantTitle(value)} value={plantTitle}
-            style={{ width: '100%', borderBottomWidth: 1, borderBottomColor: '#276653', fontSize: 18, paddingLeft: 4, paddingTop: -3, paddingBottom: -3, fontWeight: 'bold' }} />
-        </View >
-
-        <View style={{ alignItems: 'center', marginTop: 25, marginLeft: 44 }}>
-          <TextInput placeholder={'Variety'} onChangeText={(value) => setPlantVariety(value)} value={plantVariety} o style={{ width: '100%', borderBottomWidth: 1, borderBottomColor: '#276653', fontSize: 18, paddingLeft: 4, paddingTop: -3, paddingBottom: -3, fontWeight: 'bold' }} />
-        </View>
-        <View style={{ alignItems: 'center', marginTop: 25 }}>
-          <View style={{ flexDirection: 'row', alignItems: 'center', }}>
-            <Icon name={"calendar"} color={'#276653'} size={28} style={{ marginTop: 3, marginRight: 15, marginLeft: 1 }} />
-            <Text style={{ width: '86%', fontSize: 16, fontWeight: 'bold' }}>Dated planted:</Text>
-          </View>
-          <TouchableOpacity
-            onPress={() => setOpen(true)}>
-            <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#276653', marginLeft: 44, padding: 5 }}>
-              <Text style={{ fontSize: 16, width: '100%', left: 0 }}>{moment(plantDate).format('ll')}</Text>
+    
+    <View style={{ flex: 1, backgroundColor: '#AADCB6' }}>
+               
+      {
+        uploading ? ( <View style={{ flexDirection:'column', width: '100%',  zIndex:2, position:'absolute' }}>
+            <View style={{backgroundColor: 'rgba(52, 52, 52, 0.2)',justifyContent:'center' , alignItems: 'center' }}>
+              <View style={{padding:30, marginTop:'100%',marginBottom:'100%', backgroundColor:'white', borderRadius:10,justifyContent:'center' , alignItems: 'center',}}>
+                  <Progress.Bar progress={transferred} width={200}  color={'#3E7E55'}/>
+                  <Text style={{fontSize:20, fontWeight:'bold', color:'#3E7E55', marginTop:5}}>Uploading... {transferred}%</Text>
+              </View>
             </View>
-          </TouchableOpacity>
-        </View >
-        <View>
-          <DatePicker
-            modal
-            open={open}
-            date={plantDate}
-            mode={'date'}
-
-            onConfirm={(date) => {
-              setOpen(false)
-              setPlantDate(date)
-            }}
-            onCancel={() => {
-              setOpen(false)
-            }}
-            style={{ fontWeight: 'bold' }}
-          />
         </View>
-        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 25 }}>
-          <Icon name={"map-marker"} color={'#276653'} size={28} style={{ marginTop: 3, marginRight: 15, marginLeft: 1 }} />
-          <TextInput placeholder={'Address'} onChangeText={(value) => setPlantAddress(value)} value={plantAddress} style={{ width: '100%', borderBottomWidth: 1, borderBottomColor: '#276653', fontSize: 18, paddingLeft: 4, paddingTop: -3, paddingBottom: -3, fontWeight: 'bold' }} />
-        </View >
-      </ScrollView>
-      {/* </ImageBackground> */}
-    </SafeAreaView >
+         ) : null
+      }
+
+      <StatusBar backgroundColor="transparent" translucent={true} />
+      <ImageBackground source={require('../../src/images/garlicbg2.png')} resizeMode="cover" style={{ flex: 1, }}>
+
+        {/* Header */}
+        <View style={{ zIndex: 2, position: 'absolute', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 40, borderColor: 'green', padding: 13, top: 0 }}>
+          {/* Header */}
+          <View>
+            <TouchableOpacity
+              onPress={() => navigation.goBack()}>
+              <View>
+                <Icon name={'arrow-left'} color={'white'} size={27} />
+              </View>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        {/* Content */}
+        <ScrollView>
+          <View>
+            {/* Image */}
+            <View>
+              {
+                imagePathCapture == null ? <ImageDefault /> : <ImageChange />
+              }
+
+              {/* Button Cam */}
+              <View style={{ flexDirection: 'row', justifyContent: 'space-around', width: '100%', marginBottom: 10, marginTop: -100, paddingLeft: '5%', paddingRight: '5%' }}>
+                <View>
+                  <TouchableOpacity
+                    onPress={AndroidPermissionCamera}
+                    style={[styles.cardCamera2, styles.cardCameraProps2, { width: '100%' }]}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', paddingLeft: 5, paddingRight: 10 }}>
+                      <Icon name={"camera-plus-outline"} color={'#6fb591'} size={25} style={{ marginRight: 5 }} />
+                      <Text style={styles.textCam2}>Take a photo</Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+
+                <View>
+                  <TouchableOpacity
+                    onPress={imageLibrary}
+                    style={[styles.cardCamera2, styles.cardCameraProps2, { width: '100%' }]}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', paddingLeft: 5, paddingRight: 10 }}>
+                      <Icon name={"file-image-outline"} color={'#6fb591'} size={25} style={{ marginRight: 5 }} />
+                      <Text style={styles.textCam2}>Upload a photo</Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+
+            {/* Content */}
+            <View style={{ padding: 20, marginTop: -10 }}>
+              {/* TextInput */}
+              <View style={[styles.cardPlantcard, styles.cardPlantcardProp, { backgroundColor: 'white', padding: 20, borderRadius: 20 }]}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Icon name={"sprout"} color={'#276653'} size={28} style={{ marginTop: 3, marginRight: 15, marginLeft: 1 }} />
+                  <TextInput placeholder={'Title'} onChangeText={(value) => setPlantTitle(value)} value={plantTitle}
+                    style={{ width: '86%', borderBottomWidth: 1, borderBottomColor: '#276653', fontSize: 18, paddingLeft: 4, paddingTop: -3, paddingBottom: -3, fontWeight: 'bold' }} />
+                </View >
+
+                <View style={{ alignItems: 'center', marginTop: 25, marginLeft: 44 }}>
+                  <TextInput placeholder={'Variety'} onChangeText={(value) => setPlantVariety(value)} value={plantVariety} o style={{ width: '100%', borderBottomWidth: 1, borderBottomColor: '#276653', fontSize: 18, paddingLeft: 4, paddingTop: -3, paddingBottom: -3, fontWeight: 'bold' }} />
+                </View>
+                <View style={{ alignItems: 'center', marginTop: 25 }}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+                    <Icon name={"calendar"} color={'#276653'} size={28} style={{ marginTop: 3, marginRight: 15, marginLeft: 1 }} />
+                    <Text style={{ width: '86%', fontSize: 16, fontWeight: 'bold' }}>Dated planted:</Text>
+                  </View>
+                  <TouchableOpacity
+                    onPress={() => setOpen(true)}>
+                    <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#276653', marginLeft: 44, padding: 5 }}>
+                      <Text style={{ fontSize: 16, width: '100%', left: 0 }}>{moment(plantDate).format('ll')}</Text>
+                    </View>
+                  </TouchableOpacity>
+                </View >
+                <View>
+                  <DatePicker
+                    modal
+                    open={open}
+                    date={plantDate}
+                    mode={'date'}
+
+                    onConfirm={(date) => {
+                      setOpen(false)
+                      setPlantDate(date)
+                    }}
+                    onCancel={() => {
+                      setOpen(false)
+                    }}
+                    style={{ fontWeight: 'bold' }}
+                  />
+                </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 25 }}>
+                  <Icon name={"map-marker"} color={'#276653'} size={28} style={{ marginTop: 3, marginRight: 15, marginLeft: 1 }} />
+                  <TextInput placeholder={'Address'} onChangeText={(value) => setPlantAddress(value)} value={plantAddress} style={{ width: '86%', borderBottomWidth: 1, borderBottomColor: '#276653', fontSize: 18, paddingLeft: 4, paddingTop: -3, paddingBottom: -3, fontWeight: 'bold' }} />
+                </View >
+
+                <View style={{ marginTop: 25 }} >
+                  <TouchableOpacity
+                    onPress={imageUpload}>
+                    <View style={{ justifyContent: 'center', alignItems: 'center', padding: 15, backgroundColor: '#76c788', borderRadius: 25 }}>
+                      <Text style={{ fontSize: 16, fontWeight: 'bold', color: 'white' }}>Submit</Text>
+                    </View>
+                  </TouchableOpacity>
+                </View >
+              </View>
+            </View>
+          </View>
+        </ScrollView>
+      </ImageBackground>
+    </View>
   )
 }
-
-// function PlantSearch({ navigation, route }) {
-//   const actions = [
-
-//     {
-//       text: "Language",
-
-//       name: "bt_language",
-//       position: 1
-//     },
-//     {
-//       text: "Location",
-
-//       name: "bt_room",
-//       position: 3
-//     },
-//   ];
-//   return (
-//     <View style={styles.container}>
-//       <Text style={styles.example}>Floating Action example</Text>
-//       <FloatingAction
-//         actions={actions}
-//         onPressItem={name => {
-//           console.log(`selected button: ${name}`);
-//         }}
-//       />
-//     </View>
-//   );
-// }
-
-// function PlantSearch({ navigation, route }) {
-
-//   const hidden = true;
-//   const statusBarStyle = 'dark-content';
-
-//   const [plants, setPlants] = useState('');
-//   // useEffect(() => {
-//   //   navigation.setOptions({
-//   //     // headerLargeTitle: false,
-//   //     headerTitle: props =>
-//   //       <View style={styles.div2Row}>
-//   //         <TextInput name="searchplant" placeholder="Search plant" onChangeText={text => setPlants(text)}
-//   //           value={plants} style={{ width: 260, paddingRight: 15, fontSize: 18, color: '#276653', fontWeight: 'bold' }} />
-//   //         <TouchableOpacity
-//   //           onPress={() => {
-//   //             // navigation.navigate('PlantSearch', { searchplant: searchplant })
-//   //             alert('Search function not available ')
-//   //           }}>
-//   //           <Icon name={"magnify"} color={'#276653'} size={25} style={{ marginRight: 1 }} />
-//   //         </TouchableOpacity>
-//   //       </View>
-
-//   //   })
-//   // }, [navigation])
-
-//   const dataPlant = [
-//     'id 1',
-//     'id 2',
-//     'id 3',
-//     'id 4',
-//     'id 5',
-//     'id 6',
-//     'id 7',
-//     'id 8',
-//     'id 9',
-//     'id 10',
-//     'id 11',
-//     'id 12',
-//     'id 13',
-//     'id 14',
-//     'id 15',
-//     'id 16',
-//   ]
-//   let AnimatedHeaderValue = new Animated.Value(0);
-//   const HEADER_MAX_HEIGHT = 150;
-//   const HEADER_MIN_HEIGHT = 90;
-
-//   const animatedHeaderBackgroundColor = AnimatedHeaderValue.interpolate({
-//     inputRange: [40, HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT],
-//     outputRange: ['blue', 'red'],
-//     extrapolate: 'clam'
-//   });
-
-
-//   const animatedHeaderHeight = AnimatedHeaderValue.interpolate({
-//     inputRange: [40, HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT],
-//     outputRange: [HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT],
-//     extrapolate: 'clam'
-//   });
-
-//   return (
-
-//     <View style={{ flex: 1, backgroundColor: '#cbdeda' }}>
-//       <StatusBar
-//         animated={true}
-//         barStyle={statusBarStyle}
-//         translucent={false} />
-
-//       <Animated.View style={{ height: animatedHeaderHeight, backgroundColor: animatedHeaderBackgroundColor }}>
-//         <View style={styles.accountcontainer}>
-//           <Text>My Plants</Text>
-//         </View>
-//       </Animated.View>
-//       <View style={styles.accountcontainer}>
-//         <View style={{ backgroundColor: 'white', height: 70, width: '100%', marginBottom: 10 }}>
-//           <Text>My Plants</Text>
-//         </View>
-//         <ScrollView scrollEventThrottle={16}
-//           onScroll={
-//             Animated.event(
-//               [{
-//                 nativeEvent: {
-//                   contentOffset: {
-//                     y: AnimatedHeaderValue
-//                   }
-//                 }
-//               }],
-//               { useNativeDriver: false }
-//             )
-//           }>
-//           <View>
-//             {
-//               dataPlant.map((item, index) => (
-//                 < View Key={index} style={styles.cardDataPlant}>
-//                   <View style={styles.div2RowSpaceEvenNoAlignItems}>
-//                     <TouchableOpacity>
-//                       <View style={styles.div2Row}>
-//                         <Image source={require('../../src/images/garlic2.png')} style={{ width: 50, height: 50, borderRadius: 50 / 2, marginRight: 10 }} />
-//                         <View>
-//                           <Text style={{ color: '#276653', fontWeight: 'bold', fontSize: 17 }}>{item}</Text>
-//                           <Text>Dec. 03, 2022</Text>
-//                         </View>
-//                       </View>
-//                     </TouchableOpacity>
-//                     <View style={styles.div2RowDatalist}>
-//                       <Icon name={"bell-outline"} color={'#276653'} size={23} style={{ width: 20, marginRight: 20 }} />
-//                       <TouchableOpacity>
-//                         <Icon name={"dots-vertical"} color={'#276653'} size={23} style={{ width: 20 }} />
-//                       </TouchableOpacity>
-//                     </View>
-//                   </View>
-//                 </View>
-//               ))
-//             }
-//           </View>
-//         </ScrollView >
-//       </View >
-//     </View >
-//   )
-// }
-
-
-
 
 const PlantStack = createNativeStackNavigator();
 export default function Plant({ navigation }) {
@@ -503,17 +634,14 @@ export default function Plant({ navigation }) {
     <PlantStack.Navigator>
       <PlantStack.Screen name="PlantDash" component={PlantDash} />
       <PlantStack.Screen name="PlantID" component={PlantID} />
-      {/* <PlantStack.Screen name="PlantSearch" component={PlantSearch}
-        options={
-          { headerShown: false }
-        } /> */}
       <PlantStack.Screen name="PlantNew" component={PlantNew}
         options={
-          { headerShown: true }
+          { headerShown: false }
         } />
     </PlantStack.Navigator >
   );
 }
+
 const style = StyleSheet.create({
   actionButtonIcon: {
     fontSize: 20,

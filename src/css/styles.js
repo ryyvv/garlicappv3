@@ -9,7 +9,7 @@ export default globalStyles = StyleSheet.create({
 
     // #235484  #3E7E55
     // #3271a5  #7ABD87
-    // #3982b8  #AADCB6
+    // #3982b8  #AADCB6  #cbe6d1
     // #4194cb  #CADEC8
     // #46a2da  #EAEEE5
     // #58afdd  #CEE98E
@@ -206,6 +206,23 @@ export default globalStyles = StyleSheet.create({
         shadowRadius: 3,
         elevation: 3,
     },
+
+    cardPlantcard: {
+        backgroundColor: 'white',
+        borderRadius: 8,
+        // width: '100%',
+        marginTop: 5,
+        margin:5,
+        padding: 15,
+    },
+    cardPlantcardProp: {
+        shadowColor: 'black',
+        shadowOffset: { width: -2, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+        elevation: 5,
+    },
+
     cardDashboardLocation: {
         backgroundColor: 'white',
         borderRadius: 8,
@@ -664,6 +681,22 @@ export default globalStyles = StyleSheet.create({
         // justifyContent: 'center',
         // alignItems: 'center'
     },
+    cardCameraProps2: {
+        shadowColor: 'black',
+        shadowOffset: { width: -2, height: 2 },
+        shadowOpacity: 0.4,
+        shadowRadius: 3,
+        elevation: 10,
+    },
+    cardCamera2: {
+        backgroundColor: 'white',
+        borderRadius: 8,
+        padding: 15,
+        // width: '40%',
+        // paddingVertical: 10,
+        // justifyContent: 'center',
+        // alignItems: 'center'
+    },
     cardCameraProps: {
         shadowColor: 'black',
         shadowOffset: { width: -2, height: 2 },
@@ -682,6 +715,11 @@ export default globalStyles = StyleSheet.create({
 
     textCam: {
         marginTop: 10,
+        fontWeight: 'bold',
+        fontSize: 13,
+        color: '#276653',
+    },
+    textCam2: {
         fontWeight: 'bold',
         fontSize: 13,
         color: '#276653',
@@ -728,7 +766,11 @@ export default globalStyles = StyleSheet.create({
         right: 30,
         justifyContent: 'center',
         alignItems: 'center'
-    }
+    },
+
+    progressBarContainer: {
+        marginTop: 20
+      },
 
 
 

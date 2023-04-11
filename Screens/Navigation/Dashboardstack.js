@@ -1,10 +1,10 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useLayoutEffect } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer , getFocusedRouteNameFromRoute} from '@react-navigation/native';
 import Dashboard from '../ComponentScreens/Dashboard';
 import PNDs from '../ComponentScreens/PNDs';
 
-export default function Dashboardstack() {
+export default function Dashboardstack({route, navigation}) {
   const dashboardStack = createNativeStackNavigator();
 
   return (

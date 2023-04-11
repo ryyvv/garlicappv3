@@ -147,6 +147,10 @@ II: Remove <Text> {index} displayed
 II: change <Image> 
 
 
+March 27, 2023
+React native sticky parallax Header
+https://www.npmjs.com/package/react-native-sticky-parallax-header
+
 
 Weather Icons: 
 ::ThundeCloudRainAsset6.png 
@@ -155,3 +159,11 @@ Weather Icons:
 ::SuncloudrainAsset1.png
 ::MooncloudrainAsset7.png
 ::cloudAsset3.png  
+
+
+
+
+April 8, 2023
+Progress bar
+https://www.npmjs.com/package/react-native-progress
+import * as Progress from 'react-native-progress';

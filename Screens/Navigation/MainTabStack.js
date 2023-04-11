@@ -22,7 +22,7 @@ export default function MainTabStack() {
           fontSize: 34,
           paddingTop: 6,
           color: '#7ABD87',
-          paddingBottom: 6
+          paddingBottom: 6,
         },
       }}>
       <Tab.Screen
