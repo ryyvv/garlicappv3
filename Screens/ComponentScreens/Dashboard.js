@@ -181,7 +181,6 @@ export default function Dashboard({ navigation }) {
     vintarPerHour,
     vintarCondition,
   } = useContext(LocationContext);
-  const apiKey = 'c90f776ca6f447d182204634220807';
   const newdate = new Date();
 
   useEffect(() => {

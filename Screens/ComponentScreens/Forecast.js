@@ -1,5 +1,5 @@
 import moment from "moment";
-import React, { useEffect, useState, useFonts } from 'react';
+import React, { useEffect, useState, useContext,useFonts } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -20,51 +20,165 @@ import {
     LogBox,
     ImageBackground
 } from 'react-native';
-// import CheckBox from '@react-native-community/checkbox';
-// import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { LocationContext } from '../Context/LocationProvider';
 import styles from '../../src/css/styles';
 
 function Wforecast({ navigation }) {
 
-    const apiKey = 'c90f776ca6f447d182204634220807';
-
+    const apiKey = 'eb40ebc2fe0c4d02b2735258230304';
+    const {
+        locations,
+        setLocation,
+        locationList,
+        weatherloc,
+        weatherDate,
+        weatherIcon,
+        weatherData,
+        weatherPerHour,
+        weatherCondition,
+        setLOCATION,
+        holdlocation,
+        setWeatherHoldLocation,
+        adamsloc,
+        adamsDate,
+        adamsIcon,
+        adamsData,
+        adamsPerHour,
+        adamsCondition,
+        bacarraloc,
+        bacarraDate,
+        bacarraIcon,
+        bacarraData,
+        bacarraPerHour,
+        bacarraCondition,
+        badocloc,
+        badocDate,
+        badocIcon,
+        badocData,
+        badocPerHour,
+        badocCondition,
+        banguiloc,
+        banguiDate,
+        banguiIcon,
+        banguiData,
+        banguiPerHour,
+        banguiCondition,
+        batacloc,
+        batacDate,
+        batacIcon,
+        batacData,
+        batacPerHour,
+        batacCondition,
+        burgosloc,
+        burgosDate,
+        burgosIcon,
+        burgosData,
+        burgosPerHour,
+        burgosCondition,
+        carasiloc,
+        carasiDate,
+        carasiIcon,
+        carasiData,
+        carasiPerHour,
+        carasiCondition,
+        currimaoloc,
+        currimaoDate,
+        currimaoIcon,
+        currimaoData,
+        currimaoPerHour,
+        currimaoCondition,
+        dingrasloc,
+        dingrasDate,
+        dingrasIcon,
+        dingrasData,
+        dingrasPerHour,
+        dingrasCondition,
+        dumalnegloc,
+        dumalnegDate,
+        dumalnegIcon,
+        dumalnegData,
+        dumalnegPerHour,
+        dumalnegCondition,
+        espirituloc,
+        espirituDate,
+        espirituIcon,
+        espirituData,
+        espirituPerHour,
+        espirituCondition,
+        laoagloc,
+        laoagDate,
+        laoagIcon,
+        laoagData,
+        laoagPerHour,
+        laoagCondition,
+        marcosloc,
+        marcosDate,
+        marcosIcon,
+        marcosData,
+        marcosPerHour,
+        marcosCondition,
+        nuevaeraloc,
+        nuevaeraDate,
+        nuevaeraIcon,
+        nuevaeraData,
+        nuevaeraPerHour,
+        nuevaeraCondition,
+        pagudpudloc,
+        pagudpudDate,
+        pagudpudIcon,
+        pagudpudData,
+        pagudpudPerHour,
+        pagudpudCondition,
+        paoayloc,
+        paoayDate,
+        paoayIcon,
+        paoayData,
+        paoayPerHour,
+        paoayCondition,
+        pasuquinloc,
+        pasuquinDate,
+        pasuquinIcon,
+        pasuquinData,
+        pasuquinPerHour,
+        pasuquinCondition,
+        piddigloc,
+        piddigDate,
+        piddigIcon,
+        piddigData,
+        piddigPerHour,
+        piddigCondition,
+        pinililoc,
+        piniliDate,
+        piniliIcon,
+        piniliData,
+        piniliPerHour,
+        piniliCondition,
+        sanicolasloc,
+        sanicolasDate,
+        sanicolasIcon,
+        sanicolasData,
+        sanicolasPerHour,
+        sanicolasCondition,
+        sarratloc,
+        sarratDate,
+        sarratIcon,
+        sarratData,
+        sarratPerHour,
+        sarratCondition,
+        solsonaloc,
+        solsonaDate,
+        solsonaIcon,
+        solsonaData,
+        solsonaPerHour,
+        solsonaCondition,
+        vintarloc,
+        vintarDate,
+        vintarIcon,
+        vintarData,
+        vintarPerHour,
+        vintarCondition,
+    } = useContext(LocationContext);
     const newdate = new Date();
-    const [currentC, setCurrent] = useState('');
-    const [currentDay, setCurrentDay] = useState([]);
-    const [currentDayCondition, setCurrentDayCondition] = useState([]);
-    const [location, setLocation] = useState('');
-    const [localTime, setLocaTime] = useState('');
-    const [perDay, setperDay] = useState([]);
-    const [perHour, setperHour] = useState([]);
-    const [conditions, setCondition] = useState('');
-    const currentTimeCheck = moment(new Date().getHours()).format('hh:mm A');
-
-    const getApiCurrent = async () => {
-        const response = await fetch('http://api.weatherapi.com/v1/forecast.json?key=c90f776ca6f447d182204634220807&q=batac city, ilocos Norte&days=10&aqi=yes&alerts=yes')
-            .then((response) => response.json())
-            .catch((error) => {
-                let now = moment().utcOffset(15.2).format('l');
-                console.error(error);
-            });
-        setLocation(response?.location)
-        setCurrent(response?.current?.last_updated)
-        // setCondition(response?.forecast?.forecastday[0]?.day.condition)
-        // setLocaTime(response?.location)
-        setperHour(response?.forecast?.forecastday[0]?.hour)
-        setperDay(response?.forecast?.forecastday)
-        setCurrentDay(response?.forecast?.forecastday[0]?.day)
-        setCurrentDayCondition(response?.forecast?.forecastday[0]?.day?.condition)
-        //check
-        // console.log('Current Location: ', location.name)
-        // console.log('CurrentDate: ', currentC)
-        // console.log('DayDate: ', currentDay.avgtemp_c)
-        // console.log('DayMaxTemp: ', currentC.maxtemp_c)
-        // console.log('CurrentCondition: ', localTime.localtime)
-        // console.log('CurrentCondition: ', perHour)
-
-        return perHour;
-    };
-
 
     const level = 100;
 
@@ -73,6 +187,7 @@ function Wforecast({ navigation }) {
         const dataInterval = setInterval(() => fetchData(), 21600 * 1000);
         return () => clearInterval(dataInterval);
     }, []);
+
     const statusBarStyle = 'dark-content';
     return (
         <View style={{ flex: 1 }}>
@@ -91,7 +206,7 @@ function Wforecast({ navigation }) {
                         </View>
 
                         {/* Hourly */}
-                        <View style={styles.dashboardHourly}>
+                        {/* <View style={styles.dashboardHourly}>
                             <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Today</Text>
                             <ScrollView horizontal={true}>
                                 {
@@ -114,7 +229,52 @@ function Wforecast({ navigation }) {
                                     })
                                 }
                             </ScrollView>
+                        </View> */}
+                        <View style={   styles.dashboardHourly}>
+                            {/* <Text style={{fontSize:18, fontWeight:'bold'}}>Hourly</Text> */}
+                            <ScrollView horizontal={true}
+                                showsVerticalScrollIndicator={false}>
+                                {weatherPerHour.map((wperhour, p) => {
+                                return (
+                                    <View key={p} style={{ marginRight: 12, marginBottom: 10 }}>
+                                    <View
+                                        style={[
+                                        styles.cardDashboardHourly,
+                                        styles.cardDashboardHourlyProp,
+                                        ]}>
+                                        <View style={styles.div2RowSpaceEven}>
+                                        <View style={{ padding: 4 }}>
+                                            <Image
+                                            source={require('../../src/images/sunRAsset2.png')}
+                                            style={{ width: 45, height: 45 }}
+                                            />
+                                        </View>
+                                        <View style={{ justifyContent: 'flex-end' }}>
+                                            <Text
+                                            style={{
+                                                fontSize: 14,
+                                                fontWeight: 'bold',
+                                                color: '#8eb4a9',
+                                            }}>
+                                            {moment(wperhour.time).format('hh:mmA')}
+                                            </Text>
+                                            <Text
+                                            style={{
+                                                fontSize: 20,
+                                                fontWeight: '900',
+                                                color: '#276653',
+                                            }}>
+                                            {wperhour.temp_c}
+                                            </Text>
+                                        </View>
+                                        </View>
+                                    </View>
+                                    </View>
+                                );
+                                })}
+                            </ScrollView>
                         </View>
+
 
                         {/* Next day*/}
                         <View style={styles.dashboardForecastDay}>

@@ -5,7 +5,7 @@ import auth from '@react-native-firebase/auth';
 export const LocationContext = createContext();
 
 export const LocationProvider = ({ children }) => {
-    const apiKey = 'c90f776ca6f447d182204634220807';
+    const apiKey = 'eb40ebc2fe0c4d02b2735258230304';
     const [locations, setLocation] = useState('http://api.weatherapi.com/v1/forecast.json?key=c90f776ca6f447d182204634220807&q=batac, ilocos norte&days=7&aqi=yes&alerts=yes')
     const [locationList, setLocationList] = useState([])
 
@@ -17,6 +17,7 @@ export const LocationProvider = ({ children }) => {
     const [weatherData, setWeatherData] = useState('');
     const [weatherPerHour, setWeatherPerHour] = useState([]);
     const [weatherCondition, setWeatherCondition] = useState('')
+    const [weatherPerDay, setWeatherPerDay] = useState([]);
 
     const [adamsloc, setadamsloc] = useState('');
     const [adamsDate, setadamsDate] = useState('')
@@ -24,6 +25,7 @@ export const LocationProvider = ({ children }) => {
     const [adamsData, setadamsData] = useState('');
     const [adamsPerHour, setadamsPerHour] = useState([]);
     const [adamsCondition, setadamsCondition] = useState('')
+    const [adamsPerDay, setadamsPerDay] = useState([]);
 
     const [bacarraloc, setbacarraloc] = useState('');
     const [bacarraDate, setbacarraDate] = useState('')
@@ -430,6 +432,8 @@ export const LocationProvider = ({ children }) => {
         // console.log(weatherData)
         // setCurrent(response?.current?.last_updated) //date&Time
         setadamsPerHour(response?.forecast?.forecastday[0]?.hour)
+        // console.log(weatherPerHour)
+        //setadamsPerDay(response?.forecast?.forecastday[0]?.hour)
         // console.log(weatherPerHour)
 
         return locations
