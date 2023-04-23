@@ -30,13 +30,13 @@ function Wforecast({ navigation }) {
         locations,
         setLocation,
         locationList,
-        weathloc,
-        weathDate,
-        weathIcon,
-        weathData,
-        weathPerHour,
-        weathCondition,
-        weathPerDay,
+        weatherloc,
+        weatherDate,
+        weatherIcon,
+        weatherData,
+        weatherPerHour,
+        weatherCondition,
+        weatherPerDay,
         setLOCATION,
         holdlocation,
         setWeatherHoldLocation,
@@ -64,8 +64,6 @@ function Wforecast({ navigation }) {
                         <View style={{ flex: 0.5, marginTop: 80 }}>
                             <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', marginLeft: 6, marginRight: 6 }}>
                                 <Text style={{ fontSize: 25, fontWeight: '900', marginBottom: 10 }}>Forecast Report</Text>
-                                {/* Testlocation */}
-                                <Text style={{ fontSize: 15,color:'red', fontWeight: '900', marginBottom: 10 }}>Test location: {weathloc.name}</Text>
                                 <TouchableOpacity onPress={() => navigation.navigate('SearchLocation')}>
                                     {/* <Icon name={"map-marker-radius-outline"} color={'gray'} size={37} style={{ paddingLeft: 3, marginLeft: -5, width: 45, }} /> */}
                                 </TouchableOpacity>
@@ -101,7 +99,7 @@ function Wforecast({ navigation }) {
                             {/* <Text style={{fontSize:18, fontWeight:'bold'}}>Hourly</Text> */}
                             <ScrollView horizontal={true}
                                 showsVerticalScrollIndicator={false}>
-                                {weathPerHour.map((wperhour, p) => {
+                                {weatherPerHour.map((wperhour, p) => {
                                 return (
                                     <View key={p} style={{ marginRight: 12, marginBottom: 10 }}>
                                         <View
@@ -150,8 +148,8 @@ function Wforecast({ navigation }) {
                                 {/* <Icon name={"calendar-month"} color={'gray'} size={37} style={{ paddingLeft: 3, marginLeft: -5, width: 45, }} /> */}
                             </View>
 
-                             {
-                                weathPerDay.map((dayper, s) => {
+                            {/* {
+                                weatherPerDay.map((dayper, s) => {
                                     return (
                                         <View key={s} style={[styles.cardDashboardForecast, styles.cardDashboardForecastProp, { marginBottom: 10 }]}>
                                             <View style={styles.div2RowSpaceBetween}>
@@ -169,8 +167,11 @@ function Wforecast({ navigation }) {
                                         </View>
                                     )
                                 })
-                            } 
-                        
+                            } */}
+                            {
+                                console.log(weatherPerDay)
+                              
+                            }
                         </View>
 
 
@@ -178,8 +179,149 @@ function Wforecast({ navigation }) {
                 </ScrollView>
             </ImageBackground>
         </View>
-    );          
+    );
 }
+
+// let data = [
+//     {
+//         id: 1,
+//         location: 'Adams',
+//         isChecked: false,
+//         url: 'http://api.weatherapi.com/v1/forecast.json?key=337a37d695fe42ffa2210148220906&q=Adams&days=7&aqi=yes&alerts=yes'
+//     },
+//     {
+//         id: 2,
+//         location: 'Bacarra',
+//         isChecked: false,
+//         url: 'http://api.weatherapi.com/v1/forecast.json?key=337a37d695fe42ffa2210148220906&q=Bacarra&days=7&aqi=yes&alerts=yes'
+//     },
+//     {
+//         id: 3,
+//         location: 'Badoc',
+//         url: 'http://api.weatherapi.com/v1/forecast.json?key=337a37d695fe42ffa2210148220906&q=Badoc&days=7&aqi=yes&alerts=yes'
+//     },
+//     {
+//         id: 4,
+//         location: 'Bangui',
+//         isChecked: false,
+//         url: 'http://api.weatherapi.com/v1/forecast.json?key=337a37d695fe42ffa2210148220906&q=Bangui&days=7&aqi=yes&alerts=yes'
+//     },
+//     {
+//         id: 5,
+//         location: 'Batac',
+//         isChecked: false,
+//         url: 'http://api.weatherapi.com/v1/forecast.json?key=337a37d695fe42ffa2210148220906&q=Batac&days=7&aqi=yes&alerts=yes'
+//     },
+//     {
+//         id: 6,
+//         location: 'Burgos',
+//         isChecked: false,
+//         url: 'http://api.weatherapi.com/v1/forecast.json?key=337a37d695fe42ffa2210148220906&q=Burgos&days=7&aqi=yes&alerts=yes'
+//     },
+//     {
+//         id: 7,
+//         location: 'Carasi',
+//         isChecked: false,
+//         url: 'http://api.weatherapi.com/v1/forecast.json?key=337a37d695fe42ffa2210148220906&q=Carasi&days=7&aqi=yes&alerts=yes'
+//     },
+//     {
+//         id: 8,
+//         location: 'Currimao',
+//         isChecked: false,
+//         url: 'http://api.weatherapi.com/v1/forecast.json?key=337a37d695fe42ffa2210148220906&q=Currimao&days=7&aqi=yes&alerts=yes'
+//     },
+//     {
+//         id: 9,
+//         location: 'Dingras',
+//         isChecked: false,
+//         url: 'http://api.weatherapi.com/v1/forecast.json?key=337a37d695fe42ffa2210148220906&q=Dingras&days=7&aqi=yes&alerts=yes'
+//     },
+//     {
+//         id: 10,
+//         location: 'Dumalneg',
+//         isChecked: false,
+//         url: 'http://api.weatherapi.com/v1/forecast.json?key=337a37d695fe42ffa2210148220906&q=Dumalneg&days=7&aqi=yes&alerts=yes'
+//     },
+//     {
+//         id: 11,
+//         location: 'Espiritu',
+//         isChecked: false,
+//         url: 'http://api.weatherapi.com/v1/forecast.json?key=337a37d695fe42ffa2210148220906&q=Espiritu&days=7&aqi=yes&alerts=yes'
+//     },
+//     {
+//         id: 12,
+//         location: 'Laoag',
+//         isChecked: false,
+//         url: 'http://api.weatherapi.com/v1/forecast.json?key=337a37d695fe42ffa2210148220906&q=Laoag&days=7&aqi=yes&alerts=yes'
+//     },
+//     {
+//         id: 13,
+//         location: 'Marcos',
+//         isChecked: false,
+//         url: 'http://api.weatherapi.com/v1/forecast.json?key=337a37d695fe42ffa2210148220906&q=Marcos&days=7&aqi=yes&alerts=yes'
+//     },
+//     {
+//         id: 14,
+//         isChecked: false,
+//         location: 'Nueva Era',
+//         url: 'http://api.weatherapi.com/v1/forecast.json?key=337a37d695fe42ffa2210148220906&q=Nueva Era&days=7&aqi=yes&alerts=yes'
+//     },
+//     {
+//         id: 15,
+//         isChecked: false,
+//         location: 'Pagudpud',
+//         url: 'http://api.weatherapi.com/v1/forecast.json?key=337a37d695fe42ffa2210148220906&q=Pagudpud&days=7&aqi=yes&alerts=yes'
+//     },
+//     {
+//         id: 16,
+//         isChecked: false,
+//         location: 'Paoay',
+//         url: 'http://api.weatherapi.com/v1/forecast.json?key=337a37d695fe42ffa2210148220906&q=Paoay&days=7&aqi=yes&alerts=yes'
+//     },
+//     {
+//         id: 17,
+//         location: 'Pasuquin',
+//         isChecked: false,
+//         url: 'http://api.weatherapi.com/v1/forecast.json?key=337a37d695fe42ffa2210148220906&q=Pasuquin&days=7&aqi=yes&alerts=yes'
+//     },
+//     {
+//         id: 18,
+//         location: 'Piddig',
+//         isChecked: false,
+//         url: 'http://api.weatherapi.com/v1/forecast.json?key=337a37d695fe42ffa2210148220906&q=Piddig&days=7&aqi=yes&alerts=yes'
+//     },
+//     {
+//         id: 19,
+//         location: 'Pinili',
+//         isChecked: false,
+//         url: 'http://api.weatherapi.com/v1/forecast.json?key=337a37d695fe42ffa2210148220906&q=Pinili&days=7&aqi=yes&alerts=yes'
+//     },
+//     {
+//         id: 20,
+//         location: 'San Nicolas',
+//         isChecked: false,
+//         url: 'http://api.weatherapi.com/v1/forecast.json?key=337a37d695fe42ffa2210148220906&q=San Nicolas&days=7&aqi=yes&alerts=yes'
+//     },
+//     {
+//         id: 21,
+//         location: 'Sarrat',
+//         isChecked: false,
+//         url: 'http://api.weatherapi.com/v1/forecast.json?key=337a37d695fe42ffa2210148220906&q=Sarrat&days=7&aqi=yes&alerts=yes'
+//     },
+//     {
+//         id: 22,
+//         location: 'Solsona',
+//         isChecked: false,
+//         url: 'http://api.weatherapi.com/v1/forecast.json?key=337a37d695fe42ffa2210148220906&q=Solsona&days=7&aqi=yes&alerts=yes'
+//     },
+//     {
+//         id: 23,
+//         location: 'Vintar',
+//         isChecked: false,
+//         url: 'http://api.weatherapi.com/v1/forecast.json?key=337a37d695fe42ffa2210148220906&q=Vintar&days=7&aqi=yes&alerts=yes'
+//     },
+
+// ]
 
 function SearchLocation({ navigation }) {
 

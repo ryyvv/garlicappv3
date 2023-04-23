@@ -33,21 +33,23 @@ export default function Dashboard({ navigation }) {
     locations,
     setLocation,
     locationList,
-    weatherloc,
-    weatherDate,
-    weatherIcon,
-    weatherData,
-    weatherPerHour,
-    weatherCondition,
+    weathloc,
+    weathDate,
+    weathIcon,
+    weathData,
+    weathPerHour,
+    weathCondition, 
+    weathPerDay,
     setLOCATION,
     holdlocation,
     setWeatherHoldLocation,
-    adamsloc,
-    adamsDate,
-    adamsIcon,
-    adamsData,
-    adamsPerHour,
-    adamsCondition,
+    adamloc,
+    adamDate,
+    adamIcon,
+    adamData,
+    adamPerHour,
+    adamCondition,
+    adamPerDay,
     bacarraloc,
     bacarraDate,
     bacarraIcon,
@@ -303,7 +305,9 @@ export default function Dashboard({ navigation }) {
       //   ],
       // }
     ];
-    setListPD(dataPD);
+
+    // data set to listPD
+    setListPD(dataPD); 
   };
 
   const TestPND = async data => {
@@ -340,7 +344,7 @@ export default function Dashboard({ navigation }) {
                           fontSize: 25,
                           color: '#276653',
                         }}>
-                        {weatherloc.name}, {weatherloc.region}
+                        {weathloc.name} {weathloc.region}
                       </Text>
                       <Text
                         style={{
@@ -348,7 +352,7 @@ export default function Dashboard({ navigation }) {
                           color: '#7D8F69',
                           fontWeight: 'bold',
                         }}>
-                        {moment(weatherDate.date).format('MMMM D, YYYY')}
+                        {moment(weathDate.date).format('MMMM D, YYYY')}
                       </Text>
                     </View>
                   </TouchableOpacity>
@@ -521,7 +525,7 @@ export default function Dashboard({ navigation }) {
                                       justifyContent: 'flex-end',
                                       color: '#276653',
                                     }}>
-                                    {adamsloc.name}
+                                    {adamloc.name}
                                   </Text>
                                 </View>
                                 <View style={styles.div2RowFlexStart}>
@@ -553,7 +557,7 @@ export default function Dashboard({ navigation }) {
                                           paddingLeft: 20,
                                           color: '#276653',
                                         }}>
-                                        {adamsData.maxtemp_c}
+                                        {adamData.maxtemp_c}
                                       </Text>
                                       <Icon
                                         name={'thermometer'}
@@ -572,7 +576,7 @@ export default function Dashboard({ navigation }) {
                                         flexWrap: 'wrap',
                                         alignItems: 'flex-start',
                                       }}>
-                                      {adamsCondition.text}
+                                      {adamCondition.text}
                                     </Text>
                                   </View>
                                 </View>
@@ -581,6 +585,7 @@ export default function Dashboard({ navigation }) {
                           </TouchableOpacity>
                         </View>
                       }
+
 
                       {/* Bacarra */}
                       {
@@ -2630,12 +2635,14 @@ export default function Dashboard({ navigation }) {
                   </View>
                 </RBSheet>
 
+                  {/* Customize overlay View000layer   */}
                 <View
                   style={[
                     styles.cardDashboard,
                     styles.cardDashboardProp,
                     styles.overlay,
-                  ]}>
+                  ]}
+                  >
                   {/* Data */}
                   <View style={styles.div2RowSpaceEven}>
                     <View style={{ alignItems: 'center' }}>
@@ -2647,9 +2654,9 @@ export default function Dashboard({ navigation }) {
                           style={{
                             fontWeight: '900',
                             fontSize: 20,
-                            color: '#276653',
+                            color: '#276653', 
                           }}>
-                          {weatherData.avgtemp_c}
+                          {weathData.avgtemp_c}   
                         </Text>
                         <Icon
                           name={'thermometer'}
@@ -2671,7 +2678,7 @@ export default function Dashboard({ navigation }) {
                             fontSize: 20,
                             color: '#276653',
                           }}>
-                          {weatherData.maxwind_kph}
+                          {weathData.maxwind_kph}
                         </Text>
                         <Icon
                           name={'weather-windy'}
@@ -2693,7 +2700,7 @@ export default function Dashboard({ navigation }) {
                             fontSize: 20,
                             color: '#276653',
                           }}>
-                          {weatherData.avghumidity}%
+                          {weathData.avghumidity}%
                         </Text>
                         <Icon
                           name={'water-outline'}
@@ -2711,16 +2718,20 @@ export default function Dashboard({ navigation }) {
                   style={{
                     justifyContent: 'center',
                     alignItems: 'center',
-                    marginTop: 20,
-                    marginBottom: 100,
+                    marginTop: -450,
+                    marginBottom: 80,
                   }}>
-                  <Image
+                  {/* <Image
                     source={require('../../src/images/sunRAsset2.png')}
                     style={{ width: 130, height: 120, marginBottom: 15 }}
+                  /> */}
+                    <Image
+                    source={require('../../src/weatherIcons/PartlyCloud.png')}
+                    style={{ width: 250, height:190, marginBottom: 5 }}
                   />
                   <Text
                     style={{ fontWeight: '900', fontSize: 18, color: '#276653' }}>
-                    {weatherCondition.text}
+                    {weathCondition.text}
                   </Text>
                 </View>
               </View>
@@ -2731,7 +2742,7 @@ export default function Dashboard({ navigation }) {
               {/* <Text style={{fontSize:18, fontWeight:'bold'}}>Hourly</Text> */}
               <ScrollView horizontal={true}
                 showsVerticalScrollIndicator={false}>
-                {weatherPerHour.map((wperhour, p) => {
+                {weathPerHour.map((wperhour, p) => {
                   return (
                     <View key={p} style={{ marginRight: 12, marginBottom: 10 }}>
                       <View

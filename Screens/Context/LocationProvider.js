@@ -1,4 +1,5 @@
 import moment from 'moment';
+import axios from 'axios';
 import React, { useEffect, createContext, useState } from 'react';
 import auth from '@react-native-firebase/auth';
 
@@ -6,26 +7,27 @@ export const LocationContext = createContext();
 
 export const LocationProvider = ({ children }) => {
     const apiKey = 'eb40ebc2fe0c4d02b2735258230304';
-    const [locations, setLocation] = useState('http://api.weatherapi.com/v1/forecast.json?key=c90f776ca6f447d182204634220807&q=batac, ilocos norte&days=7&aqi=yes&alerts=yes')
+    const [locations, setLocation] = useState('http://api.weatherapi.com/v1/forecast.json?key=eb40ebc2fe0c4d02b2735258230304&q=batac, ilocos norte&days=7&aqi=yes&alerts=yes')
     const [locationList, setLocationList] = useState([])
 
     const [holdlocation, setWeatherHoldLocation] = useState('');
     // FOR DASHBOARD
-    const [weatherloc, setWeatherloc] = useState('');
-    const [weatherDate, setWeatherDate] = useState('')
-    const [weatherIcon, setWeatherIcon] = useState('');
-    const [weatherData, setWeatherData] = useState('');
-    const [weatherPerHour, setWeatherPerHour] = useState([]);
-    const [weatherCondition, setWeatherCondition] = useState('')
-    const [weatherPerDay, setWeatherPerDay] = useState([]);
 
-    const [adamsloc, setadamsloc] = useState('');
-    const [adamsDate, setadamsDate] = useState('')
-    const [adamsIcon, setadamsIcon] = useState('');
-    const [adamsData, setadamsData] = useState('');
-    const [adamsPerHour, setadamsPerHour] = useState([]);
-    const [adamsCondition, setadamsCondition] = useState('')
-    const [adamsPerDay, setadamsPerDay] = useState([]);
+    const [weathloc, setWeatherloc] = useState('');
+    const [weathDate, setWeatherDate] = useState('')
+    const [weathIcon, setWeatherIcon] = useState('');
+    const [weathData, setWeatherData] = useState('');
+    const [weathPerHour, setWeatherPerHour] = useState([]);
+    const [weathCondition, setWeatherCondition] = useState('')
+    const [weathPerDay, setWeatherPerDay] = useState([]);
+
+    const [adamloc, setadamloc] = useState('');
+    const [adamDate, setadamDate] = useState('')
+    const [adamIcon, setadamIcon] = useState('');
+    const [adamData, setadamData] = useState('');
+    const [adamPerHour, setadamPerHour] = useState([]);
+    const [adamCondition, setadamCondition] = useState('')
+    const [adamPerDay, setadamPerDay] = useState([]);
 
     const [bacarraloc, setbacarraloc] = useState('');
     const [bacarraDate, setbacarraDate] = useState('')
@@ -33,6 +35,7 @@ export const LocationProvider = ({ children }) => {
     const [bacarraData, setbacarraData] = useState('');
     const [bacarraPerHour, setbacarraPerHour] = useState([]);
     const [bacarraCondition, setbacarraCondition] = useState('')
+    const [bacarraPerDay, setbacarraPerDay] = useState([]);
 
     const [badocloc, setbadocloc] = useState('');
     const [badocDate, setbadocDate] = useState('')
@@ -40,6 +43,7 @@ export const LocationProvider = ({ children }) => {
     const [badocData, setbadocData] = useState('');
     const [badocPerHour, setbadocPerHour] = useState([]);
     const [badocCondition, setbadocCondition] = useState('')
+    const [badocPerDay, setbadocPerDay] = useState([]);
 
     const [banguiloc, setbanguiloc] = useState('');
     const [banguiDate, setbanguiDate] = useState('')
@@ -47,6 +51,7 @@ export const LocationProvider = ({ children }) => {
     const [banguiData, setbanguiData] = useState('');
     const [banguiPerHour, setbanguiPerHour] = useState([]);
     const [banguiCondition, setbanguiCondition] = useState('')
+    const [banguiPerDay, setbanguiPerDay] = useState([]);
 
     const [batacloc, setbatacloc] = useState('');
     const [batacDate, setbatacDate] = useState('')
@@ -54,6 +59,7 @@ export const LocationProvider = ({ children }) => {
     const [batacData, setbatacData] = useState('');
     const [batacPerHour, setbatacPerHour] = useState([]);
     const [batacCondition, setbatacCondition] = useState('')
+    const [batacPerDay, setbatacPerDay] = useState([]);
 
     const [burgosloc, setburgosloc] = useState('');
     const [burgosDate, setburgosDate] = useState('')
@@ -61,6 +67,7 @@ export const LocationProvider = ({ children }) => {
     const [burgosData, setburgosData] = useState('');
     const [burgosPerHour, setburgosPerHour] = useState([]);
     const [burgosCondition, setburgosCondition] = useState('')
+    const [burgosPerDay, setburgosPerDay] = useState([]);
 
     const [carasiloc, setcarasiloc] = useState('');
     const [carasiDate, setcarasiDate] = useState('')
@@ -68,6 +75,7 @@ export const LocationProvider = ({ children }) => {
     const [carasiData, setcarasiData] = useState('');
     const [carasiPerHour, setcarasiPerHour] = useState([]);
     const [carasiCondition, setcarasiCondition] = useState('')
+    const [carasiPerDay, setcarasiPerDay] = useState([]);
 
     const [currimaoloc, setcurrimaoloc] = useState('');
     const [currimaoDate, setcurrimaoDate] = useState('')
@@ -75,6 +83,7 @@ export const LocationProvider = ({ children }) => {
     const [currimaoData, setcurrimaoData] = useState('');
     const [currimaoPerHour, setcurrimaoPerHour] = useState([]);
     const [currimaoCondition, setcurrimaoCondition] = useState('')
+    const [currimaoPerDay, setcurrimaoPerDay] = useState([]);
 
 
     const [dingrasloc, setdingrasloc] = useState('');
@@ -83,6 +92,7 @@ export const LocationProvider = ({ children }) => {
     const [dingrasData, setdingrasData] = useState('');
     const [dingrasPerHour, setdingrasPerHour] = useState([]);
     const [dingrasCondition, setdingrasCondition] = useState('')
+    const [dingrasPerDay, setdingrasPerDay] = useState([]);
 
     const [dumalnegloc, setdumalnegloc] = useState('');
     const [dumalnegDate, setdumalnegDate] = useState('')
@@ -90,6 +100,7 @@ export const LocationProvider = ({ children }) => {
     const [dumalnegData, setdumalnegData] = useState('');
     const [dumalnegPerHour, setdumalnegPerHour] = useState([]);
     const [dumalnegCondition, setdumalnegCondition] = useState('')
+    const [dumalnegPerDay, setdumalnegPerDay] = useState([]);
 
     const [espirituloc, setespirituloc] = useState('');
     const [espirituDate, setespirituDate] = useState('')
@@ -97,6 +108,7 @@ export const LocationProvider = ({ children }) => {
     const [espirituData, setespirituData] = useState('');
     const [espirituPerHour, setespirituPerHour] = useState([]);
     const [espirituCondition, setespirituCondition] = useState('')
+    const [espirituPerDay, setespirituPerDay] = useState([]);
 
     const [laoagloc, setlaoagloc] = useState('');
     const [laoagDate, setlaoagDate] = useState('')
@@ -104,6 +116,7 @@ export const LocationProvider = ({ children }) => {
     const [laoagData, setlaoagData] = useState('');
     const [laoagPerHour, setlaoagPerHour] = useState([]);
     const [laoagCondition, setlaoagCondition] = useState('')
+    const [laoagPerDay, setlaoagPerDay] = useState([]);
 
     // marcos
     const [marcosloc, setmarcosloc] = useState('');
@@ -112,6 +125,7 @@ export const LocationProvider = ({ children }) => {
     const [marcosData, setmarcosData] = useState('');
     const [marcosPerHour, setmarcosPerHour] = useState([]);
     const [marcosCondition, setmarcosCondition] = useState('')
+    const [marcosPerDay, setmarcosPerDay] = useState([]);
 
     // nuevaera
     const [nuevaeraloc, setnuevaeraloc] = useState('');
@@ -120,6 +134,7 @@ export const LocationProvider = ({ children }) => {
     const [nuevaeraData, setnuevaeraData] = useState('');
     const [nuevaeraPerHour, setnuevaeraPerHour] = useState([]);
     const [nuevaeraCondition, setnuevaeraCondition] = useState('')
+    const [nuevaeraPerDay, setnuevaeraPerDay] = useState([]);
 
 
     // pagundpud
@@ -129,6 +144,7 @@ export const LocationProvider = ({ children }) => {
     const [pagudpudData, setpagudpudData] = useState('');
     const [pagudpudPerHour, setpagudpudPerHour] = useState([]);
     const [pagudpudCondition, setpagudpudCondition] = useState('')
+    const [pagudpudPerDay, setpagudpudPerDay] = useState([]);
 
 
     // paoay
@@ -138,6 +154,7 @@ export const LocationProvider = ({ children }) => {
     const [paoayData, setpaoayData] = useState('');
     const [paoayPerHour, setpaoayPerHour] = useState([]);
     const [paoayCondition, setpaoayCondition] = useState('')
+    const [paoayPerDay, setpaoayPerDay] = useState([]);
 
     // pasuquin
     const [pasuquinloc, setpasuquinloc] = useState('');
@@ -146,6 +163,7 @@ export const LocationProvider = ({ children }) => {
     const [pasuquinData, setpasuquinData] = useState('');
     const [pasuquinPerHour, setpasuquinPerHour] = useState([]);
     const [pasuquinCondition, setpasuquinCondition] = useState('')
+    const [pasuquinPerDay, setpasuquinPerDay] = useState([]);
 
     // piddig
     const [piddigloc, setpiddigloc] = useState('');
@@ -154,6 +172,7 @@ export const LocationProvider = ({ children }) => {
     const [piddigData, setpiddigData] = useState('');
     const [piddigPerHour, setpiddigPerHour] = useState([]);
     const [piddigCondition, setpiddigCondition] = useState('')
+    const [piddigPerDay, setpiddigPerDay] = useState([]);
 
     // pinili
     const [pinililoc, setpinililoc] = useState('');
@@ -162,6 +181,7 @@ export const LocationProvider = ({ children }) => {
     const [piniliData, setpiniliData] = useState('');
     const [piniliPerHour, setpiniliPerHour] = useState([]);
     const [piniliCondition, setpiniliCondition] = useState('')
+    const [piniliPerDay, setpiniliPerDay] = useState([]);
 
     // sannicolas
     const [sanicolasloc, setsanicolasloc] = useState('');
@@ -170,6 +190,7 @@ export const LocationProvider = ({ children }) => {
     const [sanicolasData, setsanicolasData] = useState('');
     const [sanicolasPerHour, setsanicolasPerHour] = useState([]);
     const [sanicolasCondition, setsanicolasCondition] = useState('')
+    const [sanicolasPerDay, setsanicolasPerDay] = useState([]);
 
     // sarrat
     const [sarratloc, setsarratloc] = useState('');
@@ -178,6 +199,7 @@ export const LocationProvider = ({ children }) => {
     const [sarratData, setsarratData] = useState('');
     const [sarratPerHour, setsarratPerHour] = useState([]);
     const [sarratCondition, setsarratCondition] = useState('')
+    const [sarratPerDay, setsarratPerDay] = useState([]);
 
     // solsona
     const [solsonaloc, setsolsonaloc] = useState('');
@@ -186,6 +208,7 @@ export const LocationProvider = ({ children }) => {
     const [solsonaData, setsolsonaData] = useState('');
     const [solsonaPerHour, setsolsonaPerHour] = useState([]);
     const [solsonaCondition, setsolsonaCondition] = useState('')
+    const [solsonaPerDay, setsolsonaPerDay] = useState([]);
 
     // vintar
     const [vintarloc, setvintarloc] = useState('');
@@ -194,6 +217,7 @@ export const LocationProvider = ({ children }) => {
     const [vintarData, setvintarData] = useState('');
     const [vintarPerHour, setvintarPerHour] = useState([]);
     const [vintarCondition, setvintarCondition] = useState('')
+    const [vintarPerDay, setvintarPerDay] = useState([]);
 
     useEffect(() => {
         datahold();
@@ -370,6 +394,7 @@ export const LocationProvider = ({ children }) => {
         ];
         setLocationList(data)
     }
+    
     // RawData
     const fetchDatas = async () => {
         const response = await fetch(locations)
@@ -378,25 +403,47 @@ export const LocationProvider = ({ children }) => {
                 console.error(error);
             })
 
+ 
         setWeatherloc(response?.location)
-        // console.log(weatherloc)
-        // setWeatherData
+    // console.log(weatherloc)
+    // setWeatherData
         setWeatherDate(response?.forecast?.forecastday[0])
-        // console.log(weatherDate)
-        //Condition Text&Icon
+    // console.log(weatherDate)
+    // Condition Text&Icon
         setWeatherCondition(response?.forecast?.forecastday[0]?.day?.condition)
-        // console.log(weatherIcon)
+    // console.log(weatherIcon)
         setWeatherCondition(response?.forecast?.forecastday[0]?.day?.condition)
-        // console.log(weatherCondition)
-        // setWeatherData
+    // console.log(weatherCondition)
+    // setWeatherData
         setWeatherData(response?.forecast?.forecastday[0]?.day)
-        // console.log(weatherData)
-        // setCurrent(response?.current?.last_updated) //date&Time
+    // console.log(weatherData)
+    // setCurrent(response?.current?.last_updated) //date&Time
         setWeatherPerHour(response?.forecast?.forecastday[0]?.hour)
-        // console.log(weatherPerHour)
-
+    // console.log(weatherPerHour)
+        setWeatherPerDay(response?.forecast?.forecastday)
         return locations
     }
+
+    // RawData
+    // const fetchDatas = async () => {
+    //     try {
+    //         const response = await axios.get('https://api.weatherapi.com/v1/forecast.json?key=eb40ebc2fe0c4d02b2735258230304&q=batac, ilocos norte&days=7&aqi=yes&alerts=yes');
+    //         console.log(response.data);
+    //         setWeatherloc(response?.location)
+    //         setWeatherDate(response?.forecast?.forecastday[0])
+    //         setWeatherCondition(response?.forecast?.forecastday[0]?.day?.condition)
+    //         setWeatherCondition(response?.forecast?.forecastday[0]?.day?.condition)
+    //         setWeatherData(response?.forecast?.forecastday[0]?.day)
+    //         setWeatherPerHour(response?.forecast?.forecastday[0]?.hour)
+    //         setWeatherPerDay(response?.forecast)
+    //       } catch (error) {
+    //         console.error(error);
+    //       }
+
+       
+
+    //     return locations
+    // }
 
     const fetchUpdateDashboard = (data) => {
         locationList.forEach((items) => {
@@ -410,37 +457,37 @@ export const LocationProvider = ({ children }) => {
         return locations
     }
 
-    const lAdams = async () => {
-        const response = await fetch('http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=adams , ilocos norte&days=10&aqi=yes&alerts=yes')
+    const lAdams = async () => {    
+        const response =  await fetch('http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=Adams, ilocos norte&days=10&aqi=yes&alerts=yes')
             .then((response) => response.json())
             .catch((error) => {
                 console.error(error);
             })
 
-        setadamsloc(response?.location)
+        setadamloc(response?.location)
         // console.log(weatherloc)
         // setWeatherData
-        setadamsDate(response?.forecast?.forecastday[0])
+        setadamDate(response?.forecast?.forecastday[0])
         // console.log(weatherDate)
         //Condition Text&Icon
-        setadamsIcon(response?.forecast?.forecastday[0]?.day?.condition)
+        setadamIcon(response?.forecast?.forecastday[0]?.day?.condition)
         // console.log(weatherIcon)
-        setadamsCondition(response?.forecast?.forecastday[0]?.day?.condition)
+        setadamCondition(response?.forecast?.forecastday[0]?.day?.condition)
         // console.log(weatherCondition)
         // setWeatherData
-        setadamsData(response?.forecast?.forecastday[0]?.day)
+        setadamData(response?.forecast?.forecastday[0]?.day)
         // console.log(weatherData)
         // setCurrent(response?.current?.last_updated) //date&Time
-        setadamsPerHour(response?.forecast?.forecastday[0]?.hour)
+        setadamPerHour(response?.forecast?.forecastday[0]?.hour)
         // console.log(weatherPerHour)
-        //setadamsPerDay(response?.forecast?.forecastday[0]?.hour)
+        setadamPerDay(response?.forecast?.forecastday?.day)
         // console.log(weatherPerHour)
 
         return locations
     }
 
     const lBacarra = async () => {
-        const response = await fetch('http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=bacarra , ilocos norte&days=10&aqi=yes&alerts=yes')
+        const response = await fetch('http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=bacarra, ilocos norte&days=10&aqi=yes&alerts=yes')
             .then((response) => response.json())
             .catch((error) => {
                 console.error(error);
@@ -460,7 +507,7 @@ export const LocationProvider = ({ children }) => {
         setbacarraData(response?.forecast?.forecastday[0]?.day)
         // console.log(weatherData)
         // setCurrent(response?.current?.last_updated) //date&Time
-        setbacarraPerHour(response?.forecast?.forecastday[0]?.hour)
+        setbacarraPerDay(response?.forecast?.forecastday?.day)
         // console.log(weatherPerHour)
     }
 
@@ -486,6 +533,7 @@ export const LocationProvider = ({ children }) => {
         // console.log(weatherData)
         // setCurrent(response?.current?.last_updated) //date&Time
         setbadocPerHour(response?.forecast?.forecastday[0]?.hour)
+        setbadocPerDay(response?.forecast?.forecastday?.day)
         // console.log(weatherPerHour)
     }
 
@@ -511,6 +559,8 @@ export const LocationProvider = ({ children }) => {
         // console.log(weatherData)
         // setCurrent(response?.current?.last_updated) //date&Time
         setbanguiPerHour(response?.forecast?.forecastday[0]?.hour)
+
+        setbanguiPerDay(response?.forecast?.forecastday?.day)
         // console.log(weatherPerHour)
     }
 
@@ -535,7 +585,7 @@ export const LocationProvider = ({ children }) => {
         setbatacData(response?.forecast?.forecastday[0]?.day)
         // console.log(weatherData)
         // setCurrent(response?.current?.last_updated) //date&Time
-        setbatacPerHour(response?.forecast?.forecastday[0]?.hour)
+            
         // console.log(weatherPerHour)
     }
 
@@ -561,6 +611,8 @@ export const LocationProvider = ({ children }) => {
         // console.log(weatherData)
         // setCurrent(response?.current?.last_updated) //date&Time
         setburgosPerHour(response?.forecast?.forecastday[0]?.hour)
+
+        setburgosPerDay(response?.forecast?.forecastday?.day)
         // console.log(weatherPerHour)
     }
 
@@ -586,6 +638,8 @@ export const LocationProvider = ({ children }) => {
         // console.log(weatherData)
         // setCurrent(response?.current?.last_updated) //date&Time
         setcarasiPerHour(response?.forecast?.forecastday[0]?.hour)
+
+        setcarasiPerDay(response?.forecast?.forecastday?.day)
         // console.log(weatherPerHour)
     }
 
@@ -611,6 +665,8 @@ export const LocationProvider = ({ children }) => {
         // console.log(weatherData)
         // setCurrent(response?.current?.last_updated) //date&Time
         setcurrimaoPerHour(response?.forecast?.forecastday[0]?.hour)
+
+        setcurrimaoPerDay(response?.forecast?.forecastday?.day)
         // console.log(weatherPerHour)
 
     }
@@ -637,6 +693,8 @@ export const LocationProvider = ({ children }) => {
         // console.log(weatherData)
         // setCurrent(response?.current?.last_updated) //date&Time
         setdingrasPerHour(response?.forecast?.forecastday[0]?.hour)
+
+        setdingrasPerDay(response?.forecast?.forecastday?.day)
         // console.log(weatherPerHour)
 
     }
@@ -663,6 +721,8 @@ export const LocationProvider = ({ children }) => {
         // console.log(weatherData)
         // setCurrent(response?.current?.last_updated) //date&Time
         setdumalnegPerHour(response?.forecast?.forecastday[0]?.hour)
+
+        setdumalnegPerDay(response?.forecast?.forecastday?.day)
         // console.log(weatherPerHour)
 
     }
@@ -689,6 +749,8 @@ export const LocationProvider = ({ children }) => {
         // console.log(weatherData)
         // setCurrent(response?.current?.last_updated) //date&Time
         setespirituPerHour(response?.forecast?.forecastday[0]?.hour)
+
+        setespirituPerDay(response?.forecast?.forecastday?.day)
         // console.log(weatherPerHour)
 
         return locations
@@ -716,6 +778,8 @@ export const LocationProvider = ({ children }) => {
         // console.log(weatherData)
         // setCurrent(response?.current?.last_updated) //date&Time
         setlaoagPerHour(response?.forecast?.forecastday[0]?.hour)
+
+        setlaoagPerDay(response?.forecast?.forecastday?.day)
         // console.log(weatherPerHour)
 
     }
@@ -742,6 +806,7 @@ export const LocationProvider = ({ children }) => {
         // console.log(weatherData)
         // setCurrent(response?.current?.last_updated) //date&Time
         setmarcosPerHour(response?.forecast?.forecastday[0]?.hour)
+        setmarcosPerDay(response?.forecast?.forecastday?.day)
         // console.log(weatherPerHour)
 
         return locations
@@ -770,10 +835,9 @@ export const LocationProvider = ({ children }) => {
         // setCurrent(response?.current?.last_updated) //date&Time
         setnuevaeraPerHour(response?.forecast?.forecastday[0]?.hour)
         // console.log(weatherPerHour)
-
+        setnuevaeraPerDay(response?.forecast?.forecastday?.day)
         return locations
     }
-
 
     const lPagudpud = async () => {
         const response = await fetch('http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=pagudpud , ilocos norte&days=10&aqi=yes&alerts=yes')
@@ -798,6 +862,7 @@ export const LocationProvider = ({ children }) => {
         // setCurrent(response?.current?.last_updated) //date&Time
         setpagudpudPerHour(response?.forecast?.forecastday[0]?.hour)
         // console.log(weatherPerHour)
+        setpagudpudPerDay(response?.forecast?.forecastday?.day)
 
         return locations
     }
@@ -824,6 +889,8 @@ export const LocationProvider = ({ children }) => {
         // console.log(weatherData)
         // setCurrent(response?.current?.last_updated) //date&Time
         setpaoayPerHour(response?.forecast?.forecastday[0]?.hour)
+
+        setpaoayPerDay(response?.forecast?.forecastday?.day)
         // console.log(weatherPerHour)
 
         return locations
@@ -852,6 +919,7 @@ export const LocationProvider = ({ children }) => {
         // setCurrent(response?.current?.last_updated) //date&Time
         setpasuquinPerHour(response?.forecast?.forecastday[0]?.hour)
         // console.log(weatherPerHour)
+        setpasuquinPerDay(response?.forecast?.forecastday?.day)
 
         return locations
     }
@@ -879,6 +947,7 @@ export const LocationProvider = ({ children }) => {
         // setCurrent(response?.current?.last_updated) //date&Time
         setpiddigPerHour(response?.forecast?.forecastday[0]?.hour)
         // console.log(weatherPerHour)
+        setpiddigPerDay(response?.forecast?.forecastday?.day)
 
         return locations
     }
@@ -906,6 +975,7 @@ export const LocationProvider = ({ children }) => {
         // setCurrent(response?.current?.last_updated) //date&Time
         setpiniliPerHour(response?.forecast?.forecastday[0]?.hour)
         // console.log(weatherPerHour)
+        setpiniliPerDay(response?.forecast?.forecastday?.day)
 
         return locations
     }
@@ -933,6 +1003,7 @@ export const LocationProvider = ({ children }) => {
         // setCurrent(response?.current?.last_updated) //date&Time
         setsanicolasPerHour(response?.forecast?.forecastday[0]?.hour)
         // console.log(weatherPerHour)
+        setsanicolasPerDay(response?.forecast?.forecastday[0]?.day)
 
         return locations
     }
@@ -960,6 +1031,7 @@ export const LocationProvider = ({ children }) => {
         // setCurrent(response?.current?.last_updated) //date&Time
         setsarratPerHour(response?.forecast?.forecastday[0]?.hour)
         // console.log(weatherPerHour)
+        setsarratPerDay(response?.forecast?.forecastday[0]?.day)
 
     }
 
@@ -986,6 +1058,7 @@ export const LocationProvider = ({ children }) => {
         // setCurrent(response?.current?.last_updated) //date&Time
         setsolsonaPerHour(response?.forecast?.forecastday[0]?.hour)
         // console.log(weatherPerHour)
+        setsolsonaPerDay(response?.forecast?.forecastday[0]?.day)
 
         return locations
     }
@@ -1013,6 +1086,7 @@ export const LocationProvider = ({ children }) => {
         // setCurrent(response?.current?.last_updated) //date&Time
         setvintarPerHour(response?.forecast?.forecastday[0]?.hour)
         // console.log(weatherPerHour)
+        setvintarPerDay(response?.forecast?.forecastday?.day)
 
         return locations
     }
@@ -1021,34 +1095,35 @@ export const LocationProvider = ({ children }) => {
 
     return (
         <LocationContext.Provider value={{
-            locations, setLocation, locationList, weatherloc, weatherDate, weatherIcon,
-            weatherData, weatherPerHour, weatherCondition, setLOCATION: (data) => {
+            locations, setLocation, locationList, 
+            weathloc, weathDate, weathIcon, weathData, weathPerHour, weathCondition, weathPerDay, 
+            setLOCATION: (data) => {
                 fetchUpdateDashboard(data);
                 fetchDatas()
             }, holdlocation, setWeatherHoldLocation,
-            adamsloc, adamsDate, adamsIcon, adamsData, adamsPerHour, adamsCondition,
-            bacarraloc, bacarraDate, bacarraIcon, bacarraData, bacarraPerHour, bacarraCondition,
-            badocloc, badocDate, badocIcon, badocData, badocPerHour, badocCondition,
-            banguiloc, banguiDate, banguiIcon, banguiData, banguiPerHour, banguiCondition,
-            batacloc, batacDate, batacIcon, batacData, batacPerHour, batacCondition,
-            burgosloc, burgosDate, burgosIcon, burgosData, burgosPerHour, burgosCondition,
-            carasiloc, carasiDate, carasiIcon, carasiData, carasiPerHour, carasiCondition,
-            currimaoloc, currimaoDate, currimaoIcon, currimaoData, currimaoPerHour, currimaoCondition,
-            dingrasloc, dingrasDate, dingrasIcon, dingrasData, dingrasPerHour, dingrasCondition,
-            dumalnegloc, dumalnegDate, dumalnegIcon, dumalnegData, dumalnegPerHour, dumalnegCondition,
-            espirituloc, espirituDate, espirituIcon, espirituData, espirituPerHour, espirituCondition,
-            laoagloc, laoagDate, laoagIcon, laoagData, laoagPerHour, laoagCondition,
-            marcosloc, marcosDate, marcosIcon, marcosData, marcosPerHour, marcosCondition,
-            nuevaeraloc, nuevaeraDate, nuevaeraIcon, nuevaeraData, nuevaeraPerHour, nuevaeraCondition,
-            pagudpudloc, pagudpudDate, pagudpudIcon, pagudpudData, pagudpudPerHour, pagudpudCondition,
-            paoayloc, paoayDate, paoayIcon, paoayData, paoayPerHour, paoayCondition,
-            pasuquinloc, pasuquinDate, pasuquinIcon, pasuquinData, pasuquinPerHour, pasuquinCondition,
-            piddigloc, piddigDate, piddigIcon, piddigData, piddigPerHour, piddigCondition,
-            pinililoc, piniliDate, piniliIcon, piniliData, piniliPerHour, piniliCondition,
-            sanicolasloc, sanicolasDate, sanicolasIcon, sanicolasData, sanicolasPerHour, sanicolasCondition,
-            sarratloc, sarratDate, sarratIcon, sarratData, sarratPerHour, sarratCondition,
-            solsonaloc, solsonaDate, solsonaIcon, solsonaData, solsonaPerHour, solsonaCondition,
-            vintarloc, vintarDate, vintarIcon, vintarData, vintarPerHour, vintarCondition,
+            adamloc, adamDate, adamIcon, adamData, adamPerHour, adamCondition, adamPerDay,
+            bacarraloc, bacarraDate, bacarraIcon, bacarraData, bacarraPerHour, bacarraCondition,bacarraPerDay,
+            badocloc, badocDate, badocIcon, badocData, badocPerHour, badocCondition,bacarraPerDay,
+            banguiloc, banguiDate, banguiIcon, banguiData, banguiPerHour, banguiCondition,banguiPerDay,
+            batacloc, batacDate, batacIcon, batacData, batacPerHour, batacCondition,batacPerDay,
+            burgosloc, burgosDate, burgosIcon, burgosData, burgosPerHour, burgosCondition,burgosPerDay,
+            carasiloc, carasiDate, carasiIcon, carasiData, carasiPerHour, carasiCondition,carasiPerDay,
+            currimaoloc, currimaoDate, currimaoIcon, currimaoData, currimaoPerHour, currimaoCondition,currimaoPerDay,
+            dingrasloc, dingrasDate, dingrasIcon, dingrasData, dingrasPerHour, dingrasCondition,dingrasPerDay,
+            dumalnegloc, dumalnegDate, dumalnegIcon, dumalnegData, dumalnegPerHour, dumalnegCondition,dumalnegPerDay,
+            espirituloc, espirituDate, espirituIcon, espirituData, espirituPerHour, espirituCondition,espirituPerDay,
+            laoagloc, laoagDate, laoagIcon, laoagData, laoagPerHour, laoagCondition,laoagPerDay,
+            marcosloc, marcosDate, marcosIcon, marcosData, marcosPerHour, marcosCondition,marcosPerDay,
+            nuevaeraloc, nuevaeraDate, nuevaeraIcon, nuevaeraData, nuevaeraPerHour, nuevaeraCondition,nuevaeraPerDay,
+            pagudpudloc, pagudpudDate, pagudpudIcon, pagudpudData, pagudpudPerHour, pagudpudCondition,pagudpudPerDay,
+            paoayloc, paoayDate, paoayIcon, paoayData, paoayPerHour, paoayCondition,paoayPerDay,
+            pasuquinloc, pasuquinDate, pasuquinIcon, pasuquinData, pasuquinPerHour, pasuquinCondition,pasuquinPerDay,
+            piddigloc, piddigDate, piddigIcon, piddigData, piddigPerHour, piddigCondition,piddigPerDay,
+            pinililoc, piniliDate, piniliIcon, piniliData, piniliPerHour, piniliCondition,piniliPerDay,
+            sanicolasloc, sanicolasDate, sanicolasIcon, sanicolasData, sanicolasPerHour, sanicolasCondition,sanicolasPerDay,
+            sarratloc, sarratDate, sarratIcon, sarratData, sarratPerHour, sarratCondition,sarratPerDay,
+            solsonaloc, solsonaDate, solsonaIcon, solsonaData, solsonaPerHour, solsonaCondition,solsonaPerDay,
+            vintarloc, vintarDate, vintarIcon, vintarData, vintarPerHour, vintarCondition,vintarPerDay,
         }
         }>
             {children}

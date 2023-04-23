@@ -102,6 +102,10 @@ export default globalStyles = StyleSheet.create({
         justifyContent: 'space-around',
         alignItems: 'center',
     },
+    div2RowPaddingTop: {
+        paddingTop:150,
+        height:200
+    },
     div2RowSpaceEvenNoAlignItems: {
         flexDirection: 'row',
         flexWrap: 'wrap',
@@ -245,11 +249,24 @@ export default globalStyles = StyleSheet.create({
         marginVertical: 10,
 
     },
+
+    // Overlay:
+    //1. setmarginTop
+    //2. overlay-paddingTop: 90: adjust the font 
+    //   going down-viewlayer
+    //3. overlay-heightCard: 180 then overlypaddingTop:: then marginTop: 
+    //   increase all set value.
+    //4. set weatherIcon View to negative marginTop value
+    //5. adjust the Image width and height
+    //6. set weatherIcon View to ++ marginBottom  value
+
+
+
     overlay: {
-        marginTop: 90,
-        paddingTop: 90,
+        marginTop: 110,
+        paddingTop: 105,
         height: 180,
-        marginVertical: -280,
+        marginVertical: 140,
 
     },
     cardDashboardPest: {
