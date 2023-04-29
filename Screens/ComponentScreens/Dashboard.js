@@ -2715,7 +2715,7 @@ export default function Dashboard({ navigation }) {
 
                 {/* WeatherIcon */}
                 <View
-                  style={{
+                  style={{  
                     justifyContent: 'center',
                     alignItems: 'center',
                     marginTop: -450,
@@ -2726,8 +2726,9 @@ export default function Dashboard({ navigation }) {
                     style={{ width: 130, height: 120, marginBottom: 15 }}
                   /> */}
                     <Image
-                    source={require('../../src/weatherIcons/PartlyCloud.png')}
-                    style={{ width: 250, height:190, marginBottom: 5 }}
+                    source={require('../../src/weatherIcons/Cloudy.png')}
+                    style={{ width: 380, height:210 }}
+                    
                   />
                   <Text
                     style={{ fontWeight: '900', fontSize: 18, color: '#276653' }}>

@@ -259,9 +259,6 @@ export default globalStyles = StyleSheet.create({
     //4. set weatherIcon View to negative marginTop value
     //5. adjust the Image width and height
     //6. set weatherIcon View to ++ marginBottom  value
-
-
-
     overlay: {
         marginTop: 110,
         paddingTop: 105,

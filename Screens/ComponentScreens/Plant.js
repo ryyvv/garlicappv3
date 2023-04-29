@@ -229,6 +229,52 @@ function PlantID({ route, navigation }) {
               <Text style={{ color: 'white', marginBottom: 10, fontWeight: 'bold', fontSize: 20 }}>Timeline</Text>
               <Text style={{color:'white', fontSize: 18 }}>
                 Timeline
+
+
+                <View style={styles.dashboardHourly}>
+
+              <ScrollView horizontal={true}
+                showsVerticalScrollIndicator={false}>
+              
+                  return (
+                    <View  style={{ marginRight: 12, marginBottom: 10 }}>
+                      <View
+                        style={[
+                          styles.cardDashboardHourly,
+                          styles.cardDashboardHourlyProp,
+                        ]}>
+                        <View style={styles.div2RowSpaceEven}>
+                          <View style={{ padding: 4 }}>
+                            <Image
+                              source={require('../../src/images/sunRAsset2.png')}
+                              style={{ width: 45, height: 45 }}
+                            />
+                          </View>
+                          <View style={{ justifyContent: 'flex-end' }}>
+                            <Text
+                              style={{
+                                fontSize: 14,
+                                fontWeight: 'bold',
+                                color: '#8eb4a9',
+                              }}>
+                           1212121
+                            </Text>
+                            <Text
+                              style={{
+                                fontSize: 20,
+                                fontWeight: '900',
+                                color: '#276653',
+                              }}>
+                           1212
+                            </Text>
+                          </View>
+                        </View>
+                      </View>
+                    </View>
+                  );
+       
+              </ScrollView>
+            </View>
               </Text>
             </View>
 
