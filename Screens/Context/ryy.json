@@ -1,0 +1,48 @@
+{
+    "_bodyBlob": {
+        "_data": {
+            "__collector": [Object
+            ],
+            "blobId": "237dfa45-dbb7-40ae-8b8e-5d65ddea26b2",
+            "offset": 0,
+            "size": 259
+        }
+    },
+    "_bodyInit": {
+        "_data": {
+            "__collector": [Object
+            ],
+            "blobId": "237dfa45-dbb7-40ae-8b8e-5d65ddea26b2",
+            "offset": 0,
+            "size": 259
+        }
+    },
+    "bodyUsed": false,
+    "headers": {
+        "map": {
+            "cache-control": "public, max-age=180",
+            "cdn-cache": "EXPIRED",
+            "cdn-cachedat": "05/01/2023 03:03:46",
+            "cdn-edgestorageid": "782",
+            "cdn-proxyver": "1.03",
+            "cdn-pullzone": "93447",
+            "cdn-requestcountrycode": "PH",
+            "cdn-requestid": "6d21349a24d34a93353fd579573f7a0d",
+            "cdn-requestpullcode": "200",
+            "cdn-requestpullsuccess": "True",
+            "cdn-status": "200",
+            "cdn-uid": "8fa3a04a-75d9-4707-8056-b7b33c8ac7fe",
+            "connection": "keep-alive",
+            "content-type": "application/json",
+            "date": "Mon, 01 May 2023 03:03:46 GMT",
+            "server": "BunnyCDN-SG1-945",
+            "transfer-encoding": "chunked",
+            "vary": "Accept-Encoding"
+        }
+    },
+    "ok": true,
+    "status": 200,
+    "statusText": "",
+    "type": "default",
+    "url": "http://api.weatherapi.com/v1/search.json?key=eb40ebc2fe0c4d02b2735258230304&q=18.0570247%20120.5453819"
+}

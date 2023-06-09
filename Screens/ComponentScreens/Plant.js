@@ -6,10 +6,11 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { FloatingAction } from "react-native-floating-action";
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
-import  Storage from '@react-native-firebase/storage';
+import Storage from '@react-native-firebase/storage';
 import DatePicker from 'react-native-date-picker'
 import database from '@react-native-firebase/database';
 import { AuthContext } from '../Context/AuthProvider';
+import { LazyLoadImage } from 'react-native-lazy-load-image';
 
 const dbRef = database().ref('images');
 
@@ -62,18 +63,18 @@ function PlantDash({ route, navigation }) {
     const plantData = database().ref('/plants/');
     console.log(plantData)
   }, [navigation])
- 
+
   useEffect(() => {
     displayList();
   }, []);
-  
+
   const displayList = async () => {
     const dbRef = database().ref('plants');
     dbRef.on('value', (snapshot) => {
       const firebaseData = snapshot.val();
-      if(firebaseData == null){
+      if (firebaseData == null) {
         setPlantData(null);
-      }else {
+      } else {
         const dataArray = Object.values(firebaseData);
         setPlantData(dataArray);
       }
@@ -81,35 +82,31 @@ function PlantDash({ route, navigation }) {
   }
 
   // datalist
-  const renderDisplayList = ({item }) => {
+  const renderDisplayList = ({ item }) => {
     return (
-         <TouchableOpacity  onPress={() => {
-                        navigation.navigate('PlantID', {
-                          title: item.title,
-                          image: item.image,
-                          variety: item.variety,
-                          date: item.date,
-                          plantAddress: item.plantAddress,
-                        });
-                      }}>
+      <TouchableOpacity onPress={() => {
+        navigation.navigate('PlantID', {
+          title: item.title,
+          image: item.image,
+          variety: item.variety,
+          date: item.date,
+          plantAddress: item.plantAddress,
+          });
+        }}>
         <View style={styles.cardDataPlant}>
           <View style={styles.div2RowSpaceEvenNoAlignItems}>
-            
-            {/* display list button */}
-            {/* <Pressable  > */}
-              <View style={styles.div2Row}>
-                <Image source={{uri: item.image}}
-                       style={{ width: 50, height: 50, borderRadius: 50 / 2, marginRight: 10 }} 
-                />
-                <View>
-                  <Text style={{ color: '#276653', fontWeight: 'bold', fontSize: 17 }}>{item.title}</Text>
-                  <Text>{moment(item.date).format('MMMM D, YYYY')}</Text>
-                </View>
+ 
+            <View style={styles.div2Row}>
+              {/* <Image source={{ uri: item.image }} style={{ width: 50, height: 50, borderRadius: 50 / 2, marginRight: 10 }}/> */}
+              <LazyLoadImage source={{ uri: item.image }} style={{ width: 50, height: 50, borderRadius: 50 / 2, marginRight: 10 }} />
+              <View>
+                <Text style={{ color: '#276653', fontWeight: 'bold', fontSize: 17 }}>{item.title}</Text>
+                <Text>{moment(item.date).format('MMMM D, YYYY')}</Text>
               </View>
-            {/* </Pressable> */}
-            
+            </View>
+
             {/* Button option */}
-            <View style={[styles.div2RowDatalist,{padding:10}]}>
+            <View style={[styles.div2RowDatalist, { padding: 10 }]}>
               <Icon name={"bell-outline"} color={'#276653'} size={23} style={{ width: 20, marginRight: 20 }} />
               <TouchableOpacity>
                 <Icon name={"dots-vertical"} color={'#276653'} size={23} style={{ width: 20 }} />
@@ -117,13 +114,14 @@ function PlantDash({ route, navigation }) {
             </View>
           </View>
         </View>
-        </TouchableOpacity>
+      </TouchableOpacity>
     );
   };
+ 
   const showEmptyListView = () => {
-    return(
-      <View style={{marginTop: 200, flexDirection:'row', justifyContent:'center', alignItem: 'center'}}>
-        <Text style={{fontSize: 20, fontWeight:'bold',alignItem: 'center',justifyContent:'center',}}><Icon name={"plus-circle"} color={'#276653'} size={30} style={{ width: 20}} />Add a plant to get started!  </Text>
+    return (
+      <View style={{ marginTop: 200, flexDirection: 'row', justifyContent: 'center', alignItem: 'center' }}>
+        <Text style={{ fontSize: 20, fontWeight: 'bold', alignItem: 'center', justifyContent: 'center', }}><Icon name={"plus-circle"} color={'#276653'} size={30} style={{ width: 20 }} />Add a plant to get started!  </Text>
       </View>
     )
   }
@@ -133,21 +131,21 @@ function PlantDash({ route, navigation }) {
       <StatusBar animated={true} barStyle={statusBarStyle} translucent={true} />
       <ScrollView>
         <View style={styles.accountcontainer}>
-        <FlatList
-          data={plantData}
-          renderItem={renderDisplayList}
-          keyExtractor={(item) => item.id} 
-          ListEmptyComponent={showEmptyListView()}/>
+          <FlatList
+            data={plantData}
+            renderItem={renderDisplayList}
+            keyExtractor={(item) => item.id}
+            ListEmptyComponent={showEmptyListView()} />
         </View>
       </ScrollView>
 
-       {/* Add button            */}
-      <TouchableOpacity onPress={() => {navigation.navigate('PlantNew')}}>
+      {/* Add button            */}
+      <TouchableOpacity onPress={() => { navigation.navigate('PlantNew') }}>
         <View style={styles.addBtn}>
           <Icon name={"plus"} color={'white'} size={23} style={{ fontWeight: 'bold' }} />
         </View>
       </TouchableOpacity>
-    </View >
+    </View>
 
   )
 }
@@ -159,7 +157,7 @@ function PlantID({ route, navigation }) {
   const HEADER_MIN_HEIGHT = 200;
 
   const animatedHeaderBackgroundColor = AnimatedHeaderValue.interpolate({
-    inputRange: [5  , HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT],
+    inputRange: [5, HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT],
     outputRange: ['blue', 'red'],
     extrapolate: 'clamp',
   });
@@ -173,13 +171,12 @@ function PlantID({ route, navigation }) {
 
   const { title, image, variety, date } = route.params;
 
-   return (
+  return (
     <SafeAreaView style={{ flex: 1 }}>
-
       <Animated.View
         style={{
           height: animatedHeaderHeight,
-          flex:1
+          flex: 1
           // backgroundColor: animatedHeaderBackgroundColor,
         }}>
 
@@ -198,7 +195,7 @@ function PlantID({ route, navigation }) {
           style={{ position: 'absolute', bottom: 0, paddingLeft: 60 }}></View>
       </Animated.View>
       <View style={{
-        flex:2,
+        flex: 2,
         padding: 20,
         backgroundColor: '#7ABD87',
         borderTopRightRadius: 25,
@@ -221,64 +218,567 @@ function PlantID({ route, navigation }) {
               },
             ],
             { useNativeDriver: false },
-          )}
-          >
+          )}>
+
           <View>
             {/* Description */}
-            <View>
-              <Text style={{ color: 'white', marginBottom: 10, fontWeight: 'bold', fontSize: 20 }}>Timeline</Text>
-              <Text style={{color:'white', fontSize: 18 }}>
-                Timeline
-
-
-                <View style={styles.dashboardHourly}>
-
-              <ScrollView horizontal={true}
-                showsVerticalScrollIndicator={false}>
-              
-                  return (
-                    <View  style={{ marginRight: 12, marginBottom: 10 }}>
-                      <View
-                        style={[
-                          styles.cardDashboardHourly,
-                          styles.cardDashboardHourlyProp,
-                        ]}>
-                        <View style={styles.div2RowSpaceEven}>
-                          <View style={{ padding: 4 }}>
-                            <Image
-                              source={require('../../src/images/sunRAsset2.png')}
-                              style={{ width: 45, height: 45 }}
-                            />
-                          </View>
-                          <View style={{ justifyContent: 'flex-end' }}>
-                            <Text
-                              style={{
-                                fontSize: 14,
-                                fontWeight: 'bold',
-                                color: '#8eb4a9',
-                              }}>
-                           1212121
-                            </Text>
-                            <Text
-                              style={{
-                                fontSize: 20,
-                                fontWeight: '900',
-                                color: '#276653',
-                              }}>
-                           1212
-                            </Text>
-                          </View>
+            <View style={{ marginRight: 12, marginBottom: 10 }}>
+                    <View
+                      style={[
+                        styles.cardDashboardHourly,
+                        styles.cardDashboardHourlyProp,
+                      ]}>
+                      <View style={styles.div2RowSpaceEven}>
+                        <View style={{ padding: 4 }}>
+                          <Image
+                            source={require('../../src/images/sunRAsset2.png')}
+                            style={{ width: 45, height: 45 }}
+                          />
+                        </View>
+                        <View style={{ justifyContent: 'flex-end' }}>
+                          <Text
+                            style={{
+                              fontSize: 14,
+                              fontWeight: 'bold',
+                              color: '#8eb4a9',
+                            }}>
+                            1212121
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 20,
+                              fontWeight: '900',
+                              color: '#276653',
+                            }}>
+                            1212
+                          </Text>
                         </View>
                       </View>
                     </View>
-                  );
-       
-              </ScrollView>
             </View>
-              </Text>
+            <View>
+              <Text style={{ color: 'white', marginBottom: 10, fontWeight: 'bold', fontSize: 20 }}>Timeline</Text>
+              <View style={styles.dashboardHourly}>
+                <ScrollView 
+                horizontal={false}
+                 vertical={true}
+                  showsVerticalScrollIndicator={false}>
+                  {/* return ( */}
+                  <View style={{ marginRight: 12, marginBottom: 10 }}>
+                    <View
+                      style={[
+                        styles.cardDashboardHourly,
+                        styles.cardDashboardHourlyProp,
+                      ]}>
+                      <View style={styles.div2RowSpaceEven}>
+                        <View style={{ padding: 4 }}>
+                          <Image
+                            source={require('../../src/images/sunRAsset2.png')}
+                            style={{ width: 45, height: 45 }}
+                          />
+                        </View>
+                        <View style={{ justifyContent: 'flex-end' }}>
+                          <Text
+                            style={{
+                              fontSize: 14,
+                              fontWeight: 'bold',
+                              color: '#8eb4a9',
+                            }}>
+                            1212121
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 20,
+                              fontWeight: '900',
+                              color: '#276653',
+                            }}>
+                            1212
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                  <View style={{ marginRight: 12, marginBottom: 10 }}>
+                    <View
+                      style={[
+                        styles.cardDashboardHourly,
+                        styles.cardDashboardHourlyProp,
+                      ]}>
+                      <View style={styles.div2RowSpaceEven}>
+                        <View style={{ padding: 4 }}>
+                          <Image
+                            source={require('../../src/images/sunRAsset2.png')}
+                            style={{ width: 45, height: 45 }}
+                          />
+                        </View>
+                        <View style={{ justifyContent: 'flex-end' }}>
+                          <Text
+                            style={{
+                              fontSize: 14,
+                              fontWeight: 'bold',
+                              color: '#8eb4a9',
+                            }}>
+                            1212121
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 20,
+                              fontWeight: '900',
+                              color: '#276653',
+                            }}>
+                            1212
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                  <View style={{ marginRight: 12, marginBottom: 10 }}>
+                    <View
+                      style={[
+                        styles.cardDashboardHourly,
+                        styles.cardDashboardHourlyProp,
+                      ]}>
+                      <View style={styles.div2RowSpaceEven}>
+                        <View style={{ padding: 4 }}>
+                          <Image
+                            source={require('../../src/images/sunRAsset2.png')}
+                            style={{ width: 45, height: 45 }}
+                          />
+                        </View>
+                        <View style={{ justifyContent: 'flex-end' }}>
+                          <Text
+                            style={{
+                              fontSize: 14,
+                              fontWeight: 'bold',
+                              color: '#8eb4a9',
+                            }}>
+                            1212121
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 20,
+                              fontWeight: '900',
+                              color: '#276653',
+                            }}>
+                            1212
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                  <View style={{ marginRight: 12, marginBottom: 10 }}>
+                    <View
+                      style={[
+                        styles.cardDashboardHourly,
+                        styles.cardDashboardHourlyProp,
+                      ]}>
+                      <View style={styles.div2RowSpaceEven}>
+                        <View style={{ padding: 4 }}>
+                          <Image
+                            source={require('../../src/images/sunRAsset2.png')}
+                            style={{ width: 45, height: 45 }}
+                          />
+                        </View>
+                        <View style={{ justifyContent: 'flex-end' }}>
+                          <Text
+                            style={{
+                              fontSize: 14,
+                              fontWeight: 'bold',
+                              color: '#8eb4a9',
+                            }}>
+                            1212121
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 20,
+                              fontWeight: '900',
+                              color: '#276653',
+                            }}>
+                            1212
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                  <View style={{ marginRight: 12, marginBottom: 10 }}>
+                    <View
+                      style={[
+                        styles.cardDashboardHourly,
+                        styles.cardDashboardHourlyProp,
+                      ]}>
+                      <View style={styles.div2RowSpaceEven}>
+                        <View style={{ padding: 4 }}>
+                          <Image
+                            source={require('../../src/images/sunRAsset2.png')}
+                            style={{ width: 45, height: 45 }}
+                          />
+                        </View>
+                        <View style={{ justifyContent: 'flex-end' }}>
+                          <Text
+                            style={{
+                              fontSize: 14,
+                              fontWeight: 'bold',
+                              color: '#8eb4a9',
+                            }}>
+                            1212121
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 20,
+                              fontWeight: '900',
+                              color: '#276653',
+                            }}>
+                            1212
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                  <View style={{ marginRight: 12, marginBottom: 10 }}>
+                    <View
+                      style={[
+                        styles.cardDashboardHourly,
+                        styles.cardDashboardHourlyProp,
+                      ]}>
+                      <View style={styles.div2RowSpaceEven}>
+                        <View style={{ padding: 4 }}>
+                          <Image
+                            source={require('../../src/images/sunRAsset2.png')}
+                            style={{ width: 45, height: 45 }}
+                          />
+                        </View>
+                        <View style={{ justifyContent: 'flex-end' }}>
+                          <Text
+                            style={{
+                              fontSize: 14,
+                              fontWeight: 'bold',
+                              color: '#8eb4a9',
+                            }}>
+                            1212121
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 20,
+                              fontWeight: '900',
+                              color: '#276653',
+                            }}>
+                            1212
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
+                  </View>s
+                  <View style={{ marginRight: 12, marginBottom: 10 }}>
+                    <View
+                      style={[
+                        styles.cardDashboardHourly,
+                        styles.cardDashboardHourlyProp,
+                      ]}>
+                      <View style={styles.div2RowSpaceEven}>
+                        <View style={{ padding: 4 }}>
+                          <Image
+                            source={require('../../src/images/sunRAsset2.png')}
+                            style={{ width: 45, height: 45 }}
+                          />
+                        </View>
+                        <View style={{ justifyContent: 'flex-end' }}>
+                          <Text
+                            style={{
+                              fontSize: 14,
+                              fontWeight: 'bold',
+                              color: '#8eb4a9',
+                            }}>
+                            1212121
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 20,
+                              fontWeight: '900',
+                              color: '#276653',
+                            }}>
+                            1212
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                  <View style={{ marginRight: 12, marginBottom: 10 }}>
+                    <View
+                      style={[
+                        styles.cardDashboardHourly,
+                        styles.cardDashboardHourlyProp,
+                      ]}>
+                      <View style={styles.div2RowSpaceEven}>
+                        <View style={{ padding: 4 }}>
+                          <Image
+                            source={require('../../src/images/sunRAsset2.png')}
+                            style={{ width: 45, height: 45 }}
+                          />
+                        </View>
+                        <View style={{ justifyContent: 'flex-end' }}>
+                          <Text
+                            style={{
+                              fontSize: 14,
+                              fontWeight: 'bold',
+                              color: '#8eb4a9',
+                            }}>
+                            1212121
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 20,
+                              fontWeight: '900',
+                              color: '#276653',
+                            }}>
+                            1212
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                  <View style={{ marginRight: 12, marginBottom: 10 }}>
+                    <View
+                      style={[
+                        styles.cardDashboardHourly,
+                        styles.cardDashboardHourlyProp,
+                      ]}>
+                      <View style={styles.div2RowSpaceEven}>
+                        <View style={{ padding: 4 }}>
+                          <Image
+                            source={require('../../src/images/sunRAsset2.png')}
+                            style={{ width: 45, height: 45 }}
+                          />
+                        </View>
+                        <View style={{ justifyContent: 'flex-end' }}>
+                          <Text
+                            style={{
+                              fontSize: 14,
+                              fontWeight: 'bold',
+                              color: '#8eb4a9',
+                            }}>
+                            1212121
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 20,
+                              fontWeight: '900',
+                              color: '#276653',
+                            }}>
+                            1212
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                  <View style={{ marginRight: 12, marginBottom: 10 }}>
+                    <View
+                      style={[
+                        styles.cardDashboardHourly,
+                        styles.cardDashboardHourlyProp,
+                      ]}>
+                      <View style={styles.div2RowSpaceEven}>
+                        <View style={{ padding: 4 }}>
+                          <Image
+                            source={require('../../src/images/sunRAsset2.png')}
+                            style={{ width: 45, height: 45 }}
+                          />
+                        </View>
+                        <View style={{ justifyContent: 'flex-end' }}>
+                          <Text
+                            style={{
+                              fontSize: 14,
+                              fontWeight: 'bold',
+                              color: '#8eb4a9',
+                            }}>
+                            1212121
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 20,
+                              fontWeight: '900',
+                              color: '#276653',
+                            }}>
+                            1212
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                  <View style={{ marginRight: 12, marginBottom: 10 }}>
+                    <View
+                      style={[
+                        styles.cardDashboardHourly,
+                        styles.cardDashboardHourlyProp,
+                      ]}>
+                      <View style={styles.div2RowSpaceEven}>
+                        <View style={{ padding: 4 }}>
+                          <Image
+                            source={require('../../src/images/sunRAsset2.png')}
+                            style={{ width: 45, height: 45 }}
+                          />
+                        </View>
+                        <View style={{ justifyContent: 'flex-end' }}>
+                          <Text
+                            style={{
+                              fontSize: 14,
+                              fontWeight: 'bold',
+                              color: '#8eb4a9',
+                            }}>
+                            1212121
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 20,
+                              fontWeight: '900',
+                              color: '#276653',
+                            }}>
+                            1212
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                  <View style={{ marginRight: 12, marginBottom: 10 }}>
+                    <View
+                      style={[
+                        styles.cardDashboardHourly,
+                        styles.cardDashboardHourlyProp,
+                      ]}>
+                      <View style={styles.div2RowSpaceEven}>
+                        <View style={{ padding: 4 }}>
+                          <Image
+                            source={require('../../src/images/sunRAsset2.png')}
+                            style={{ width: 45, height: 45 }}
+                          />
+                        </View>
+                        <View style={{ justifyContent: 'flex-end' }}>
+                          <Text
+                            style={{
+                              fontSize: 14,
+                              fontWeight: 'bold',
+                              color: '#8eb4a9',
+                            }}>
+                            1212121
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 20,
+                              fontWeight: '900',
+                              color: '#276653',
+                            }}>
+                            1212
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                  <View style={{ marginRight: 12, marginBottom: 10 }}>
+                    <View
+                      style={[
+                        styles.cardDashboardHourly,
+                        styles.cardDashboardHourlyProp,
+                      ]}>
+                      <View style={styles.div2RowSpaceEven}>
+                        <View style={{ padding: 4 }}>
+                          <Image
+                            source={require('../../src/images/sunRAsset2.png')}
+                            style={{ width: 45, height: 45 }}
+                          />
+                        </View>
+                        <View style={{ justifyContent: 'flex-end' }}>
+                          <Text
+                            style={{
+                              fontSize: 14,
+                              fontWeight: 'bold',
+                              color: '#8eb4a9',
+                            }}>
+                            1212121
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 20,
+                              fontWeight: '900',
+                              color: '#276653',
+                            }}>
+                            1212
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                  <View style={{ marginRight: 12, marginBottom: 10 }}>
+                    <View
+                      style={[
+                        styles.cardDashboardHourly,
+                        styles.cardDashboardHourlyProp,
+                      ]}>
+                      <View style={styles.div2RowSpaceEven}>
+                        <View style={{ padding: 4 }}>
+                          <Image
+                            source={require('../../src/images/sunRAsset2.png')}
+                            style={{ width: 45, height: 45 }}
+                          />
+                        </View>
+                        <View style={{ justifyContent: 'flex-end' }}>
+                          <Text
+                            style={{
+                              fontSize: 14,
+                              fontWeight: 'bold',
+                              color: '#8eb4a9',
+                            }}>
+                            1212121
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 20,
+                              fontWeight: '900',
+                              color: '#276653',
+                            }}>
+                            1212
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                  <View style={{ marginRight: 12, marginBottom: 10 }}>
+                    <View
+                      style={[
+                        styles.cardDashboardHourly,
+                        styles.cardDashboardHourlyProp,
+                      ]}>
+                      <View style={styles.div2RowSpaceEven}>
+                        <View style={{ padding: 4 }}>
+                          <Image
+                            source={require('../../src/images/sunRAsset2.png')}
+                            style={{ width: 45, height: 45 }}
+                          />
+                        </View>
+                        <View style={{ justifyContent: 'flex-end' }}>
+                          <Text
+                            style={{
+                              fontSize: 14,
+                              fontWeight: 'bold',
+                              color: '#8eb4a9',
+                            }}>
+                            1212121
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 20,
+                              fontWeight: '900',
+                              color: '#276653',
+                            }}>
+                            1212
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                  
+                  {/* ) */}
+                </ScrollView>
+              </View>
             </View>
-
-            
           </View>
         </ScrollView>
       </View>
@@ -290,10 +790,11 @@ function PlantID({ route, navigation }) {
 function PlantNew({ navigation }) {
   const { logout, user } = useContext(AuthContext)
 
- 
+
   const [open, setOpen] = useState(false)
   const [plantTitle, setPlantTitle] = useState('')
   const [plantVariety, setPlantVariety] = useState('')
+  const [plantArea, setPlantArea] = useState('')
   const [plantDate, setPlantDate] = useState(new Date())
   const [plantAddress, setPlantAddress] = useState('')
   const [dataloading, setDataloading] = useState(false);
@@ -303,7 +804,7 @@ function PlantNew({ navigation }) {
   const [downloadURL, setDownloadURL] = useState(null);   //imagelink uploader getdownload image
   const [transferred, setTransferred] = useState(0);    //Progress upload  image
 
- 
+
 
   // ImageDefault Display
   const ImageDefault = () => {
@@ -313,7 +814,7 @@ function PlantNew({ navigation }) {
       </View>
     )
 
- 
+
   }
 
   // ImageChange Display
@@ -337,7 +838,7 @@ function PlantNew({ navigation }) {
     includeBase64: false,
     path: 'images ',
 
-    
+
   };
 
 
@@ -471,7 +972,7 @@ function PlantNew({ navigation }) {
   // uploading trigger
   const imageUpload = async () => {
     // LogBox.ignoreAllLogs();
-    
+
     // Create Data plant
     if (imagePathCapture === null) {
       alert('Select image!');
@@ -482,40 +983,42 @@ function PlantNew({ navigation }) {
     } else if (!plantVariety.trim()) {
       alert('Please enter variety!');
       return;
+    } else if (!plantArea.trim()) {
+      alert('Please enter area!');
+      return;
     } else if (!plantAddress.trim()) {
       alert('Please enter address!');
       return;
-    }
-    else {
-        const uri  = imagePathCapture;
-        const filename = uri.substring(uri.lastIndexOf('/') + 1);
-        const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
-        setUploading(true);
-        setTransferred(0);
+    } else {
+      const uri = imagePathCapture;
+      const filename = uri.substring(uri.lastIndexOf('/') + 1);
+      const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
+      setUploading(true);
+      setTransferred(0);
 
-        // storagePath and imagePath
-        const task =   Storage().ref('images/'+filename).putFile(uploadUri)
+      // storagePath and imagePath
+      const task = Storage().ref('images/' + filename).putFile(uploadUri)
 
-        // Process 
-        task.on('state_changed', snapshot => {
-          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          console.log(`Upload is ${progress}% done`);
+      // Process 
+      task.on('state_changed', snapshot => {
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log(`Upload is ${progress}% done`);
 
-          setTransferred(
-            Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 100
-          );
-        });
+        setTransferred(
+          Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        );
+      });
 
-        // Task then
-        task.then(async () => {
-          // get imageDownloadURL
-          const downloadURL  = await Storage().ref('images/'+filename).getDownloadURL(); 
-    
-          // Test
-          // alert('downloadURL: ' + downloadURL);
+      // Task then
+      task.then(async () => {
+        // get imageDownloadURL
+        const downloadURL = await Storage().ref('images/' + filename).getDownloadURL();
 
-          // store data in realtime database
-          database().ref('/plants/' + user.uid + plantTitle)
+        // Test
+        // alert('downloadURL: ' + downloadURL);
+
+        // store data in realtime database
+        database().ref('/plants/' + user.uid + plantTitle)
           .set({
             image: downloadURL,
             title: plantTitle,
@@ -523,40 +1026,39 @@ function PlantNew({ navigation }) {
             date: plantDate.toISOString(),
             plantAddress: plantAddress
           })
-          .then( async() => { 
+          .then(async () => {
             alert('Plant data stored successfully!')
             navigation.goBack()
           });
-        });
+      });
 
-          try {
-            await task;
-          } catch (e) {
-            console.error(e);
-          }
+      try {
+        await task;
+      } catch (e) {
+        console.error(e);
+      }
 
-          setUploading(false);
-          setImage(null);
+      setUploading(false);
+      setImage(null);
     }
   }
   const displayListplant = async () => {
-    const displayList =  database().ref('/plants')
+    const displayList = database().ref('/plants')
   }
 
   return (
-    
     <View style={{ flex: 1, backgroundColor: '#AADCB6' }}>
-               
+
       {
-        uploading ? ( <View style={{ flexDirection:'column', width: '100%',  zIndex:2, position:'absolute' }}>
-            <View style={{backgroundColor: 'rgba(52, 52, 52, 0.2)',justifyContent:'center' , alignItems: 'center' }}>
-              <View style={{padding:30, marginTop:'100%',marginBottom:'100%', backgroundColor:'white', borderRadius:10,justifyContent:'center' , alignItems: 'center',}}>
-                  <Progress.Bar progress={transferred} width={200}  color={'#3E7E55'}/>
-                  <Text style={{fontSize:20, fontWeight:'bold', color:'#3E7E55', marginTop:5}}>Uploading... {transferred}%</Text>
-              </View>
+        uploading ? (<View style={{ flexDirection: 'column', width: '100%', zIndex: 2, position: 'absolute' }}>
+          <View style={{ backgroundColor: 'rgba(52, 52, 52, 0.2)', justifyContent: 'center', alignItems: 'center' }}>
+            <View style={{ padding: 30, marginTop: '100%', marginBottom: '100%', backgroundColor: 'white', borderRadius: 10, justifyContent: 'center', alignItems: 'center', }}>
+              <Progress.Bar progress={transferred} width={200} color={'#3E7E55'} />
+              <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#3E7E55', marginTop: 5 }}>Uploading... {transferred}%</Text>
             </View>
+          </View>
         </View>
-         ) : null
+        ) : null
       }
 
       <StatusBar backgroundColor="transparent" translucent={true} />
@@ -623,6 +1125,9 @@ function PlantNew({ navigation }) {
                 <View style={{ alignItems: 'center', marginTop: 25, marginLeft: 44 }}>
                   <TextInput placeholder={'Variety'} onChangeText={(value) => setPlantVariety(value)} value={plantVariety} o style={{ width: '100%', borderBottomWidth: 1, borderBottomColor: '#276653', fontSize: 18, paddingLeft: 4, paddingTop: -3, paddingBottom: -3, fontWeight: 'bold' }} />
                 </View>
+                <View style={{ alignItems: 'center', marginTop: 25, marginLeft: 44 }}>
+                  <TextInput placeholder={'Area'} onChangeText={(value) => setPlantArea(value)} value={plantVariety} o style={{ width: '100%', borderBottomWidth: 1, borderBottomColor: '#276653', fontSize: 18, paddingLeft: 4, paddingTop: -3, paddingBottom: -3, fontWeight: 'bold' }} />
+                </View>
                 <View style={{ alignItems: 'center', marginTop: 25 }}>
                   <View style={{ flexDirection: 'row', alignItems: 'center', }}>
                     <Icon name={"calendar"} color={'#276653'} size={28} style={{ marginTop: 3, marginRight: 15, marginLeft: 1 }} />
@@ -652,6 +1157,7 @@ function PlantNew({ navigation }) {
                     style={{ fontWeight: 'bold' }}
                   />
                 </View>
+
                 <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 25 }}>
                   <Icon name={"map-marker"} color={'#276653'} size={28} style={{ marginTop: 3, marginRight: 15, marginLeft: 1 }} />
                   <TextInput placeholder={'Address'} onChangeText={(value) => setPlantAddress(value)} value={plantAddress} style={{ width: '86%', borderBottomWidth: 1, borderBottomColor: '#276653', fontSize: 18, paddingLeft: 4, paddingTop: -3, paddingBottom: -3, fontWeight: 'bold' }} />
@@ -665,6 +1171,7 @@ function PlantNew({ navigation }) {
                     </View>
                   </TouchableOpacity>
                 </View >
+
               </View>
             </View>
           </View>

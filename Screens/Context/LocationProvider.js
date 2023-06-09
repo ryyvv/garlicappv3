@@ -2,16 +2,76 @@ import moment from 'moment';
 import axios from 'axios';
 import React, { useEffect, createContext, useState } from 'react';
 import auth from '@react-native-firebase/auth';
+//import Geolocation from '@react-native-community/geolocation';
+import Geolocation from 'react-native-geolocation-service';
+import { PermissionsAndroid, Platform } from 'react-native';
 
 export const LocationContext = createContext();
 
 export const LocationProvider = ({ children }) => {
+
+
+    
     const apiKey = 'eb40ebc2fe0c4d02b2735258230304';
-    const [locations, setLocation] = useState('http://api.weatherapi.com/v1/forecast.json?key=eb40ebc2fe0c4d02b2735258230304&q=batac, ilocos norte&days=7&aqi=yes&alerts=yes')
+    // const [locations, setLocation] = useState('http://api.weatherapi.com/v1/forecast.json?key=eb40ebc2fe0c4d02b2735258230304&q=batac, ilocos norte&days=7&aqi=yes&alerts=yes')
+    const [loooo, setLoooo] = useState(null)
+    const [locas, setLocas] = useState([])
+
+    const [gpsName, setGpsName] = useState();
+    const [gpsUrl, setGpsUrl] = useState();
+    const [gpsWeathCondition, setGpsWeathCondition] = useState('');
+    const [gpsWeathData, setGpsWeathData] = useState('');
+
     const [locationList, setLocationList] = useState([])
+    const [weatherD, setWeatherD] = useState(null);
 
     const [holdlocation, setWeatherHoldLocation] = useState('');
     // FOR DASHBOARD
+
+    
+
+    useEffect(() => {
+        // PermissionRequestUpdate
+        requestLocationPermission();
+    },[])
+
+    useEffect(() => {
+
+        //gpsGet();
+
+        setLOCATION: (data) =>{
+            fetchUpdateDashboard(data);
+            fetchDatas()
+        }
+        datahold();
+        //fetchUpdateDashboard();
+        lAdams();
+        lBacarra();
+        lBadoc();
+        lBangui();
+        lBatac();
+        lBurgos();
+        lCarasi();
+        lCurrimao();
+        lDingras();
+        lDumalneg();
+        lEspiritu();
+        lLaoag();
+        lMarcos();
+        lNuevaEra();
+        lPagudpud();
+        lPaoay();
+        lPasuquin();
+        lPiddig();
+        lPinili();
+        lSanicolas();
+        lSarrat();
+        lSolsona();
+        lVintar(); 
+    
+
+    }, [])
+
 
     const [weathloc, setWeatherloc] = useState('');
     const [weathDate, setWeatherDate] = useState('')
@@ -219,36 +279,85 @@ export const LocationProvider = ({ children }) => {
     const [vintarCondition, setvintarCondition] = useState('')
     const [vintarPerDay, setvintarPerDay] = useState([]);
 
-    useEffect(() => {
-        datahold();
-        fetchDatas();
-        fetchUpdateDashboard();
-        lAdams();
-        lBacarra();
-        lBadoc();
-        lBangui();
-        lBatac();
-        lBurgos();
-        lCarasi();
-        lCurrimao();
-        lDingras();
-        lDumalneg();
-        lEspiritu();
-        lLaoag();
-        lMarcos();
-        lNuevaEra();
-        lPagudpud();
-        lPaoay();
-        lPasuquin();
-        lPiddig();
-        lPinili();
-        lSanicolas();
-        lSarrat();
-        lSolsona();
-        lVintar();
 
-    }, [])
+        // permissionLocation
+        const requestLocationPermission = async () => {
+            if (Platform.OS === 'android') {
+              try {
+                const granted = await PermissionsAndroid.request(
+                  PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+                  {
+                    title: 'Location Permission',
+                    message: 'We need your permission to access your location for weather information.',
+                    buttonNeutral: 'Ask Me Later',
+                    buttonNegative: 'Cancel',
+                    buttonPositive: 'OK',
+                  }
+                );
+      
+                if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                  getCurrentLocation();
+                  console.log("✔ passed 1")
+                } else {
+                    alert('Location permission denied');
+                    console.log('Location permission denied');
+                }
+              } catch (error) {
+                    console.error('Error requesting location permission:', error);
+              }
+            } else if (Platform.OS === 'ios') {
+                    getCurrentLocation();
+            }
+        };
 
+        // getUserLocation      
+        const getCurrentLocation = () => {
+            Geolocation.getCurrentPosition(
+            position => {
+                const { latitude, longitude } = position.coords;
+                fetchWeatherData(latitude, longitude);
+            },
+            error => {
+                console.error('Error getting current location:', error);
+            },
+            { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+            );
+        };
+
+              // getdatalocation
+              const fetchWeatherData = async (latitude, longitude) => {
+                const apiKey = 'eb40ebc2fe0c4d02b2735258230304';
+                const  baseURL1 =`https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${latitude},${longitude}&days=7&aqi=yes&alerts=yes`;
+               console.log('Url: ',baseURL1)
+               fetchDatas(baseURL1);
+               gpsLoc(baseURL1);
+                //  try {
+                //   const response = await  axios.get(baseURL1);
+                //   setWeatherD(response.data);
+                //   console.log(latitude, longitude)
+                //   console.log("Response: ",response.data)
+                //   console.log("✔ passed 2")
+            
+                // } catch (error) {
+                //   console.error('Error fetching  weather data:', error);
+                // }
+    
+                // console.log("Response3: ",weatherD?.location?.name)
+                //   console.log("✔ passed 3")
+                  //return locations;
+
+            //     try {
+            //         setLocation(baseURL1.toString());
+            //         console.log('fetchWeatherData: ',locations)
+            //      } catch (error) {
+            //        console.error('Error fetching  weather data:', error);
+            //   }
+    
+                
+              };
+
+
+ 
 
     const datahold = async () => {
         let data = [
@@ -257,204 +366,195 @@ export const LocationProvider = ({ children }) => {
                 location: 'Adams',
                 isChecked: false,
                 // url: 'http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=Adams&days=7&aqi=yes&alerts=yes'
-                url: 'http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=Adams, Ilocos Norte&days=7&aqi=yes&alerts=yes'
+                url: `http://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=Adams, Ilocos Norte&days=7&aqi=yes&alerts=yes`
             },
             {
                 id: 2,
                 location: 'Bacarra',
                 isChecked: false,
-                url: 'http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=Bacarra, Ilocos Norte&days=7&aqi=yes&alerts=yes'
+                url: `http://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=Bacarra, Ilocos Norte&days=7&aqi=yes&alerts=yes`
             },
             {
                 id: 3,
                 location: 'Badoc',
-                url: 'http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=Badoc, Ilocos Norte&days=7&aqi=yes&alerts=yes'
+                url: `http://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=Badoc, Ilocos Norte&days=7&aqi=yes&alerts=yes`
             },
             {
                 id: 4,
                 location: 'Bangui',
                 isChecked: false,
-                url: 'http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=Bangui, Ilocos Norte&days=7&aqi=yes&alerts=yes'
+                url: `http://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=Bangui, Ilocos Norte&days=7&aqi=yes&alerts=yes`
             },
             {
                 id: 5,
                 location: 'Batac',
                 isChecked: false,
-                url: 'http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=Batac, Ilocos Norte&days=7&aqi=yes&alerts=yes'
+                url: `http://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=Batac, Ilocos Norte&days=7&aqi=yes&alerts=yes`
             },
             {
                 id: 6,
                 location: 'Burgos',
                 isChecked: false,
-                url: 'http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=Burgos, Ilocos Norte&days=7&aqi=yes&alerts=yes'
+                url: `http://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=Burgos, Ilocos Norte&days=7&aqi=yes&alerts=yes`
             },
             {
                 id: 7,
                 location: 'Carasi',
                 isChecked: false,
-                url: 'http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=Carasi, Ilocos Norte&days=7&aqi=yes&alerts=yes'
+                url: `http://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=Carasi, Ilocos Norte&days=7&aqi=yes&alerts=yes`
             },
             {
                 id: 8,
                 location: 'Currimao',
                 isChecked: false,
-                url: 'http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=Currimao, Ilocos Norte&days=7&aqi=yes&alerts=yes'
+                url: `http://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=Currimao, Ilocos Norte&days=7&aqi=yes&alerts=yes`
             },
             {
                 id: 9,
                 location: 'Dingras',
                 isChecked: false,
-                url: 'http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=Dingras, Ilocos Norte&days=7&aqi=yes&alerts=yes'
+                url: `http://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=Dingras, Ilocos Norte&days=7&aqi=yes&alerts=yes`
             },
             {
                 id: 10,
                 location: 'Dumalneg',
                 isChecked: false,
-                url: 'http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=Dumalneg, Ilocos Norte&days=7&aqi=yes&alerts=yes'
+                url: `http://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=Dumalneg, Ilocos Norte&days=7&aqi=yes&alerts=yes`
             },
             {
                 id: 11,
                 location: 'Espiritu',
                 isChecked: false,
-                url: 'http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=Espiritu, Ilocos Norte&days=7&aqi=yes&alerts=yes'
+                url: `http://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=Espiritu, Ilocos Norte&days=7&aqi=yes&alerts=yes`
             },
             {
                 id: 12,
                 location: 'Laoag',
                 isChecked: false,
-                url: 'http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=Laoag, Ilocos Norte&days=7&aqi=yes&alerts=yes'
+                url: `http://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=Laoag, Ilocos Norte&days=7&aqi=yes&alerts=yes`
             },
             {
                 id: 13,
                 location: 'Marcos',
                 isChecked: false,
-                url: 'http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=Marcos, Ilocos Norte&days=7&aqi=yes&alerts=yes'
+                url: `http://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=Marcos, Ilocos Norte&days=7&aqi=yes&alerts=yes`
             },
             {
                 id: 14,
                 isChecked: false,
                 location: 'Nueva Era',
-                url: 'http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=Nueva Era, Ilocos Norte&days=7&aqi=yes&alerts=yes'
+                url: `http://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=Nueva Era, Ilocos Norte&days=7&aqi=yes&alerts=yes`
             },
             {
                 id: 15,
                 isChecked: false,
                 location: 'Pagudpud',
-                url: 'http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=Pagudpud, Ilocos Norte&days=7&aqi=yes&alerts=yes'
+                url: `http://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=Pagudpud, Ilocos Norte&days=7&aqi=yes&alerts=yes`
             },
             {
                 id: 16,
                 isChecked: false,
                 location: 'Paoay',
-                url: 'http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=Paoay, Ilocos Norte&days=7&aqi=yes&alerts=yes'
+                url: `http://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=Paoay, Ilocos Norte&days=7&aqi=yes&alerts=yes`
             },
             {
                 id: 17,
                 location: 'Pasuquin',
                 isChecked: false,
-                url: 'http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=Pasuquin, Ilocos Norte&days=7&aqi=yes&alerts=yes'
+                url: `http://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=Pasuquin, Ilocos Norte&days=7&aqi=yes&alerts=yes`
             },
             {
                 id: 18,
                 location: 'Piddig',
                 isChecked: false,
-                url: 'http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=Piddig, Ilocos Norte&days=7&aqi=yes&alerts=yes'
+                url: `http://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=Piddig, Ilocos Norte&days=7&aqi=yes&alerts=yes`
             },
             {
                 id: 19,
                 location: 'Pinili',
                 isChecked: false,
-                url: 'http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=Pinili, Ilocos Norte&days=7&aqi=yes&alerts=yes'
+                url: `http://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=Pinili, Ilocos Norte&days=7&aqi=yes&alerts=yes`
             },
             {
                 id: 20,
                 location: 'San Nicolas',
                 isChecked: false,
-                url: 'http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=San Nicolas, Ilocos Norte&days=7&aqi=yes&alerts=yes'
+                url: `http://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=San Nicolas, Ilocos Norte&days=7&aqi=yes&alerts=yes`
             },
             {
                 id: 21,
                 location: 'Sarrat',
                 isChecked: false,
-                url: 'http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=Sarrat, Ilocos Norte&days=7&aqi=yes&alerts=yes'
+                url: `http://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=Sarrat, Ilocos Norte&days=7&aqi=yes&alerts=yes`
             },
             {
                 id: 22,
                 location: 'Solsona',
                 isChecked: false,
-                url: 'http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=Solsona, Ilocos Norte&days=7&aqi=yes&alerts=yes'
+                url: `http://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=Solsona, Ilocos Norte&days=7&aqi=yes&alerts=yes`
             },
             {
                 id: 23,
                 location: 'Vintar',
                 isChecked: false,
-                url: 'http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=Vintar, Ilocos Norte&days=7&aqi=yes&alerts=yes'
+                url: `http://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=Vintar, Ilocos Norte&days=7&aqi=yes&alerts=yes`
             },
 
         ];
         setLocationList(data)
     }
-    
-    // RawData
-    const fetchDatas = async () => {
-        const response = await fetch(locations)
-            .then((response) => response.json())
-            .catch((error) => {
-                console.error(error);
-            })
-
  
-        setWeatherloc(response?.location)
-    // console.log(weatherloc)
-    // setWeatherData
-        setWeatherDate(response?.forecast?.forecastday[0])
-    // console.log(weatherDate)
-    // Condition Text&Icon
-        setWeatherCondition(response?.forecast?.forecastday[0]?.day?.condition)
-    // console.log(weatherIcon)
-        setWeatherCondition(response?.forecast?.forecastday[0]?.day?.condition)
-    // console.log(weatherCondition)
-    // setWeatherData
-        setWeatherData(response?.forecast?.forecastday[0]?.day)
-    // console.log(weatherData)
-    // setCurrent(response?.current?.last_updated) //date&Time
-        setWeatherPerHour(response?.forecast?.forecastday[0]?.hour)
-    // console.log(weatherPerHour)
-        setWeatherPerDay(response?.forecast?.forecastday)
-        return locations
-    }
 
     // RawData
-    // const fetchDatas = async () => {
-    //     try {
-    //         const response = await axios.get('https://api.weatherapi.com/v1/forecast.json?key=eb40ebc2fe0c4d02b2735258230304&q=batac, ilocos norte&days=7&aqi=yes&alerts=yes');
-    //         console.log(response.data);
-    //         setWeatherloc(response?.location)
-    //         setWeatherDate(response?.forecast?.forecastday[0])
-    //         setWeatherCondition(response?.forecast?.forecastday[0]?.day?.condition)
-    //         setWeatherCondition(response?.forecast?.forecastday[0]?.day?.condition)
-    //         setWeatherData(response?.forecast?.forecastday[0]?.day)
-    //         setWeatherPerHour(response?.forecast?.forecastday[0]?.hour)
-    //         setWeatherPerDay(response?.forecast)
-    //       } catch (error) {
-    //         console.error(error);
-    //       }
+    const fetchDatas = async (loooo) => {
+        
+        console.log('FetchData: ' , loooo)
+        const response =  await fetch(loooo)
+        .then((response) => response.json())
+        .catch((error) => {
+            console.error(error);
+        })
 
+
+    setWeatherloc(response?.location)
+    setWeatherDate(response?.location)
+    setWeatherCondition(response?.forecast?.forecastday[0]?.day?.condition)
+    setWeatherData(response?.forecast?.forecastday[0]?.day)
+    setWeatherPerHour(response?.forecast?.forecastday[0]?.hour)
+    setWeatherPerDay(response?.forecast?.forecastday)
        
-
-    //     return locations
-    // }
+    }
 
     const fetchUpdateDashboard = (data) => {
         locationList.forEach((items) => {
             if (items.location == data) {
-                setLocation(items.url)
-                console.log('place', items.location)
-                console.log('place Url', items.url)
+                fetchDatas(items.url)
+                // Checked
+                // console.log('place', items.location)
+                // console.log('place Url', items.url)
             }
         })
-        setWeatherHoldLocation(data)
-        return locations
+        setWeatherHoldLocation(data) 
+    }
+
+    const gpsLoc = async (loooo) => {
+
+        console.log('GPSLoc: ' , loooo)
+        const responseGps =  await fetch(loooo)
+        .then((response) => response.json())
+        .catch((error) => {
+            console.error(error);
+        })
+        
+        // getLocName
+        const locationName = responseGps?.location?.name+ ', '+ responseGps?.location?.region;
+        console.log(locationName)
+        setGpsName(locationName);
+        setGpsUrl(loooo)
+        setGpsWeathCondition(responseGps?.forecast?.forecastday[0]?.day?.condition)
+        setGpsWeathData(responseGps?.forecast?.forecastday[0]?.day)
+
+      
     }
 
     const lAdams = async () => {    
@@ -483,7 +583,7 @@ export const LocationProvider = ({ children }) => {
         setadamPerDay(response?.forecast?.forecastday?.day)
         // console.log(weatherPerHour)
 
-        return locations
+        // return locations
     }
 
     const lBacarra = async () => {
@@ -668,7 +768,7 @@ export const LocationProvider = ({ children }) => {
 
         setcurrimaoPerDay(response?.forecast?.forecastday?.day)
         // console.log(weatherPerHour)
-
+        
     }
 
     const lDingras = async () => {
@@ -753,7 +853,7 @@ export const LocationProvider = ({ children }) => {
         setespirituPerDay(response?.forecast?.forecastday?.day)
         // console.log(weatherPerHour)
 
-        return locations
+        // return locations
     }
 
     const lLaoag = async () => {
@@ -809,7 +909,7 @@ export const LocationProvider = ({ children }) => {
         setmarcosPerDay(response?.forecast?.forecastday?.day)
         // console.log(weatherPerHour)
 
-        return locations
+        // return locations
     }
 
     const lNuevaEra = async () => {
@@ -836,7 +936,7 @@ export const LocationProvider = ({ children }) => {
         setnuevaeraPerHour(response?.forecast?.forecastday[0]?.hour)
         // console.log(weatherPerHour)
         setnuevaeraPerDay(response?.forecast?.forecastday?.day)
-        return locations
+        // return locations
     }
 
     const lPagudpud = async () => {
@@ -864,7 +964,7 @@ export const LocationProvider = ({ children }) => {
         // console.log(weatherPerHour)
         setpagudpudPerDay(response?.forecast?.forecastday?.day)
 
-        return locations
+        // return locations
     }
 
     const lPaoay = async () => {
@@ -893,7 +993,7 @@ export const LocationProvider = ({ children }) => {
         setpaoayPerDay(response?.forecast?.forecastday?.day)
         // console.log(weatherPerHour)
 
-        return locations
+        // return locations
     }
 
     const lPasuquin = async () => {
@@ -921,7 +1021,7 @@ export const LocationProvider = ({ children }) => {
         // console.log(weatherPerHour)
         setpasuquinPerDay(response?.forecast?.forecastday?.day)
 
-        return locations
+        // return locations
     }
 
     const lPiddig = async () => {
@@ -949,7 +1049,7 @@ export const LocationProvider = ({ children }) => {
         // console.log(weatherPerHour)
         setpiddigPerDay(response?.forecast?.forecastday?.day)
 
-        return locations
+        //return locations
     }
 
     const lPinili = async () => {
@@ -977,7 +1077,7 @@ export const LocationProvider = ({ children }) => {
         // console.log(weatherPerHour)
         setpiniliPerDay(response?.forecast?.forecastday?.day)
 
-        return locations
+        //return locations
     }
 
     const lSanicolas = async () => {
@@ -1005,7 +1105,7 @@ export const LocationProvider = ({ children }) => {
         // console.log(weatherPerHour)
         setsanicolasPerDay(response?.forecast?.forecastday[0]?.day)
 
-        return locations
+        //return locations
     }
 
     const lSarrat = async () => {
@@ -1060,7 +1160,7 @@ export const LocationProvider = ({ children }) => {
         // console.log(weatherPerHour)
         setsolsonaPerDay(response?.forecast?.forecastday[0]?.day)
 
-        return locations
+        //return locations
     }
 
     const lVintar = async () => {
@@ -1088,19 +1188,24 @@ export const LocationProvider = ({ children }) => {
         // console.log(weatherPerHour)
         setvintarPerDay(response?.forecast?.forecastday?.day)
 
-        return locations
+        //return locations
     }
 
 
 
     return (
         <LocationContext.Provider value={{
-            locations, setLocation, locationList, 
+            loooo, setLoooo, gpsName, gpsUrl, gpsWeathData, gpsWeathCondition, locationList, 
             weathloc, weathDate, weathIcon, weathData, weathPerHour, weathCondition, weathPerDay, 
             setLOCATION: (data) => {
                 fetchUpdateDashboard(data);
-                fetchDatas()
-            }, holdlocation, setWeatherHoldLocation,
+                console.log('Change to Loc list!')
+            },
+            setGpsLocationUpdate: (gps) => {
+                fetchDatas(gps)
+                console.log('Change to Gps data!')
+
+            },  holdlocation, setWeatherHoldLocation,
             adamloc, adamDate, adamIcon, adamData, adamPerHour, adamCondition, adamPerDay,
             bacarraloc, bacarraDate, bacarraIcon, bacarraData, bacarraPerHour, bacarraCondition,bacarraPerDay,
             badocloc, badocDate, badocIcon, badocData, badocPerHour, badocCondition,bacarraPerDay,
@@ -1123,9 +1228,8 @@ export const LocationProvider = ({ children }) => {
             sanicolasloc, sanicolasDate, sanicolasIcon, sanicolasData, sanicolasPerHour, sanicolasCondition,sanicolasPerDay,
             sarratloc, sarratDate, sarratIcon, sarratData, sarratPerHour, sarratCondition,sarratPerDay,
             solsonaloc, solsonaDate, solsonaIcon, solsonaData, solsonaPerHour, solsonaCondition,solsonaPerDay,
-            vintarloc, vintarDate, vintarIcon, vintarData, vintarPerHour, vintarCondition,vintarPerDay,
-        }
-        }>
+            vintarloc, vintarDate, vintarIcon, vintarData, vintarPerHour, vintarCondition,vintarPerDay, weatherD
+        }}>
             {children}
         </LocationContext.Provider >
     )

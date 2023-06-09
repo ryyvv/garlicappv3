@@ -63,47 +63,16 @@ function Wforecast({ navigation }) {
                         {/* Forecast */}
                         <View style={{ flex: 0.5, marginTop: 80 }}>
                             <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', marginLeft: 6, marginRight: 6 }}>
-                                <Text style={{ fontSize: 25, fontWeight: '900', marginBottom: 10 }}>Forecast Report</Text>
-                                {/* Testlocation */}
-                                <Text style={{ fontSize: 15,color:'red', fontWeight: '900', marginBottom: 10 }}>Test location: {weathloc.name}</Text>
-                                <TouchableOpacity onPress={() => navigation.navigate('SearchLocation')}>
-                                    {/* <Icon name={"map-marker-radius-outline"} color={'gray'} size={37} style={{ paddingLeft: 3, marginLeft: -5, width: 45, }} /> */}
-                                </TouchableOpacity>
+                                <Text style={{ fontSize: 25, fontWeight: '900', marginBottom: 10, color: '#276653' }}>Forecast Report</Text>
                             </View>
                         </View>
 
-                        {/* Hourly */}
-                        {/* <View style={styles.dashboardHourly}>
-                            <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Today</Text>
-                            <ScrollView horizontal={true}>
-                                {
-                                    perHour.map((hours, u) => {
-                                        return (
-                                            <View key={u} style={{ marginRight: 12, marginBottom: 10 }}>
-                                                <View style={[styles.cardDashboardHourly, styles.cardDashboardHourlyProp]}>
-                                                    <View style={styles.div2RowSpaceEven}>
-                                                        <View style={{ padding: 4 }}>
-                                                            <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 45, height: 45 }} />
-                                                        </View>
-                                                        <View style={{ justifyContent: 'flex-end' }}>
-                                                            <Text style={{ fontSize: 14 }}>{moment(hours.time).format("hh:mmA")}</Text>
-                                                            <Text style={{ fontSize: 20, fontWeight: 'bold' }}>{hours.temp_c}°C</Text>
-                                                        </View>
-                                                    </View>
-                                                </View>
-                                            </View>
-                                        );
-                                    })
-                                }
-                            </ScrollView>
-                        </View> */}
                         <View style={   styles.dashboardHourly}>
-                            {/* <Text style={{fontSize:18, fontWeight:'bold'}}>Hourly</Text> */}
                             <ScrollView horizontal={true}
                                 showsVerticalScrollIndicator={false}>
                                 {weathPerHour.map((wperhour, p) => {
                                 return (
-                                    <View key={p} style={{ marginRight: 12, marginBottom: 10 }}>
+                                <View key={p} style={{ marginRight: 12, marginBottom: 10 }}>
                                         <View
                                             style={[
                                             styles.cardDashboardHourly,
@@ -131,22 +100,21 @@ function Wforecast({ navigation }) {
                                                     fontWeight: '900',
                                                     color: '#276653',
                                                 }}>
-                                                {wperhour.temp_c}
+                                                {wperhour.temp_c}°C
                                                 </Text>
                                             </View>
                                             </View>
                                         </View>
-                                    </View>
+                                </View>
                                 );
                                 })}
                             </ScrollView>
                         </View>
 
-
                         {/* Next day*/}
                         <View style={styles.dashboardForecastDay}>
                             <View style={styles.div2RowSpaceBetween}>
-                                <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 10 }}>Next forecast</Text>
+                                <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 10,  color: '#276653' }}>Next forecast</Text>
                                 {/* <Icon name={"calendar-month"} color={'gray'} size={37} style={{ paddingLeft: 3, marginLeft: -5, width: 45, }} /> */}
                             </View>
 
@@ -172,8 +140,6 @@ function Wforecast({ navigation }) {
                             } 
                         
                         </View>
-
-
                     </View>
                 </ScrollView>
             </ImageBackground>

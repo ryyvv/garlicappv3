@@ -10,7 +10,7 @@ export default globalStyles = StyleSheet.create({
     // #235484  #3E7E55
     // #3271a5  #7ABD87
     // #3982b8  #AADCB6  #cbe6d1
-    // #4194cb  #CADEC8
+    // #4194cb  #CADEC8   #999999
     // #46a2da  #EAEEE5
     // #58afdd  #CEE98E
     // #6abce2  #E1F5DA
@@ -129,6 +129,20 @@ export default globalStyles = StyleSheet.create({
         marginVertical: 10,
     },
     cardDashboardProp: {
+        shadowColor: 'black',
+        shadowOffset: { width: -2, height: 4 },
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+        elevation: 20,
+    },
+    cardDashboardSkel: {
+        backgroundColor: 'white',
+        borderRadius: 8,
+        paddingVertical: 25,
+        width: '100%',
+        marginVertical: 10,
+    },
+    cardDashboardPropSkel: {
         shadowColor: 'black',
         shadowOffset: { width: -2, height: 4 },
         shadowOpacity: 0.2,
@@ -333,6 +347,13 @@ export default globalStyles = StyleSheet.create({
         marginRight: 15,
     },
     dashboardHourly: {
+        marginTop: 10,
+        marginBottom: 10,
+        // marginLeft: 15,
+        // marginRight: 15,
+    },
+
+    dashboardRecent: {
         marginTop: 10,
         marginBottom: 10,
         marginLeft: 15,

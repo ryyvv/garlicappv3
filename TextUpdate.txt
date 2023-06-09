@@ -55,6 +55,13 @@ Error@javascript_module
 npm install react-native-image-picker --save
 npm react-native link react-native-image-picker
 
+
+react native-gps
+https://www.npmjs.com/package/react-native-geolocation-service
+ACCESS_FINE_LOCATION: 'android.permission.ACCESS_FINE_LOCATION'
+ACCESS_COARSE_LOCATION: 'android.permission.ACCESS_COARSE_LOCATION'
+ACCESS_BACKGROUND_LOCATION: 'android.permission.ACCESS_BACKGROUND_LOCATION'
+
 e
 You can also try use "doctor" command. It will fix most cases.
 npx @react-native-community/cli doctor
@@ -167,3 +174,23 @@ April 8, 2023
 Progress bar
 https://www.npmjs.com/package/react-native-progress
 import * as Progress from 'react-native-progress';
+
+
+
+
+
+
+
+Test 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Test#1 gettingdatafromAPI v1 
+    // const gpsAPIResponse = fetch(baseURL1)
+    // .then(gpsAPIResponse => gpsAPIResponse.json())
+    // .then(data => console.log("dataInside: ",data?.forecast));
+    // console.log("lon at la/LocationName : ", gpsAPIResponse?.location.name)
+
+
+New navigation view 
+Material Top navigation
+npm install @react-navigation/material-top-tabs react-native-tab-view
+npm install react-native-pager-view

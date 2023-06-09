@@ -16,7 +16,6 @@ import {
 // icons
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { LazyLoadImage } from 'react-native-lazy-load-image';
 
 import styles from '../../src/css/styles';
 import { AuthContext } from '../Context/AuthProvider';
@@ -32,11 +31,8 @@ export default function Dashboard({ navigation }) {
   const { logout, user } = useContext(AuthContext);
   const [listPD, setListPD] = useState(null);
   const {
- 
-    gpsName,
-    gpsUrl,
-    gpsWeathData,
-    gpsWeathCondition,
+    locations,
+    setLocation,
     locationList,
     weathloc,
     weathDate,
@@ -46,7 +42,6 @@ export default function Dashboard({ navigation }) {
     weathCondition, 
     weathPerDay,
     setLOCATION,
-    setGpsLocationUpdate,
     holdlocation,
     setWeatherHoldLocation,
     adamloc,
@@ -366,7 +361,7 @@ export default function Dashboard({ navigation }) {
             <View style={styles.dashboardWeather}>
               <View style={{ marginBottom: 10, marginTop: 90 }}>
                 {/* shimmer */}
-                  {weathloc ? (
+                  {weatherD ? (
                     <View>
                       <View style={{ marginBottom: 40 }}>
                       <TouchableOpacity onPress={() => refRBSheets.current.open()}>
@@ -378,7 +373,7 @@ export default function Dashboard({ navigation }) {
                               fontSize: 25,
                               color: '#276653',
                             }}>
-                           {weathloc.name}, {weathloc.region} 
+                            {weatherD.location.name}, {weatherD.location.region} 
                           </Text>
                           <Text
                             style={{
@@ -386,7 +381,7 @@ export default function Dashboard({ navigation }) {
                               color: '#7D8F69',
                               fontWeight: 'bold',
                             }}>
-                            {moment(weathDate.localtime).format("MMMM D, YYYY")}
+                            {moment(weatherD.location.localtime).format('MMMM D, YYYY')}
                           </Text>
                         </View>
                       </TouchableOpacity>
@@ -435,7 +430,7 @@ export default function Dashboard({ navigation }) {
                             <View>
                               <TouchableOpacity
                                 onPress={() => {
-                                 setGpsLocationUpdate(gpsUrl)
+                                  // setLoc('Adams, Ilocos Norte')
                                 }}>
                                 <View style={styles.dashboardForecastDay}>
                                   <View
@@ -462,7 +457,8 @@ export default function Dashboard({ navigation }) {
                                           justifyContent: 'flex-end',
                                           color: '#276653',
                                         }}>
-                                        {gpsName} (GPS)
+                                         
+                                        {weatherD.location.name}, {weatherD.location.region} (GPS)
                                       </Text>
                                   
                                     </View>
@@ -495,7 +491,7 @@ export default function Dashboard({ navigation }) {
                                               paddingLeft: 20,
                                               color: '#276653',
                                             }}>
-                                             {gpsWeathData.avgtemp_c}°C
+                                             {weatherD.forecast.forecastday[0].day.avgtemp_c }  
                                           </Text>
                                           <Icon
                                             name={'thermometer'}
@@ -513,8 +509,8 @@ export default function Dashboard({ navigation }) {
                                             paddingLeft: 20,
                                             flexWrap: 'wrap',
                                             alignItems: 'flex-start',
-                                          }}> 
-                                            {gpsWeathCondition.text}
+                                          }}>
+                                         {weatherD.forecast.forecastday[0].day.condition.text} 
                                         </Text>
                                       </View>
                                     </View>
@@ -2680,7 +2676,7 @@ export default function Dashboard({ navigation }) {
                                 </Text>
                                 <View style={{ flexDirection: 'row' }}>
                                   <Text style={{ fontWeight: '900', fontSize: 20, color: '#276653'}}>
-                                  {weathData.avgtemp_c}°C
+                                    {weatherD.forecast.forecastday[0].day.avgtemp_c }   
                                   </Text>
                                   <Icon
                                     name={'thermometer'}
@@ -2702,7 +2698,7 @@ export default function Dashboard({ navigation }) {
                                       fontSize: 20,
                                       color: '#276653',
                                     }}>
-                                   {weathData.maxwind_kph}kph
+                                    {weatherD.forecast.forecastday[0].day.maxwind_kph}  
                                   </Text>
                                   <Icon
                                     name={'weather-windy'}
@@ -2724,7 +2720,7 @@ export default function Dashboard({ navigation }) {
                                       fontSize: 20,
                                       color: '#276653',
                                     }}>
-                                    {weathData.avghumidity}%
+                                    {weatherD.forecast.forecastday[0].day.avghumidity}  
                                   </Text>
                                   <Icon
                                     name={'water-outline'}
@@ -2740,9 +2736,8 @@ export default function Dashboard({ navigation }) {
                       {/* WeatherIcon */}
                       <View  style={{justifyContent: 'center',alignItems: 'center',marginTop: -450,marginBottom: 80}}>
                         <Image source={require('../../src/weatherIcons/Cloudy.png')} style={{ width: 380, height:210 }} />
-                        {/* <LazyLoadImage source={require('../../src/weatherIcons/Cloudy.png')} style={{ width: 380, height:210 }} /> */}
                         <Text style={{ fontWeight: '900', fontSize: 18, color: '#276653' }}>
-                        {weathCondition.text}
+                        {weatherD.forecast.forecastday[0].day.condition.text} 
                           </Text>
                       </View>
                     
@@ -2751,7 +2746,7 @@ export default function Dashboard({ navigation }) {
                         {/* <Text style={{fontSize:18, fontWeight:'bold'}}>Hourly</Text> */}
                         <ScrollView horizontal={true}
                           showsVerticalScrollIndicator={false}>
-                          {weathPerHour.map((wperhour, p) => {
+                          {weatherD.forecast.forecastday[0].hour.map((wperhour, p) => {
                             return (
                               <View key={p} style={{ marginRight: 12, marginBottom: 10 }}>
                                 <View
@@ -2781,7 +2776,7 @@ export default function Dashboard({ navigation }) {
                                           fontWeight: '900',
                                           color: '#276653',
                                         }}>
-                                        {wperhour.temp_c}°C 
+                                        {wperhour.temp_c}
                                       </Text>
                                     </View>
                                   </View>
@@ -2797,7 +2792,7 @@ export default function Dashboard({ navigation }) {
                    <View>
                      <View style={{flexDirection:'row'}}>
                       <Text style={{ fontWeight: '900', fontSize: 18, color: '#276653' }}>
-                        DASHBOARD
+                           DASHBOARD
                       </Text>
                      </View>
  
