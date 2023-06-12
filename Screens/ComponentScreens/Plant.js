@@ -12,6 +12,26 @@ import database from '@react-native-firebase/database';
 import { AuthContext } from '../Context/AuthProvider';
 import { LazyLoadImage } from 'react-native-lazy-load-image';
 
+// Request data
+import { LocationContext } from '../Context/LocationProvider';
+const { logout, user } = useContext(AuthContext);
+const {
+ 
+  gpsName,
+  gpsUrl,
+  gpsWeathData,
+  gpsWeathCondition,
+  locationList,
+  weathloc,
+  weathDate,
+  weathIcon,
+  weathData,
+  weathPerHour,
+  weathCondition, 
+  weathPerDay,
+
+} = useContext(LocationContext);
+
 const dbRef = database().ref('images');
 
 import {
@@ -191,8 +211,9 @@ function PlantID({ route, navigation }) {
           <Text style={{ fontWeight: 'bold', fontSize: 30, color: 'white' }}>name</Text>
           <Text style={{ fontWeight: 'bold', fontSize: 20, fontStyle: 'italic', color: 'white' }}>spname</Text>
         </View>
-        <View
-          style={{ position: 'absolute', bottom: 0, paddingLeft: 60 }}></View>
+        <View style={{ position: 'absolute', bottom: 0, paddingLeft: 60 }}>
+          <Text>fsdfsf</Text>
+        </View>
       </Animated.View>
       <View style={{
         flex: 2,
@@ -223,17 +244,14 @@ function PlantID({ route, navigation }) {
           <View>
             {/* Description */}
             <View style={{ marginRight: 12, marginBottom: 10 }}>
-                    <View
+              <View
                       style={[
                         styles.cardDashboardHourly,
                         styles.cardDashboardHourlyProp,
                       ]}>
                       <View style={styles.div2RowSpaceEven}>
                         <View style={{ padding: 4 }}>
-                          <Image
-                            source={require('../../src/images/sunRAsset2.png')}
-                            style={{ width: 45, height: 45 }}
-                          />
+                          <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 45, height: 45 }} />
                         </View>
                         <View style={{ justifyContent: 'flex-end' }}>
                           <Text
@@ -254,8 +272,9 @@ function PlantID({ route, navigation }) {
                           </Text>
                         </View>
                       </View>
-                    </View>
+               </View>
             </View>
+
             <View>
               <Text style={{ color: 'white', marginBottom: 10, fontWeight: 'bold', fontSize: 20 }}>Timeline</Text>
               <View style={styles.dashboardHourly}>
@@ -298,487 +317,12 @@ function PlantID({ route, navigation }) {
                       </View>
                     </View>
                   </View>
-                  <View style={{ marginRight: 12, marginBottom: 10 }}>
-                    <View
-                      style={[
-                        styles.cardDashboardHourly,
-                        styles.cardDashboardHourlyProp,
-                      ]}>
-                      <View style={styles.div2RowSpaceEven}>
-                        <View style={{ padding: 4 }}>
-                          <Image
-                            source={require('../../src/images/sunRAsset2.png')}
-                            style={{ width: 45, height: 45 }}
-                          />
-                        </View>
-                        <View style={{ justifyContent: 'flex-end' }}>
-                          <Text
-                            style={{
-                              fontSize: 14,
-                              fontWeight: 'bold',
-                              color: '#8eb4a9',
-                            }}>
-                            1212121
-                          </Text>
-                          <Text
-                            style={{
-                              fontSize: 20,
-                              fontWeight: '900',
-                              color: '#276653',
-                            }}>
-                            1212
-                          </Text>
-                        </View>
-                      </View>
-                    </View>
-                  </View>
-                  <View style={{ marginRight: 12, marginBottom: 10 }}>
-                    <View
-                      style={[
-                        styles.cardDashboardHourly,
-                        styles.cardDashboardHourlyProp,
-                      ]}>
-                      <View style={styles.div2RowSpaceEven}>
-                        <View style={{ padding: 4 }}>
-                          <Image
-                            source={require('../../src/images/sunRAsset2.png')}
-                            style={{ width: 45, height: 45 }}
-                          />
-                        </View>
-                        <View style={{ justifyContent: 'flex-end' }}>
-                          <Text
-                            style={{
-                              fontSize: 14,
-                              fontWeight: 'bold',
-                              color: '#8eb4a9',
-                            }}>
-                            1212121
-                          </Text>
-                          <Text
-                            style={{
-                              fontSize: 20,
-                              fontWeight: '900',
-                              color: '#276653',
-                            }}>
-                            1212
-                          </Text>
-                        </View>
-                      </View>
-                    </View>
-                  </View>
-                  <View style={{ marginRight: 12, marginBottom: 10 }}>
-                    <View
-                      style={[
-                        styles.cardDashboardHourly,
-                        styles.cardDashboardHourlyProp,
-                      ]}>
-                      <View style={styles.div2RowSpaceEven}>
-                        <View style={{ padding: 4 }}>
-                          <Image
-                            source={require('../../src/images/sunRAsset2.png')}
-                            style={{ width: 45, height: 45 }}
-                          />
-                        </View>
-                        <View style={{ justifyContent: 'flex-end' }}>
-                          <Text
-                            style={{
-                              fontSize: 14,
-                              fontWeight: 'bold',
-                              color: '#8eb4a9',
-                            }}>
-                            1212121
-                          </Text>
-                          <Text
-                            style={{
-                              fontSize: 20,
-                              fontWeight: '900',
-                              color: '#276653',
-                            }}>
-                            1212
-                          </Text>
-                        </View>
-                      </View>
-                    </View>
-                  </View>
-                  <View style={{ marginRight: 12, marginBottom: 10 }}>
-                    <View
-                      style={[
-                        styles.cardDashboardHourly,
-                        styles.cardDashboardHourlyProp,
-                      ]}>
-                      <View style={styles.div2RowSpaceEven}>
-                        <View style={{ padding: 4 }}>
-                          <Image
-                            source={require('../../src/images/sunRAsset2.png')}
-                            style={{ width: 45, height: 45 }}
-                          />
-                        </View>
-                        <View style={{ justifyContent: 'flex-end' }}>
-                          <Text
-                            style={{
-                              fontSize: 14,
-                              fontWeight: 'bold',
-                              color: '#8eb4a9',
-                            }}>
-                            1212121
-                          </Text>
-                          <Text
-                            style={{
-                              fontSize: 20,
-                              fontWeight: '900',
-                              color: '#276653',
-                            }}>
-                            1212
-                          </Text>
-                        </View>
-                      </View>
-                    </View>
-                  </View>
-                  <View style={{ marginRight: 12, marginBottom: 10 }}>
-                    <View
-                      style={[
-                        styles.cardDashboardHourly,
-                        styles.cardDashboardHourlyProp,
-                      ]}>
-                      <View style={styles.div2RowSpaceEven}>
-                        <View style={{ padding: 4 }}>
-                          <Image
-                            source={require('../../src/images/sunRAsset2.png')}
-                            style={{ width: 45, height: 45 }}
-                          />
-                        </View>
-                        <View style={{ justifyContent: 'flex-end' }}>
-                          <Text
-                            style={{
-                              fontSize: 14,
-                              fontWeight: 'bold',
-                              color: '#8eb4a9',
-                            }}>
-                            1212121
-                          </Text>
-                          <Text
-                            style={{
-                              fontSize: 20,
-                              fontWeight: '900',
-                              color: '#276653',
-                            }}>
-                            1212
-                          </Text>
-                        </View>
-                      </View>
-                    </View>
-                  </View>s
-                  <View style={{ marginRight: 12, marginBottom: 10 }}>
-                    <View
-                      style={[
-                        styles.cardDashboardHourly,
-                        styles.cardDashboardHourlyProp,
-                      ]}>
-                      <View style={styles.div2RowSpaceEven}>
-                        <View style={{ padding: 4 }}>
-                          <Image
-                            source={require('../../src/images/sunRAsset2.png')}
-                            style={{ width: 45, height: 45 }}
-                          />
-                        </View>
-                        <View style={{ justifyContent: 'flex-end' }}>
-                          <Text
-                            style={{
-                              fontSize: 14,
-                              fontWeight: 'bold',
-                              color: '#8eb4a9',
-                            }}>
-                            1212121
-                          </Text>
-                          <Text
-                            style={{
-                              fontSize: 20,
-                              fontWeight: '900',
-                              color: '#276653',
-                            }}>
-                            1212
-                          </Text>
-                        </View>
-                      </View>
-                    </View>
-                  </View>
-                  <View style={{ marginRight: 12, marginBottom: 10 }}>
-                    <View
-                      style={[
-                        styles.cardDashboardHourly,
-                        styles.cardDashboardHourlyProp,
-                      ]}>
-                      <View style={styles.div2RowSpaceEven}>
-                        <View style={{ padding: 4 }}>
-                          <Image
-                            source={require('../../src/images/sunRAsset2.png')}
-                            style={{ width: 45, height: 45 }}
-                          />
-                        </View>
-                        <View style={{ justifyContent: 'flex-end' }}>
-                          <Text
-                            style={{
-                              fontSize: 14,
-                              fontWeight: 'bold',
-                              color: '#8eb4a9',
-                            }}>
-                            1212121
-                          </Text>
-                          <Text
-                            style={{
-                              fontSize: 20,
-                              fontWeight: '900',
-                              color: '#276653',
-                            }}>
-                            1212
-                          </Text>
-                        </View>
-                      </View>
-                    </View>
-                  </View>
-                  <View style={{ marginRight: 12, marginBottom: 10 }}>
-                    <View
-                      style={[
-                        styles.cardDashboardHourly,
-                        styles.cardDashboardHourlyProp,
-                      ]}>
-                      <View style={styles.div2RowSpaceEven}>
-                        <View style={{ padding: 4 }}>
-                          <Image
-                            source={require('../../src/images/sunRAsset2.png')}
-                            style={{ width: 45, height: 45 }}
-                          />
-                        </View>
-                        <View style={{ justifyContent: 'flex-end' }}>
-                          <Text
-                            style={{
-                              fontSize: 14,
-                              fontWeight: 'bold',
-                              color: '#8eb4a9',
-                            }}>
-                            1212121
-                          </Text>
-                          <Text
-                            style={{
-                              fontSize: 20,
-                              fontWeight: '900',
-                              color: '#276653',
-                            }}>
-                            1212
-                          </Text>
-                        </View>
-                      </View>
-                    </View>
-                  </View>
-                  <View style={{ marginRight: 12, marginBottom: 10 }}>
-                    <View
-                      style={[
-                        styles.cardDashboardHourly,
-                        styles.cardDashboardHourlyProp,
-                      ]}>
-                      <View style={styles.div2RowSpaceEven}>
-                        <View style={{ padding: 4 }}>
-                          <Image
-                            source={require('../../src/images/sunRAsset2.png')}
-                            style={{ width: 45, height: 45 }}
-                          />
-                        </View>
-                        <View style={{ justifyContent: 'flex-end' }}>
-                          <Text
-                            style={{
-                              fontSize: 14,
-                              fontWeight: 'bold',
-                              color: '#8eb4a9',
-                            }}>
-                            1212121
-                          </Text>
-                          <Text
-                            style={{
-                              fontSize: 20,
-                              fontWeight: '900',
-                              color: '#276653',
-                            }}>
-                            1212
-                          </Text>
-                        </View>
-                      </View>
-                    </View>
-                  </View>
-                  <View style={{ marginRight: 12, marginBottom: 10 }}>
-                    <View
-                      style={[
-                        styles.cardDashboardHourly,
-                        styles.cardDashboardHourlyProp,
-                      ]}>
-                      <View style={styles.div2RowSpaceEven}>
-                        <View style={{ padding: 4 }}>
-                          <Image
-                            source={require('../../src/images/sunRAsset2.png')}
-                            style={{ width: 45, height: 45 }}
-                          />
-                        </View>
-                        <View style={{ justifyContent: 'flex-end' }}>
-                          <Text
-                            style={{
-                              fontSize: 14,
-                              fontWeight: 'bold',
-                              color: '#8eb4a9',
-                            }}>
-                            1212121
-                          </Text>
-                          <Text
-                            style={{
-                              fontSize: 20,
-                              fontWeight: '900',
-                              color: '#276653',
-                            }}>
-                            1212
-                          </Text>
-                        </View>
-                      </View>
-                    </View>
-                  </View>
-                  <View style={{ marginRight: 12, marginBottom: 10 }}>
-                    <View
-                      style={[
-                        styles.cardDashboardHourly,
-                        styles.cardDashboardHourlyProp,
-                      ]}>
-                      <View style={styles.div2RowSpaceEven}>
-                        <View style={{ padding: 4 }}>
-                          <Image
-                            source={require('../../src/images/sunRAsset2.png')}
-                            style={{ width: 45, height: 45 }}
-                          />
-                        </View>
-                        <View style={{ justifyContent: 'flex-end' }}>
-                          <Text
-                            style={{
-                              fontSize: 14,
-                              fontWeight: 'bold',
-                              color: '#8eb4a9',
-                            }}>
-                            1212121
-                          </Text>
-                          <Text
-                            style={{
-                              fontSize: 20,
-                              fontWeight: '900',
-                              color: '#276653',
-                            }}>
-                            1212
-                          </Text>
-                        </View>
-                      </View>
-                    </View>
-                  </View>
-                  <View style={{ marginRight: 12, marginBottom: 10 }}>
-                    <View
-                      style={[
-                        styles.cardDashboardHourly,
-                        styles.cardDashboardHourlyProp,
-                      ]}>
-                      <View style={styles.div2RowSpaceEven}>
-                        <View style={{ padding: 4 }}>
-                          <Image
-                            source={require('../../src/images/sunRAsset2.png')}
-                            style={{ width: 45, height: 45 }}
-                          />
-                        </View>
-                        <View style={{ justifyContent: 'flex-end' }}>
-                          <Text
-                            style={{
-                              fontSize: 14,
-                              fontWeight: 'bold',
-                              color: '#8eb4a9',
-                            }}>
-                            1212121
-                          </Text>
-                          <Text
-                            style={{
-                              fontSize: 20,
-                              fontWeight: '900',
-                              color: '#276653',
-                            }}>
-                            1212
-                          </Text>
-                        </View>
-                      </View>
-                    </View>
-                  </View>
-                  <View style={{ marginRight: 12, marginBottom: 10 }}>
-                    <View
-                      style={[
-                        styles.cardDashboardHourly,
-                        styles.cardDashboardHourlyProp,
-                      ]}>
-                      <View style={styles.div2RowSpaceEven}>
-                        <View style={{ padding: 4 }}>
-                          <Image
-                            source={require('../../src/images/sunRAsset2.png')}
-                            style={{ width: 45, height: 45 }}
-                          />
-                        </View>
-                        <View style={{ justifyContent: 'flex-end' }}>
-                          <Text
-                            style={{
-                              fontSize: 14,
-                              fontWeight: 'bold',
-                              color: '#8eb4a9',
-                            }}>
-                            1212121
-                          </Text>
-                          <Text
-                            style={{
-                              fontSize: 20,
-                              fontWeight: '900',
-                              color: '#276653',
-                            }}>
-                            1212
-                          </Text>
-                        </View>
-                      </View>
-                    </View>
-                  </View>
-                  <View style={{ marginRight: 12, marginBottom: 10 }}>
-                    <View
-                      style={[
-                        styles.cardDashboardHourly,
-                        styles.cardDashboardHourlyProp,
-                      ]}>
-                      <View style={styles.div2RowSpaceEven}>
-                        <View style={{ padding: 4 }}>
-                          <Image
-                            source={require('../../src/images/sunRAsset2.png')}
-                            style={{ width: 45, height: 45 }}
-                          />
-                        </View>
-                        <View style={{ justifyContent: 'flex-end' }}>
-                          <Text
-                            style={{
-                              fontSize: 14,
-                              fontWeight: 'bold',
-                              color: '#8eb4a9',
-                            }}>
-                            1212121
-                          </Text>
-                          <Text
-                            style={{
-                              fontSize: 20,
-                              fontWeight: '900',
-                              color: '#276653',
-                            }}>
-                            1212
-                          </Text>
-                        </View>
-                      </View>
-                    </View>
-                  </View>
-                  
+            
                   {/* ) */}
                 </ScrollView>
               </View>
             </View>
+
           </View>
         </ScrollView>
       </View>
@@ -1042,9 +586,12 @@ function PlantNew({ navigation }) {
       setImage(null);
     }
   }
+  
   const displayListplant = async () => {
     const displayList = database().ref('/plants')
   }
+
+  const addressloc = weathloc.name + weathloc.region;
 
   return (
     <View style={{ flex: 1, backgroundColor: '#AADCB6' }}>

@@ -30,8 +30,9 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import styles from '../../src/css/styles';
+
 export default function PNDs({ route, navigation }) {
-  const { name, pnd, spname, description, images } = route.params;
+const { name, pnd, spname, description, images } = route.params;
 
   let AnimatedHeaderValue = new Animated.Value(0);
   const HEADER_MAX_HEIGHT = 300;
