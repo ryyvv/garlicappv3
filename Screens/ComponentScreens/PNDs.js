@@ -6,7 +6,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import DatePicker from 'react-native-date-picker';
 import database from '@react-native-firebase/database';
-import { AuthContext } from '../Context/AuthProvider';
+// import { AuthContext } from '../Context/AuthProvider';
 
 import {
   SafeAreaView,

@@ -1,0 +1,6 @@
+ScrollView
+    showsHorizontalScrollIndicator={false}
+    pagingEnable={true}
+
+Animation:
+    Animating elements between screen

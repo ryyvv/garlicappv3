@@ -1,6 +1,6 @@
 //import axios from 'axios';
 import moment from "moment";
-import React, { useEffect, useState, useFonts, useContext } from 'react';
+import React, { useEffect, useState, useFonts, useContext, useRef } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -9,32 +9,25 @@ import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import Storage from '@react-native-firebase/storage';
 import DatePicker from 'react-native-date-picker'
 import database from '@react-native-firebase/database';
-import { AuthContext } from '../Context/AuthProvider';
+import RBSheet from "react-native-raw-bottom-sheet";
+import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
+
+import LinearGradient from 'react-native-linear-gradient';
+
 import { LazyLoadImage } from 'react-native-lazy-load-image';
+// import Timeline from "react-native-beautiful-timeline";
+import Androw from 'react-native-androw';
+import Timeline from 'react-native-timeline-flatlist'
 
 // Request data
 import { LocationContext } from '../Context/LocationProvider';
-const { logout, user } = useContext(AuthContext);
-const {
- 
-  gpsName,
-  gpsUrl,
-  gpsWeathData,
-  gpsWeathCondition,
-  locationList,
-  weathloc,
-  weathDate,
-  weathIcon,
-  weathData,
-  weathPerHour,
-  weathCondition, 
-  weathPerDay,
+import { AuthContext } from '../Context/AuthProvider';
 
-} = useContext(LocationContext);
 
 const dbRef = database().ref('images');
 
 import {
+  useWindowDimensions,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -61,6 +54,7 @@ import styles from '../../src/css/styles';
 import * as Progress from 'react-native-progress';
 
 function PlantDash({ route, navigation }) {
+  const { logout, user } = useContext(AuthContext)
   const [plants, setPlants] = useState('');
   const [plantData, setPlantData] = useState([])
 
@@ -69,6 +63,7 @@ function PlantDash({ route, navigation }) {
   const hidden = false;
   const statusBarStyle = 'dark-content';
 
+  // header
   useEffect(() => {
     navigation.setOptions({
       headerLargeTitle: false,
@@ -80,16 +75,17 @@ function PlantDash({ route, navigation }) {
       ,
       headerTitle: props => <Text style={{ fontSize: 25, fontWeight: 'bold', color: '#276653' }}>My Plants</Text>,
     })
-    const plantData = database().ref('/plants/');
+    const plantData = database().ref('/plants/'+ user.uid);
     console.log(plantData)
   }, [navigation])
 
   useEffect(() => {
     displayList();
+    
   }, []);
 
   const displayList = async () => {
-    const dbRef = database().ref('plants');
+    const dbRef = database().ref('/database/'+ user.uid + '/plants');
     dbRef.on('value', (snapshot) => {
       const firebaseData = snapshot.val();
       if (firebaseData == null) {
@@ -109,13 +105,14 @@ function PlantDash({ route, navigation }) {
           title: item.title,
           image: item.image,
           variety: item.variety,
+          area:item.area,
           date: item.date,
           plantAddress: item.plantAddress,
-          });
-        }}>
+        });
+      }}>
         <View style={styles.cardDataPlant}>
           <View style={styles.div2RowSpaceEvenNoAlignItems}>
- 
+
             <View style={styles.div2Row}>
               {/* <Image source={{ uri: item.image }} style={{ width: 50, height: 50, borderRadius: 50 / 2, marginRight: 10 }}/> */}
               <LazyLoadImage source={{ uri: item.image }} style={{ width: 50, height: 50, borderRadius: 50 / 2, marginRight: 10 }} />
@@ -124,6 +121,7 @@ function PlantDash({ route, navigation }) {
                 <Text>{moment(item.date).format('MMMM D, YYYY')}</Text>
               </View>
             </View>
+
 
             {/* Button option */}
             <View style={[styles.div2RowDatalist, { padding: 10 }]}>
@@ -137,7 +135,45 @@ function PlantDash({ route, navigation }) {
       </TouchableOpacity>
     );
   };
- 
+
+  // datalist
+  const renderDisplayList2 = ({ item }) => {
+    return (
+      <TouchableOpacity onPress={() => {
+        navigation.navigate('PlantID', {
+          title: item.title,
+          image: item.image,
+          variety: item.variety,
+          date: item.date,
+          plantAddress: item.plantAddress,
+        });
+      }}>
+        <View style={styles.cardDataPlant}>
+          <View style={styles.div2RowSpaceEvenNoAlignItems}>
+
+            <View style={styles.div2Row}>
+              {/* <Image source={{ uri: item.image }} style={{ width: 50, height: 50, borderRadius: 50 / 2, marginRight: 10 }}/> */}
+              <LazyLoadImage source={{ uri: item.image }} style={{ width: 50, height: 50, borderRadius: 50 / 2, marginRight: 10 }} />
+              <View>
+                <Text style={{ color: '#276653', fontWeight: 'bold', fontSize: 17 }}>{item.title}</Text>
+                <Text>{moment(item.date).format('MMMM D, YYYY')}</Text>
+              </View>
+            </View>
+
+
+            {/* Button option */}
+            <View style={[styles.div2RowDatalist, { padding: 10 }]}>
+              <TouchableOpacity>
+                {/* Delete */}
+                <Icon name={"dots-vertical"} color={'#276653'} size={23} style={{ width: 20 }} />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </TouchableOpacity>
+    );
+  };
+
   const showEmptyListView = () => {
     return (
       <View style={{ marginTop: 200, flexDirection: 'row', justifyContent: 'center', alignItem: 'center' }}>
@@ -151,6 +187,7 @@ function PlantDash({ route, navigation }) {
       <StatusBar animated={true} barStyle={statusBarStyle} translucent={true} />
       <ScrollView>
         <View style={styles.accountcontainer}>
+          <Text style={{ marginBottom: 6, color: '#276653', fontWeight: 'bold', fontSize: 18 }}>Recent</Text>
           <FlatList
             data={plantData}
             renderItem={renderDisplayList}
@@ -160,194 +197,49 @@ function PlantDash({ route, navigation }) {
       </ScrollView>
 
       {/* Add button            */}
-      <TouchableOpacity onPress={() => { navigation.navigate('PlantNew') }}>
+    <View style={{zIndex:2}}>
+    <TouchableOpacity 
+      onPress={() => { 
+        navigation.navigate('PlantNew')}}>
         <View style={styles.addBtn}>
           <Icon name={"plus"} color={'white'} size={23} style={{ fontWeight: 'bold' }} />
         </View>
       </TouchableOpacity>
     </View>
+    </View>
 
   )
 }
 
-function PlantID({ route, navigation }) {
-
-  let AnimatedHeaderValue = new Animated.Value(0);
-  const HEADER_MAX_HEIGHT = 300;
-  const HEADER_MIN_HEIGHT = 200;
-
-  const animatedHeaderBackgroundColor = AnimatedHeaderValue.interpolate({
-    inputRange: [5, HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT],
-    outputRange: ['blue', 'red'],
-    extrapolate: 'clamp',
-  });
-
-  const animatedHeaderHeight = AnimatedHeaderValue.interpolate({
-    inputRange: [60, HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT],
-    outputRange: [HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT],
-    extrapolate: 'clamp',
-  });
-
-
-  const { title, image, variety, date } = route.params;
-
-  return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <Animated.View
-        style={{
-          height: animatedHeaderHeight,
-          flex: 1
-          // backgroundColor: animatedHeaderBackgroundColor,
-        }}>
-
-        <ImageBackground
-          source={require('../../src/images/Insect4.jpg')}
-          resizeMode="cover"
-          style={{ flex: 1, justifyContent: 'center', }}>
-          {/* opacity: 0.1 */}
-        </ImageBackground>
-        <View style={{ position: 'absolute', bottom: 0, padding: 35 }}>
-          {/* <Image  source={require(JSON.stringify(images))}/> */}
-          <Text style={{ fontWeight: 'bold', fontSize: 30, color: 'white' }}>name</Text>
-          <Text style={{ fontWeight: 'bold', fontSize: 20, fontStyle: 'italic', color: 'white' }}>spname</Text>
-        </View>
-        <View style={{ position: 'absolute', bottom: 0, paddingLeft: 60 }}>
-          <Text>fsdfsf</Text>
-        </View>
-      </Animated.View>
-      <View style={{
-        flex: 2,
-        padding: 20,
-        backgroundColor: '#7ABD87',
-        borderTopRightRadius: 25,
-        borderTopLeftRadius: 25,
-        paddingTop: 30,
-        marginTop: -20,
-        maxHeight: 400
-      }}>
-        <ScrollView
-          scrollEventThrottle={15}
-          showsVerticalScrollIndicator={false}
-          onScroll={Animated.event(
-            [
-              {
-                nativeEvent: {
-                  contentOffset: {
-                    y: AnimatedHeaderValue,
-                  },
-                },
-              },
-            ],
-            { useNativeDriver: false },
-          )}>
-
-          <View>
-            {/* Description */}
-            <View style={{ marginRight: 12, marginBottom: 10 }}>
-              <View
-                      style={[
-                        styles.cardDashboardHourly,
-                        styles.cardDashboardHourlyProp,
-                      ]}>
-                      <View style={styles.div2RowSpaceEven}>
-                        <View style={{ padding: 4 }}>
-                          <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 45, height: 45 }} />
-                        </View>
-                        <View style={{ justifyContent: 'flex-end' }}>
-                          <Text
-                            style={{
-                              fontSize: 14,
-                              fontWeight: 'bold',
-                              color: '#8eb4a9',
-                            }}>
-                            1212121
-                          </Text>
-                          <Text
-                            style={{
-                              fontSize: 20,
-                              fontWeight: '900',
-                              color: '#276653',
-                            }}>
-                            1212
-                          </Text>
-                        </View>
-                      </View>
-               </View>
-            </View>
-
-            <View>
-              <Text style={{ color: 'white', marginBottom: 10, fontWeight: 'bold', fontSize: 20 }}>Timeline</Text>
-              <View style={styles.dashboardHourly}>
-                <ScrollView 
-                horizontal={false}
-                 vertical={true}
-                  showsVerticalScrollIndicator={false}>
-                  {/* return ( */}
-                  <View style={{ marginRight: 12, marginBottom: 10 }}>
-                    <View
-                      style={[
-                        styles.cardDashboardHourly,
-                        styles.cardDashboardHourlyProp,
-                      ]}>
-                      <View style={styles.div2RowSpaceEven}>
-                        <View style={{ padding: 4 }}>
-                          <Image
-                            source={require('../../src/images/sunRAsset2.png')}
-                            style={{ width: 45, height: 45 }}
-                          />
-                        </View>
-                        <View style={{ justifyContent: 'flex-end' }}>
-                          <Text
-                            style={{
-                              fontSize: 14,
-                              fontWeight: 'bold',
-                              color: '#8eb4a9',
-                            }}>
-                            1212121
-                          </Text>
-                          <Text
-                            style={{
-                              fontSize: 20,
-                              fontWeight: '900',
-                              color: '#276653',
-                            }}>
-                            1212
-                          </Text>
-                        </View>
-                      </View>
-                    </View>
-                  </View>
-            
-                  {/* ) */}
-                </ScrollView>
-              </View>
-            </View>
-
-          </View>
-        </ScrollView>
-      </View>
-
-    </SafeAreaView>
-  );
-}
-
 function PlantNew({ navigation }) {
   const { logout, user } = useContext(AuthContext)
-
+  const {
+    gpsName,
+    gpsUrl,
+    gpsWeathData,
+    gpsWeathCondition,
+    locationList,
+    weathloc,
+    weathDate,
+    weathIcon,
+    weathData,
+    weathPerHour,
+    weathCondition,
+    weathPerDay,
+  } = useContext(LocationContext);
 
   const [open, setOpen] = useState(false)
   const [plantTitle, setPlantTitle] = useState('')
   const [plantVariety, setPlantVariety] = useState('')
   const [plantArea, setPlantArea] = useState('')
   const [plantDate, setPlantDate] = useState(new Date())
-  const [plantAddress, setPlantAddress] = useState('')
+  const [plantAddress, setPlantAddress] = useState(weathloc.name + ', ' + weathloc.region)
   const [dataloading, setDataloading] = useState(false);
   const [image, setImage] = useState(null); //Test
   const [imagePathCapture, setimagePathCapture] = useState(null);  //ImagePicker
   const [uploading, setUploading] = useState(false);    //setUploaders
   const [downloadURL, setDownloadURL] = useState(null);   //imagelink uploader getdownload image
   const [transferred, setTransferred] = useState(0);    //Progress upload  image
-
 
 
   // ImageDefault Display
@@ -357,8 +249,6 @@ function PlantNew({ navigation }) {
         <Icon name={'image-outline'} color={'#276653'} size={150} style={{ fontWeight: 'bolder' }} />
       </View>
     )
-
-
   }
 
   // ImageChange Display
@@ -381,8 +271,6 @@ function PlantNew({ navigation }) {
     mediaType: 'photo',
     includeBase64: false,
     path: 'images ',
-
-
   };
 
 
@@ -430,6 +318,7 @@ function PlantNew({ navigation }) {
           buttonPositive: "OK"
         }
       );
+
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         const resultImageToUpload = await launchImageLibrary(optioncam)
         if (resultImageToUpload.didCancel == true) {
@@ -512,10 +401,8 @@ function PlantNew({ navigation }) {
     );
   }
 
-
   // uploading trigger
   const imageUpload = async () => {
-    // LogBox.ignoreAllLogs();
 
     // Create Data plant
     if (imagePathCapture === null) {
@@ -528,7 +415,7 @@ function PlantNew({ navigation }) {
       alert('Please enter variety!');
       return;
     } else if (!plantArea.trim()) {
-      alert('Please enter area!');
+      alert('Please enter planted area!');
       return;
     } else if (!plantAddress.trim()) {
       alert('Please enter address!');
@@ -558,15 +445,14 @@ function PlantNew({ navigation }) {
         // get imageDownloadURL
         const downloadURL = await Storage().ref('images/' + filename).getDownloadURL();
 
-        // Test
-        // alert('downloadURL: ' + downloadURL);
-
         // store data in realtime database
-        database().ref('/plants/' + user.uid + plantTitle)
+        //database().ref('/plants/' + user.uid + plantTitle)
+        database().ref('/database/' + user.uid+'/plants/' + user.uid + plantTitle)
           .set({
             image: downloadURL,
             title: plantTitle,
             variety: plantVariety,
+            area: plantArea,
             date: plantDate.toISOString(),
             plantAddress: plantAddress
           })
@@ -586,7 +472,7 @@ function PlantNew({ navigation }) {
       setImage(null);
     }
   }
-  
+
   const displayListplant = async () => {
     const displayList = database().ref('/plants')
   }
@@ -672,28 +558,30 @@ function PlantNew({ navigation }) {
                 <View style={{ alignItems: 'center', marginTop: 25, marginLeft: 44 }}>
                   <TextInput placeholder={'Variety'} onChangeText={(value) => setPlantVariety(value)} value={plantVariety} o style={{ width: '100%', borderBottomWidth: 1, borderBottomColor: '#276653', fontSize: 18, paddingLeft: 4, paddingTop: -3, paddingBottom: -3, fontWeight: 'bold' }} />
                 </View>
+
                 <View style={{ alignItems: 'center', marginTop: 25, marginLeft: 44 }}>
-                  <TextInput placeholder={'Area'} onChangeText={(value) => setPlantArea(value)} value={plantVariety} o style={{ width: '100%', borderBottomWidth: 1, borderBottomColor: '#276653', fontSize: 18, paddingLeft: 4, paddingTop: -3, paddingBottom: -3, fontWeight: 'bold' }} />
+                  <TextInput placeholder={'Area'} onChangeText={(value) => setPlantArea(value)} value={plantArea} style={{ width: '100%', borderBottomWidth: 1, borderBottomColor: '#276653', fontSize: 18, paddingLeft: 4, paddingTop: -3, paddingBottom: -3, fontWeight: 'bold' }} />
                 </View>
+
                 <View style={{ alignItems: 'center', marginTop: 25 }}>
                   <View style={{ flexDirection: 'row', alignItems: 'center', }}>
                     <Icon name={"calendar"} color={'#276653'} size={28} style={{ marginTop: 3, marginRight: 15, marginLeft: 1 }} />
-                    <Text style={{ width: '86%', fontSize: 16, fontWeight: 'bold' }}>Dated planted:</Text>
+                    <Text style={{ width: '86%', fontSize: 18, fontWeight: 'bold' }}>Dated planted:</Text>
                   </View>
                   <TouchableOpacity
                     onPress={() => setOpen(true)}>
                     <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#276653', marginLeft: 44, padding: 5 }}>
-                      <Text style={{ fontSize: 16, width: '100%', left: 0 }}>{moment(plantDate).format('ll')}</Text>
+                      <Text style={{ fontSize: 18, width: '100%', left: 0, fontWeight: 'bold' }}>{moment(plantDate).format('ll')}</Text>
                     </View>
                   </TouchableOpacity>
                 </View >
+
                 <View>
                   <DatePicker
                     modal
                     open={open}
                     date={plantDate}
                     mode={'date'}
-
                     onConfirm={(date) => {
                       setOpen(false)
                       setPlantDate(date)
@@ -707,7 +595,7 @@ function PlantNew({ navigation }) {
 
                 <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 25 }}>
                   <Icon name={"map-marker"} color={'#276653'} size={28} style={{ marginTop: 3, marginRight: 15, marginLeft: 1 }} />
-                  <TextInput placeholder={'Address'} onChangeText={(value) => setPlantAddress(value)} value={plantAddress} style={{ width: '86%', borderBottomWidth: 1, borderBottomColor: '#276653', fontSize: 18, paddingLeft: 4, paddingTop: -3, paddingBottom: -3, fontWeight: 'bold' }} />
+                  <TextInput placeholder={'Address'} onChangeText={(value) => setPlantAddress(value)} value={plantAddress} style={{ width: '86%', borderBottomWidth: 1, borderBottomColor: '#276653', fontSize: 16, paddingLeft: 4, paddingTop: -3, paddingBottom: -3, fontWeight: 'bold' }} />
                 </View >
 
                 <View style={{ marginTop: 25 }} >
@@ -728,16 +616,1274 @@ function PlantNew({ navigation }) {
   )
 }
 
+function PlantID({ route, navigation }) {
+  const { logout, user } = useContext(AuthContext)
+  const { title, image, area  , variety, date, plantAddress } = route.params;
+  const [plantDataID, setPlantDataID] = useState([])
+
+  const {
+ 
+    gpsName,
+    gpsUrl,
+    gpsWeathData,
+    gpsWeathCondition,
+    locationList,
+    weathloc,
+    weathDate,
+    weathIcon,
+    weathData,
+    weathPerHour,
+    weathCondition, 
+    weathPerDay,
+    setLOCATION,
+    setGpsLocationUpdate,
+    holdlocation,
+    setWeatherHoldLocation,
+    weatherD
+  } = useContext(LocationContext);
+  const [weathplantData, setWeathplantData] = useState(''); 
+
+  const [weathDataAstro, setWeathDataAstro] = useState('')
+  const [weathDataDay, setWeathDay] = useState('')
+  // Data
+  // =================================================
+  useEffect(() => {
+    plantDisplayList();
+    weatherPlant()
+  }, []);
+
+  const plantDisplayList = async () => {
+    const dbRef = database().ref('/database/'+ user.uid + '/plants');
+    dbRef.on('value', (snapshot) => {
+      const firebaseData = snapshot.val();
+      if (firebaseData == null) {
+        setPlantDataID(null);
+      } else {
+        const dataArray = Object.values(firebaseData);
+        setPlantDataID(dataArray);
+      }
+    });
+  }
+
+  const apiKey = 'eb40ebc2fe0c4d02b2735258230304';
+  const weatherPlant  =  async () => {    
+    const response =  await fetch('http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q='+ plantAddress +'&days=10&aqi=yes&alerts=yes')
+        .then((response) => response.json())
+        .catch((error) => {
+            console.error(error);
+        })
+
+ 
+    setWeathDay(response?.forecast?.forecastday[0]?.day)
+    // console.log(weatherIcon)
+    setWeathDataAstro(response?.forecast?.forecastday[0]?.astro)
+
+}
+
+  // datalist
+  const renderDisplayList = ({ item }) => {
+    return (
+      <TouchableOpacity onPress={() => {
+        navigation.navigate('PlantID', {
+          title: item.title,
+          image: item.image,
+          variety: item.variety,
+          area: item.area,
+          date: item.date,
+          plantAddress: item.plantAddress,
+        });
+      }}>
+        <View style={styles.cardDataPlant}>
+          <View style={styles.div2RowSpaceEvenNoAlignItems}>
+
+            <View style={styles.div2Row}>
+              {/* <Image source={{ uri: item.image }} style={{ width: 50, height: 50, borderRadius: 50 / 2, marginRight: 10 }}/> */}
+              <LazyLoadImage source={{ uri: item.image }} style={{ width: 50, height: 50, borderRadius: 50 / 2, marginRight: 10 }} />
+              <View>
+                <Text style={{ color: '#276653', fontWeight: 'bold', fontSize: 17 }}>{item.title}</Text>
+                <Text>{moment(item.date).format('MMMM D, YYYY')}</Text>
+              </View>
+            </View>
+
+
+            {/* Button option */}
+            <View style={[styles.div2RowDatalist, { padding: 10 }]}>
+              <Icon name={"bell-outline"} color={'#276653'} size={23} style={{ width: 20, marginRight: 20 }} />
+              <TouchableOpacity>
+                <Icon name={"dots-vertical"} color={'#276653'} size={23} style={{ width: 20 }} />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </TouchableOpacity>
+    );
+  };
+
+  // datalist
+  const renderDisplayList2 = ({ item }) => {
+    return (
+      <TouchableOpacity onPress={() => {
+        navigation.navigate('PlantID', {
+          title: item.title,
+          image: item.image,
+          variety: item.variety,
+          date: item.date,
+          plantAddress: item.plantAddress,
+        });
+      }}>
+        <View style={styles.cardDataPlant}>
+          <View style={styles.div2RowSpaceEvenNoAlignItems}>
+
+            <View style={styles.div2Row}>
+              {/* <Image source={{ uri: item.image }} style={{ width: 50, height: 50, borderRadius: 50 / 2, marginRight: 10 }}/> */}
+              <LazyLoadImage source={{ uri: item.image }} style={{ width: 50, height: 50, borderRadius: 50 / 2, marginRight: 10 }} />
+              <View>
+                <Text style={{ color: '#276653', fontWeight: 'bold', fontSize: 17 }}>{item.title}</Text>
+                <Text>{moment(item.date).format('MMMM D, YYYY')}</Text>
+              </View>
+            </View>
+
+
+            {/* Button option */}
+            <View style={[styles.div2RowDatalist, { padding: 10 }]}>
+              <TouchableOpacity>
+                {/* Delete */}
+                <Icon name={"dots-vertical"} color={'#276653'} size={23} style={{ width: 20 }} />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </TouchableOpacity>
+    );
+  };
+
+  const showEmptyListView = () => {
+    return (
+      <View style={{ marginTop: 200, flexDirection: 'row', justifyContent: 'center', alignItem: 'center' }}>
+        <Text style={{ fontSize: 20, fontWeight: 'bold', alignItem: 'center', justifyContent: 'center', }}><Icon name={"plus-circle"} color={'#276653'} size={30} style={{ width: 20 }} />Add a plant to get started!  </Text>
+      </View>
+    )
+  }
+  // =================================================
+
+
+  const refRBSheetAna = useRef();
+  let AnimatedHeaderValue = new Animated.Value(0);
+  const HEADER_MAX_HEIGHT = 300;
+  const HEADER_MIN_HEIGHT = 200;
+
+  const animatedHeaderBackgroundColor = AnimatedHeaderValue.interpolate({
+    inputRange: [5, HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT],
+    outputRange: ['blue', 'red'],
+    extrapolate: 'clamp',
+  });
+
+  const animatedHeaderHeight = AnimatedHeaderValue.interpolate({
+    inputRange: [60, HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT],
+    outputRange: [HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT],
+    extrapolate: 'clamp',
+  });
+
+
+  // CamProperties
+  let optioncam = {
+    saveToPhotos: true,
+    mediaType: 'photo',
+    cameraType: 'back',
+    selectionLimit: 1,
+    includeBase64: false,
+    // path: 'image',
+  };
+
+  // UploadProperties
+  let optionImageupload = {
+    mediaType: 'photo',
+    includeBase64: false,
+    // path: 'image',
+  };
+
+  // imageCameraPermission
+  const AndroidPermissionCamera = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+        {
+          title: "Cool Photo App Camera Permission",
+          message:
+            "Cool Photo App needs access to your camera " +
+            "so you can take awesome pictures.",
+          buttonNeutral: "Ask Me Later",
+          buttonNegative: "Cancel",
+          buttonPositive: "OK"
+        }
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        const resultImageCaptured = await launchCamera(optioncam)
+        if (resultImageCaptured.didCancel == true) {
+          alert('Please try again!')
+        }
+        setimagePathCapture(resultImageCaptured.assets[0].uri);
+
+      } else {
+        console.log("Camera permission denied");
+        alert("Camera permission denied")
+      }
+    } catch (error) {
+      alert('Please try again!')
+    }
+  }
+
+  // imageUploadPermission
+  const imageLibrary = async () => {
+
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+        {
+          title: "Garlic App Camera Permission",
+          message:
+            "Garlic App needs access to your Gallery ",
+          buttonNeutral: "Ask Me Later",
+          buttonNegative: "Cancel",
+          buttonPositive: "OK"
+        }
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        const resultImageToUpload = await launchImageLibrary(optionImageupload)
+        setimagePathCapture(resultImageToUpload.assets[0].uri);
+        if (resultImageToUpload.didCancel == true) {
+          alert('Please try again!')
+          // alert('No images in gallery selected!')
+        }
+        alert(imagePathCapture)
+
+      } else {
+        console.log("Camera permission denied");
+        alert("Camera permission denied")
+      }
+    } catch (error) {
+      alert('Please try again!', error)
+    }
+  }
+
+  const Harea = () => {
+    return(
+      <Text style={{ fontWeight: 'bold', fontSize: 17, color: '#276653', lineHeight: 17, paddingLeft: 7 }}>{area} hectare</Text>
+    )
+  }
+
+  const Hsarea = () => {
+    return(
+      <Text style={{ fontWeight: 'bold', fontSize: 17, color: '#276653', lineHeight: 17, paddingLeft: 7 }}>{area} hectares</Text>
+    )
+  }
+
+
+  return (
+    <SafeAreaView  >
+      <ScrollView >
+        <ImageBackground
+          source={require('../../src/images/Insect4.jpg')}
+          resizeMode="cover"
+          style={{ flex: 1, height: 430, }}
+          imageStyle={{ borderBottomLeftRadius: 60, borderBottomRightRadius: 60 }}>
+          <LinearGradient colors={['#ffffff00', '#92df9748', '#5bb761ce']} style={{ flex: 1, borderBottomLeftRadius: 60, borderBottomRightRadius: 60 }}>
+            {/* opacity: 0.1 */}
+            <View style={{ flexDirection: 'row', alignSelf: 'flex-end', marginTop: 10, marginRight: 20, backgroundColor: 'rgba(255, 255, 255, 0.815)', padding: 8, borderRadius: 25 }}>
+              <Icon name={'calendar-outline'} color={'#276653'} size={20} style={{ width: 20, marginRight: 5 }} />
+              <Text style={{ color: '#276653', fontWeight: 'bold' }}>{moment(date).startOf('day').fromNow()}</Text>
+       
+            </View>
+   
+            <View style={{ marginTop: 80, width: '100%', }}>
+              <View style={{ margin: 20, padding: 15, backgroundColor: 'rgba(255, 255, 255, 0.548)', borderRadius: 15, flexDirection: 'row', justifyContent: 'flex-start' }}>
+                <View>
+                  <Image source={require('../../src/images/garlic1.jpg')} style={{ width: 100, height: 100, borderRadius: 15, marginRight: 10 }} />
+                </View>
+                <View style={{ flexDirection: 'column' }}>
+                  <View>
+                    <Text style={{ fontSize: 18, color: 'white', fontWeight: '900' }}> {title}</Text>
+                    <Text style={{ fontSize: 16, color: 'white', fontWeight: '900' }}> {moment(date).format("MMMM D, YYYY")}</Text>
+                  </View>
+                  <View style={{ flexDirection: 'row', marginTop: 15 }}>
+                    <TouchableOpacity
+                      onPress={() => { navigation.navigate('PlantNewNote') }}>
+                      <View style={{ padding: 7, borderWidth: 1, borderColor: '#5BB761', backgroundColor: '#EAFFE8', borderRadius: 20, marginRight: 5, flexDirection: 'row', paddingLeft: 15, paddingRight: 10 }}>
+                        <Icon name={'notebook-plus-outline'} color={'#276653'} size={20} style={{ width: 20, marginRight: 5 }} />
+                        <Text style={{ fontWeight: 'bold' }}>Add note</Text>
+                      </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => { navigation.navigate('PlantCam') }}>
+                      <View style={{ padding: 7, borderWidth: 1, borderColor: '#5BB761', backgroundColor: '#EAFFE8', borderRadius: 20, flexDirection: 'row', paddingLeft: 15, paddingRight: 10 }}>
+                        <Icon name={'camera-outline'} color={' #276653'} size={20} style={{ width: 20, marginRight: 5 }} />
+                        <Text style={{ fontWeight: 'bold' }}>Identify</Text>
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
+            </View>
+          </LinearGradient>
+        </ImageBackground>
+
+
+
+        <View style={{
+          flex: 2, padding: 10, borderTopRightRadius: 25,
+          borderTopLeftRadius: 25, paddingTop: 30, marginTop: -160, height: undefined
+        }}>
+
+          {/* Details */}
+          <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', justifyContent: 'center', borderRadius: 15, padding: 20, margin: 10 }]}>
+            <View style={{ flexDirection: 'row', width: '100%', marginBottom: 25 }}>
+              <View style={{ alignItems: 'center', width: '33%', }}>
+                <Icon name={'thermometer'} color={'#276653'} size={30} style={{ width: 25 }} />
+                <View style={{ flexDirection: 'row' }}>
+                  <Text style={{ fontSize: 25, fontWeight: 'bold', color: '#276653', lineHeight: 25, }}>{weathDataDay.avgtemp_c}</Text>
+                  <Text style={{ fontSize: 14, fontWeight: 'bold', color: '#276653', lineHeight: 25, }}>°C</Text>
+                </View>
+                <Text style={{ fontSize: 13, fontWeight: 'bold', color: '#4f74698f', marginTop: -4 }}>Temperature</Text>
+              </View>
+              {/* wind */}
+              <View style={{ alignItems: 'center', width: '33%' }}>
+                <Icon name={'weather-windy'} color={'#276653'} size={30} style={{ width: 30 }} />
+                <View style={{ flexDirection: 'row' }}>
+                  <Text style={{ fontSize: 25, fontWeight: 'bold', color: '#276653', lineHeight: 25, }}>{weathDataDay.maxwind_kph}</Text>
+                  <Text style={{ fontSize: 14, fontWeight: 'bold', color: '#276653', lineHeight: 25, }}>kph</Text>
+                </View>
+                <Text style={{ fontSize: 13, fontWeight: 'bold', color: '#4f74698f', marginTop: -4 }}>Wind</Text>
+              </View>
+              {/* Humidity */}
+              <View style={{ alignItems: 'center', width: '33%' }}>
+                <Icon name={'water-outline'} color={'#276653'} size={30} style={{ width: 25 }} />
+                <View style={{ flexDirection: 'row' }}>
+                  <Text style={{ fontSize: 25, fontWeight: 'bold', color: '#276653', lineHeight: 25, }}>{weathDataDay.avghumidity}</Text>
+                  <Text style={{ fontSize: 14, fontWeight: 'bold', color: '#276653', lineHeight: 25, }}>%</Text>
+                </View>
+                <Text style={{ fontSize: 13, fontWeight: 'bold', color: '#4f74698f', marginTop: -4 }}>Humidity</Text>
+              </View>
+            </View>
+
+            <View style={{ flexDirection: 'row', width: '100%' }}>
+              {/* Precipitation */}
+              <View style={{ alignItems: 'center', width: '33%' }}>
+                <Icon name={'weather-rainy'} color={'#276653'} size={30} style={{ width: 30 }} />
+                <View style={{ flexDirection: 'row' }}>
+                  <Text style={{ fontSize: 25, fontWeight: 'bold', color: '#276653', lineHeight: 25, }}>{weathDataDay.totalprecip_mm}</Text>
+                  <Text style={{ fontSize: 14, fontWeight: 'bold', color: '#276653', lineHeight: 25, }}>mm</Text>
+                </View>
+                <Text style={{ fontSize: 13, fontWeight: 'bold', color: '#4f74698f', marginTop: -4 }}>Precipitation</Text>
+              </View>
+              {/* Sunrise */}
+              <View style={{ alignItems: 'center', width: '33%' }}>
+                <Icon name={'weather-sunset-up'} color={'#276653'} size={30} style={{ width: 30 }} />
+                <View style={{ flexDirection: 'row' }}>
+                  <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#276653', lineHeight: 25, }}>{weathDataAstro.sunrise}</Text>
+                  {/* <Text style={{ fontSize: 14, fontWeight: 'bold', color: '#276653', lineHeight: 25, }}>am</Text> */}
+                </View>
+                <Text style={{ fontSize: 13, fontWeight: 'bold', color: '#4f74698f', marginTop: -4 }}>Sunrise</Text>
+              </View>
+              {/* Sunset */}
+              <View style={{ alignItems: 'center', width: '33%' }}>
+                <Icon name={'weather-sunset-down'} color={'#276653'} size={30} style={{ width: 30 }} />
+                <View style={{ flexDirection: 'row' }}>
+                  <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#276653', lineHeight: 25, }}>{weathDataAstro.sunset}  </Text>
+                  {/* <Text style={{ fontSize: 14, fontWeight: 'bold', color: '#276653', lineHeight: 25, }}>pm</Text> */}
+                </View>
+                <Text style={{ fontSize: 13, fontWeight: 'bold', color: '#4f74698f', marginTop: -4 }}>Sunset</Text>
+              </View>
+            </View>
+          </View>
+
+          {/* Overview */}
+          <View style={{ marginTop: 10, marginRight: 10, margin: 10 }}>
+            <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, borderLeftWidth: 10, borderLeftColor: '#6fb96d' }]}>
+              <View>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                  <View style={{ width: '50%' }}>
+                    <Text style={{ fontWeight: 'bold', fontSize: 14, color: '#687773', }}>Variety:</Text>
+                    <Text style={{ fontWeight: 'bold', fontSize: 17, color: '#276653', lineHeight: 17, paddingLeft: 7 }}>{variety}</Text>
+                  </View>
+                  <View style={{ width: '50%' }}>
+                    <Text style={{ fontWeight: 'bold', fontSize: 14, color: '#687773' }}>Location:</Text>
+                    <Text style={{ fontWeight: 'bold', fontSize: 17, color: '#276653', lineHeight: 17, paddingLeft: 7 }}>{plantAddress}</Text>
+                  </View>
+                </View>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
+                  <View style={{ width: '50%' }}>
+                    <Text style={{ fontWeight: 'bold', fontSize: 14, color: '#687773' }}>Area Planted:</Text>
+                      {
+                        area <= 1 ? (<Harea />) : (<Hsarea />)
+                      }
+                  </View>
+                  <View style={{ width: '50%' }}>
+                    <Text style={{ fontWeight: 'bold', fontSize: 14, color: '#687773' }}>Date Planted:</Text>
+                    <Text style={{ fontWeight: 'bold', fontSize: 17, color: '#276653', lineHeight: 17, paddingLeft: 7 }}>{moment(date).format("MMMM D, YYYY")}</Text>
+                  </View>
+                </View>
+
+              </View>
+            </View>
+          </View>
+
+          {/* Findings */}
+          <View style={{ margin: 10, marginTop: 10 }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingBottom: 5, alignItems: 'center' }}>
+              <Text style={{ fontSize: 20, color: '#276653', fontWeight: 'bold' }}>Findings</Text>
+              <TouchableOpacity onPress={() => { navigation.navigate('Task') }}>
+                <View style={{ flexDirection: 'row' }}>
+                  <Text style={{ color: '#276653', fontWeight: 'bold' }}>See all</Text>
+                  {/* <Icon name={'arrow-right-thin'} color={'#276653'} size={} style={{ width: 35}} /> */}
+                </View>
+              </TouchableOpacity>
+            </View>
+            <View>
+              <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} snapToStart={true} >
+                <View style={{ marginRight: 10 }}>
+                  <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, margin: 4, marginBottom: 8, padding: 20 }]}>
+                    <View style={{ flexDirection: 'row', }}>
+                      <Text style={{ fontWeight: 'bold' }}>Feb. 23, 2023 </Text>
+                    </View>
+
+                    <View style={{ flexDirection: 'row', marginTop: 5, alignItems: 'center' }}>
+                      <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
+                      <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 18 }}>Tangle Top</Text>
+                    </View>
+
+                    <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
+                      <View style={{ marginRight: 10, justifyContent: 'flex-end', marginLeft: 50 }}>
+                        {/* <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 15, height: 15 }} /> */}
+                        <View>
+                          <View style={{ borderRadius: 10, borderWidth: 1.5, borderColor: 'gray', width: 140 }}></View>
+                          <View style={{ borderRadius: 10, borderWidth: 3, borderColor: '#6fb96d', marginTop: -5, width: '40%' }}></View>
+                        </View>
+                        <Text style={{ fontWeight: 'bold', alignSelf: 'flex-end', color: '#276653' }}>40%</Text>
+                      </View>
+                      <View style={{ flexDirection: 'row', }}>
+                        <Image source={require('../../src/images/garlic1.jpg')} style={{ width: 30, height: 30, borderRadius: 25 }} />
+                        <Image source={require('../../src/images/garlic1.jpg')} style={{ width: 30, height: 30, borderRadius: 25, marginLeft: -20, opacity: 0.5 }} />
+                      </View>
+                    </View>
+                  </View>
+                </View>
+
+                <View style={{ marginRight: 10 }}>
+                  <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, margin: 4, marginBottom: 8, padding: 20 }]}>
+                    <View style={{ flexDirection: 'row', }}>
+                      <Text style={{ fontWeight: 'bold' }}>Feb. 23, 2023 </Text>
+                    </View>
+
+                    <View style={{ flexDirection: 'row', marginTop: 5, alignItems: 'center' }}>
+                      <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
+                      <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 18 }}>Tangle Top</Text>
+                    </View>
+
+                    <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
+                      <View style={{ marginRight: 10, justifyContent: 'flex-end', marginLeft: 50 }}>
+                        {/* <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 15, height: 15 }} /> */}
+                        <View>
+                          <View style={{ borderRadius: 10, borderWidth: 1.5, borderColor: 'gray', width: 140 }}></View>
+                          <View style={{ borderRadius: 10, borderWidth: 3, borderColor: '#df8c2e', marginTop: -5, width: '60%' }}></View>
+                        </View>
+                        <Text style={{ fontWeight: 'bold', alignSelf: 'flex-end', color: '#276653' }}>60%</Text>
+                      </View>
+                      <View style={{ flexDirection: 'row', }}>
+                        <Image source={require('../../src/images/garlic1.jpg')} style={{ width: 30, height: 30, borderRadius: 25 }} />
+                        <Image source={require('../../src/images/garlic1.jpg')} style={{ width: 30, height: 30, borderRadius: 25, marginLeft: -20, opacity: 0.5 }} />
+                      </View>
+                    </View>
+                  </View>
+                </View>
+
+                <View style={{ marginRight: 10 }}>
+                  <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, margin: 4, marginBottom: 8, padding: 20 }]}>
+                    <View style={{ flexDirection: 'row', }}>
+                      <Text>Feb. 23, 2023 </Text>
+                    </View>
+
+                    <View style={{ flexDirection: 'row', marginTop: 5, alignItems: 'center' }}>
+                      <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
+                      <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 18 }}>Tangle Top</Text>
+                    </View>
+
+                    <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
+                      <View style={{ marginRight: 10, justifyContent: 'flex-end', marginLeft: 50 }}>
+                        {/* <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 15, height: 15 }} /> */}
+                        <View>
+                          <View style={{ borderRadius: 10, borderWidth: 1.5, borderColor: 'gray', width: 140 }}></View>
+                          <View style={{ borderRadius: 10, borderWidth: 3, borderColor: '#df492e', marginTop: -5, width: '90%' }}></View>
+                        </View>
+                        <Text style={{ fontWeight: 'bold', alignSelf: 'flex-end', color: '#276653' }}>90%</Text>
+                      </View>
+                      <View style={{ flexDirection: 'row', }}>
+                        <Image source={require('../../src/images/garlic1.jpg')} style={{ width: 30, height: 30, borderRadius: 25 }} />
+                        <Image source={require('../../src/images/garlic1.jpg')} style={{ width: 30, height: 30, borderRadius: 25, marginLeft: -20, opacity: 0.5 }} />
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              </ScrollView>
+            </View>
+          </View>
+
+          {/*Task1  Today */}
+          <View style={{ margin: 10, marginTop: 10, }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingBottom: 5, alignItems: 'center' }}>
+              <Text style={{ fontSize: 20, color: '#276653', fontWeight: 'bold' }}>Today's Activity</Text>
+              <TouchableOpacity onPress={() => { navigation.navigate('Task') }}>
+                <View>
+                  <Text style={{ color: '#276653', fontWeight: 'bold' }}>See all</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+            <View >
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between', backgroundColor: 'white', borderRadius: 15, width: '100%', padding: 20, borderLeftColor: '#80d6f0', borderLeftWidth: 10, marginBottom: 10, alignItems: 'center' }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
+                  <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 18 }}>Tangle Top</Text>
+                </View>
+                <View>
+                  <TouchableOpacity>
+                    <View style={{ borderRadius: 15, borderWidth: 1, borderColor: '#e7e43aff', paddingLeft: 10, paddingRight: 10, padding: 5 }}>
+                      <Text style={{ fontSize: 12, fontWeight: 'bold' }}>Complete</Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between', backgroundColor: 'white', borderRadius: 15, width: '100%', padding: 20, borderLeftColor: '#80d6f0', borderLeftWidth: 10, marginBottom: 10 }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
+                  <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 18 }}>Tangle Top</Text>
+                </View>
+              </View>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between', backgroundColor: 'white', borderRadius: 15, width: '100%', padding: 20, borderLeftColor: '#80d6f0', borderLeftWidth: 10, marginBottom: 10 }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
+                  <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 18 }}>Tangle Top</Text>
+                </View>
+              </View>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between', backgroundColor: 'white', borderRadius: 15, width: '100%', padding: 20, borderLeftColor: '#80d6f0', borderLeftWidth: 10, marginBottom: 10 }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
+                  <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 18 }}>Tangle Top</Text>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
+
+function PlantCam({ route, navigation }) {
+  const { logout, user } = useContext(AuthContext)
+    const {
+    gpsName,
+    gpsUrl,
+    gpsWeathData,
+    gpsWeathCondition,
+    locationList,
+    weathloc,
+    weathDate,
+    weathIcon,
+    weathData,
+    weathPerHour,
+    weathCondition,
+    weathPerDay,
+
+  } = useContext(LocationContext);
+  const [weathplantData, setWeatherloc] = useState(''); 
+
+  const [image1, setImage1] = useState(null)
+  // const [image2, setImage2] = useState(null)
+  // const [image3, setImage3] = useState(null)
+  // const [image4, setImage4] = useState(null)
+  // const [image5, setImage5] = useState(null)
+
+  // imageDefault
+  const ImageDefault = () => {
+    return (
+      <View style={{ marginBottom:80,paddingLeft: '5%', paddingRight: '5%', borderRadius: 10, flexDirection: 'row', width: '100%', justifyContent: 'space-evenly' }}>
+        <TouchableOpacity
+          onPress={AndroidPermissionCamera1}
+          style={[styles.cardCamera, styles.cardCameraProps]}>
+          <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+            <View style={{ padding: 16, backgroundColor: '#f0f9f6', borderRadius: 10 }}>
+              <Icon name={"camera-plus-outline"} color={'#6fb591'} size={45} style={{ width: 50 }} />
+            </View>
+            <Text style={styles.textCam}>Take a photo</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={imageLibrary}
+          style={[styles.cardCamera, styles.cardCameraProps]}>
+          <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+            <View style={{ padding: 16, backgroundColor: '#f0f9f6', borderRadius: 10 }}>
+              <Icon name={"file-image-outline"} color={'#6fb591'} size={45} style={{ width: 50 }} />
+            </View>
+            <Text style={styles.textCam}>Upload a photo</Text>
+          </View>
+        </TouchableOpacity>
+
+        {/* <Icon name={'camera-outline'} color={'#276653'} size={200} style={{ width: 200, }} /> */}
+      </View>
+    )
+  }
+
+
+  // const ImageDefault = () => {
+  //   return (
+  //     <View style={{ padding: 10, backgroundColor: '#BFE5BB', borderRadius: 10 }}>
+  //       <Icon name={'camera-outline'} color={'#276653'} size={33} style={{ width: 33, }} />
+  //     </View>
+  //   )
+  // }
+
+  // ImageChange1
+  const ImageChange1 = (props) => {
+    return (
+        <View style={{ borderRadius: 10,alignItems:'center', width:'100%',marginBottom:30 }}>
+        <View style={[styles.cardDashboardPestDiseaseProp, ,{margin:10}]}>
+            <Image source={{ uri: image1 }} style={{ width: 210, height: 210, alignItems: 'center', borderRadius: 10 }} />
+        </View>
+          <TouchableOpacity 
+            onPress={() => setImage1(null)}>
+            <View style={{flexDirection:'row', justifyContent:'center', alignItems:'center', borderBottomWidth:1, borderColor:'#ad3517'}}>
+              <Icon name={"image-remove"} color={'#ad3517'} size={20} style={{ width: 20, marginRight:2 }} />
+              <Text style={{fontSize:14, fontWeight:'bold', color:'#ad3517'}}>Remove</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+    )
+  }
+  // ImageChange2
+  const ImageChange2 = (props) => {
+    return (
+      <View style={{ borderRadius: 10 }}>
+        <Image source={{ uri: image2 }} style={{ width: 50, height: 50, alignItems: 'center', borderRadius: 10 }} />
+      </View>
+    )
+  }
+  // ImageChange3
+  const ImageChange3 = (props) => {
+    return (
+      <View style={{ borderRadius: 10 }}>
+        <Image source={{ uri: image3 }} style={{ width: 50, height: 50, alignItems: 'center', borderRadius: 10 }} />
+      </View>
+    )
+  }
+
+  // ImageChange4
+  const ImageChange4 = (props) => {
+    return (
+      <View style={{ borderRadius: 10 }}>
+        <Image source={{ uri: image4 }} style={{ width: 50, height: 50, alignItems: 'center', borderRadius: 10 }} />
+      </View>
+    )
+  }
+  // ImageChange5
+  const ImageChange5 = (props) => {
+    return (
+      <View style={{ borderRadius: 10 }}>
+        <Image source={{ uri: image5 }} style={{ width: 50, height: 50, alignItems: 'center', borderRadius: 10 }} />
+      </View>
+    )
+  }
+
+  // CamProperties
+  let optioncam = {
+    saveToPhotos: true,
+    mediaType: 'photo',
+    cameraType: 'back',
+    selectionLimit: 1,
+    includeBase64: false,
+    // path: 'image',
+  };
+
+  // UploadProperties
+  let optionImageupload = {
+    mediaType: 'photo',
+    includeBase64: false,
+    // path: 'image',
+  };
+
+
+  // imageCameraPermission
+  const AndroidPermissionCamera1 = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+        {
+          title: "Cool Photo App Camera Permission",
+          message:
+            "Cool Photo App needs access to your camera " +
+            "so you can take awesome pictures.",
+          buttonNeutral: "Ask Me Later",
+          buttonNegative: "Cancel",
+          buttonPositive: "OK"
+        }
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        const resultImageCaptured = await launchCamera(optioncam)
+        // if (resultImageCaptured.didCancel == true) {
+        //     alert('Please try again!')
+        // }
+        setImage1(resultImageCaptured.assets[0].uri);
+
+      } else {
+        console.log("Camera permission denied");
+        alert("Camera permission denied")
+      }
+    } catch (error) {
+      alert('Please try again!')
+    }
+  }
+
+  const AndroidPermissionCamera2 = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+        {
+          title: "Cool Photo App Camera Permission",
+          message:
+            "Cool Photo App needs access to your camera " +
+            "so you can take awesome pictures.",
+          buttonNeutral: "Ask Me Later",
+          buttonNegative: "Cancel",
+          buttonPositive: "OK"
+        }
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        const resultImageCaptured = await launchCamera(optioncam)
+        // if (resultImageCaptured.didCancel == true) {
+        //     alert('Please try again!')
+        // }
+        setImage2(resultImageCaptured.assets[0].uri);
+
+      } else {
+        console.log("Camera permission denied");
+        alert("Camera permission denied")
+      }
+    } catch (error) {
+      alert('Please try again!')
+    }
+  }
+
+  const AndroidPermissionCamera3 = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+        {
+          title: "Cool Photo App Camera Permission",
+          message:
+            "Cool Photo App needs access to your camera " +
+            "so you can take awesome pictures.",
+          buttonNeutral: "Ask Me Later",
+          buttonNegative: "Cancel",
+          buttonPositive: "OK"
+        }
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        const resultImageCaptured = await launchCamera(optioncam)
+        // if (resultImageCaptured.didCancel == true) {
+        //     alert('Please try again!')
+        // }
+        setImage3(resultImageCaptured.assets[0].uri);
+
+      } else {
+        console.log("Camera permission denied");
+        alert("Camera permission denied")
+      }
+    } catch (error) {
+      alert('Please try again!')
+    }
+  }
+
+  const AndroidPermissionCamera4 = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+        {
+          title: "Cool Photo App Camera Permission",
+          message:
+            "Cool Photo App needs access to your camera " +
+            "so you can take awesome pictures.",
+          buttonNeutral: "Ask Me Later",
+          buttonNegative: "Cancel",
+          buttonPositive: "OK"
+        }
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        const resultImageCaptured = await launchCamera(optioncam)
+        // if (resultImageCaptured.didCancel == true) {
+        //     alert('Please try again!')
+        // }
+        setImage4(resultImageCaptured.assets[0].uri);
+
+      } else {
+        console.log("Camera permission denied");
+        alert("Camera permission denied")
+      }
+    } catch (error) {
+      alert('Please try again!')
+    }
+  }
+
+  const AndroidPermissionCamera5 = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+        {
+          title: "Cool Photo App Camera Permission",
+          message:
+            "Cool Photo App needs access to your camera " +
+            "so you can take awesome pictures.",
+          buttonNeutral: "Ask Me Later",
+          buttonNegative: "Cancel",
+          buttonPositive: "OK"
+        }
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        const resultImageCaptured = await launchCamera(optioncam)
+        // if (resultImageCaptured.didCancel == true) {
+        //     alert('Please try again!')
+        // }
+        setImage5(resultImageCaptured.assets[0].uri);
+
+      } else {
+        console.log("Camera permission denied");
+        alert("Camera permission denied")
+      }
+    } catch (error) {
+      alert('Please try again!')
+    }
+  }
+
+  // imageUploadPermission
+  const imageLibrary = async () => {
+
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+        {
+          title: "Garlic App Camera Permission",
+          message:
+            "Garlic App needs access to your Gallery ",
+          buttonNeutral: "Ask Me Later",
+          buttonNegative: "Cancel",
+          buttonPositive: "OK"
+        }
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        const resultImageToUpload = await launchImageLibrary(optionImageupload)
+        setImage1(resultImageToUpload.assets[0].uri);
+        if (resultImageToUpload.didCancel == true) {
+          alert('Please try again!')
+          // alert('No images in gallery selected!')
+        }
+        alert(imagePathCapture)
+
+      } else {
+        console.log("Camera permission denied");
+        alert("Camera permission denied")
+      }
+    } catch (error) {
+      alert('Please try again!', error)
+    }
+  }
+
+  const imageSubmit = async () => {
+    console.log(' image1: ' + image1);
+
+      // Create Data plant
+      if (image1 === null) {
+        alert('Select image!');
+        return;
+      } 
+      else {
+        const uri = imagePathCapture;
+        const filename = uri.substring(uri.lastIndexOf('/') + 1);
+        const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
+        setUploading(true);
+        setTransferred(0);
+  
+        // storagePath and imagePath
+        const task = Storage().ref('images/' + filename).putFile(uploadUri)
+  
+        // Process 
+        task.on('state_changed', snapshot => {
+          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log(`Upload is ${progress}% done`);
+  
+          setTransferred(
+            Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          );
+        });
+  
+        // Task then
+        task.then(async () => {
+          // get imageDownloadURL
+          const downloadURL = await Storage().ref('images/' + filename).getDownloadURL();
+  
+          // Test
+          // alert('downloadURL: ' + downloadURL);
+  
+          // store data in realtime database
+          database().ref('/database/' + user.uid + plantTitle)
+            .set({
+              image: downloadURL,
+              title: plantTitle,
+              variety: plantVariety,
+              area: plantArea,
+              date: plantDate.toISOString(),
+              plantAddress: plantAddress
+            })
+            .then(async () => {
+              alert('Plant data stored successfully!')
+              navigation.goBack()
+            });
+        });
+  
+        try {
+          await task;
+        } catch (e) {
+          console.error(e);
+        }
+  
+        setUploading(false);
+        setImage1(null);
+      }
+  }
+
+  //#E8F4E6
+  return (
+    <SafeAreaView>
+      <ScrollView>
+        <View style={{ backgroundColor: '#e6fae3', width: '100%', height: '100%' }}>
+          <View style={{ alignItems: 'center', justifyContent: 'center', width: '100%', paddingBottom: 30 }}>
+            <Image source={require('../../src/images/garlic1.jpg')} style={{ marginTop: 40, width: 120, height: 120, borderRadius: 160, marginRight: 10 }} />
+            <Text style={{ marginTop: 10, fontWeight: 'bold', fontSize: 18, color: '#528F56' }}>Dingras, Ilocos White</Text>
+            <Text style={{ fontSize: 14, fontWeight: 'bold', }}>October 23, 2023</Text>
+          </View>
+
+          <View style={{
+            padding: 20, backgroundColor: 'white', borderTopRightRadius: 25,
+            borderTopLeftRadius: 25, paddingTop: 30
+          }}>
+            <View style={{ paddingRight: 30, paddingLeft: 30 }}>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                <Text style={{ fontWeight: 'bold', fontSize: 18 }}>Add image</Text>
+                <Icon name={'information-outline'} color={' #276653'} size={25} style={{ width: 25, }} />
+              </View>
+              <Text style={{ paddingRight: 25, fontSize: 14, paddingTop: 5 }}>Upload clear photo of the leaf and bulb that look sick. </Text>
+              <View style={{ flexDirection: 'row', marginTop: 20,justifyContent:'center', alignItems:'center', width: '100%'}}>
+
+                
+                  {
+                    image1 == null ? <ImageDefault /> : <ImageChange1 />
+                  }
+            
+                {/* <TouchableOpacity onPress={AndroidPermissionCamera2}>
+                  {
+                    image2 == null ? <ImageDefault /> : <ImageChange2 />
+                  }
+                </TouchableOpacity>
+                <TouchableOpacity onPress={AndroidPermissionCamera3}>
+                  {
+                    image3 == null ? <ImageDefault /> : <ImageChange3 />
+                  }
+                </TouchableOpacity>
+                <TouchableOpacity onPress={AndroidPermissionCamera4}>
+                  {
+                    image4 == null ? <ImageDefault /> : <ImageChange4 />
+                  }
+                </TouchableOpacity>
+                <TouchableOpacity onPress={AndroidPermissionCamera5}>
+                  {
+                    image5 == null ? <ImageDefault /> : <ImageChange5 />
+                  }
+                </TouchableOpacity> */}
+              </View>
+
+              <View style={{ marginTop: 10, flexDirection: 'row', justifyContent: 'center', marginBottom: 10 }}>
+                <TouchableOpacity onPress={imageSubmit}>
+                  <View style={{ padding: 18, paddingLeft: 60, paddingRight: 60, backgroundColor: '#E8F4E6', borderRadius: 50, justifyContent: 'center', alignItems: 'center', }}>
+                    <Text style={{ color: '#528F56', fontWeight: 'bold', fontSize: 18, }}>Submit</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+
+            </View>
+          </View>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  )
+}
+
+function PlantCamResult({ route, navigation }) {
+  const { logout, user } = useContext(AuthContext)
+  return (
+    <View>
+      <Text>PlantCamResult</Text>
+    </View>
+  )
+}
+
+
+
+
+function PlantNewNote({ route, navigation }) {
+  const { logout, user } = useContext(AuthContext)
+
+  const [note, setNote] = React.useState("How's it growing?");
+  const [imageNote, setImageNote] = useState(null)
+
+  const ImageDefault = () => {
+    return (
+      <View style={{ padding: 10, backgroundColor: '#BFE5BB', borderRadius: 10 }}>
+        {/* <Icon name={'camera-outline'}color={'#276653'} size={60} style={{ width: 60,}} /> */}
+        <Text></Text>
+      </View>
+    )
+  }
+
+  // ImageChange1
+  const ImageChangeNote = (props) => {
+    return (
+      <View style={{ borderRadius: 10 }}>
+        <Image source={{ uri: imageNote }} style={{ width: 50, height: 50, alignItems: 'center', borderRadius: 10 }} />
+      </View>
+    )
+  }
+  const AndroidPermissionCameraNote = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+        {
+          title: "Cool Photo App Camera Permission",
+          message:
+            "Cool Photo App needs access to your camera " +
+            "so you can take awesome pictures.",
+          buttonNeutral: "Ask Me Later",
+          buttonNegative: "Cancel",
+          buttonPositive: "OK"
+        }
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        const resultImageCaptured = await launchCamera(optioncam)
+        // if (resultImageCaptured.didCancel == true) {
+        //     alert('Please try again!')
+        // }
+        setImageNote(resultImageCaptured.assets[0].uri);
+
+      } else {
+        console.log("Camera permission denied");
+        alert("Camera permission denied")
+      }
+    } catch (error) {
+      alert('Please try again!')
+    }
+  }
+
+  // imageUploadPermission
+  const imageLibrary = async () => {
+
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+        {
+          title: "Garlic App Camera Permission",
+          message:
+            "Garlic App needs access to your Gallery ",
+          buttonNeutral: "Ask Me Later",
+          buttonNegative: "Cancel",
+          buttonPositive: "OK"
+        }
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        const resultImageToUpload = await launchImageLibrary(optionImageupload)
+        setimagePathCapture(resultImageToUpload.assets[0].uri);
+        if (resultImageToUpload.didCancel == true) {
+          alert('Please try again!')
+          // alert('No images in gallery selected!')
+        }
+        alert(imagePathCapture)
+
+      } else {
+        console.log("Camera permission denied");
+        alert("Camera permission denied")
+      }
+    } catch (error) {
+      alert('Please try again!', error)
+    }
+  }
+
+
+
+  return (
+    <SafeAreaView>
+      <View style={{ padding: 20 }}>
+        <View>
+          <Text>Date</Text>
+          <Text>Date</Text>
+        </View>
+        <View>
+          <TextInput
+            multiline
+            numberOfLines={6}
+            maxLength={255}
+            onChangeText={text => setNote(text)}
+            value={note}
+            style={{ height: 220, paddingTop: 10, paddingLeft: 20, paddingRight: 20, fontSize: 18, backgroundColor: '#eff0d0', borderWidth: 1, borderColor: '#b9bd48', borderRadius: 18 }}
+          />
+        </View>
+        <View>
+          <Text>Add photo</Text>
+          <Text>Choose photo</Text>
+          <View style={{ width: 150 }}>
+            <TouchableOpacity onPress={AndroidPermissionCameraNote}>
+              {
+                imageNote == null ? <ImageDefault /> : <ImageChangeNote />
+              }
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+    </SafeAreaView>
+  )
+
+}
+
+
+function Task({ route, navigation }) {
+  const { logout, user } = useContext(AuthContext)
+
+
+  const initialLayout = { height: 300, backgroundColor: 'red' };
+
+  const renderTabBar = (props) => (
+    <TabBar
+      {...props}
+      //tabStyle={{}}
+      renderLabel={({ route, focused, color }) => (
+        <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#276653', margin: 8 }}>
+          {route.title}
+        </Text>
+      )}
+      activeColor={'#276653'}
+      indicatorStyle={{ backgroundColor: '#276653', height: 5, borderRadius: 10 }}
+      style={{ backgroundColor: 'white' }}
+    />
+  );
+
+  const [index, setIndex] = React.useState(0);
+  const [routes] = React.useState([
+    { key: 'first', title: 'Today' },
+    { key: 'second', title: 'Upcoming' },
+    { key: 'third', title: 'Completed' },]);
+
+  const renderScene = SceneMap({
+    first: FirstRoute,
+    second: SecondRoute,
+    third: ThirdRoute,
+  });
+
+
+  function FirstRoute() {
+    return (
+      <View style={{ flex: 1 }}>
+        <Text>
+          First
+        </Text>
+      </View>
+    )
+  }
+  function SecondRoute() {
+    return (
+      <View style={{ flex: 1 }}>
+        <Text>
+          SecondRoute
+        </Text>
+      </View>
+    )
+  }
+  function ThirdRoute() {
+    return (
+      <View style={{ flex: 1 }}>
+        <Text>
+          ThirdRoute
+        </Text>
+      </View>
+    )
+  }
+  return (
+    <SafeAreaView>
+      <View style={{ padding: 20, backgroundColor: 'white', height: '100%' }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20, paddingBottom: 5, alignItems: 'center' }}>
+          <Text style={{ fontSize: 20, color: '#276653', fontWeight: 'bold' }}>Task</Text>
+        </View>
+        <View >
+          <ScrollView horizontal={true} style={{ paddingBottom: 10 }}>
+            <View style={{ margin: 5 }}>
+              <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, paddingRight: 20, paddingLeft: 20 }]}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
+                  <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Water</Text>
+                </View>
+              </View>
+            </View>
+
+            <View style={{ margin: 5 }}>
+              <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, paddingRight: 20, paddingLeft: 20 }]}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
+                  <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Water</Text>
+                </View>
+              </View>
+            </View>
+
+            <View style={{ margin: 5 }}>
+              <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, paddingRight: 20, paddingLeft: 20 }]}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
+                  <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Water</Text>
+                </View>
+              </View>
+            </View>
+          </ScrollView>
+        </View>
+        <View style={{ height: 300, backgroundColor: 'violet' }}>
+          <TabView
+            navigationState={{ index, routes }}
+            renderTabBar={renderTabBar}
+            renderScene={renderScene}
+            onIndexChange={setIndex}
+            initialLayout={initialLayout}
+            style={{ backgroundColor: 'white' }}
+          />
+        </View>
+      </View>
+    </SafeAreaView>
+  )
+}
+
 const PlantStack = createNativeStackNavigator();
 export default function Plant({ navigation }) {
   return (
     <PlantStack.Navigator>
       <PlantStack.Screen name="PlantDash" component={PlantDash} />
-      <PlantStack.Screen name="PlantID" component={PlantID} />
       <PlantStack.Screen name="PlantNew" component={PlantNew}
         options={
           { headerShown: false }
         } />
+      <PlantStack.Screen name="PlantID" component={PlantID} />
+      <PlantStack.Screen name="PlantCam" component={PlantCam} />
+      <PlantStack.Screen name="PlantCamResult" component={PlantCamResult} />
+      <PlantStack.Screen name="PlantNewNote" component={PlantNewNote} />
+      <PlantStack.Screen name="Task" component={Task} />
     </PlantStack.Navigator >
   );
 }
@@ -748,4 +1894,4 @@ const style = StyleSheet.create({
     height: 22,
     color: 'white',
   },
-});
+});  

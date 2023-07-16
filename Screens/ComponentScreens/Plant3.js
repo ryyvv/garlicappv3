@@ -1,18 +1,27 @@
 //import axios from 'axios';
 import moment from "moment";
-import React, { useEffect, useState, useFonts, useContext } from 'react';
+import React, { useEffect, useState, useFonts, useContext, useRef } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { FloatingAction } from "react-native-floating-action";
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
-import { getStorage, ref, uploadBytesResumable, getDownloadURL } from '@react-native-firebase/storage';
+import Storage from '@react-native-firebase/storage';
 import DatePicker from 'react-native-date-picker'
 import database from '@react-native-firebase/database';
+import RBSheet from "react-native-raw-bottom-sheet";
+
+import { LazyLoadImage } from 'react-native-lazy-load-image';
+// import Timeline from "react-native-beautiful-timeline";
+import Androw from 'react-native-androw';
+import Timeline from 'react-native-timeline-flatlist'
+
+// Request data
+import { LocationContext } from '../Context/LocationProvider';
 import { AuthContext } from '../Context/AuthProvider';
 
-const dbRef = database().ref('images');
 
+const dbRef = database().ref('images');
 
 import {
   SafeAreaView,
@@ -42,6 +51,7 @@ import * as Progress from 'react-native-progress';
 
 function PlantDash({ route, navigation }) {
   const [plants, setPlants] = useState('');
+  const [plantData, setPlantData] = useState([])
 
   // const {plantData, setPlantData} =  route.params;
 
@@ -62,119 +72,1062 @@ function PlantDash({ route, navigation }) {
     const plantData = database().ref('/plants/');
     console.log(plantData)
   }, [navigation])
-  return (
 
-    <View style={{ flex: 1, backgroundColor: '#cbdeda' }}>
-      <StatusBar
-        animated={true}
-        barStyle={statusBarStyle}
-        translucent={true} />
-      <ScrollView>
-        <View style={styles.accountcontainer}>
+  useEffect(() => {
+    displayList();
+  }, []);
 
-          <View>
-            <View style={styles.cardDataPlant}>
-              <View style={styles.div2RowSpaceEvenNoAlignItems}>
-                <Pressable
-                  onPress={() => {
-                    // navigation.navigate()
-                    alert(plantData)
-                  }}>
-                  <View style={styles.div2Row}>
-                    <Image source={require('../../src/images/garlic2.png')} style={{ width: 50, height: 50, borderRadius: 50 / 2, marginRight: 10 }} />
-                    <View>
-                      <Text style={{ color: '#276653', fontWeight: 'bold', fontSize: 17 }}>Garlic1-Suyo</Text>
-                      <Text>Dec. 03, 2022</Text>
-                    </View>
-                  </View>
-                </Pressable>
-                <View style={styles.div2RowDatalist}>
-                  <Icon name={"bell-outline"} color={'#276653'} size={23} style={{ width: 20, marginRight: 20 }} />
-                  <TouchableOpacity>
-                    <Icon name={"dots-vertical"} color={'#276653'} size={23} style={{ width: 20 }} />
-                  </TouchableOpacity>
-                </View>
+  const displayList = async () => {
+    const dbRef = database().ref('plants');
+    dbRef.on('value', (snapshot) => {
+      const firebaseData = snapshot.val();
+      if (firebaseData == null) {
+        setPlantData(null);
+      } else {
+        const dataArray = Object.values(firebaseData);
+        setPlantData(dataArray);
+      }
+    });
+  }
+
+  // datalist
+  const renderDisplayList = ({ item }) => {
+    return (
+      <TouchableOpacity onPress={() => {
+        navigation.navigate('PlantID', {
+          title: item.title,
+          image: item.image,
+          variety: item.variety,
+          date: item.date,
+          plantAddress: item.plantAddress,
+        });
+      }}>
+        <View style={styles.cardDataPlant}>
+          <View style={styles.div2RowSpaceEvenNoAlignItems}>
+
+            <View style={styles.div2Row}>
+              {/* <Image source={{ uri: item.image }} style={{ width: 50, height: 50, borderRadius: 50 / 2, marginRight: 10 }}/> */}
+              <LazyLoadImage source={{ uri: item.image }} style={{ width: 50, height: 50, borderRadius: 50 / 2, marginRight: 10 }} />
+              <View>
+                <Text style={{ color: '#276653', fontWeight: 'bold', fontSize: 17 }}>{item.title}</Text>
+                <Text>{moment(item.date).format('MMMM D, YYYY')}</Text>
               </View>
             </View>
 
+
+            {/* Button option */}
+            <View style={[styles.div2RowDatalist, { padding: 10 }]}>
+              <Icon name={"bell-outline"} color={'#276653'} size={23} style={{ width: 20, marginRight: 20 }} />
+              <TouchableOpacity>
+                <Icon name={"dots-vertical"} color={'#276653'} size={23} style={{ width: 20 }} />
+              </TouchableOpacity>
+            </View>
           </View>
-          {/* </ScrollView> */}
         </View>
+      </TouchableOpacity>
+    );
+  };
+
+  // datalist
+  const renderDisplayList2 = ({ item }) => {
+    return (
+      <TouchableOpacity onPress={() => {
+        navigation.navigate('PlantID', {
+          title: item.title,
+          image: item.image,
+          variety: item.variety,
+          date: item.date,
+          plantAddress: item.plantAddress,
+        });
+      }}>
+        <View style={styles.cardDataPlant}>
+          <View style={styles.div2RowSpaceEvenNoAlignItems}>
+
+            <View style={styles.div2Row}>
+              {/* <Image source={{ uri: item.image }} style={{ width: 50, height: 50, borderRadius: 50 / 2, marginRight: 10 }}/> */}
+              <LazyLoadImage source={{ uri: item.image }} style={{ width: 50, height: 50, borderRadius: 50 / 2, marginRight: 10 }} />
+              <View>
+                <Text style={{ color: '#276653', fontWeight: 'bold', fontSize: 17 }}>{item.title}</Text>
+                <Text>{moment(item.date).format('MMMM D, YYYY')}</Text>
+              </View>
+            </View>
+
+
+            {/* Button option */}
+            <View style={[styles.div2RowDatalist, { padding: 10 }]}>
+              <TouchableOpacity>
+                {/* Delete */}
+                <Icon name={"dots-vertical"} color={'#276653'} size={23} style={{ width: 20 }} />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </TouchableOpacity>
+    );
+  };
+
+  const showEmptyListView = () => {
+    return (
+      <View style={{ marginTop: 200, flexDirection: 'row', justifyContent: 'center', alignItem: 'center' }}>
+        <Text style={{ fontSize: 20, fontWeight: 'bold', alignItem: 'center', justifyContent: 'center', }}><Icon name={"plus-circle"} color={'#276653'} size={30} style={{ width: 20 }} />Add a plant to get started!  </Text>
+      </View>
+    )
+  }
+
+  return (
+    <View style={{ flex: 1, backgroundColor: '#cbdeda' }}>
+      <StatusBar animated={true} barStyle={statusBarStyle} translucent={true} />
+      <ScrollView>
+        <View style={styles.accountcontainer}>
+          <Text style={{ marginBottom: 6, color: '#276653', fontWeight: 'bold', fontSize: 18 }}>Recent</Text>
+          <FlatList
+            data={plantData}
+            renderItem={renderDisplayList}
+            keyExtractor={(item) => item.id}
+            ListEmptyComponent={showEmptyListView()} />
+
+          <Text style={{ marginBottom: 6, color: '#276653', fontWeight: 'bold', fontSize: 18 }}>Completed </Text>
+          <FlatList
+            data={plantData}
+            renderItem={renderDisplayList2}
+            keyExtractor={(item) => item.id}
+            ListEmptyComponent={showEmptyListView()} />
+
+
+
+        </View>
+
+
       </ScrollView>
 
-      <TouchableOpacity
-        onPress={() => {
-          navigation.navigate('PlantNew')
-        }}
-      >
+      {/* Add button            */}
+      <TouchableOpacity onPress={() => { navigation.navigate('PlantNew') }}>
         <View style={styles.addBtn}>
           <Icon name={"plus"} color={'white'} size={23} style={{ fontWeight: 'bold' }} />
         </View>
       </TouchableOpacity>
-    </View >
+    </View>
 
   )
 }
 
 function PlantID({ route, navigation }) {
 
-  const apiKey = 'c90f776ca6f447d182204634220807';
+  const refRBSheetAna = useRef();
+  let AnimatedHeaderValue = new Animated.Value(0);
+  const HEADER_MAX_HEIGHT = 300;
+  const HEADER_MIN_HEIGHT = 200;
 
-  const newdate = new Date();
-  const [datacollect, setDataColllected] = useState('');
-  const [dataArray, setDataArray] = useState([]);
-  const currentTimeCheck = moment(new Date().getHours()).format('hh:mm A');
+  const animatedHeaderBackgroundColor = AnimatedHeaderValue.interpolate({
+    inputRange: [5, HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT],
+    outputRange: ['blue', 'red'],
+    extrapolate: 'clamp',
+  });
 
-  const addData = () => {
-    dataArray.push(datacollect.toString());
-    setDataColllected('')
+  const animatedHeaderHeight = AnimatedHeaderValue.interpolate({
+    inputRange: [60, HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT],
+    outputRange: [HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT],
+    extrapolate: 'clamp',
+  });
 
-    if (dataArray != null) {
-      return dataArray
-    } else {
-      setDataColllected('')
+
+  const { title, image, variety, date } = route.params;
+
+
+
+  const data = [
+    {
+      "date": 1574342522000,
+      "data": [
+        {
+          "title": "React Native Beautiful Timeline",
+          "subtitle": "Sed at justo eros. Phasellus.",
+          "date": 1574342522000
+        },
+        {
+          "title": "React Native",
+          "subtitle": "Sed viverra. Nam sagittis.",
+          "date": 1574342501000
+        }
+      ]
+    },
+    {
+      "date": 1574248261000,
+      "data": [
+        {
+          "title": "Timeline",
+          "subtitle": "Morbi magna orci, consequat in.",
+          "date": 1574248261000
+        }
+      ]
+    },
+    {
+      "date": 1574125621000,
+      "data": [
+        {
+          "title": "Beauty Timeline",
+          "subtitle": "Nulla a eleifend urna. Morbi. Praesent.",
+          "date": 1574125621000
+        }
+      ]
+    }
+
+    // Time
+    // icon
+    // title
+    // Discription
+    // LineColor
+    // imageURL;
+
+  ];
+
+  // CamProperties
+  let optioncam = {
+    saveToPhotos: true,
+    mediaType: 'photo',
+    cameraType: 'back',
+    selectionLimit: 1,
+    includeBase64: false,
+    // path: 'image',
+  };
+
+  // UploadProperties
+  let optionImageupload = {
+    mediaType: 'photo',
+    includeBase64: false,
+    // path: 'image',
+  };
+
+  // imageCameraPermission
+  const AndroidPermissionCamera = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+        {
+          title: "Cool Photo App Camera Permission",
+          message:
+            "Cool Photo App needs access to your camera " +
+            "so you can take awesome pictures.",
+          buttonNeutral: "Ask Me Later",
+          buttonNegative: "Cancel",
+          buttonPositive: "OK"
+        }
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        const resultImageCaptured = await launchCamera(optioncam)
+        if (resultImageCaptured.didCancel == true) {
+          alert('Please try again!')
+        }
+        setimagePathCapture(resultImageCaptured.assets[0].uri);
+
+      } else {
+        console.log("Camera permission denied");
+        alert("Camera permission denied")
+      }
+    } catch (error) {
+      alert('Please try again!')
+    }
+  }
+
+  // imageUploadPermission
+  const imageLibrary = async () => {
+
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+        {
+          title: "Garlic App Camera Permission",
+          message:
+            "Garlic App needs access to your Gallery ",
+          buttonNeutral: "Ask Me Later",
+          buttonNegative: "Cancel",
+          buttonPositive: "OK"
+        }
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        const resultImageToUpload = await launchImageLibrary(optionImageupload)
+        setimagePathCapture(resultImageToUpload.assets[0].uri);
+        if (resultImageToUpload.didCancel == true) {
+          alert('Please try again!')
+          // alert('No images in gallery selected!')
+        }
+        alert(imagePathCapture)
+
+      } else {
+        console.log("Camera permission denied");
+        alert("Camera permission denied")
+      }
+    } catch (error) {
+      alert('Please try again!', error)
     }
   }
 
 
-  useEffect(() => {
-    getApiCurrent();
-  }, []);
-
   return (
-    <View>
-      <StatusBar animated={true} backgroundColor="green" />
-      <SafeAreaView>
-        <ScrollView>
+    <SafeAreaView style={{ flex: 1 }}>
+      <Animated.View
+        style={{
+          height: animatedHeaderHeight,
+          flex: 1
+          // backgroundColor: animatedHeaderBackgroundColor,
+        }}>
+
+        <ImageBackground
+          source={require('../../src/images/Insect4.jpg')}
+          resizeMode="cover"
+          style={{ flex: 1, justifyContent: 'center', }}>
+          {/* opacity: 0.1 */}
+        </ImageBackground>
+        <View style={{ position: 'absolute', bottom: 0, padding: 35 }}>
+          {/* <Image  source={require(JSON.stringify(images))}/> */}
+          <Text style={{ fontWeight: 'bold', fontSize: 30, color: 'white' }}>name</Text>
+          <Text style={{ fontWeight: 'bold', fontSize: 20, fontStyle: 'italic', color: 'white' }}>spname</Text>
+
+          <TouchableOpacity onPress={() => refRBSheetAna.current.open()}>
+            <View style={{ justifyContent: 'center', alignItems: 'center', borderWidth: 2, borderColor: '#7D8F69', backgroundColor: 'white', padding: 5, paddingRight: 15, paddingLeft: 15, borderRadius: 20 }}>
+              <Text style={{ fontSize: 16, color: '#7D8F69', fontWeight: 'bold' }}>
+                Analyze leaf
+              </Text>
+            </View>
+          </TouchableOpacity>
+          
+          <TouchableOpacity onPress={() => navigation.navigate('PlantCam')}>
+            <View style={{ justifyContent: 'center', alignItems: 'center', borderWidth: 2, borderColor: '#7D8F69', backgroundColor: 'white', padding: 5, paddingRight: 15, paddingLeft: 15, borderRadius: 20 }}>
+              <Text style={{ fontSize: 16, color: '#7D8F69', fontWeight: 'bold' }}>
+              PlantIdView
+              </Text>
+            </View>
+          </TouchableOpacity>
+        
+
+          <RBSheet
+            ref={refRBSheetAna}
+            closeOnDragDown={true}
+            closeOnPressMask={true}
+            closeDuration={500}
+            openDuration={500}
+            height={250}
+            animationType={'fade'}
+            customStyles={{
+              wrapper: {
+                backgroundColor: 'rgba(52, 52, 52, 0.4)'
+              },
+              draggableIcon: {
+                backgroundColor: "#276653",
+              },
+              container: {
+                borderTopLeftRadius: 20,
+                borderTopRightRadius: 20,
+              }
+            }}>
+            <View style={{ marginTop: 5, paddingLeft: 48, paddingRight: 25, flexDirection: 'row', }}>
+              <Text style={styles.textCamTitle}>
+                Choose source
+              </Text>
+            </View>
+            <View style={{ marginTop: 5, paddingLeft: 25, paddingRight: 25, flexDirection: 'row', justifyContent: 'space-evenly' }}>
+              <TouchableOpacity
+                onPress={AndroidPermissionCamera}
+                style={[styles.cardCamera, styles.cardCameraProps]}>
+                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                  <View style={{ padding: 16, backgroundColor: '#f0f9f6', borderRadius: 10 }}>
+                    <Icon name={"camera-plus-outline"} color={'#6fb591'} size={45} style={{ width: 50 }} />
+                  </View>
+                  <Text style={styles.textCam}>Take a photo</Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={imageLibrary}
+                style={[styles.cardCamera, styles.cardCameraProps]}>
+                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                  <View style={{ padding: 16, backgroundColor: '#f0f9f6', borderRadius: 10 }}>
+                    <Icon name={"file-image-outline"} color={'#6fb591'} size={45} style={{ width: 50 }} />
+                  </View>
+                  <Text style={styles.textCam}>Upload a photo</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          </RBSheet>
+        </View>
+        <View style={{ position: 'absolute', bottom: 0, paddingLeft: 60 }}>
+          <Text>fsdfsf</Text>
+        </View>
+      </Animated.View>
+      <View style={{
+        flex: 2,
+        padding: 20,
+        backgroundColor: '#7ABD87',
+        borderTopRightRadius: 25,
+        borderTopLeftRadius: 25,
+        paddingTop: 30,
+        marginTop: -20,
+        maxHeight: 400
+      }}>
+        <ScrollView
+          scrollEventThrottle={15}
+          showsVerticalScrollIndicator={false}
+          onScroll={Animated.event(
+            [
+              {
+                nativeEvent: {
+                  contentOffset: {
+                    y: AnimatedHeaderValue,
+                  },
+                },
+              },
+            ],
+            { useNativeDriver: false },
+          )}>
+
           <View>
-            <Text>Screen 2</Text>
+            {/* Description */}
+            <View style={{ marginRight: 12, marginBottom: 10 }}>
+              <Text style={{ fontSize: 18, fontWeight: 'bold', color: 'white', }}>
+                Plant info
+              </Text>
+              <View style={[styles.cardDesHourly, styles.cardDesHourlyProp,]}>
+                {/* Data */}
+                <View style={styles.div2RowSpaceEven}>
+                  <View style={{ justifyContent: 'flex-end' }}>
+                    <Text
+                      style={{
+                        fontSize: 14,
+                        fontWeight: '900',
+                        color: '#276653',
+                      }}>
+                      Location
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 14,
+                        fontWeight: 'bold',
+                        color: '#8eb4a9',
+                      }}>
+                      Every 2 wesd
+                    </Text>
+                  </View>
+
+                  <View style={{ justifyContent: 'flex-start' }}>
+                    <Text
+                      style={{
+                        fontSize: 14,
+                        fontWeight: '900',
+                        color: '#276653',
+                      }}>
+                      Plant Variety
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 14,
+                        fontWeight: 'bold',
+                        color: '#8eb4a9',
+                      }}>
+                      last two weeks
+                    </Text>
+                  </View>
+                </View>
+                {/* DataEnd */}
+
+                <View style={styles.div2RowSpaceEven}>
+                  <View style={{ justifyContent: 'flex-end' }}>
+                    <Text
+                      style={{
+                        fontSize: 14,
+                        fontWeight: '900',
+                        color: '#276653',
+                      }}>
+                      Date Starteds:
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 14,
+                        fontWeight: 'bold',
+                        color: '#8eb4a9',
+                      }}>
+                      Every 2 wesd
+                    </Text>
+                  </View>
+
+                  <View style={{ justifyContent: 'flex-start' }}>
+                    <Text
+                      style={{
+                        fontSize: 14,
+                        fontWeight: '900',
+                        color: '#276653',
+                      }}>
+                      Date Harvest:
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 14,
+                        fontWeight: 'bold',
+                        color: '#8eb4a9',
+                      }}>
+                      last two weeks
+                    </Text>
+                  </View>
+                </View>
+
+                <View style={[styles.div2RowSpaceEven, { marginBottom: 10 }]}>
+                  <View style={{ justifyContent: 'flex-end' }}>
+                    <Text
+                      style={{
+                        fontSize: 14,
+                        fontWeight: '900',
+                        color: '#276653',
+                      }}>
+                      Findings:
+                    </Text>
+                    <View>
+                      <Text
+                        style={{
+                          fontSize: 14,
+                          fontWeight: 'bold',
+                          color: '#8eb4a9',
+                        }}>
+                        Disease/s:
+                      </Text>
+                      <Text
+                        style={{
+                          fontSize: 14,
+                          fontWeight: 'bold',
+                          color: '#8eb4a9',
+                        }}>
+                        Insect Pest/s:
+                      </Text>
+                    </View>
+                  </View>
+                  <View style={{ justifyContent: 'flex-end' }}>
+                    <Text
+                      style={{
+                        fontSize: 14,
+                        fontWeight: '900',
+                        color: '#276653',
+                      }}>
+                      Water
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 14,
+                        fontWeight: 'bold',
+                        color: '#8eb4a9',
+                      }}>
+                      Every 2 weeks
+                    </Text>
+                  </View>
+                </View>
+
+              </View>
+            </View>
+
+            <View>
+              {/* Findings */}
+              <View>
+                <Text style={{ color: 'white', marginBottom: 10, fontWeight: 'bold', fontSize: 20 }}>Findings</Text>
+                <View style={{ flexDirection: 'row' }}>
+                  {/* Loopstart */}
+                  <ScrollView horizontal={true} showsVerticalScrollIndicator={false}>
+                    <View style={[styles.cardSmallHourly, styles.cardSmallHourlyProp, { height: 200 }]}>
+                      <View style={styles.div2RowSpaceEven}>
+                        <View style={{ paddingRight: 10 }}>
+                          <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 45, height: 45 }} />
+                        </View>
+                        <View style={{ justifyContent: 'flex-end' }}>
+                          <Text
+                            style={{
+                              fontSize: 14,
+                              fontWeight: '900',
+                              color: '#276653',
+                            }}>
+                            Water
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 14,
+                              fontWeight: 'bold',
+                              color: '#8eb4a9',
+                            }}>
+                            Every 2 weeks
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
+                    {/* Loopend */}
+
+                    <View style={[styles.cardSmallHourly, styles.cardSmallHourlyProp,]}>
+                      <View style={styles.div2RowSpaceEven}>
+                        <View style={{ paddingRight: 10 }}>
+                          <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 45, height: 45 }} />
+                        </View>
+                        <View style={{ justifyContent: 'flex-end' }}>
+                          <Text
+                            style={{
+                              fontSize: 14,
+                              fontWeight: 'bold',
+                              color: '#8eb4a9',
+                            }}>
+                            Water
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 14,
+                              fontWeight: '900',
+                              color: '#276653',
+                            }}>
+                            Every 2 weeks
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
+
+                    <View style={[styles.cardSmallHourly, styles.cardSmallHourlyProp,]}>
+                      <View style={styles.div2RowSpaceEven}>
+                        <View style={{ paddingRight: 10 }}>
+                          <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 45, height: 45 }} />
+                        </View>
+                        <View style={{ justifyContent: 'flex-end' }}>
+                          <Text
+                            style={{
+                              fontSize: 14,
+                              fontWeight: 'bold',
+                              color: '#8eb4a9',
+                            }}>
+                            Water
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 14,
+                              fontWeight: '900',
+                              color: '#276653',
+                            }}>
+                            Every 2 weeks
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
+
+                    <View style={[styles.cardSmallHourly, styles.cardSmallHourlyProp,]}>
+                      <View style={styles.div2RowSpaceEven}>
+                        <View style={{ justifyContent: 'center' }}>
+                          <Text
+                            style={{
+                              fontSize: 14,
+                              fontWeight: 'bold',
+                              color: '#8eb4a9',
+                            }}>
+                            Analyze plant
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
+                  </ScrollView>
+                </View>
+              </View>
+              {/* Timeline/Task */}
+              <View style={[styles.cardSmallHourly, styles.cardSmallHourlyProp,]}>
+                <Text style={{ color: 'white', marginBottom: 10, fontWeight: 'bold', fontSize: 20 }}>Task</Text>
+
+                <View style={styles.dashboardHourly}>
+                  <View style={{ flexDirection: 'row' }}>
+                    <ScrollView horizontal={true} showsVerticalScrollIndicator={false}>
+                      {/* Loopstart */}
+                      <View style={[styles.cardSmallHourly, styles.cardSmallHourlyProp,]}>
+                        <View style={styles.div2RowSpaceEven}>
+                          <View style={{ paddingRight: 10 }}>
+                            <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 45, height: 45 }} />
+                          </View>
+                          <View style={{ justifyContent: 'flex-end' }}>
+                            <Text
+                              style={{
+                                fontSize: 14,
+                                fontWeight: '900',
+                                color: '#276653',
+                              }}>
+                              Water
+                            </Text>
+                            <Text
+                              style={{
+                                fontSize: 14,
+                                fontWeight: 'bold',
+                                color: '#8eb4a9',
+                              }}>
+                              Every 2 weeks
+                            </Text>
+                          </View>
+                        </View>
+                      </View>
+                      {/* Loopend */}
+
+                      <View style={[styles.cardSmallHourly, styles.cardSmallHourlyProp,]}>
+                        <View style={styles.div2RowSpaceEven}>
+                          <View style={{ paddingRight: 10 }}>
+                            <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 45, height: 45 }} />
+                          </View>
+                          <View style={{ justifyContent: 'flex-end' }}>
+                            <Text
+                              style={{
+                                fontSize: 14,
+                                fontWeight: 'bold',
+                                color: '#8eb4a9',
+                              }}>
+                              Water
+                            </Text>
+                            <Text
+                              style={{
+                                fontSize: 14,
+                                fontWeight: '900',
+                                color: '#276653',
+                              }}>
+                              Every 2 weeks
+                            </Text>
+                          </View>
+                        </View>
+                      </View>
+
+                      <View style={[styles.cardSmallHourly, styles.cardSmallHourlyProp,]}>
+                        <View style={styles.div2RowSpaceEven}>
+                          <View style={{ paddingRight: 10 }}>
+                            <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 45, height: 45 }} />
+                          </View>
+                          <View style={{ justifyContent: 'flex-end' }}>
+                            <Text
+                              style={{
+                                fontSize: 14,
+                                fontWeight: 'bold',
+                                color: '#8eb4a9',
+                              }}>
+                              Water
+                            </Text>
+                            <Text
+                              style={{
+                                fontSize: 14,
+                                fontWeight: '900',
+                                color: '#276653',
+                              }}>
+                              Every 2 weeks
+                            </Text>
+                          </View>
+                        </View>
+                      </View>
+
+                      <View style={[styles.cardSmallHourly, styles.cardSmallHourlyProp,]}>
+                        <View style={styles.div2RowSpaceEven}>
+                          <View style={{ paddingRight: 10 }}>
+                            <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 45, height: 45 }} />
+                          </View>
+                          <View style={{ justifyContent: 'flex-end' }}>
+                            <Text
+                              style={{
+                                fontSize: 14,
+                                fontWeight: 'bold',
+                                color: '#8eb4a9',
+                              }}>
+                              Water
+                            </Text>
+                            <Text
+                              style={{
+                                fontSize: 14,
+                                fontWeight: '900',
+                                color: '#276653',
+                              }}>
+                              Every 2 weeks
+                            </Text>
+                          </View>
+                        </View>
+                      </View>
+                    </ScrollView>
+                  </View>
+                  <ScrollView
+                    horizontal={false}
+                    vertical={true}
+                    showsVerticalScrollIndicator={false}>
+                    {/* return ( */}
+                    <View style={{ marginRight: 12, marginBottom: 10 }}>
+                      <View
+                        style={[
+                          styles.cardDashboardHourly,
+                          styles.cardDashboardHourlyProp,
+                        ]}>
+                        <View style={styles.div2RowSpaceEven}>
+
+
+                          <Text
+                            style={{
+                              fontSize: 14,
+                              fontWeight: 'bold',
+                              color: '#8eb4a9',
+                            }}>Today
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 14,
+                              fontWeight: 'bold',
+                              color: '#8eb4a9',
+                            }}> upcoming
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 14,
+                              fontWeight: 'bold',
+                              color: '#8eb4a9',
+                            }}>  Completed
+                          </Text>
+
+
+                        </View>
+                      </View>
+                    </View>
+
+
+                    <Timeline
+                      // showTime
+                      // data
+
+                      data={data}
+
+
+                    />
+                  </ScrollView>
+                </View>
+              </View>
+
+              <View>
+                <Text style={{ color: 'white', marginBottom: 10, fontWeight: 'bold', fontSize: 20 }}>Task</Text>
+                <View style={{ flexDirection: 'row' }}>
+                  <ScrollView horizontal={true} showsVerticalScrollIndicator={false}>
+                    {/* Loopstart */}
+                    <View style={[styles.cardSmallHourly, styles.cardSmallHourlyProp,]}>
+                      <View style={styles.div2RowSpaceEven}>
+                        <View style={{ paddingRight: 10 }}>
+                          <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 45, height: 45 }} />
+                        </View>
+                        <View style={{ justifyContent: 'flex-end' }}>
+                          <Text
+                            style={{
+                              fontSize: 14,
+                              fontWeight: '900',
+                              color: '#276653',
+                            }}>
+                            Water
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 14,
+                              fontWeight: 'bold',
+                              color: '#8eb4a9',
+                            }}>
+                            Every 2 weeks
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
+                    {/* Loopend */}
+
+                    <View style={[styles.cardSmallHourly, styles.cardSmallHourlyProp,]}>
+                      <View style={styles.div2RowSpaceEven}>
+                        <View style={{ paddingRight: 10 }}>
+                          <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 45, height: 45 }} />
+                        </View>
+                        <View style={{ justifyContent: 'flex-end' }}>
+                          <Text
+                            style={{
+                              fontSize: 14,
+                              fontWeight: 'bold',
+                              color: '#8eb4a9',
+                            }}>
+                            Water
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 14,
+                              fontWeight: '900',
+                              color: '#276653',
+                            }}>
+                            Every 2 weeks
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
+
+                    <View style={[styles.cardSmallHourly, styles.cardSmallHourlyProp,]}>
+                      <View style={styles.div2RowSpaceEven}>
+                        <View style={{ paddingRight: 10 }}>
+                          <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 45, height: 45 }} />
+                        </View>
+                        <View style={{ justifyContent: 'flex-end' }}>
+                          <Text
+                            style={{
+                              fontSize: 14,
+                              fontWeight: 'bold',
+                              color: '#8eb4a9',
+                            }}>
+                            Water
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 14,
+                              fontWeight: '900',
+                              color: '#276653',
+                            }}>
+                            Every 2 weeks
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
+
+                    <View style={[styles.cardSmallHourly, styles.cardSmallHourlyProp,]}>
+                      <View style={styles.div2RowSpaceEven}>
+                        <View style={{ paddingRight: 10 }}>
+                          <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 45, height: 45 }} />
+                        </View>
+                        <View style={{ justifyContent: 'flex-end' }}>
+                          <Text
+                            style={{
+                              fontSize: 14,
+                              fontWeight: 'bold',
+                              color: '#8eb4a9',
+                            }}>
+                            Water
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 14,
+                              fontWeight: '900',
+                              color: '#276653',
+                            }}>
+                            Every 2 weeks
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
+                  </ScrollView>
+                </View>
+              </View>
+
+              <View style={styles.dashboardHourly}>
+                <ScrollView
+                  horizontal={false}
+                  vertical={true}
+                  showsVerticalScrollIndicator={false}>
+                  {/* return ( */}
+                  <View style={{ marginRight: 12, marginBottom: 10 }}>
+                    <View
+                      style={[
+                        styles.cardDashboardHourly,
+                        styles.cardDashboardHourlyProp,
+                      ]}>
+                      <View style={styles.div2RowSpaceEven}>
+
+                      <Text
+                          style={{
+                            fontSize: 14,
+                            fontWeight: 'bold',
+                            color: '#8eb4a9',
+                          }}>All
+                        </Text>
+                        <Text
+                          style={{
+                            fontSize: 14,
+                            fontWeight: 'bold',
+                            color: '#8eb4a9',
+                          }}>Today
+                        </Text>
+                        <Text
+                          style={{
+                            fontSize: 14,
+                            fontWeight: 'bold',
+                            color: '#8eb4a9',
+                          }}> upcoming
+                        </Text>
+                        <Text
+                          style={{
+                            fontSize: 14,
+                            fontWeight: 'bold',
+                            color: '#8eb4a9',
+                          }}>  Completed
+                        </Text>
+
+
+                      </View>
+                    </View>
+                  </View>
+
+
+                  <Timeline
+                    // showTime
+                    // data
+
+                    data={data}
+
+
+                  />
+                </ScrollView>
+              </View>
+
+            </View>
           </View>
         </ScrollView>
-      </SafeAreaView>
-    </View>
-  )
+      </View>
+
+    </SafeAreaView>
+  );
 }
+
+function PlantCam({ route, navigation}) {
+   return(
+      <View>
+        <Text>PlantCam</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('PlantCamResult')}>
+            <View style={{ justifyContent: 'center', alignItems: 'center', borderWidth: 2, borderColor: '#7D8F69', backgroundColor: 'white', padding: 5, paddingRight: 15, paddingLeft: 15, borderRadius: 20 }}>
+              <Text style={{ fontSize: 16, color: '#7D8F69', fontWeight: 'bold' }}>
+              PlantCamResult
+              </Text>
+            </View>
+        </TouchableOpacity>
+      </View>
+   )
+} 
+
+function PlantCamResult({ route, navigation}) {
+  return(
+     <View>
+       <Text>PlantCamResult</Text>
+     </View>
+  )
+} 
+
 
 function PlantNew({ navigation }) {
   const { logout, user } = useContext(AuthContext)
+  const {
 
- 
+    gpsName,
+    gpsUrl,
+    gpsWeathData,
+    gpsWeathCondition,
+    locationList,
+    weathloc,
+    weathDate,
+    weathIcon,
+    weathData,
+    weathPerHour,
+    weathCondition,
+    weathPerDay,
+
+  } = useContext(LocationContext);
+
   const [open, setOpen] = useState(false)
   const [plantTitle, setPlantTitle] = useState('')
   const [plantVariety, setPlantVariety] = useState('')
+  const [plantArea, setPlantArea] = useState('')
   const [plantDate, setPlantDate] = useState(new Date())
-  const [plantAddress, setPlantAddress] = useState('')
+  const [plantAddress, setPlantAddress] = useState(weathloc.name + ', ' + weathloc.region)
   const [dataloading, setDataloading] = useState(false);
   const [image, setImage] = useState(null); //Test
   const [imagePathCapture, setimagePathCapture] = useState(null);  //ImagePicker
   const [uploading, setUploading] = useState(false);    //setUploaders
   const [downloadURL, setDownloadURL] = useState(null);   //imagelink uploader getdownload image
   const [transferred, setTransferred] = useState(0);    //Progress upload  image
-
-
-
-  // if plantDate is <= 30days
-  // then Camera and upload enable
 
 
   // ImageDefault Display
@@ -185,7 +1138,7 @@ function PlantNew({ navigation }) {
       </View>
     )
 
- 
+
   }
 
   // ImageChange Display
@@ -209,13 +1162,9 @@ function PlantNew({ navigation }) {
     includeBase64: false,
     path: 'images ',
 
-    
+
   };
 
-
-
-
-  // };
 
   const AndroidPermissionCamera = async () => {
     try {
@@ -346,110 +1295,100 @@ function PlantNew({ navigation }) {
 
   // uploading trigger
   const imageUpload = async () => {
-    LogBox.ignoreAllLogs();
-    // const blob = await fetch(imagePathCapture).then((res) => res.blob());
-    // const storageRef = database.storage().ref();
-    // const imageRef = storageRef.child('images/' + new Date().getTime() + '.jpg');
-    // await imageRef.put(blob);
-    // const url = await imageRef.getDownloadURL();
-    // setDownloadURL(url);
-    // dbRef.push({ url });
-    // alert('Test');
+    // LogBox.ignoreAllLogs();
 
+    // Create Data plant
+    if (imagePathCapture === null) {
+      alert('Select image!');
+      return;
+    } else if (!plantTitle.trim()) {
+      alert('Please enter title!');
+      return;
+    } else if (!plantVariety.trim()) {
+      alert('Please enter variety!');
+      return;
+    } else if (!plantArea.trim()) {
+      alert('Please enter planted area!');
+      return;
+    } else if (!plantAddress.trim()) {
+      alert('Please enter address!');
+      return;
+    } else {
+      const uri = imagePathCapture;
+      const filename = uri.substring(uri.lastIndexOf('/') + 1);
+      const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
+      setUploading(true);
+      setTransferred(0);
 
-    const uri  = imagePathCapture;
-    const filename = uri.substring(uri.lastIndexOf('/') + 1);
-    const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
-    setUploading(true);
-    setTransferred(0);
+      // storagePath and imagePath
+      const task = Storage().ref('images/' + filename).putFile(uploadUri)
 
-    alert(filename)
-    alert(uploadUri)
-    console.log('cls')
-    console.log(filename)
+      // Process 
+      task.on('state_changed', snapshot => {
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log(`Upload is ${progress}% done`);
 
-    const task = database.storage().ref().child('images').putFile(uploadUri);
-    const imageU = await  task.getDownloadURL();
-    setDownloadURL(imageU)
-    // set progress state
-    task.on('state_changed', snapshot => {
-      setTransferred(
-        Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 10000
-      );
-      alert(downloadURL)
-    });
+        setTransferred(
+          Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        );
+      });
 
-    // try {
-    //   await task;
-    //      database()
-    //     .ref('plants/' + user.uid + plantTitle)
-    //     .set({
-    //       image: downloadURL,
-    //       title: plantTitle,
-    //       variety: plantVariety,
-    //       date: plantDate.toISOString(),
-    //       plantAddress: plantAddress
-    //     }).then(() => {
-    //        navigation.goBack();
-    //       alert('Plant data stored successfully!')
+      // Task then
+      task.then(async () => {
+        // get imageDownloadURL
+        const downloadURL = await Storage().ref('images/' + filename).getDownloadURL();
 
-    //     });
-    // } catch (e) {
-    //   console.log(e);
-    // }
+        // Test
+        // alert('downloadURL: ' + downloadURL);
 
-    // setUploading(false);
+        // store data in realtime database
+        database().ref('/plants/' + user.uid + plantTitle)
+          .set({
+            image: downloadURL,
+            title: plantTitle,
+            variety: plantVariety,
+            area: plantArea,
+            date: plantDate.toISOString(),
+            plantAddress: plantAddress
+          })
+          .then(async () => {
+            alert('Plant data stored successfully!')
+            navigation.goBack()
+          });
+      });
 
-    // Alert.alert(
-    //   'Photo uploaded!',
-    //   'Your photo has been uploaded to Firebase Cloud Storage!'
-    // );
+      try {
+        await task;
+      } catch (e) {
+        console.error(e);
+      }
 
-    // setImage(null);
-
-
-    // if(!imagePathCapture.trim()){
-    //   alert('Insertt images')
-    // }
-    //   else if (!plantTitle.trim()) {
-    //   alert('Please enter title!');
-    //   return;
-    // } else if (!plantVariety.trim()) {
-    //   alert('Please enter variety!');
-    //   return;
-    // } else if (!plantAddress.trim()) {
-    //   alert('Please enter address!');
-    //   return;
-    // }
-    // else {
-    //   database()
-    //     .ref('plants/' + user.uid + plantTitle)
-    //     .set({
-    //       title: plantTitle,
-    //       variety: plantVariety,
-    //       date: plantDate.toISOString(),
-    //       plantAddress: plantAddress
-    //     }).then(() => {
-    //       // console.log('Plant data stored successfully!')
-    //       // navigation.navigate('PlantID')
-    //       alert('Plant data stored successfully!')
-
-    //     });
-
-    // }
-    // console.log('TITLE', plantTitle)
-    // console.log('VARIETY', plantVariety)
-    // console.log('DATE', plantsDate.toISOString())
-    // console.log('PLANT ADDRESS', plantAddress)
-    
+      setUploading(false);
+      setImage(null);
+    }
   }
 
-  const dataUpload = async () => {
-
+  const displayListplant = async () => {
+    const displayList = database().ref('/plants')
   }
+
+  const addressloc = weathloc.name + weathloc.region;
 
   return (
     <View style={{ flex: 1, backgroundColor: '#AADCB6' }}>
+
+      {
+        uploading ? (<View style={{ flexDirection: 'column', width: '100%', zIndex: 2, position: 'absolute' }}>
+          <View style={{ backgroundColor: 'rgba(52, 52, 52, 0.2)', justifyContent: 'center', alignItems: 'center' }}>
+            <View style={{ padding: 30, marginTop: '100%', marginBottom: '100%', backgroundColor: 'white', borderRadius: 10, justifyContent: 'center', alignItems: 'center', }}>
+              <Progress.Bar progress={transferred} width={200} color={'#3E7E55'} />
+              <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#3E7E55', marginTop: 5 }}>Uploading... {transferred}%</Text>
+            </View>
+          </View>
+        </View>
+        ) : null
+      }
+
       <StatusBar backgroundColor="transparent" translucent={true} />
       <ImageBackground source={require('../../src/images/garlicbg2.png')} resizeMode="cover" style={{ flex: 1, }}>
 
@@ -474,29 +1413,6 @@ function PlantNew({ navigation }) {
               {
                 imagePathCapture == null ? <ImageDefault /> : <ImageChange />
               }
-
-
-             {
-              uploading ? ( <View style={styles.progressBarContainer}>
-                                <Progress.Bar progress={transferred} width={300} />
-                            </View>
-                            ) : null
-              }
-
-              {/* Test */}
-              {/* {image !== null ? (
-                <Image source={{ uri: image.uri }} style={styles.imageBox} />
-              ) : null}
-              {uploading ? (
-                <View style={styles.progressBarContainer}>
-                  <Progress.Bar progress={transferred} width={300} />
-                </View>
-              ) : (
-                <TouchableOpacity style={{zIndex:100}} onPress={uploadImage}>
-                  <Text style={styles.buttonText}>Upload image</Text>
-                </TouchableOpacity>
-              )} */}
-
 
               {/* Button Cam */}
               <View style={{ flexDirection: 'row', justifyContent: 'space-around', width: '100%', marginBottom: 10, marginTop: -100, paddingLeft: '5%', paddingRight: '5%' }}>
@@ -537,18 +1453,24 @@ function PlantNew({ navigation }) {
                 <View style={{ alignItems: 'center', marginTop: 25, marginLeft: 44 }}>
                   <TextInput placeholder={'Variety'} onChangeText={(value) => setPlantVariety(value)} value={plantVariety} o style={{ width: '100%', borderBottomWidth: 1, borderBottomColor: '#276653', fontSize: 18, paddingLeft: 4, paddingTop: -3, paddingBottom: -3, fontWeight: 'bold' }} />
                 </View>
+
+                <View style={{ alignItems: 'center', marginTop: 25, marginLeft: 44 }}>
+                  <TextInput placeholder={'Area'} onChangeText={(value) => setPlantArea(value)} value={plantArea} style={{ width: '100%', borderBottomWidth: 1, borderBottomColor: '#276653', fontSize: 18, paddingLeft: 4, paddingTop: -3, paddingBottom: -3, fontWeight: 'bold' }} />
+                </View>
+
                 <View style={{ alignItems: 'center', marginTop: 25 }}>
                   <View style={{ flexDirection: 'row', alignItems: 'center', }}>
                     <Icon name={"calendar"} color={'#276653'} size={28} style={{ marginTop: 3, marginRight: 15, marginLeft: 1 }} />
-                    <Text style={{ width: '86%', fontSize: 16, fontWeight: 'bold' }}>Dated planted:</Text>
+                    <Text style={{ width: '86%', fontSize: 18, fontWeight: 'bold' }}>Dated planted:</Text>
                   </View>
                   <TouchableOpacity
                     onPress={() => setOpen(true)}>
                     <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#276653', marginLeft: 44, padding: 5 }}>
-                      <Text style={{ fontSize: 16, width: '100%', left: 0 }}>{moment(plantDate).format('ll')}</Text>
+                      <Text style={{ fontSize: 18, width: '100%', left: 0, fontWeight: 'bold' }}>{moment(plantDate).format('ll')}</Text>
                     </View>
                   </TouchableOpacity>
                 </View >
+
                 <View>
                   <DatePicker
                     modal
@@ -566,9 +1488,10 @@ function PlantNew({ navigation }) {
                     style={{ fontWeight: 'bold' }}
                   />
                 </View>
+
                 <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 25 }}>
                   <Icon name={"map-marker"} color={'#276653'} size={28} style={{ marginTop: 3, marginRight: 15, marginLeft: 1 }} />
-                  <TextInput placeholder={'Address'} onChangeText={(value) => setPlantAddress(value)} value={plantAddress} style={{ width: '86%', borderBottomWidth: 1, borderBottomColor: '#276653', fontSize: 18, paddingLeft: 4, paddingTop: -3, paddingBottom: -3, fontWeight: 'bold' }} />
+                  <TextInput placeholder={'Address'} onChangeText={(value) => setPlantAddress(value)} value={plantAddress} style={{ width: '86%', borderBottomWidth: 1, borderBottomColor: '#276653', fontSize: 16, paddingLeft: 4, paddingTop: -3, paddingBottom: -3, fontWeight: 'bold' }} />
                 </View >
 
                 <View style={{ marginTop: 25 }} >
@@ -579,6 +1502,7 @@ function PlantNew({ navigation }) {
                     </View>
                   </TouchableOpacity>
                 </View >
+
               </View>
             </View>
           </View>
@@ -593,18 +1517,21 @@ export default function Plant({ navigation }) {
   return (
     <PlantStack.Navigator>
       <PlantStack.Screen name="PlantDash" component={PlantDash} />
-      <PlantStack.Screen name="PlantID" component={PlantID} />
       <PlantStack.Screen name="PlantNew" component={PlantNew}
         options={
           { headerShown: false }
         } />
+      <PlantStack.Screen name="PlantID" component={PlantID} />
+      <PlantStack.Screen name="PlantCam" component={PlantCam} />
+      <PlantStack.Screen name="PlantCamResult" component={PlantCamResult} />
     </PlantStack.Navigator >
   );
 }
+
 const style = StyleSheet.create({
   actionButtonIcon: {
     fontSize: 20,
     height: 22,
     color: 'white',
   },
-});
+});  

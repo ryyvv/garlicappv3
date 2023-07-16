@@ -20,10 +20,13 @@
     "@react-native-firebase/storage": "^16.5.0",
     "@react-native-masked-view/masked-view": "^0.2.9",
     "@react-navigation/bottom-tabs": "^6.4.3",
-    "@react-navigation/material-top-tabs": "^6.6.2",
+    "@react-navigation/devtools": "^6.0.19",
+    "@react-navigation/material-top-tabs": "^6.6.3",
     "@react-navigation/native": "^6.0.16",
     "@react-navigation/native-stack": "^6.9.4",
     "@react-navigation/stack": "^6.3.7",
+    "@rneui/base": "^0.0.0-edge.2",
+    "@rneui/themed": "github:react-native-elements/react-native-elements#themed",
     "axios": "^1.4.0",
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.40",
@@ -50,7 +53,8 @@
     "react-native-safe-area-context": "^4.4.1",
     "react-native-screens": "^3.18.2",
     "react-native-skeleton-placeholder": "^5.2.4",
-    "react-native-tab-view": "^3.5.1",
+    "react-native-tab-view": "^3.5.2",
+    "react-native-timeline-flatlist": "^0.8.0",
     "react-native-vector-icons": "^9.2.0"
   },
   "devDependencies": {
@@ -61,6 +65,7 @@
     "eslint": "^7.32.0",
     "jest": "^26.6.3",
     "metro-react-native-babel-preset": "0.72.3",
+    "react-native-flipper": "^0.203.0",
     "react-test-renderer": "18.1.0"
   },
   "jest": {

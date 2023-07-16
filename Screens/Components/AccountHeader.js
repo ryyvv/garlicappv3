@@ -457,8 +457,7 @@ export default function AccountHeader({ navigation }) {
                             </View>
                             <View style={{ marginTop: 10, alignItems: 'center' }}>
                                 <TouchableOpacity
-                                    onPress={UserUpdate}
-                                >
+                                    onPress={UserUpdate} >
                                     <View style={[styles.dataSyncicon, styles.div2Row]}>
                                         <Icon name={"cached"} color={'white'} size={20} style={{ marginRight: 1 }} />
                                         <Text style={{ fontSize: 14, color: 'white', fontWeight: 'bold', padding: 3 }}>Data sync</Text>

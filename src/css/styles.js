@@ -29,6 +29,21 @@ export default globalStyles = StyleSheet.create({
     // 
 
 
+    //new
+    //background
+//    #e4eecd    #d4efe4
+//    #e7f1d0    #e6f5f0
+//    #ebf4dd    #f2f9f7
+//    #ebf4dd
+//    #ebf4dd
+
+    //text
+//    #202422     
+//    #8d957f
+//    #d3dcc0
+
+
+
 
 
     container: {
@@ -102,6 +117,12 @@ export default globalStyles = StyleSheet.create({
         justifyContent: 'space-around',
         alignItems: 'center',
     },
+    div2RowStart: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+    },
     div2RowPaddingTop: {
         paddingTop:150,
         height:200
@@ -138,9 +159,7 @@ export default globalStyles = StyleSheet.create({
     cardDashboardSkel: {
         backgroundColor: 'white',
         borderRadius: 8,
-        paddingVertical: 25,
         width: '100%',
-        marginVertical: 10,
     },
     cardDashboardPropSkel: {
         shadowColor: 'black',
@@ -296,6 +315,50 @@ export default globalStyles = StyleSheet.create({
         elevation: 20,
     },
 
+    cardSmallHourly: {
+        backgroundColor: 'white',
+        borderRadius: 8,
+        margin: 5,
+        padding: 10,
+        marginVertical: 10, 
+    },
+    cardSmallHourlyProp: {
+        shadowColor: 'black',
+        shadowOffset: { width: -2, height: 4 },
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+        elevation: 7,
+    },
+    cardFindingsHourly: {
+        backgroundColor: 'white',
+        borderRadius: 8,
+        margin: 5,
+        padding: 10,
+        marginVertical: 5, 
+    },
+    cardFindingsHourlyProp: {
+        shadowColor: 'black',
+        shadowOffset: { width: -2, height: 4 },
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+        elevation: 7,
+    },
+    cardDesHourly: {
+        backgroundColor: 'white',
+        height:undefined,
+        borderRadius: 8,
+        margin: 5,
+        padding: 10,
+        marginVertical: 10,
+        width: '100%'
+    },
+    cardDesHourlyProp: {
+        shadowColor: 'black',
+        shadowOffset: { width: -2, height: 4 },
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+        elevation: 7,
+    },
     cardDashboardHourly: {
         backgroundColor: 'white',
         borderRadius: 8,
@@ -710,9 +773,8 @@ export default globalStyles = StyleSheet.create({
     cardCamera: {
         backgroundColor: 'white',
         borderRadius: 8,
-        padding: 5,
-        width: '40%',
-        paddingVertical: 20,
+        padding: 15,
+ 
         // justifyContent: 'center',
         // alignItems: 'center'
     },

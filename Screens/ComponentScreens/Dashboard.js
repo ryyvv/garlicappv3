@@ -29,7 +29,7 @@ import PNDs from '../ComponentScreens/PNDs';
 
 export default function Dashboard({ navigation }) {
   const refRBSheets = useRef();
-  const { logout, user } = useContext(AuthContext);
+  //const { logout, user } = useContext(AuthContext);
   const [listPD, setListPD] = useState(null);
   const {
  

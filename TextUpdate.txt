@@ -194,3 +194,26 @@ New navigation view
 Material Top navigation
 npm install @react-navigation/material-top-tabs react-native-tab-view
 npm install react-native-pager-view
+
+
+
+removed
+Timeline
+https://www.npmjs.com/package/react-native-beautiful-timeline
+
+removed
+React-native-androw
+https://www.npmjs.com/package/react-native-androw
+
+removed
+react-native-dash-2
+https://www.npmjs.com/package/react-native-dash-2
+
+removed
+@freakycoder/react-native-helpers 
+https://www.npmjs.com/package/@freakycoder/react-native-helpers
+
+
+react-native-calendars
+TypeScript icon, indicating that this package has built-in type declarations
+https://www.npmjs.com/package/react-native-calendars
