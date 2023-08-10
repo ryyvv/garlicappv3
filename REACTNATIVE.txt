@@ -4,3 +4,40 @@ ScrollView
 
 Animation:
     Animating elements between screen
+
+Blocking function
+Build custom signup behavior with blocking serverless functions
+
+
+updateUserDatabaseNode
+.onChildUpdate
+
+1.
+!!userprofile
+upon sign up process, userProfile was already set to default profileIcon
+if userProfil == null set to default profileIcon 
+else 
+    try fetch userProfile from database || upload new userProfile(onChildUpdate)
+    catch console error mesage
+
+2.
+account settings
+if address === null , link to curentlocation
+else input address
+
+3.
+onChildChangedata userinfo
+
+
+4.
+Today-water:
+if today's wF-temperature is high
+    then irragate plants
+else monitor forecast-temperature for next 3 days
+
+Upcoming-water: 
+
+
+
+Pending:
+userSettings page

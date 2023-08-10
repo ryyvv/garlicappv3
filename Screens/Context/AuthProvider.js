@@ -42,7 +42,7 @@ export const AuthProvider = ({ children }) => {
                         let now = moment().utcOffset(15.2).format('l');
 
                         database()
-                            .ref('userData/' + userUid)
+                            .ref('users/' + userUid +'/userData')
                             .set({
                                 userid: userUid,
                                 userName: email.split('@')[0],

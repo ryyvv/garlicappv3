@@ -1,0 +1,28 @@
+Database: 
+users
+ ->user.uid/plants/user.uid-plantTitle/
+       *Data
+            -Title
+            -variety
+            -area
+            -data
+            -plantAddress
+            -imageArea 
+       *Task completed (data)
+            -water
+            -spray 
+            -fertizer
+       *Findings (storing captured images to database)
+            -Identify insect pests & diseases
+       *Notes (observations from the plant)
+            -captured 
+            #can add notes from completed task
+
+ ->users.uid/userData
+        -userId
+        -userName
+        -email
+        -message
+        -userAddress
+        -userProfile
+        -dataSync

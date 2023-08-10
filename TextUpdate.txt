@@ -217,3 +217,19 @@ https://www.npmjs.com/package/@freakycoder/react-native-helpers
 react-native-calendars
 TypeScript icon, indicating that this package has built-in type declarations
 https://www.npmjs.com/package/react-native-calendars
+
+
+Icons: 
+plantprofile: plantDefault
+TangleTop: icon
+Purpleblotch:icon
+leafspot:icon
+garlicRust:icon
+Rootrot:icon
+WeatherIcons:icons
+Spray:icon
+Fertilizer:icon
+Irrigation:icon
+depletion:icon
+
+

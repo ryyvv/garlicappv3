@@ -1,6 +1,5 @@
 //import axios from 'axios';
-import moment from "moment"; 
-import brain from 'brain.js'
+import moment from "moment";
 import React, { useEffect, useState, useFonts, useContext, useRef } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -429,9 +428,8 @@ function PlantNew({ navigation }) {
       setTransferred(0);
 
       // storagePath and imagePath
-      const task = Storage().ref('images/'+ filename).putFile(uploadUri)
+      const task = Storage().ref('images/' + user.uid+'/'+filename).putFile(uploadUri)
 
-      // const task= Storage().ref('images/' + user.uid+'/'+filename).putFile(uploadUri)
       // Process 
       task.on('state_changed', snapshot => {
         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
@@ -445,7 +443,7 @@ function PlantNew({ navigation }) {
       // Task then
       task.then(async () => {
         // get imageDownloadURL
-        const downloadURL = await Storage().ref('plantimages/'+filename).getDownloadURL();
+        const downloadURL = await Storage().ref('images/' + user.uid+'/'+filename).getDownloadURL();
 
         // store data in realtime database
         //database().ref('/plants/' + user.uid + plantTitle)
@@ -460,18 +458,6 @@ function PlantNew({ navigation }) {
           })
           .then(async () => {
             alert('Plant data stored successfully!')
-            navigation.goBack()
-          });
-
-          database().ref('/images/plantimages/' + plantTitle )
-          .set({
-            image: modelDownloadURL,
-            userid: user.uid,
-            identified:'',
-            severity:'',
-            status:'true',
-          })
-          .then(async () => {
             navigation.goBack()
           });
       });
@@ -657,16 +643,13 @@ function PlantID({ route, navigation }) {
   } = useContext(LocationContext);
   const [weathplantData, setWeathplantData] = useState(''); 
 
-  const [findings, setFindings] = useState('')
   const [weathDataAstro, setWeathDataAstro] = useState('')
   const [weathDataDay, setWeathDay] = useState('')
   // Data
   // =================================================
   useEffect(() => {
     plantDisplayList();
-    weatherPlant();
-    plantFindings();
-    wfActivities()
+    weatherPlant()
   }, []);
 
   const plantDisplayList = async () => {
@@ -674,58 +657,13 @@ function PlantID({ route, navigation }) {
     dbRef.on('value', (snapshot) => {
       const firebaseData = snapshot.val();
       if (firebaseData == null) {
-        setFindings(null);
+        setPlantDataID(null);
       } else {
         const dataArray = Object.values(firebaseData);
         setPlantDataID(dataArray);
       }
     });
   }
-
-  const plantFindings = async () => {
-    const dbRef = database().ref('/users/'+ user.uid + '/plants/modelImages');
-    dbRef.on('value', (snapshot) => {
-      const firebaseData = snapshot.val();
-      if (firebaseData == null) {
-        setFindings(null);
-      } else {
-        const dataArrayfindings = Object.values(firebaseData);
-        setFindings(dataArrayfindings);
-      }
-    });
-  }
-
-const wfActivities = async (weathData) => {
-
-
-  const config = {
-    binaryThresh: 0.5,
-    hiddenLayers: [3], // array of ints for the sizes of the hidden layers in the network
-    activation: 'sigmoid', // supported activation types: ['sigmoid', 'relu', 'leaky-relu', 'tanh'],
-    leakyReluAlpha: 0.01, // supported for activation type 'leaky-relu'
-};
-// create a simple feed forward neural network with backpropagation
-const net = new brain.NeuralNetwork(config);
-
-net.train([
-{ input: [0, 0], output: [0] },
-{ input: [0, 1], output: [1] },
-{ input: [1, 0], output: [1] },
-{ input: [1, 1], output: [0] },
-]);
-
-const output = net.run([1, 0]); // [0.987]
-}
-
-
-
-const wfUpcoming = async (data) => {
-  //get upcoming
-}
-
-const wfCompleted = async (data) => {
-  //get task completed
-}
 
   const apiKey = 'eb40ebc2fe0c4d02b2735258230304';
   const weatherPlant  =  async () => {    
@@ -827,6 +765,8 @@ const wfCompleted = async (data) => {
     )
   }
   // =================================================
+
+
   const refRBSheetAna = useRef();
   let AnimatedHeaderValue = new Animated.Value(0);
   const HEADER_MAX_HEIGHT = 300;
@@ -952,7 +892,9 @@ const wfCompleted = async (data) => {
             <View style={{ flexDirection: 'row', alignSelf: 'flex-end', marginTop: 10, marginRight: 20, backgroundColor: 'rgba(255, 255, 255, 0.815)', padding: 8, borderRadius: 25 }}>
               <Icon name={'calendar-outline'} color={'#276653'} size={20} style={{ width: 20, marginRight: 5 }} />
               <Text style={{ color: '#276653', fontWeight: 'bold' }}>{moment(date).startOf('day').fromNow()}</Text>
+       
             </View>
+   
             <View style={{ marginTop: 80, width: '100%', }}>
               <View style={{ margin: 20, padding: 15, backgroundColor: 'rgba(255, 255, 255, 0.548)', borderRadius: 15, flexDirection: 'row', justifyContent: 'flex-start' }}>
                 <View>
@@ -1086,6 +1028,7 @@ const wfCompleted = async (data) => {
                     <Text style={{ fontWeight: 'bold', fontSize: 17, color: '#276653', lineHeight: 17, paddingLeft: 7 }}>{moment(date).format("MMMM D, YYYY")}</Text>
                   </View>
                 </View>
+
               </View>
             </View>
           </View>
@@ -1094,7 +1037,7 @@ const wfCompleted = async (data) => {
           <View style={{ margin: 10, marginTop: 10 }}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingBottom: 5, alignItems: 'center' }}>
               <Text style={{ fontSize: 20, color: '#276653', fontWeight: 'bold' }}>Findings</Text>
-              <TouchableOpacity >
+              <TouchableOpacity onPress={() => { navigation.navigate('Task') }}>
                 <View style={{ flexDirection: 'row' }}>
                   <Text style={{ color: '#276653', fontWeight: 'bold' }}>See all</Text>
                   {/* <Icon name={'arrow-right-thin'} color={'#276653'} size={} style={{ width: 35}} /> */}
@@ -1269,7 +1212,6 @@ function PlantCam({ route, navigation }) {
   const [image1, setImage1] = useState(null)
 
 const imageprocessingPrediction = async (image1) => {
-
     const model = await getModel();
     const tensor = await convertBase64ToTensorflow(image1.base64);
 
@@ -1367,7 +1309,6 @@ const imageprocessingPrediction = async (image1) => {
           buttonPositive: "OK"
         }
       );
-
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         const resultImageCaptured = await launchCamera(optioncam)
         // if (resultImageCaptured.didCancel == true) {
@@ -1451,29 +1392,20 @@ const imageprocessingPrediction = async (image1) => {
           // get imageDownloadURL
           const downloadURLModel = await Storage().ref('images/' + user.uid+'/'+filename).getDownloadURL();
   
+          // Test
+          // alert('downloadURL: ' + downloadURL);
+  
           // store data in realtime database
           database().ref('/users/' + user.uid +'/plants/'+ user.uid + title +'/modelImages/')
-            .push({
+            .set({
               image: downloadURLModel,
-              date: moment().format('ll'),
-              severity:'',
-              status:'unknown'
+              date: firebase.database.ServerValue.TIMESTAMP,
+        
             })
             .then(async () => {
               alert('Plant data stored successfully!')
               navigation.goBack()
             });
-
-            const downloadURLModel2 = await Storage().ref('plantimages/'+filename).getDownloadURL();
-            database().ref('/plantdataimages/' + user.uid)
-            .push({
-              image: downloadURLModel2,
-              user_id: user.uid,
-              title:title,
-              date: moment().format('ll'), 
-              status:'unknown'
-        
-            })
         });
   
         try {
@@ -1513,9 +1445,10 @@ const imageprocessingPrediction = async (image1) => {
                   {
                     image1 == null ? <ImageDefault /> : <ImageChange1 />
                   }
+          
               </View>
 
-              <View style={{ marginTop: 10, flexDirection:'row', justifyContent: 'center', marginBottom: 10 }}>
+              <View style={{ marginTop: 10, flexDirection: 'row', justifyContent: 'center', marginBottom: 10 }}>
                 <TouchableOpacity onPress={imageSubmit}>
                   <View style={{ padding: 18, paddingLeft: 60, paddingRight: 60, backgroundColor: '#E8F4E6', borderRadius: 50, justifyContent: 'center', alignItems: 'center', }}>
                     <Text style={{ color: '#528F56', fontWeight: 'bold', fontSize: 18, }}>Submit</Text>
@@ -1529,7 +1462,7 @@ const imageprocessingPrediction = async (image1) => {
       {/* Modal */}
 
 
-
+      
     </SafeAreaView>
   )
 }
@@ -1543,7 +1476,7 @@ function PlantCamResult({ route, navigation }) {
   )
 }
 
-function Note({ route, navigation }) {
+function PlantNewNote({ route, navigation }) {
   const { logout, user } = useContext(AuthContext)
 
   const [note, setNote] = React.useState("How's it growing?");
@@ -1629,12 +1562,14 @@ function Note({ route, navigation }) {
     }
   }
 
+
+
   return (
     <SafeAreaView>
       <View style={{ padding: 20 }}>
-        <View style={{flexDirection:'row'}}>
-          <Text>Date: </Text>
-          <Text>July 17, 2023</Text>
+        <View>
+          <Text>Date</Text>
+          <Text>Date</Text>
         </View>
         <View>
           <TextInput
@@ -1660,6 +1595,7 @@ function Note({ route, navigation }) {
       </View>
     </SafeAreaView>
   )
+
 }
 
 
@@ -1787,7 +1723,7 @@ export default function Plant({ navigation }) {
       <PlantStack.Screen name="PlantID" component={PlantID} />
       <PlantStack.Screen name="PlantCam" component={PlantCam} />
       <PlantStack.Screen name="PlantCamResult" component={PlantCamResult} />
-      <PlantStack.Screen name="Note" component={Note} />
+      <PlantStack.Screen name="PlantNewNote" component={PlantNewNote} />
       <PlantStack.Screen name="Task" component={Task} />
     </PlantStack.Navigator >
   );

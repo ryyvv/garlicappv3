@@ -43,7 +43,7 @@ export default function AccountHeader({ navigation }) {
     const [username, setUsername] = useState('')
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
-    const [address, setAddress] = useState('')
+    const [address, setAddress] = useState('Please enter your address')
     const [dateSync, setdateSync] = useState('')
 
     const userID = 'userData/' + user.id;  // userID
@@ -194,7 +194,7 @@ export default function AccountHeader({ navigation }) {
     }
     // userName
     const UserName = async () => {
-        await database().ref('/userData/' + user.uid).once('value').then(snapshot => {
+        await database().ref('/users/' + user.uid+'/userData/').once('value').then(snapshot => {
             // console.log('UserD data: ', snapshot.val().Address);
             const val = snapshot.val().userName;
             setName(val)
@@ -433,6 +433,7 @@ export default function AccountHeader({ navigation }) {
 
                         }
                         <View>
+                            {/* form */}
                             <View style={{ marginBottom: 15 }}>
                                 <Text style={{ paddingLeft: 15, color: '#8eb4a9', fontWeight: 'bold' }}>Name</Text>
                                 <View style={[styles.profileTextIcon, styles.div2Row]}>
@@ -467,7 +468,9 @@ export default function AccountHeader({ navigation }) {
                                     <Text style={{ fontSize: 12, fontWeight: 'bold', marginTop: 5 }}>Last sync: Tuesday, Dec. 23, 2022 </Text>
                                 </View>
                             </View>
+                            {/* endform */}
                         </View>
+                        
                         {/* Logout */}
                         <View style={{ marginTop: 40 }}>
                             <View style={{ marginTop: 20, alignItems: 'center' }}>
