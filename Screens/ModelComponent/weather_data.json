@@ -1,0 +1,34 @@
+[
+    
+    {
+    "temperature": 25,
+    "humidity": 70,
+    "windSpeed": 5,
+    "weatherCondition": "Sunny"
+  },
+  {
+    "temperature": 24,
+    "humidity": 69,
+    "windSpeed": 5,
+    "weatherCondition": "Sunny"
+  },
+  {
+    "temperature": 15,
+    "humidity": 55,
+    "windSpeed": 8,
+    "weatherCondition": "Rainy"
+  },
+  {
+  "temperature": 30,
+  "humidity": 45,
+  "windSpeed": 3,
+  "weatherCondition": "cloudy"
+ },
+ {
+  "temperature": 22,
+  "humidity": 60,
+  "windSpeed": 4,
+  "weatherCondition": "Thunder"
+}
+
+]

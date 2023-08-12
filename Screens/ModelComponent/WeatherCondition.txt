@@ -1,0 +1,12 @@
+
+Rainy:
+Temp: 14-18    humi: 86-100   wind: 13-25   RF: 1-5
+
+Cloudy:
+Temp: 18-25    humi: 65-85    wind: 5-10    RF: 0
+
+Sunny: 
+Temp: 25-45    humi: 45-65    wind: 5-12    RF: 0
+
+Thunder: 
+Temp: 12       humi: 110      wind: 30      RF: 1-5

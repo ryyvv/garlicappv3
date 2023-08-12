@@ -233,3 +233,18 @@ Irrigation:icon
 depletion:icon
 
 
+August 8, 2023
+================================================================
+Execution failed for task ':app:installDebug'.
+> java.util.concurrent.ExecutionException: com.android.builder.testing.api.DeviceException: com.android.ddmlib.InstallException: INSTALL_FAILED_USER_RESTRICTED: Install canceled by user
+##check Developers Mode -> install via USB:Allow installing apps via USB
+
+Subject-@@ChatGPT
+@@locagical neural network for weather condition input temperature, wind speed , humidity without brain.js and tensorflow using react native code
+
+Install Dependencies
+Install the required dependencies for our neural network calculations:
+npm install lodash mathjs
+
+
+

@@ -11,15 +11,6 @@ import AccountHeader from '../Components/AccountHeader';
 const STYLES = ['default', 'dark-content', 'light-content'];
 const TRANSITIONS = ['fade', 'slide', 'none'];
 
-
-function AccountInfo() {
-    return (
-        <View>
-            <Text>userID: {user.uid}</Text>
-        </View>
-    )
-}
-
 function Account({ navigation }) {
     const { logout, user } = useContext(AuthContext)
     const hidden = true;

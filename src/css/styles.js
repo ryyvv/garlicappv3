@@ -869,6 +869,16 @@ export default globalStyles = StyleSheet.create({
         marginTop: 20
       },
 
-
+      activeTab : {
+        borderBottomColor:'#276653',
+        borderBottomWidth:2.5,
+      },
+      activeText : {
+       color:'#276653',
+   
+      },
+    //   tabItem: {
+    //     backgroundColor: '#95b99c'
+    //   }
 
 });

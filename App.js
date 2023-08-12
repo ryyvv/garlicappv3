@@ -9,6 +9,7 @@
 import React from 'react';
 import { LocationProvider } from './Screens/Context/LocationProvider'
 import { AuthProvider } from './Screens/Context/AuthProvider';
+import { WeatherProvider } from './Screens/Context/WeatherProvider';
 
 import Route from './Screens/Navigation/Route';
 
@@ -16,7 +17,9 @@ export default function App() {
   return (
     <AuthProvider>
       <LocationProvider>
-        <Route />
+        <WeatherProvider>
+            <Route />
+        </WeatherProvider>
       </LocationProvider>
     </AuthProvider>
   );
