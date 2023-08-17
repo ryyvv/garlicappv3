@@ -30,9 +30,10 @@ import PNDs from '../ComponentScreens/PNDs';
 export default function Dashboard({ navigation }) {
   const refRBSheets = useRef();
   //const { logout, user } = useContext(AuthContext);
-  const [listPD, setListPD] = useState(null);
+  const [listPD, setListPD] = useState(null); 
+  const [imageIcon, setimageIcon] = useState(null);
+
   const {
- 
     gpsName,
     gpsUrl,
     gpsWeathData,
@@ -194,7 +195,6 @@ export default function Dashboard({ navigation }) {
 
   useEffect(() => {
     setInterval(PNDiseases, 3500); 
-
   }, []);
 
   const PNDiseases = () => {
@@ -338,7 +338,6 @@ export default function Dashboard({ navigation }) {
         ],
       }
     ];
-
     // data set to listPD
     setListPD(dataPD); 
   };
@@ -350,6 +349,7 @@ export default function Dashboard({ navigation }) {
       }
     });
   };
+
 
   return (
     <View style={{ flex: 1 }}>
@@ -2762,7 +2762,7 @@ export default function Dashboard({ navigation }) {
                                   <View style={styles.div2RowSpaceEven}>
                                     <View style={{ padding: 4 }}>
                                       <Image
-                                        source={require('../../src/images/sunRAsset2.png')}
+                                        source={require('../../src/weathericon/${weathPerHour.code}.png')}
                                         style={{ width: 45, height: 45 }}
                                       />
                                     </View>
