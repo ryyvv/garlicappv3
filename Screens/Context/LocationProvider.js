@@ -1779,12 +1779,10 @@ export const LocationProvider = ({ children }) => {
     setWeatherloc(response?.location)
     setWeatherDate(response?.location)
     setWeatherCondition(response?.forecast?.forecastday[0]?.day?.condition)
-    setWeatherData(response?.forecast?.forecastday)
+    setWeatherData(response?.forecast?.forecastday[0]?.day)
     setWeatherPerHour(response?.forecast?.forecastday[0]?.hour)
     setWeatherPerDay(response?.forecast?.forecastday)
        
-
-
     
         datas.forEach((elem) => {
             console.log(elem)

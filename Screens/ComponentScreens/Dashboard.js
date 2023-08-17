@@ -188,7 +188,7 @@ export default function Dashboard({ navigation }) {
     vintarData,
     vintarPerHour,
     vintarCondition,
-    weatherD
+    weatherD,
   } = useContext(LocationContext);
   const newdate = new Date();
 
@@ -2679,7 +2679,7 @@ export default function Dashboard({ navigation }) {
                                   Ave_temp
                                 </Text>
                                 <View style={{ flexDirection: 'row' }}>
-                                  <Text style={{ fontWeight: '900', fontSize: 20, color: '#276653'}}>
+                                  <Text style={{ fontWeight: '900', fontSize: 18, color: '#276653'}}>
                                   {weathData.avgtemp_c}°C
                                   </Text>
                                   <Icon
@@ -2699,7 +2699,7 @@ export default function Dashboard({ navigation }) {
                                   <Text
                                     style={{
                                       fontWeight: '900',
-                                      fontSize: 20,
+                                      fontSize: 18,
                                       color: '#276653',
                                     }}>
                                    {weathData.maxwind_kph}kph
@@ -2721,7 +2721,7 @@ export default function Dashboard({ navigation }) {
                                   <Text
                                     style={{
                                       fontWeight: '900',
-                                      fontSize: 20,
+                                      fontSize: 18,
                                       color: '#276653',
                                     }}>
                                     {weathData.avghumidity}%
