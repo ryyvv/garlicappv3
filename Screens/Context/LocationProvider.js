@@ -1783,6 +1783,7 @@ export const LocationProvider = ({ children }) => {
     setWeatherPerHour(response?.forecast?.forecastday[0]?.hour)
     setWeatherPerDay(response?.forecast?.forecastday)
        
+    console.log(weathCondition.text)
     
         datas.forEach((elem) => {
             console.log(elem)

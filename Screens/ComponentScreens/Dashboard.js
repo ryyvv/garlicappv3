@@ -2761,10 +2761,273 @@ export default function Dashboard({ navigation }) {
                                   ]}>
                                   <View style={styles.div2RowSpaceEven}>
                                     <View style={{ padding: 4 }}>
-                                      <Image
-                                        source={require('../../src/weathericon/${weathPerHour.code}.png')}
-                                        style={{ width: 45, height: 45 }}
-                                      />
+
+                                      {
+                                        wperhour.condition.code == 1000 ?
+                                          (
+                                            <Image
+                                              source={require('../../src/weathericon/1000.png')}
+                                              style={{ width: 45, height: 45 }}
+                                            />
+                                          )
+                                          :
+                                          (null)
+                                      }
+                                         {
+                                        wperhour.condition.code == 1003 ?
+                                          (
+                                            <Image
+                                              source={require('../../src/weathericon/1003.png')}
+                                              style={{ width: 45, height: 45 }}
+                                            />
+                                          )
+                                          :
+                                          (null)
+                                      }
+                                         {
+                                        wperhour.condition.code == 1006 ?
+                                          (
+                                            <Image
+                                              source={require('../../src/weathericon/1006.png')}
+                                              style={{ width: 45, height: 45 }}
+                                            />
+                                          )
+                                          :
+                                          (null)
+                                      }
+                                         {
+                                        wperhour.condition.code == 1009 ?
+                                          (
+                                            <Image
+                                              source={require('../../src/weathericon/1009.png')}
+                                              style={{ width: 45, height: 45 }}
+                                            />
+                                          )
+                                          :
+                                          (null)
+                                      }
+                                         {
+                                        wperhour.condition.code == 1063 ?
+                                          (
+                                            <Image
+                                              source={require('../../src/weathericon/1063.png')}
+                                              style={{ width: 45, height: 45 }}
+                                            />
+                                          )
+                                          :
+                                          (null)
+                                      }
+                                         {
+                                        wperhour.condition.code == 1087 ?
+                                          (
+                                            <Image
+                                              source={require('../../src/weathericon/1087.png')}
+                                              style={{ width: 45, height: 45 }}
+                                            />
+                                          )
+                                          :
+                                          (null)
+                                      }
+                                         {
+                                        wperhour.condition.code == 1135 ?
+                                          (
+                                            <Image
+                                              source={require('../../src/weathericon/1135.png')}
+                                              style={{ width: 45, height: 45 }}
+                                            />
+                                          )
+                                          :
+                                          (null)
+                                      }
+                                         {
+                                        wperhour.condition.code == 1135 ?
+                                          (
+                                            <Image
+                                              source={require('../../src/weathericon/1135.png')}
+                                              style={{ width: 45, height: 45 }}
+                                            />
+                                          )
+                                          :
+                                          (null)
+                                      }
+                                         {
+                                        wperhour.condition.code == 1150 ?
+                                          (
+                                            <Image
+                                              source={require('../../src/weathericon/1150.png')}
+                                              style={{ width: 45, height: 45 }}
+                                            />
+                                          )
+                                          :
+                                          (null)
+                                      }
+                                         {
+                                        wperhour.condition.code == 1153 ?
+                                          (
+                                            <Image
+                                              source={require('../../src/weathericon/1153.png')}
+                                              style={{ width: 45, height: 45 }}
+                                            />
+                                          )
+                                          :
+                                          (null)
+                                      }
+                                         {
+                                        wperhour.condition.code == 1171 ?
+                                          (
+                                            <Image
+                                              source={require('../../src/weathericon/1171.png')}
+                                              style={{ width: 45, height: 45 }}
+                                            />
+                                          )
+                                          :
+                                          (null)
+                                      }
+                                         {
+                                        wperhour.condition.code == 1180?
+                                          (
+                                            <Image
+                                              source={require('../../src/weathericon/1180.png')}
+                                              style={{ width: 45, height: 45 }}
+                                            />
+                                          )
+                                          :
+                                          (null)
+                                      }
+                                         {
+                                        wperhour.condition.code == 1183 ?
+                                          (
+                                            <Image
+                                              source={require('../../src/weathericon/1183.png')}
+                                              style={{ width: 45, height: 45 }}
+                                            />
+                                          )
+                                          :
+                                          (null)
+                                      }
+                                         {
+                                        wperhour.condition.code == 1186 ?
+                                          (
+                                            <Image
+                                              source={require('../../src/weathericon/1186.png')}
+                                              style={{ width: 45, height: 45 }}
+                                            />
+                                          )
+                                          :
+                                          (null)
+                                      }
+                                         {
+                                        wperhour.condition.code == 1189 ?
+                                          (
+                                            <Image
+                                              source={require('../../src/weathericon/1189.png')}
+                                              style={{ width: 45, height: 45 }}
+                                            />
+                                          )
+                                          :
+                                          (null)
+                                      }
+                                         {
+                                        wperhour.condition.code == 1193 ?
+                                          (
+                                            <Image
+                                              source={require('../../src/weathericon/1193.png')}
+                                              style={{ width: 45, height: 45 }}
+                                            />
+                                          )
+                                          :
+                                          (null)
+                                      }
+                                              {
+                                        wperhour.condition.code == 1195 ?
+                                          (
+                                            <Image
+                                              source={require('../../src/weathericon/1195.png')}
+                                              style={{ width: 45, height: 45 }}
+                                            />
+                                          )
+                                          :
+                                          (null)
+                                      }
+                                              {
+                                        wperhour.condition.code == 1198 ?
+                                          (
+                                            <Image
+                                              source={require('../../src/weathericon/1198.png')}
+                                              style={{ width: 45, height: 45 }}
+                                            />
+                                          )
+                                          :
+                                          (null)
+                                      }
+                                              {
+                                        wperhour.condition.code == 1201 ?
+                                          (
+                                            <Image
+                                              source={require('../../src/weathericon/1201.png')}
+                                              style={{ width: 45, height: 45 }}
+                                            />
+                                          )
+                                          :
+                                          (null)
+                                      }
+                                              {
+                                        wperhour.condition.code == 1240 ?
+                                          (
+                                            <Image
+                                              source={require('../../src/weathericon/1240.png')}
+                                              style={{ width: 45, height: 45 }}
+                                            />
+                                          )
+                                          :
+                                          (null)
+                                      }
+                                              {
+                                        wperhour.condition.code == 1243 ?
+                                          (
+                                            <Image
+                                              source={require('../../src/weathericon/1243.png')}
+                                              style={{ width: 45, height: 45 }}
+                                            />
+                                          )
+                                          :
+                                          (null)
+                                      }
+                                              {
+                                        wperhour.condition.code == 1249 ?
+                                          (
+                                            <Image
+                                              source={require('../../src/weathericon/1249.png')}
+                                              style={{ width: 45, height: 45 }}
+                                            />
+                                          )
+                                          :
+                                          (null)
+                                      }
+                                              {
+                                        wperhour.condition.code == 1273 ?
+                                          (
+                                            <Image
+                                              source={require('../../src/weathericon/1273.png')}
+                                              style={{ width: 45, height: 45 }}
+                                            />
+                                          )
+                                          :
+                                          (null)
+                                      }
+                                              {
+                                        wperhour.condition.code == 1276 ?
+                                          (
+                                            <Image
+                                              source={require('../../src/weathericon/1276.png')}
+                                              style={{ width: 45, height: 45 }}
+                                            />
+                                          )
+                                          :
+                                          (null)
+                                      }
+
+                                      <Text>{wperhour.condition.code}</Text>
                                     </View>
                                     <View style={{ justifyContent: 'flex-end' }}>
                                       <Text
