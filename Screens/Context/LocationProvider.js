@@ -1778,7 +1778,8 @@ export const LocationProvider = ({ children }) => {
 
     setWeatherloc(response?.location)
     setWeatherDate(response?.location)
-    setWeatherCondition(response?.forecast?.forecastday[0]?.day?.condition)
+    setWeatherCondition(response?.current?.condition)
+    // setWeatherCondition(response?.forecast?.forecastday[0]?.day?.condition)
     setWeatherData(response?.forecast?.forecastday[0]?.day)
     setWeatherPerHour(response?.forecast?.forecastday[0]?.hour)
     setWeatherPerDay(response?.forecast?.forecastday)
@@ -1824,7 +1825,8 @@ export const LocationProvider = ({ children }) => {
         console.log(locationName)
         setGpsName(locationName);
         setGpsUrl(loooo)
-        setGpsWeathCondition(responseGps?.forecast?.forecastday[0]?.day?.condition)
+        setGpsWeathCondition(responseGps?.current?.condition)
+        //setGpsWeathCondition(responseGps?.forecast?.forecastday[0]?.day?.condition)
         setGpsWeathData(responseGps?.forecast?.forecastday[0]?.day)
 
       

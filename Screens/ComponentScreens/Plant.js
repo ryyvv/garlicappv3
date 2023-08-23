@@ -68,6 +68,7 @@ function PlantDash({ route, navigation }) {
   const { logout, user } = useContext(AuthContext)
   const [plants, setPlants] = useState('');
   const [plantData, setPlantData] = useState([])
+  const [recent,setRecent] = useState('')
 
   // const {plantData, setPlantData} =  route.params;
 
@@ -104,6 +105,7 @@ function PlantDash({ route, navigation }) {
       } else {
         const dataArray = Object.values(firebaseData);
         setPlantData(dataArray);
+        setRecent('Ongoing')
       }
     });
   }
@@ -196,9 +198,11 @@ function PlantDash({ route, navigation }) {
   return (
     <View style={{ flex: 1, backgroundColor: '#cbdeda' }}>
       <StatusBar animated={true} barStyle={statusBarStyle} translucent={true} />
+      {
+        recent == null ? (null) : (<Text style={{marginLeft:25,marginTop:20,fontSize:16, fontWeight:'900',color: '#276653',}}>Recent</Text>)
+      }
       <ScrollView>
         <View style={styles.accountcontainer}>
-          <Text style={{ marginBottom: 6, color: '#276653', fontWeight: 'bold', fontSize: 18 }}>Recent</Text>
           <FlatList
             data={plantData}
             renderItem={renderDisplayList}
@@ -2794,11 +2798,11 @@ function Task({ route, navigation }) {
               console.log('Date1: ', date1)
               console.log('Date2: ', date2)
 
-              if (date1 <= date2) {
+              if (date1 == date2) {
                 sortedToday.push({ 'action': index.action, 'dateAction': index.dateAction, 'title': index.title })
                 console.table('Push Date: ', dA)
               } else {
-                console.table('Cannot Push Date: ', dA)
+                sortedToday.push({ 'action': '', 'dateAction': '', 'title': 'No tasks for today!' })
               }
             })
             setTaskToday(sortedToday)
@@ -3013,7 +3017,14 @@ function Task({ route, navigation }) {
                 })
               }
 
-              <Text>Push</Text>
+              {
+                taskToday == null ? (null):
+                (
+                  <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
+                    <Text style={{fontSize:20, fontWeight:'bold'}}>No tasks for today!</Text>
+                  </View>
+                )
+              } 
             </View>)
         }
 
@@ -3396,7 +3407,7 @@ function Task({ route, navigation }) {
               <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, paddingRight: 20, paddingLeft: 20 }]}>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
-                  <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Water</Text>
+                  <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Fertilizer</Text>
                 </View>
               </View>
             </View>
@@ -3405,7 +3416,7 @@ function Task({ route, navigation }) {
               <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, paddingRight: 20, paddingLeft: 20 }]}>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
-                  <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Water</Text>
+                  <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Insecticide</Text>
                 </View>
               </View>
             </View>
