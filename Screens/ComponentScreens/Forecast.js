@@ -84,9 +84,9 @@ function Wforecast({ navigation }) {
                                                     {
                                                         wperhour.condition.code == 1000 ?
                                                             (
-                                                                <Image
+                                                                <Image resizeMode={'contain'}
                                                                     source={require('../../src/weathericon/1000.png')}
-                                                                    style={{ width: 45, height: 45 }}
+                                                                    style={{ width: 65, height: 45 }}
                                                                 />
                                                             )
                                                             :
@@ -95,9 +95,9 @@ function Wforecast({ navigation }) {
                                                     {
                                                         wperhour.condition.code == 1003 ?
                                                             (
-                                                                <Image
+                                                                <Image resizeMode={'contain'}
                                                                     source={require('../../src/weathericon/1003.png')}
-                                                                    style={{ width: 45, height: 45 }}
+                                                                    style={{ width: 65, height: 45 }}
                                                                 />
                                                             )
                                                             :
@@ -106,9 +106,9 @@ function Wforecast({ navigation }) {
                                                     {
                                                         wperhour.condition.code == 1006 ?
                                                             (
-                                                                <Image
+                                                                <Image resizeMode={'contain'}
                                                                     source={require('../../src/weathericon/1006.png')}
-                                                                    style={{ width: 45, height: 45 }}
+                                                                    style={{ width: 65, height: 45 }}
                                                                 />
                                                             )
                                                             :
@@ -117,9 +117,9 @@ function Wforecast({ navigation }) {
                                                     {
                                                         wperhour.condition.code == 1009 ?
                                                             (
-                                                                <Image
+                                                                <Image resizeMode={'contain'}
                                                                     source={require('../../src/weathericon/1009.png')}
-                                                                    style={{ width: 45, height: 45 }}
+                                                                    style={{ width: 65, height: 45 }}
                                                                 />
                                                             )
                                                             :
@@ -128,9 +128,9 @@ function Wforecast({ navigation }) {
                                                     {
                                                         wperhour.condition.code == 1063 ?
                                                             (
-                                                                <Image
+                                                                <Image resizeMode={'contain'}
                                                                     source={require('../../src/weathericon/1063.png')}
-                                                                    style={{ width: 45, height: 45 }}
+                                                                    style={{ width: 65, height: 45 }}
                                                                 />
                                                             )
                                                             :
@@ -139,9 +139,9 @@ function Wforecast({ navigation }) {
                                                     {
                                                         wperhour.condition.code == 1087 ?
                                                             (
-                                                                <Image
+                                                                <Image resizeMode={'contain'}
                                                                     source={require('../../src/weathericon/1087.png')}
-                                                                    style={{ width: 45, height: 45 }}
+                                                                    style={{ width: 65, height: 45 }}
                                                                 />
                                                             )
                                                             :
@@ -150,9 +150,9 @@ function Wforecast({ navigation }) {
                                                     {
                                                         wperhour.condition.code == 1135 ?
                                                             (
-                                                                <Image
+                                                                <Image resizeMode={'contain'}
                                                                     source={require('../../src/weathericon/1135.png')}
-                                                                    style={{ width: 45, height: 45 }}
+                                                                    style={{ width: 65, height: 45 }}
                                                                 />
                                                             )
                                                             :
@@ -161,9 +161,9 @@ function Wforecast({ navigation }) {
                                                     {
                                                         wperhour.condition.code == 1135 ?
                                                             (
-                                                                <Image
+                                                                <Image resizeMode={'contain'}
                                                                     source={require('../../src/weathericon/1135.png')}
-                                                                    style={{ width: 45, height: 45 }}
+                                                                    style={{ width: 65, height: 45 }}
                                                                 />
                                                             )
                                                             :
@@ -172,9 +172,9 @@ function Wforecast({ navigation }) {
                                                     {
                                                         wperhour.condition.code == 1150 ?
                                                             (
-                                                                <Image
+                                                                <Image resizeMode={'contain'}
                                                                     source={require('../../src/weathericon/1150.png')}
-                                                                    style={{ width: 45, height: 45 }}
+                                                                    style={{ width: 65, height: 45 }}
                                                                 />
                                                             )
                                                             :
@@ -183,9 +183,9 @@ function Wforecast({ navigation }) {
                                                     {
                                                         wperhour.condition.code == 1153 ?
                                                             (
-                                                                <Image
+                                                                <Image resizeMode={'contain'}
                                                                     source={require('../../src/weathericon/1153.png')}
-                                                                    style={{ width: 45, height: 45 }}
+                                                                    style={{ width: 65, height: 45 }}
                                                                 />
                                                             )
                                                             :
@@ -194,9 +194,9 @@ function Wforecast({ navigation }) {
                                                     {
                                                         wperhour.condition.code == 1171 ?
                                                             (
-                                                                <Image
+                                                                <Image resizeMode={'contain'}
                                                                     source={require('../../src/weathericon/1171.png')}
-                                                                    style={{ width: 45, height: 45 }}
+                                                                    style={{ width: 65, height: 45 }}
                                                                 />
                                                             )
                                                             :
@@ -205,9 +205,9 @@ function Wforecast({ navigation }) {
                                                     {
                                                         wperhour.condition.code == 1180 ?
                                                             (
-                                                                <Image
+                                                                <Image resizeMode={'contain'}
                                                                     source={require('../../src/weathericon/1180.png')}
-                                                                    style={{ width: 45, height: 45 }}
+                                                                    style={{ width: 65, height: 45 }}
                                                                 />
                                                             )
                                                             :
@@ -216,9 +216,9 @@ function Wforecast({ navigation }) {
                                                     {
                                                         wperhour.condition.code == 1183 ?
                                                             (
-                                                                <Image
+                                                                <Image resizeMode={'contain'}
                                                                     source={require('../../src/weathericon/1183.png')}
-                                                                    style={{ width: 45, height: 45 }}
+                                                                    style={{ width: 65, height: 45 }}
                                                                 />
                                                             )
                                                             :
@@ -227,9 +227,9 @@ function Wforecast({ navigation }) {
                                                     {
                                                         wperhour.condition.code == 1186 ?
                                                             (
-                                                                <Image
+                                                                <Image resizeMode={'contain'}
                                                                     source={require('../../src/weathericon/1186.png')}
-                                                                    style={{ width: 45, height: 45 }}
+                                                                    style={{ width: 65, height: 45 }}
                                                                 />
                                                             )
                                                             :
@@ -238,9 +238,9 @@ function Wforecast({ navigation }) {
                                                     {
                                                         wperhour.condition.code == 1189 ?
                                                             (
-                                                                <Image
+                                                                <Image resizeMode={'contain'}
                                                                     source={require('../../src/weathericon/1189.png')}
-                                                                    style={{ width: 45, height: 45 }}
+                                                                    style={{ width: 65, height: 45 }}
                                                                 />
                                                             )
                                                             :
@@ -249,9 +249,9 @@ function Wforecast({ navigation }) {
                                                     {
                                                         wperhour.condition.code == 1193 ?
                                                             (
-                                                                <Image
+                                                                <Image resizeMode={'contain'}
                                                                     source={require('../../src/weathericon/1193.png')}
-                                                                    style={{ width: 45, height: 45 }}
+                                                                    style={{ width: 65, height: 45 }}
                                                                 />
                                                             )
                                                             :
@@ -260,9 +260,9 @@ function Wforecast({ navigation }) {
                                                     {
                                                         wperhour.condition.code == 1195 ?
                                                             (
-                                                                <Image
+                                                                <Image resizeMode={'contain'}
                                                                     source={require('../../src/weathericon/1195.png')}
-                                                                    style={{ width: 45, height: 45 }}
+                                                                    style={{ width: 65, height: 45 }}
                                                                 />
                                                             )
                                                             :
@@ -271,9 +271,9 @@ function Wforecast({ navigation }) {
                                                     {
                                                         wperhour.condition.code == 1198 ?
                                                             (
-                                                                <Image
+                                                                <Image resizeMode={'contain'}
                                                                     source={require('../../src/weathericon/1198.png')}
-                                                                    style={{ width: 45, height: 45 }}
+                                                                    style={{ width: 65, height: 45 }}
                                                                 />
                                                             )
                                                             :
@@ -282,9 +282,9 @@ function Wforecast({ navigation }) {
                                                     {
                                                         wperhour.condition.code == 1201 ?
                                                             (
-                                                                <Image
+                                                                <Image resizeMode={'contain'}
                                                                     source={require('../../src/weathericon/1201.png')}
-                                                                    style={{ width: 45, height: 45 }}
+                                                                    style={{ width: 65, height: 45 }}
                                                                 />
                                                             )
                                                             :
@@ -293,9 +293,9 @@ function Wforecast({ navigation }) {
                                                     {
                                                         wperhour.condition.code == 1240 ?
                                                             (
-                                                                <Image
+                                                                <Image resizeMode={'contain'}
                                                                     source={require('../../src/weathericon/1240.png')}
-                                                                    style={{ width: 45, height: 45 }}
+                                                                    style={{ width: 65, height: 45 }}
                                                                 />
                                                             )
                                                             :
@@ -304,9 +304,9 @@ function Wforecast({ navigation }) {
                                                     {
                                                         wperhour.condition.code == 1243 ?
                                                             (
-                                                                <Image
+                                                                <Image resizeMode={'contain'}
                                                                     source={require('../../src/weathericon/1243.png')}
-                                                                    style={{ width: 45, height: 45 }}
+                                                                    style={{ width: 65, height: 45 }}
                                                                 />
                                                             )
                                                             :
@@ -315,9 +315,9 @@ function Wforecast({ navigation }) {
                                                     {
                                                         wperhour.condition.code == 1249 ?
                                                             (
-                                                                <Image
+                                                                <Image resizeMode={'contain'}
                                                                     source={require('../../src/weathericon/1249.png')}
-                                                                    style={{ width: 45, height: 45 }}
+                                                                    style={{ width: 65, height: 45 }}
                                                                 />
                                                             )
                                                             :
@@ -326,9 +326,9 @@ function Wforecast({ navigation }) {
                                                     {
                                                         wperhour.condition.code == 1273 ?
                                                             (
-                                                                <Image
+                                                                <Image resizeMode={'contain'}
                                                                     source={require('../../src/weathericon/1273.png')}
-                                                                    style={{ width: 45, height: 45 }}
+                                                                    style={{ width: 65, height: 45 }}
                                                                 />
                                                             )
                                                             :
@@ -337,9 +337,9 @@ function Wforecast({ navigation }) {
                                                     {
                                                         wperhour.condition.code == 1276 ?
                                                             (
-                                                                <Image
+                                                                <Image resizeMode={'contain'}
                                                                     source={require('../../src/weathericon/1276.png')}
-                                                                    style={{ width: 45, height: 45 }}
+                                                                    style={{ width: 65, height: 45 }}
                                                                 />
                                                             )
                                                             :
@@ -378,284 +378,282 @@ function Wforecast({ navigation }) {
                         {/* Next day*/}
                         <View style={styles.dashboardForecastDay}>
                             <View style={styles.div2RowSpaceBetween}>
-                                <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 10,  color: '#276653' }}>Next forecast</Text>
+                                <Text style={{ fontSize: 22, fontWeight: 'bold', marginBottom: 10,  color: '#276653' }}>7-day forecast</Text>
                                 {/* <Icon name={"calendar-month"} color={'gray'} size={37} style={{ paddingLeft: 3, marginLeft: -5, width: 45, }} /> */}
                             </View>
-
-                             {
+                            {
                                 weathPerDay.map((dayper, s) => {
                                     return (
                                         <View key={s} style={[styles.cardDashboardForecast, styles.cardDashboardForecastProp, { marginBottom: 10 }]}>
                                             <View style={styles.div2RowSpaceBetween}>
-                                                <View>
-                                                    <Text style={{ fontSize: 18, fontWeight: '800' }}>{moment(dayper.date).format("dddd")}</Text>
-                                                    <Text style={{ fontSize: 14, fontWeight: '800', }}>{moment(dayper.date).format("MMM. D")} </Text>
+                                                <View style={{flexDirection:'row'}}>
+                                                    <Text style={{ fontSize: 14, fontWeight: '800',  color: '#276653' }}>{moment(dayper.date).format("dddd")}, </Text>
+                                                    <Text style={{ fontSize: 14, fontWeight: '800',  color: '#276653'}}>{moment(dayper.date).format("MMM. D")} </Text>
                                                 </View>
-                                                <View>
-                                                    <Text style={{ fontSize: 30, fontWeight: '800' }}>{dayper.day.avgtemp_c}°C</Text>
-                                                </View>
-                                                <View style={{ marginRight: 12 }}>
+                                            </View >
+                                            <View style={{flexDirection:'row', marginTop:10}}>
+                                                <View style={{ marginRight: 12 , justifyContent:'center', alignItems:'center'}}>
                                                     <View>
 
                                                         {
-                                                            weathCondition.text == 1000 ?
+                                                            weathCondition.code == 1000 ?
                                                                 (
                                                                     <Image
                                                                         source={require('../../src/weathericon/1000.png')}
-                                                                        style={{ width: 380, height: 210 }}
+                                                                        style={{ width: 90, height: 50 }}
                                                                     />
                                                                 )
                                                                 :
                                                                 (null)
                                                         }
                                                         {
-                                                            weathCondition.text == 1003 ?
+                                                            weathCondition.code == 1003 ?
                                                                 (
                                                                     <Image
                                                                         source={require('../../src/weathericon/1003.png')}
-                                                                        style={{ width: 380, height: 210 }}
+                                                                        style={{ width: 90, height: 50 }}
                                                                     />
                                                                 )
                                                                 :
                                                                 (null)
                                                         }
                                                         {
-                                                            weathCondition.text == 1006 ?
+                                                            weathCondition.code == 1006 ?
                                                                 (
                                                                     <Image
                                                                         source={require('../../src/weathericon/1006.png')}
-                                                                        style={{ width: 380, height: 210 }}
+                                                                        style={{ width: 90, height: 50 }}
                                                                     />
                                                                 )
                                                                 :
                                                                 (null)
                                                         }
                                                         {
-                                                            weathCondition.text == 1009 ?
+                                                            weathCondition.code == 1009 ?
                                                                 (
                                                                     <Image
                                                                         source={require('../../src/weathericon/1009.png')}
-                                                                        style={{ width: 380, height: 210 }}
+                                                                        style={{ width: 90, height: 50 }}
                                                                     />
                                                                 )
                                                                 :
                                                                 (null)
                                                         }
                                                         {
-                                                            weathCondition.text == 1063 ?
+                                                            weathCondition.code == 1063 ?
                                                                 (
                                                                     <Image
                                                                         source={require('../../src/weathericon/1063.png')}
-                                                                        style={{ width: 380, height: 210 }}
+                                                                        style={{ width: 90, height: 50 }}
                                                                     />
                                                                 )
                                                                 :
                                                                 (null)
                                                         }
                                                         {
-                                                            weathCondition.text == 1087 ?
+                                                            weathCondition.code == 1087 ?
                                                                 (
                                                                     <Image
                                                                         source={require('../../src/weathericon/1087.png')}
-                                                                        style={{ width: 380, height: 210 }}
+                                                                        style={{ width: 90, height: 50 }}
                                                                     />
                                                                 )
                                                                 :
                                                                 (null)
                                                         }
                                                         {
-                                                            weathCondition.text == 1135 ?
+                                                            weathCondition.code == 1135 ?
                                                                 (
                                                                     <Image
                                                                         source={require('../../src/weathericon/1135.png')}
-                                                                        style={{ width: 380, height: 210 }}
+                                                                        style={{ width: 90, height: 50 }}
                                                                     />
                                                                 )
                                                                 :
                                                                 (null)
                                                         }
                                                         {
-                                                            weathCondition.text == 1135 ?
+                                                            weathCondition.code == 1135 ?
                                                                 (
                                                                     <Image
                                                                         source={require('../../src/weathericon/1135.png')}
-                                                                        style={{ width: 380, height: 210 }}
+                                                                        style={{ width: 90, height: 50 }}
                                                                     />
                                                                 )
                                                                 :
                                                                 (null)
                                                         }
                                                         {
-                                                            weathCondition.text == 1150 ?
+                                                            weathCondition.code == 1150 ?
                                                                 (
                                                                     <Image
                                                                         source={require('../../src/weathericon/1150.png')}
-                                                                        style={{ width: 380, height: 210 }}
+                                                                        style={{ width: 90, height: 50 }}
                                                                     />
                                                                 )
                                                                 :
                                                                 (null)
                                                         }
                                                         {
-                                                            weathCondition.text == 1153 ?
+                                                            weathCondition.code == 1153 ?
                                                                 (
                                                                     <Image
                                                                         source={require('../../src/weathericon/1153.png')}
-                                                                        style={{ width: 380, height: 210 }}
+                                                                        style={{ width: 90, height: 50 }}
                                                                     />
                                                                 )
                                                                 :
                                                                 (null)
                                                         }
                                                         {
-                                                            weathCondition.text == 1171 ?
+                                                            weathCondition.code == 1171 ?
                                                                 (
                                                                     <Image
                                                                         source={require('../../src/weathericon/1171.png')}
-                                                                        style={{ width: 380, height: 210 }}
+                                                                        style={{ width: 90, height: 50 }}
                                                                     />
                                                                 )
                                                                 :
                                                                 (null)
                                                         }
                                                         {
-                                                            weathCondition.text == 1180 ?
+                                                            weathCondition.code == 1180 ?
                                                                 (
                                                                     <Image
                                                                         source={require('../../src/weathericon/1180.png')}
-                                                                        style={{ width: 380, height: 210 }}
+                                                                        style={{ width: 90, height: 50 }}
                                                                     />
                                                                 )
                                                                 :
                                                                 (null)
                                                         }
                                                         {
-                                                            weathCondition.text == 1183 ?
+                                                            weathCondition.code == 1183 ?
                                                                 (
                                                                     <Image
                                                                         source={require('../../src/weathericon/1183.png')}
-                                                                        style={{ width: 380, height: 210 }}
+                                                                        style={{ width: 90, height: 50 }}
                                                                     />
                                                                 )
                                                                 :
                                                                 (null)
                                                         }
                                                         {
-                                                            weathCondition.text == 1186 ?
+                                                            weathCondition.code == 1186 ?
                                                                 (
                                                                     <Image
                                                                         source={require('../../src/weathericon/1186.png')}
-                                                                        style={{ width: 380, height: 210 }}
+                                                                        style={{ width: 90, height: 50 }}
                                                                     />
                                                                 )
                                                                 :
                                                                 (null)
                                                         }
                                                         {
-                                                            weathCondition.text == 1189 ?
+                                                            weathCondition.code == 1189 ?
                                                                 (
                                                                     <Image
                                                                         source={require('../../src/weathericon/1189.png')}
-                                                                        style={{ width: 380, height: 210 }}
+                                                                        style={{ width: 90, height: 50 }}
                                                                     />
                                                                 )
                                                                 :
                                                                 (null)
                                                         }
                                                         {
-                                                            weathCondition.text == 1193 ?
+                                                            weathCondition.code == 1193 ?
                                                                 (
                                                                     <Image
                                                                         source={require('../../src/weathericon/1193.png')}
-                                                                        style={{ width: 380, height: 210 }}
+                                                                        style={{ width: 90, height: 50 }}
                                                                     />
                                                                 )
                                                                 :
                                                                 (null)
                                                         }
                                                         {
-                                                            weathCondition.text == 1195 ?
+                                                            weathCondition.code == 1195 ?
                                                                 (
                                                                     <Image
                                                                         source={require('../../src/weathericon/1195.png')}
-                                                                        style={{ width: 380, height: 210 }}
+                                                                        style={{ width: 90, height: 50 }}
                                                                     />
                                                                 )
                                                                 :
                                                                 (null)
                                                         }
                                                         {
-                                                            weathCondition.text == 1198 ?
+                                                            weathCondition.code == 1198 ?
                                                                 (
                                                                     <Image
                                                                         source={require('../../src/weathericon/1198.png')}
-                                                                        style={{ width: 380, height: 210 }}
+                                                                        style={{ width: 90, height: 50 }}
                                                                     />
                                                                 )
                                                                 :
                                                                 (null)
                                                         }
                                                         {
-                                                            weathCondition.text == 1201 ?
+                                                            weathCondition.code == 1201 ?
                                                                 (
                                                                     <Image
                                                                         source={require('../../src/weathericon/1201.png')}
-                                                                        style={{ width: 380, height: 210 }}
+                                                                        style={{ width: 90, height: 50 }}
                                                                     />
                                                                 )
                                                                 :
                                                                 (null)
                                                         }
                                                         {
-                                                            weathCondition.text == 1240 ?
+                                                            weathCondition.code == 1240 ?
                                                                 (
                                                                     <Image
                                                                         source={require('../../src/weathericon/1240.png')}
-                                                                        style={{ width: 380, height: 210 }}
+                                                                        style={{ width: 90, height: 50 }}
                                                                     />
                                                                 )
                                                                 :
                                                                 (null)
                                                         }
                                                         {
-                                                            weathCondition.text == 1243 ?
+                                                            weathCondition.code == 1243 ?
                                                                 (
                                                                     <Image
                                                                         source={require('../../src/weathericon/1243.png')}
-                                                                        style={{ width: 380, height: 210 }}
+                                                                        style={{ width: 90, height: 50 }}
                                                                     />
                                                                 )
                                                                 :
                                                                 (null)
                                                         }
                                                         {
-                                                            weathCondition.text == 1249 ?
+                                                            weathCondition.code == 1249 ?
                                                                 (
                                                                     <Image
                                                                         source={require('../../src/weathericon/1249.png')}
-                                                                        style={{ width: 380, height: 210 }}
+                                                                        style={{ width: 90, height: 50 }}
                                                                     />
                                                                 )
                                                                 :
                                                                 (null)
                                                         }
                                                         {
-                                                            weathCondition.text == 1273 ?
+                                                            weathCondition.code == 1273 ?
                                                                 (
                                                                     <Image
                                                                         source={require('../../src/weathericon/1273.png')}
-                                                                        style={{ width: 380, height: 210 }}
+                                                                        style={{ width: 90, height: 50 }}
                                                                     />
                                                                 )
                                                                 :
                                                                 (null)
                                                         }
                                                         {
-                                                            weathCondition.text == 1276 ?
+                                                            weathCondition.code == 1276 ?
                                                                 (
                                                                     <Image
                                                                         source={require('../../src/weathericon/1276.png')}
-                                                                        style={{ width: 380, height: 210 }}
+                                                                        style={{ width: 90, height: 50 }}
                                                                     />
                                                                 )
                                                                 :
@@ -664,13 +662,43 @@ function Wforecast({ navigation }) {
                                                         {/* 
 <Text>{weathCondition.text}</Text> */}
                                                     </View>
-                                                    <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 50, height: 50 }} />
+                                                    {/* <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 50, height: 50 }} /> */}
+                                                    <View>
+                                                        <Text style={{ fontSize: 14, fontWeight: '800',color: '#276653'}}>{dayper.day.condition.text}</Text>
+                                                    </View>
+                                                    <View>
+                                                        <Text style={{ fontSize: 14, fontWeight: '800',color: '#276653'}}>{dayper.day.daily_chance_of_rain}% chance of rain</Text>
+                                                    </View>
+                                                </View>
+                                                <View>
+                                                    <View style={{ flexDirection: 'row' }}>
+                                                        <Text style={{ fontSize: 14, fontWeight: '800' }}>temp:  </Text>
+                                                        <Text style={{ fontSize: 16, fontWeight: '800',color: '#276653' }}> {dayper.day.maxtemp_c}</Text>
+                                                        <Text style={{ fontSize: 16, fontWeight: '600',color: '#276653' }}>/{dayper.day.mintemp_c}°C</Text>
+                                                    </View>
+                                                    <View style={{ flexDirection: 'row' }}>
+                                                        <Text style={{ fontSize: 14, fontWeight: '800'}}>humidity:  </Text>
+                                                        <Text style={{ fontSize: 16, fontWeight: '800',color: '#276653' }}>{dayper.day.avghumidity}%</Text>
+                                                    </View>
+                                                    <View style={{ flexDirection: 'row' }}>
+                                                        <Text style={{ fontSize: 14,fontWeight: '800'}}>windspeed:  </Text>
+                                                        <Text style={{ fontSize: 16, fontWeight: '800',color: '#276653' }}>{dayper.day.maxwind_kph} kph</Text>
+                                                    </View>
+                                                    <View style={{ flexDirection: 'row',fontWeight: '800' }}>
+                                                        <Text style={{ fontSize: 14,fontWeight: '800'}}>sunrise:  </Text>
+                                                        <Text style={{ fontSize: 16, fontWeight: '800',color: '#276653' }}>{dayper.astro.sunrise}</Text>
+                                                    </View>
+                                                    <View style={{ flexDirection: 'row' }}>
+                                                        <Text style={{ fontSize: 14,fontWeight: '800'}}>sunset:  </Text>
+                                                        <Text style={{ fontSize: 16, fontWeight: '800',color: '#276653' }}>{dayper.astro.sunset}</Text>
+                                                    </View>
+                                                    
                                                 </View>
                                             </View>
                                         </View>
                                     )
                                 })
-                            } 
+                            }
                         
                         </View>
                     </View>

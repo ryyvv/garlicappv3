@@ -68,6 +68,7 @@ function PlantDash({ route, navigation }) {
   const { logout, user } = useContext(AuthContext)
   const [plants, setPlants] = useState('');
   const [plantData, setPlantData] = useState([])
+  const [recent,setRecent] = useState('')
 
   // const {plantData, setPlantData} =  route.params;
 
@@ -104,6 +105,7 @@ function PlantDash({ route, navigation }) {
       } else {
         const dataArray = Object.values(firebaseData);
         setPlantData(dataArray);
+        setRecent('Ongoing')
       }
     });
   }
@@ -196,9 +198,11 @@ function PlantDash({ route, navigation }) {
   return (
     <View style={{ flex: 1, backgroundColor: '#cbdeda' }}>
       <StatusBar animated={true} barStyle={statusBarStyle} translucent={true} />
+      {
+        recent == null ? (null) : (<Text style={{marginLeft:25,marginTop:20,fontSize:16, fontWeight:'900',color: '#276653',}}>Recent</Text>)
+      }
       <ScrollView>
         <View style={styles.accountcontainer}>
-          <Text style={{ marginBottom: 6, color: '#276653', fontWeight: 'bold', fontSize: 18 }}>Recent</Text>
           <FlatList
             data={plantData}
             renderItem={renderDisplayList}
@@ -1109,13 +1113,13 @@ function PlantID({ route, navigation }) {
                     <Text style={{ fontSize: 16, color: 'white', fontWeight: '900' }}> {moment(date).format("MMMM D, YYYY")}</Text>
                   </View>
                   <View style={{ flexDirection: 'row', marginTop: 15 }}>
-                    <TouchableOpacity
+                    {/* <TouchableOpacity
                       onPress={() => { navigation.navigate('Note') }}>
                       <View style={{ padding: 7, borderWidth: 1, borderColor: '#5BB761', backgroundColor: '#EAFFE8', borderRadius: 20, marginRight: 5, flexDirection: 'row', paddingLeft: 15, paddingRight: 10 }}>
                         <Icon name={'notebook-plus-outline'} color={'#276653'} size={20} style={{ width: 20, marginRight: 5 }} />
                         <Text style={{ fontWeight: 'bold' }}>Add note</Text>
                       </View>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                     <TouchableOpacity
                       onPress={() => {
                         navigation.navigate('PlantCam', {
@@ -2752,17 +2756,16 @@ function Task({ route, navigation }) {
   }
 
   const Tab1Content = () => {
-    const [loadings, setLoadings] = useState(true); // Initialize as false 
+    const [loadings, setLoadings] = useState(false); // Initialize as false 
     const [taskToday, setTaskToday] = useState([])
     const [sortedToday, setsortedToday] = useState([])
 
     useEffect(() => {
-      setTimeout(() => { 
-        Tab1Con()
-      },2000)
+      setTimeout(Tab1Con , 2000)
     }, []);
 
     const Tab1Con = () => {
+      setLoadings(true)
       const red = database().ref('null/plants/' + user.uid)
       const blue = red.toString().split('/')[3];
 
@@ -2771,8 +2774,6 @@ function Task({ route, navigation }) {
 
       if (user.uid == blue) {
         const taskUp = database().ref('users/' + user.uid + '/plants/' + user.uid + title + '/taskUpcoming')
-
-         
           taskUp.on('value', (snapshot) => {
             const firebaseData = snapshot.val();
             const dataArray = Object.values(firebaseData);
@@ -2785,8 +2786,6 @@ function Task({ route, navigation }) {
               return -1 // return 1 here for DESC Order
 
             });
-
-           
             sorted.forEach((index) => {
               const dA = index.dateAction;
               //const dAnewDate = DnewDate;
@@ -2799,57 +2798,21 @@ function Task({ route, navigation }) {
               console.log('Date1: ', date1)
               console.log('Date2: ', date2)
 
-              if (date1 <= date2) {
+              if (date1 == date2) {
                 sortedToday.push({ 'action': index.action, 'dateAction': index.dateAction, 'title': index.title })
                 console.table('Push Date: ', dA)
               } else {
-                console.table('Cannot Push Date: ', dA)
+                sortedToday.push({ 'action': '', 'dateAction': '', 'title': 'No tasks for today!' })
               }
             })
             setTaskToday(sortedToday)
-            setTimeout(false)
- 
           });
-
-      
-
-        // taskUp.on('value', (snapshot) => {
-        //   const firebaseData = snapshot.val();
-        //   const dataArray = Object.values(firebaseData);
-        //   const sorted = dataArray.sort((a, b) => {
-        //     const dateA = new Date(`${a.dateAction}`).valueOf();
-        //     const dateB = new Date(`${b.dateAction}`).valueOf();
-        //     if (dateA > dateB) {
-        //       return 1; // return -1 here for DESC order
-        //     }
-        //     return -1 // return 1 here for DESC Order
-
-        //   });
-        //   sorted.forEach((index) => {
-        //     const dA = index.dateAction;
-        //     //const dAnewDate = DnewDate;
-
-        //     console.log('dAdAdAd: ',dA)
-        //     //console.log('current: ',newDate )
-
-        //     const date1 = new Date(dA);
-        //     const date2 = new Date(newDate);
-        //     console.log('Date1: ',date1)
-        //     console.log('Date2: ',date2)
-
-        //     if (date1 <=  date2) {
-        //       sortedToday.push({ 'action': index.action, 'dateAction': index.dateAction, 'title': index.title })
-        //       console.table('Push Date: ', dA)
-        //     } else {
-        //       console.table('Cannot Push Date: ', dA)
-        //     }
-        //   })
-        //   setTaskToday(sortedToday)
-
-        // });
-
       }
+
+      setLoadings(false)
     }
+
+    
     const Tab1Con2 = () => {  
       const red = database().ref('null/plants/' + user.uid)
       const blue = red.toString().split('/')[3];
@@ -2940,7 +2903,7 @@ function Task({ route, navigation }) {
                               </View>
                             </View>
                             <View>
-                              <TouchableOpacity
+                              <TouchableOpacity disabled={true}
                                 onPress={
                                   handlesubmit(upcom)
                                   // alert('clicked title: ',upcom.title, ' dateAction', upcom.dateAction, ' Action: ', upcom.Action, ' Status: ', upcom.status )}
@@ -2970,7 +2933,7 @@ function Task({ route, navigation }) {
                             </View>
                             <View>
                               <View>
-                                <TouchableOpacity
+                                <TouchableOpacity disabled={true}
                                   onPress={() => {
                                     handlesubmit(upcom)
                                     alert('clicked title: ', upcom.title, ' dateAction', upcom.dateAction, ' Action: ', upcom.Action, ' Status: ', upcom.status)
@@ -3002,7 +2965,7 @@ function Task({ route, navigation }) {
                             </View>
                             <View>
                               <View>
-                                <TouchableOpacity
+                                <TouchableOpacity disabled={true}
                                   onPress={() => {
                                     handlesubmit(upcom)
                                     alert('clicked title: ', upcom.title, ' dateAction', upcom.dateAction, ' Action: ', upcom.Action, ' Status: ', upcom.status)
@@ -3034,7 +2997,7 @@ function Task({ route, navigation }) {
                             </View>
                             <View>
                               <View>
-                                <TouchableOpacity
+                                <TouchableOpacity disabled={true}
                                   onPress={() => {
                                     handlesubmit(upcom)
                                     alert('clicked title: ', upcom.title, ' dateAction', upcom.dateAction, ' Action: ', upcom.Action, ' Status: ', upcom.status)
@@ -3053,6 +3016,15 @@ function Task({ route, navigation }) {
                   )
                 })
               }
+
+              {
+                taskToday == null ? (null):
+                (
+                  <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
+                    <Text style={{fontSize:20, fontWeight:'bold'}}>No tasks for today!</Text>
+                  </View>
+                )
+              } 
             </View>)
         }
 
@@ -3216,11 +3188,11 @@ function Task({ route, navigation }) {
                       </View>
                     </View>
                     <View style={{ marginTop: -10, marginRight: -10 }}>
-                      <TouchableOpacity>
+                    
                         <View style={{ padding: 5 }}>
                           <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 13, fontStyle: 'italic' }}>{moment(upcom.dateAction).format('ll')}</Text>
                         </View>
-                      </TouchableOpacity>
+                     
                     </View>
                   </View>) : (null)
                 }
@@ -3236,11 +3208,11 @@ function Task({ route, navigation }) {
                       </View>
                     </View>
                     <View style={{ marginTop: -10, marginRight: -10 }}>
-                      <TouchableOpacity>
+                    
                         <View style={{ padding: 5 }}>
                           <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 13, fontStyle: 'italic' }}>{moment(upcom.dateAction).format('ll')}</Text>
                         </View>
-                      </TouchableOpacity>
+                     
                     </View>
                   </View>) : (null)
                 }
@@ -3256,11 +3228,11 @@ function Task({ route, navigation }) {
                       </View>
                     </View>
                     <View style={{ marginTop: -10, marginRight: -10 }}>
-                      <TouchableOpacity>
+                 
                         <View style={{ padding: 5 }}>
                           <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 13, fontStyle: 'italic' }}>{moment(upcom.dateAction).format('ll')}</Text>
                         </View>
-                      </TouchableOpacity>
+                     
                     </View>
                   </View>) : (null)
                 }
@@ -3276,11 +3248,11 @@ function Task({ route, navigation }) {
                       </View>
                     </View>
                     <View style={{ marginTop: -10, marginRight: -10 }}>
-                      <TouchableOpacity>
+                 
                         <View style={{ padding: 5 }}>
                           <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 13, fontStyle: 'italic' }}>{moment(upcom.dateAction).format('ll')}</Text>
                         </View>
-                      </TouchableOpacity>
+                 
                     </View>
                   </View>) : (null)
                 }
@@ -3305,11 +3277,11 @@ function Task({ route, navigation }) {
                       </View>
                     </View>
                     <View style={{ marginTop: -10, marginRight: -10 }}>
-                      <TouchableOpacity>
+                 
                         <View style={{ padding: 5 }}>
                           <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 13, fontStyle: 'italic' }}>{moment(upcom.dateAction).format('ll')}</Text>
                         </View>
-                      </TouchableOpacity>
+                   
                     </View>
                   </View>) : (null)
                 
@@ -3325,11 +3297,11 @@ function Task({ route, navigation }) {
                       </View>
                     </View>
                     <View style={{ marginTop: -10, marginRight: -10 }}>
-                      <TouchableOpacity>
+                 
                         <View style={{ padding: 5 }}>
                           <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 13, fontStyle: 'italic' }}>{moment(upcom.dateAction).format('ll')}</Text>
                         </View>
-                      </TouchableOpacity>
+                    
                     </View>
                   </View>) : (null)
                 
@@ -3345,11 +3317,11 @@ function Task({ route, navigation }) {
                       </View>
                     </View>
                     <View style={{ marginTop: -10, marginRight: -10 }}>
-                      <TouchableOpacity>
+                 
                         <View style={{ padding: 5 }}>
                           <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 13, fontStyle: 'italic' }}>{moment(upcom.dateAction).format('ll')}</Text>
                         </View>
-                      </TouchableOpacity>
+                  
                     </View>
                   </View>) : (null)
                 
@@ -3365,11 +3337,11 @@ function Task({ route, navigation }) {
                       </View>
                     </View>
                     <View style={{ marginTop: -10, marginRight: -10 }}>
-                      <TouchableOpacity>
+                 
                         <View style={{ padding: 5 }}>
                           <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 13, fontStyle: 'italic' }}>{moment(upcom.dateAction).format('ll')}</Text>
                         </View>
-                      </TouchableOpacity>
+                  
                     </View>
                   </View>) : (null)
                 
@@ -3378,7 +3350,9 @@ function Task({ route, navigation }) {
         
           })
         } */}
+        <View style={{marginBottom:30}}/>
       </View>
+
     )
   }
 
@@ -3409,6 +3383,7 @@ function Task({ route, navigation }) {
             )
           })
         }
+        <View style={{marginBottom:30}}/>
       </View>
     )
   }
@@ -3421,27 +3396,33 @@ function Task({ route, navigation }) {
           <ScrollView horizontal={true} style={{ paddingBottom: 10 }}>
             <View style={{ margin: 5 }}>
               <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, paddingRight: 20, paddingLeft: 20 }]}>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
-                  <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Water</Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center',width:undefined,height:undefined}}>
+                  <Image source={require('../../src/icons/water.png')} resizeMode={'cover'} style={{  width: 60, height: 55,marginRight: 10,borderWidth:1  }} />
+                  <View style={{ flexDirection: 'column' }}>
+                    <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 18 }}>Water</Text>
+                    <Text style={{ fontWeight: 'bold', color: '#649183', fontSize: 14, marginTop: -5 }}>Every 3 days</Text>
+                  </View>
                 </View>
               </View>
             </View>
 
             <View style={{ margin: 5 }}>
               <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, paddingRight: 20, paddingLeft: 20 }]}>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
-                  <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Water</Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center',width:undefined,height:undefined}}>
+                  <Image source={require('../../src/icons/Foliar.png')} resizeMode={'cover'} style={{  width: 65, height: 55,marginRight: 10,borderWidth:1  }} />
+                  <View style={{ flexDirection: 'column' }}>
+                    <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 18 }}>Fertilizer</Text>
+                    <Text style={{ fontWeight: 'bold', color: '#649183', fontSize: 14, marginTop: -5 }}>Every 14 days</Text>
+                  </View>
                 </View>
               </View>
             </View>
 
             <View style={{ margin: 5 }}>
               <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, paddingRight: 20, paddingLeft: 20 }]}>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
-                  <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Water</Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center',width:undefined,height:undefined}}>
+                  <Image source={require('../../src/icons/Pest.png')} resizeMode={'cover'} style={{ width: 65, height: 55,marginRight: 10,borderWidth:1  }} />
+                  <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Insecticide</Text>
                 </View>
               </View>
             </View>
@@ -3478,7 +3459,7 @@ function Task({ route, navigation }) {
       </View>
     </SafeAreaView>
   )
-}
+} 
 
 const PlantStack = createNativeStackNavigator();
 export default function Plant({ navigation }) {

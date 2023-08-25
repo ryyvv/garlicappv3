@@ -8834,11 +8834,12 @@ export default function Dashboard({ navigation }) {
                                         </Text>
                                       </View>
                                       <View style={styles.div2RowFlexStart}>
+                                      
                                       <View style={{ marginLeft: 18 }}>
                                           {
                                             vintarIcon.code == 1000 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1000.png')}
                                                   style={{ width: 45, height: 45 }}
                                                 />
@@ -8849,7 +8850,7 @@ export default function Dashboard({ navigation }) {
                                           {
                                             vintarIcon.code == 1003 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1003.png')}
                                                   style={{ width: 45, height: 45 }}
                                                 />
@@ -8860,7 +8861,7 @@ export default function Dashboard({ navigation }) {
                                           {
                                             vintarIcon.code == 1006 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1006.png')}
                                                   style={{ width: 45, height: 45 }}
                                                 />
@@ -8871,7 +8872,7 @@ export default function Dashboard({ navigation }) {
                                           {
                                             vintarIcon.code == 1009 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1009.png')}
                                                   style={{ width: 45, height: 45 }}
                                                 />
@@ -8882,7 +8883,7 @@ export default function Dashboard({ navigation }) {
                                           {
                                             vintarIcon.code == 1063 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1063.png')}
                                                   style={{ width: 45, height: 45 }}
                                                 />
@@ -8893,7 +8894,7 @@ export default function Dashboard({ navigation }) {
                                           {
                                             vintarIcon.code == 1087 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1087.png')}
                                                   style={{ width: 45, height: 45 }}
                                                 />
@@ -8901,21 +8902,11 @@ export default function Dashboard({ navigation }) {
                                               :
                                               (null)
                                           }
+                                      
                                           {
                                             vintarIcon.code == 1135 ?
                                               (
-                                                <Image
-                                                  source={require('../../src/weathericon/1135.png')}
-                                                  style={{ width: 45, height: 45 }}
-                                                />
-                                              )
-                                              :
-                                              (null)
-                                          }
-                                          {
-                                            vintarIcon.code == 1135 ?
-                                              (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1135.png')}
                                                   style={{ width: 45, height: 45 }}
                                                 />
@@ -8926,7 +8917,7 @@ export default function Dashboard({ navigation }) {
                                           {
                                             vintarIcon.code == 1150 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1150.png')}
                                                   style={{ width: 45, height: 45 }}
                                                 />
@@ -8937,7 +8928,7 @@ export default function Dashboard({ navigation }) {
                                           {
                                             vintarIcon.code == 1153 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1153.png')}
                                                   style={{ width: 45, height: 45 }}
                                                 />
@@ -8948,7 +8939,7 @@ export default function Dashboard({ navigation }) {
                                           {
                                             vintarIcon.code == 1171 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1171.png')}
                                                   style={{ width: 45, height: 45 }}
                                                 />
@@ -8959,7 +8950,7 @@ export default function Dashboard({ navigation }) {
                                           {
                                             vintarIcon.code == 1180 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1180.png')}
                                                   style={{ width: 45, height: 45 }}
                                                 />
@@ -8970,7 +8961,7 @@ export default function Dashboard({ navigation }) {
                                           {
                                             vintarIcon.code == 1183 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1183.png')}
                                                   style={{ width: 45, height: 45 }}
                                                 />
@@ -8981,7 +8972,7 @@ export default function Dashboard({ navigation }) {
                                           {
                                             vintarIcon.code == 1186 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1186.png')}
                                                   style={{ width: 45, height: 45 }}
                                                 />
@@ -8992,9 +8983,9 @@ export default function Dashboard({ navigation }) {
                                           {
                                             vintarIcon.code == 1189 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1189.png')}
-                                                  style={{ width: 45, height: 45 }}
+                                                  style={{ width: 65, height: 45 }}
                                                 />
                                               )
                                               :
@@ -9003,7 +8994,7 @@ export default function Dashboard({ navigation }) {
                                           {
                                             vintarIcon.code == 1193 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1193.png')}
                                                   style={{ width: 45, height: 45 }}
                                                 />
@@ -9014,7 +9005,7 @@ export default function Dashboard({ navigation }) {
                                           {
                                             vintarIcon.code == 1195 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1195.png')}
                                                   style={{ width: 45, height: 45 }}
                                                 />
@@ -9025,7 +9016,7 @@ export default function Dashboard({ navigation }) {
                                           {
                                             vintarIcon.code == 1198 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1198.png')}
                                                   style={{ width: 45, height: 45 }}
                                                 />
@@ -9036,7 +9027,7 @@ export default function Dashboard({ navigation }) {
                                           {
                                             vintarIcon.code == 1201 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1201.png')}
                                                   style={{ width: 45, height: 45 }}
                                                 />
@@ -9047,7 +9038,7 @@ export default function Dashboard({ navigation }) {
                                           {
                                             vintarIcon.code == 1240 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1240.png')}
                                                   style={{ width: 45, height: 45 }}
                                                 />
@@ -9058,9 +9049,20 @@ export default function Dashboard({ navigation }) {
                                           {
                                             vintarIcon.code == 1243 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1243.png')}
                                                   style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                             {
+                                            vintarIcon.code == 1246 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1246.png')}
+                                                  style={{ width: 65, height: 45 }}
                                                 />
                                               )
                                               :
@@ -9069,7 +9071,7 @@ export default function Dashboard({ navigation }) {
                                           {
                                             vintarIcon.code == 1249 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1249.png')}
                                                   style={{ width: 45, height: 45 }}
                                                 />
@@ -9080,7 +9082,7 @@ export default function Dashboard({ navigation }) {
                                           {
                                             vintarIcon.code == 1273 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1273.png')}
                                                   style={{ width: 45, height: 45 }}
                                                 />
@@ -9091,7 +9093,7 @@ export default function Dashboard({ navigation }) {
                                           {
                                             vintarIcon.code == 1276 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1276.png')}
                                                   style={{ width: 45, height: 45 }}
                                                 />
@@ -9099,17 +9101,12 @@ export default function Dashboard({ navigation }) {
                                               :
                                               (null)
                                           }
-                                            {/* <Text>{adamIcon.code}</Text> 
+                                          <View>
+                                            <Text>{vintarIcon.code}</Text>
+                                          </View>
+                          
+                                      </View>
 
-                                          <Image
-                                            source={require('../../src/images/sunRAsset2.png')}
-                                            style={{
-                                              paddingleft: 20,
-                                              width: 80,
-                                              height: 80,
-                                            }}
-                                          /> */}
-                                        </View>
                                         <View style={{ marginRight: 10 }}>
                                           <Text
                                             style={{
@@ -9230,14 +9227,12 @@ export default function Dashboard({ navigation }) {
                       {/* WeatherIcon */}
                       <View  style={{justifyContent: 'center',alignItems: 'center',marginTop: -450,marginBottom: 80}}>
                       
-                      
-                       {/* WeatherIcon */}
                       <View>
 
                         {
                           weathCondition.code == 1000 ?
                             (
-                              <Image
+                              <Image resizeMode={'contain'}
                                 source={require('../../src/weathericon/1000.png')}
                               style={{ width: 230, height:210 }} 
                               />
@@ -9248,7 +9243,7 @@ export default function Dashboard({ navigation }) {
                         {
                           weathCondition.code == 1003 ?
                             (
-                              <Image
+                              <Image resizeMode={'contain'}
                                 source={require('../../src/weathericon/1003.png')}
                               style={{ width: 380, height:210 }} 
                               />
@@ -9259,7 +9254,7 @@ export default function Dashboard({ navigation }) {
                         {
                           weathCondition.code == 1006 ?
                             (
-                              <Image
+                              <Image resizeMode={'contain'}
                                 source={require('../../src/weathericon/1006.png')}
                               style={{ width: 380, height:210 }} 
                               />
@@ -9270,7 +9265,7 @@ export default function Dashboard({ navigation }) {
                         {
                           weathCondition.code == 1009 ?
                             (
-                              <Image
+                              <Image resizeMode={'contain'}
                                 source={require('../../src/weathericon/1009.png')}
                               style={{ width: 380, height:210 }} 
                               />
@@ -9281,7 +9276,7 @@ export default function Dashboard({ navigation }) {
                         {
                           weathCondition.code == 1063 ?
                             (
-                              <Image
+                              <Image resizeMode={'contain'}
                                 source={require('../../src/weathericon/1063.png')}
                               style={{ width: 380, height:210 }} 
                               />
@@ -9292,7 +9287,7 @@ export default function Dashboard({ navigation }) {
                         {
                           weathCondition.code == 1087 ?
                             (
-                              <Image
+                              <Image resizeMode={'contain'}
                                 source={require('../../src/weathericon/1087.png')}
                               style={{ width: 380, height:210 }} 
                               />
@@ -9303,7 +9298,7 @@ export default function Dashboard({ navigation }) {
                         {
                           weathCondition.code == 1135 ?
                             (
-                              <Image
+                              <Image resizeMode={'contain'}
                                 source={require('../../src/weathericon/1135.png')}
                               style={{ width: 380, height:210 }} 
                               />
@@ -9314,7 +9309,7 @@ export default function Dashboard({ navigation }) {
                         {
                           weathCondition.code == 1135 ?
                             (
-                              <Image
+                              <Image resizeMode={'contain'}
                                 source={require('../../src/weathericon/1135.png')}
                               style={{ width: 380, height:210 }} 
                               />
@@ -9325,7 +9320,7 @@ export default function Dashboard({ navigation }) {
                         {
                           weathCondition.code == 1150 ?
                             (
-                              <Image
+                              <Image resizeMode={'contain'}
                                 source={require('../../src/weathericon/1150.png')}
                               style={{ width: 380, height:210 }} 
                               />
@@ -9336,7 +9331,7 @@ export default function Dashboard({ navigation }) {
                         {
                           weathCondition.code == 1153 ?
                             (
-                              <Image
+                              <Image resizeMode={'contain'}
                                 source={require('../../src/weathericon/1153.png')}
                               style={{ width: 380, height:210 }} 
                               />
@@ -9347,7 +9342,7 @@ export default function Dashboard({ navigation }) {
                         {
                           weathCondition.code == 1171 ?
                             (
-                              <Image
+                              <Image resizeMode={'contain'}
                                 source={require('../../src/weathericon/1171.png')}
                               style={{ width: 380, height:210 }} 
                               />
@@ -9358,7 +9353,7 @@ export default function Dashboard({ navigation }) {
                         {
                           weathCondition.code == 1180 ?
                             (
-                              <Image
+                              <Image resizeMode={'contain'}
                                 source={require('../../src/weathericon/1180.png')}
                               style={{ width: 380, height:210 }} 
                               />
@@ -9369,7 +9364,7 @@ export default function Dashboard({ navigation }) {
                         {
                           weathCondition.code == 1183 ?
                             (
-                              <Image
+                              <Image resizeMode={'contain'}
                                 source={require('../../src/weathericon/1183.png')}
                               style={{ width: 380, height:210 }} 
                               />
@@ -9380,7 +9375,7 @@ export default function Dashboard({ navigation }) {
                         {
                           weathCondition.code == 1186 ?
                             (
-                              <Image
+                              <Image resizeMode={'contain'}
                                 source={require('../../src/weathericon/1186.png')}
                               style={{ width: 380, height:210 }} 
                               />
@@ -9391,7 +9386,7 @@ export default function Dashboard({ navigation }) {
                         {
                           weathCondition.code == 1189 ?
                             (
-                              <Image
+                              <Image resizeMode={'contain'}
                                 source={require('../../src/weathericon/1189.png')}
                               style={{ width: 380, height:210 }} 
                               />
@@ -9402,7 +9397,7 @@ export default function Dashboard({ navigation }) {
                         {
                           weathCondition.code == 1193 ?
                             (
-                              <Image
+                              <Image resizeMode={'contain'}
                                 source={require('../../src/weathericon/1193.png')}
                               style={{ width: 380, height:210 }} 
                               />
@@ -9413,7 +9408,7 @@ export default function Dashboard({ navigation }) {
                         {
                           weathCondition.code == 1195 ?
                             (
-                              <Image
+                              <Image resizeMode={'contain'}
                                 source={require('../../src/weathericon/1195.png')}
                               style={{ width: 380, height:210 }} 
                               />
@@ -9424,7 +9419,7 @@ export default function Dashboard({ navigation }) {
                         {
                           weathCondition.code == 1198 ?
                             (
-                              <Image
+                              <Image resizeMode={'contain'}
                                 source={require('../../src/weathericon/1198.png')}
                               style={{ width: 380, height:210 }} 
                               />
@@ -9435,7 +9430,7 @@ export default function Dashboard({ navigation }) {
                         {
                           weathCondition.code == 1201 ?
                             (
-                              <Image
+                              <Image resizeMode={'contain'}
                                 source={require('../../src/weathericon/1201.png')}
                               style={{ width: 380, height:210 }} 
                               />
@@ -9446,7 +9441,7 @@ export default function Dashboard({ navigation }) {
                         {
                           weathCondition.code == 1240 ?
                             (
-                              <Image
+                              <Image resizeMode={'contain'}
                                 source={require('../../src/weathericon/1240.png')}
                               style={{ width: 380, height:210 }} 
                               />
@@ -9457,7 +9452,7 @@ export default function Dashboard({ navigation }) {
                         {
                           weathCondition.code == 1243 ?
                             (
-                              <Image
+                              <Image resizeMode={'contain'}
                                 source={require('../../src/weathericon/1243.png')}
                               style={{ width: 380, height:210 }} 
                               />
@@ -9468,7 +9463,7 @@ export default function Dashboard({ navigation }) {
                         {
                           weathCondition.code == 1249 ?
                             (
-                              <Image
+                              <Image resizeMode={'contain'}
                                 source={require('../../src/weathericon/1249.png')}
                               style={{ width: 380, height:210 }} 
                               />
@@ -9479,7 +9474,7 @@ export default function Dashboard({ navigation }) {
                         {
                           weathCondition.code == 1273 ?
                             (
-                              <Image
+                              <Image resizeMode={'contain'}
                                 source={require('../../src/weathericon/1273.png')}
                               style={{ width: 380, height:210 }} 
                               />
@@ -9490,7 +9485,7 @@ export default function Dashboard({ navigation }) {
                         {
                           weathCondition.code == 1276 ?
                             (
-                              <Image
+                              <Image resizeMode={'contain'}
                                 source={require('../../src/weathericon/1276.png')}
                               style={{ width: 380, height:210 }} 
                               />
@@ -9498,330 +9493,333 @@ export default function Dashboard({ navigation }) {
                             :
                             (null)
                         }
-{/* 
-                        <Text>{weathCondition.code}</Text> */}
+
                       </View>
 
 
-                        {/* <Image source={require('../../src/weatherIcons/Cloudy.png')} style={{ width: 380, height:210 }} /> */}
-                        {/* <LazyLoadImage source={require('../../src/weatherIcons/Cloudy.png')} style={{ width: 380, height:210 }} /> */}
                         <Text style={{ fontWeight: '900', fontSize: 18, color: '#276653' }}>
-                        {weathCondition.text}
-                          </Text>
+                          {weathCondition.text}
+                        </Text>
                       </View>
                     
                       {/* Hours */}
-                      <View style={styles.dashboardHourly}>
-                        {/* <Text style={{fontSize:18, fontWeight:'bold'}}>Hourly</Text> */}
+                      <View style={[styles.cardDashboardProp, styles.dashboardHourly, { backgroundColor: 'white', width: '100%', borderRadius: 10 }]}>
                         <ScrollView horizontal={true}
                           showsVerticalScrollIndicator={false}>
-                          {weathPerHour.map((wperhour, p) => {
-                            return (
-                              <View key={p} style={{ marginRight: 12, marginBottom: 10 }}>
-                                <View
-                                  style={[
-                                    styles.cardDashboardHourly,
-                                    styles.cardDashboardHourlyProp,
-                                  ]}>
-                                  <View style={styles.div2RowSpaceEven}>
-
-                                    { /* Hourly */}
-
-                                    <View style={{ padding: 4 }}>
-
-                                      {
-                                        wperhour.condition.code == 1000 ?
-                                          (
-                                            <Image
-                                              source={require('../../src/weathericon/1000.png')}
-                                              style={{ width: 45, height: 45 }}
-                                            />
-                                          )
-                                          :
-                                          (null)
-                                      }
-                                         {
-                                        wperhour.condition.code == 1003 ?
-                                          (
-                                            <Image
-                                              source={require('../../src/weathericon/1003.png')}
-                                              style={{ width: 45, height: 45 }}
-                                            />
-                                          )
-                                          :
-                                          (null)
-                                      }
-                                         {
-                                        wperhour.condition.code == 1006 ?
-                                          (
-                                            <Image
-                                              source={require('../../src/weathericon/1006.png')}
-                                              style={{ width: 45, height: 45 }}
-                                            />
-                                          )
-                                          :
-                                          (null)
-                                      }
-                                         {
-                                        wperhour.condition.code == 1009 ?
-                                          (
-                                            <Image
-                                              source={require('../../src/weathericon/1009.png')}
-                                              style={{ width: 45, height: 45 }}
-                                            />
-                                          )
-                                          :
-                                          (null)
-                                      }
-                                         {
-                                        wperhour.condition.code == 1063 ?
-                                          (
-                                            <Image
-                                              source={require('../../src/weathericon/1063.png')}
-                                              style={{ width: 45, height: 45 }}
-                                            />
-                                          )
-                                          :
-                                          (null)
-                                      }
-                                         {
-                                        wperhour.condition.code == 1087 ?
-                                          (
-                                            <Image
-                                              source={require('../../src/weathericon/1087.png')}
-                                              style={{ width: 45, height: 45 }}
-                                            />
-                                          )
-                                          :
-                                          (null)
-                                      }
-                                         {
-                                        wperhour.condition.code == 1135 ?
-                                          (
-                                            <Image
-                                              source={require('../../src/weathericon/1135.png')}
-                                              style={{ width: 45, height: 45 }}
-                                            />
-                                          )
-                                          :
-                                          (null)
-                                      }
-                                         {
-                                        wperhour.condition.code == 1135 ?
-                                          (
-                                            <Image
-                                              source={require('../../src/weathericon/1135.png')}
-                                              style={{ width: 45, height: 45 }}
-                                            />
-                                          )
-                                          :
-                                          (null)
-                                      }
-                                         {
-                                        wperhour.condition.code == 1150 ?
-                                          (
-                                            <Image
-                                              source={require('../../src/weathericon/1150.png')}
-                                              style={{ width: 45, height: 45 }}
-                                            />
-                                          )
-                                          :
-                                          (null)
-                                      }
-                                         {
-                                        wperhour.condition.code == 1153 ?
-                                          (
-                                            <Image
-                                              source={require('../../src/weathericon/1153.png')}
-                                              style={{ width: 45, height: 45 }}
-                                            />
-                                          )
-                                          :
-                                          (null)
-                                      }
-                                         {
-                                        wperhour.condition.code == 1171 ?
-                                          (
-                                            <Image
-                                              source={require('../../src/weathericon/1171.png')}
-                                              style={{ width: 45, height: 45 }}
-                                            />
-                                          )
-                                          :
-                                          (null)
-                                      }
-                                         {
-                                        wperhour.condition.code == 1180?
-                                          (
-                                            <Image
-                                              source={require('../../src/weathericon/1180.png')}
-                                              style={{ width: 45, height: 45 }}
-                                            />
-                                          )
-                                          :
-                                          (null)
-                                      }
-                                         {
-                                        wperhour.condition.code == 1183 ?
-                                          (
-                                            <Image
-                                              source={require('../../src/weathericon/1183.png')}
-                                              style={{ width: 45, height: 45 }}
-                                            />
-                                          )
-                                          :
-                                          (null)
-                                      }
-                                         {
-                                        wperhour.condition.code == 1186 ?
-                                          (
-                                            <Image
-                                              source={require('../../src/weathericon/1186.png')}
-                                              style={{ width: 45, height: 45 }}
-                                            />
-                                          )
-                                          :
-                                          (null)
-                                      }
-                                         {
-                                        wperhour.condition.code == 1189 ?
-                                          (
-                                            <Image
-                                              source={require('../../src/weathericon/1189.png')}
-                                              style={{ width: 45, height: 45 }}
-                                            />
-                                          )
-                                          :
-                                          (null)
-                                      }
-                                         {
-                                        wperhour.condition.code == 1193 ?
-                                          (
-                                            <Image
-                                              source={require('../../src/weathericon/1193.png')}
-                                              style={{ width: 45, height: 45 }}
-                                            />
-                                          )
-                                          :
-                                          (null)
-                                      }
-                                              {
-                                        wperhour.condition.code == 1195 ?
-                                          (
-                                            <Image
-                                              source={require('../../src/weathericon/1195.png')}
-                                              style={{ width: 45, height: 45 }}
-                                            />
-                                          )
-                                          :
-                                          (null)
-                                      }
-                                              {
-                                        wperhour.condition.code == 1198 ?
-                                          (
-                                            <Image
-                                              source={require('../../src/weathericon/1198.png')}
-                                              style={{ width: 45, height: 45 }}
-                                            />
-                                          )
-                                          :
-                                          (null)
-                                      }
-                                              {
-                                        wperhour.condition.code == 1201 ?
-                                          (
-                                            <Image
-                                              source={require('../../src/weathericon/1201.png')}
-                                              style={{ width: 45, height: 45 }}
-                                            />
-                                          )
-                                          :
-                                          (null)
-                                      }
-                                              {
-                                        wperhour.condition.code == 1240 ?
-                                          (
-                                            <Image
-                                              source={require('../../src/weathericon/1240.png')}
-                                              style={{ width: 45, height: 45 }}
-                                            />
-                                          )
-                                          :
-                                          (null)
-                                      }
-                                              {
-                                        wperhour.condition.code == 1243 ?
-                                          (
-                                            <Image
-                                              source={require('../../src/weathericon/1243.png')}
-                                              style={{ width: 45, height: 45 }}
-                                            />
-                                          )
-                                          :
-                                          (null)
-                                      }
-                                              {
-                                        wperhour.condition.code == 1249 ?
-                                          (
-                                            <Image
-                                              source={require('../../src/weathericon/1249.png')}
-                                              style={{ width: 45, height: 45 }}
-                                            />
-                                          )
-                                          :
-                                          (null)
-                                      }
-                                              {
-                                        wperhour.condition.code == 1273 ?
-                                          (
-                                            <Image
-                                              source={require('../../src/weathericon/1273.png')}
-                                              style={{ width: 45, height: 45 }}
-                                            />
-                                          )
-                                          :
-                                          (null)
-                                      }
-                                              {
-                                        wperhour.condition.code == 1276 ?
-                                          (
-                                            <Image
-                                              source={require('../../src/weathericon/1276.png')}
-                                              style={{ width: 45, height: 45 }}
-                                            />
-                                          )
-                                          :
-                                          (null)
-                                      }
-
-                                      {/* <Text>{wperhour.condition.code}</Text> */}
-                                    </View>
-                                    <View style={{ justifyContent: 'flex-end' }}>
-                                      <Text
-                                        style={{
-                                          fontSize: 14,
-                                          fontWeight: 'bold',
-                                          color: '#8eb4a9',
-                                        }}>
-                                        {moment(wperhour.time).format('hh:mmA')}
+                          <View style={{ flexDirection: 'row', paddingTop:10,paddingBottom:10 }}>
+                            {weathPerHour.map((wperhour, p) => {
+                              return (
+                                <View key={p} style={{ marginRight: 12, }}>
+                                  <View style={{ alignItems: 'center', margin: 5,marginLeft: 10 }}>
+                                    <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                                      <Text style={{fontSize: 14, fontWeight: 'bold', color: '#8eb4a9'}}>{moment(wperhour.time).format('hh:mmA')}
                                       </Text>
-                                      <Text
-                                        style={{
-                                          fontSize: 20,
-                                          fontWeight: '900',
-                                          color: '#276653',
-                                        }}>
-                                        {wperhour.temp_c}°C 
+
+                                      <View >
+                                        {
+                                          wperhour.condition.code == 1000 ?
+                                            (
+                                              <Image
+                                                resizeMode={'contain'}  
+                                                source={require('../../src/weathericon/1000.png')}
+                                                style={{ width: 65, height: 55 }}
+                                              />
+                                            )
+                                            :
+                                            (null)
+                                        }
+                                        {
+                                          wperhour.condition.code == 1003 ?
+                                            (
+                                              <Image
+                                              resizeMode={'contain'}  
+                                                source={require('../../src/weathericon/1003.png')}
+                                                style={{ width: 85, height: 55 }}
+                                              />
+                                            )
+                                            :
+                                            (null)
+                                        }
+                                        {
+                                          wperhour.condition.code == 1006 ?
+                                            (
+                                              <Image
+                                              resizeMode={'contain'}  
+                                                source={require('../../src/weathericon/1006.png')}
+                                                style={{ width: 85, height: 55 }}
+                                              />
+                                            )
+                                            :
+                                            (null)
+                                        }
+                                        {
+                                          wperhour.condition.code == 1009 ?
+                                            (
+                                              <Image
+                                              resizeMode={'contain'}  
+                                                source={require('../../src/weathericon/1009.png')}
+                                                style={{ width: 85, height: 55 }}
+                                              />
+                                            )
+                                            :
+                                            (null)
+                                        }
+                                        {
+                                          wperhour.condition.code == 1063 ?
+                                            (
+                                              <Image
+                                              resizeMode={'contain'}  
+                                                source={require('../../src/weathericon/1063.png')}
+                                                style={{ width: 85, height: 55 }}
+                                              />
+                                            )
+                                            :
+                                            (null)
+                                        }
+                                        {
+                                          wperhour.condition.code == 1087 ?
+                                            (
+                                              <Image
+                                              resizeMode={'contain'}  
+                                                source={require('../../src/weathericon/1087.png')}
+                                                style={{ width: 85, height: 55 }}
+                                              />
+                                            )
+                                            :
+                                            (null)
+                                        }
+                                        {
+                                          wperhour.condition.code == 1135 ?
+                                            (
+                                              <Image
+                                              resizeMode={'contain'}  
+                                                source={require('../../src/weathericon/1135.png')}
+                                                style={{ width: 85, height: 55 }}
+                                              />
+                                            )
+                                            :
+                                            (null)
+                                        }
+                                        {
+                                          wperhour.condition.code == 1135 ?
+                                            (
+                                              <Image
+                                              resizeMode={'contain'}  
+                                                source={require('../../src/weathericon/1135.png')}
+                                                style={{ width: 85, height: 55 }}
+                                              />
+                                            )
+                                            :
+                                            (null)
+                                        }
+                                        {
+                                          wperhour.condition.code == 1150 ?
+                                            (
+                                              <Image
+                                              resizeMode={'contain'}  
+                                                source={require('../../src/weathericon/1150.png')}
+                                                style={{ width: 85, height: 55 }}
+                                              />
+                                            )
+                                            :
+                                            (null)
+                                        }
+                                        {
+                                          wperhour.condition.code == 1153 ?
+                                            (
+                                              <Image
+                                              resizeMode={'contain'}  
+                                                source={require('../../src/weathericon/1153.png')}
+                                                style={{ width: 85, height: 55 }}
+                                              />
+                                            )
+                                            :
+                                            (null)
+                                        }
+                                        {
+                                          wperhour.condition.code == 1171 ?
+                                            (
+                                              <Image
+                                              resizeMode={'contain'}  
+                                                source={require('../../src/weathericon/1171.png')}
+                                                style={{ width: 85, height: 55 }}
+                                              />
+                                            )
+                                            :
+                                            (null)
+                                        }
+                                        {
+                                          wperhour.condition.code == 1180 ?
+                                            (
+                                              <Image 
+                                              resizeMode={'contain'}  
+                                                source={require('../../src/weathericon/1180.png')}
+                                                style={{ width: 85, height: 55 }}
+                                              />
+                                            )
+                                            :
+                                            (null)
+                                        }
+                                        {
+                                          wperhour.condition.code == 1183 ?
+                                            (
+                                              <Image
+                                              resizeMode={'contain'}  
+                                                source={require('../../src/weathericon/1183.png')}
+                                                style={{ width: 85, height: 55 }}
+                                              />
+                                            )
+                                            :
+                                            (null)
+                                        }
+                                        {
+                                          wperhour.condition.code == 1186 ?
+                                            (
+                                              <Image  resizeMode={'contain'}  
+                                                source={require('../../src/weathericon/1186.png')}
+                                                style={{ width: 85, height: 55 }}
+                                              />
+                                            )
+                                            :
+                                            (null)
+                                        }
+                                        {
+                                          wperhour.condition.code == 1189 ?
+                                            (
+                                              <Image  resizeMode={'contain'}  
+                                                source={require('../../src/weathericon/1189.png')}
+                                                style={{ width: 85, height: 55 }}
+                                              />
+                                            )
+                                            :
+                                            (null)
+                                        }
+                                        {
+                                          wperhour.condition.code == 1193 ?
+                                            (
+                                              <Image  resizeMode={'contain'}  
+                                                source={require('../../src/weathericon/1193.png')}
+                                                style={{ width: 85, height: 55 }}
+                                              />
+                                            )
+                                            :
+                                            (null)
+                                        }
+                                        {
+                                          wperhour.condition.code == 1195 ?
+                                            (
+                                              <Image  resizeMode={'contain'}  
+                                                source={require('../../src/weathericon/1195.png')}
+                                                style={{ width: 85, height: 55 }}
+                                              />
+                                            )
+                                            :
+                                            (null)
+                                        }
+                                        {
+                                          wperhour.condition.code == 1198 ?
+                                            (
+                                              <Image  resizeMode={'contain'}  
+                                                source={require('../../src/weathericon/1198.png')}
+                                                style={{ width: 85, height: 55 }}
+                                              />
+                                            )
+                                            :
+                                            (null)
+                                        }
+                                        {
+                                          wperhour.condition.code == 1201 ?
+                                            (
+                                              <Image  resizeMode={'contain'}  
+                                                source={require('../../src/weathericon/1201.png')}
+                                                style={{ width: 85, height: 55 }}
+                                              />
+                                            )
+                                            :
+                                            (null)
+                                        }
+                                        {
+                                          wperhour.condition.code == 1240 ?
+                                            (
+                                              <Image  resizeMode={'contain'}  
+                                                source={require('../../src/weathericon/1240.png')}
+                                                style={{ width: 85, height: 55 }}
+                                              />
+                                            )
+                                            :
+                                            (null)
+                                        }
+                                        
+                                        {
+                                          wperhour.condition.code == 1243 ?
+                                            (
+                                              <Image  resizeMode={'contain'}  
+                                                source={require('../../src/weathericon/1243.png')}
+                                                style={{ width: 85, height: 55 }}
+                                              />
+                                            )
+                                            :
+                                            (null)
+                                        }
+                                        {
+                                          wperhour.condition.code == 1246 ?
+                                            (
+                                              <Image  resizeMode={'contain'}  
+                                                source={require('../../src/weathericon/1246.png')}
+                                                style={{ width: 85, height: 55 }}
+                                              />
+                                            )
+                                            :
+                                            (null)
+                                        }
+                                        {
+                                          wperhour.condition.code == 1249 ?
+                                            (
+                                              <Image  resizeMode={'contain'}  
+                                                source={require('../../src/weathericon/1249.png')}
+                                                style={{ width: 85, height: 55 }}
+                                              />
+                                            )
+                                            :
+                                            (null)
+                                        }
+                                        {
+                                          wperhour.condition.code == 1273 ?
+                                            (
+                                              <Image  resizeMode={'contain'}  
+                                                source={require('../../src/weathericon/1273.png')}
+                                                style={{ width: 85, height: 55 }}
+                                              />
+                                            )
+                                            :
+                                            (null)
+                                        }
+                                        {
+                                          wperhour.condition.code == 1276 ?
+                                            (
+                                              <Image  resizeMode={'contain'}  
+                                                source={require('../../src/weathericon/1276.png')}
+                                                style={{ width: 85, height: 55 }}
+                                              />
+                                            )
+                                            :
+                                            (null)
+                                        }
+
+                                        {/* <Text>{wperhour.condition.code}</Text> */}
+                                      </View>
+
+                                      <Text style={{ fontSize: 20, fontWeight: '900', color: '#276653'}}>
+                                        {wperhour.temp_c}°C
                                       </Text>
                                     </View>
                                   </View>
                                 </View>
-                              </View>
-                            );
-                          })}
+                              );
+                            })}
+                          </View>
                         </ScrollView>
                       </View>
-
                     </View>
                   ) : (
                    <View>
@@ -9832,8 +9830,6 @@ export default function Dashboard({ navigation }) {
                      </View>
  
                     <SkeletonPlaceholder borderRadius={4} backgroundColor='white' highlightColor='#c7c4c4'>
-                            
-                         
                             <View style={{flexDirection: 'row', alignItems: 'center' ,justifyContent:'center'}}>
                               <Image style={{marginTop: 6,width: 290, height: 40}}   />
                             </View>
@@ -9903,9 +9899,7 @@ export default function Dashboard({ navigation }) {
               </View>
             </View>
 
-            {/* Recent */}
             <View style={styles.dashboardRecent}>
-     
             {
             listPD == null  ?  (
               <View>
