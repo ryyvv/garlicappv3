@@ -476,11 +476,10 @@ export default function Dashboard({ navigation }) {
                                         {
                                           gpsWeathCondition.code == 1000 ?
                                             (
-                                              <Image
+                                              <Image resizeMode={'contain'}
                                                 source={require('../../src/weathericon/1000.png')}
                                                 style={{
-                                                  paddingleft: 10,
-                                                  width: 80,
+                                                  width: 100,
                                                   height: 80,
                                                 }}
                                               />
@@ -491,11 +490,10 @@ export default function Dashboard({ navigation }) {
                                         {
                                           gpsWeathCondition.code == 1003 ?
                                             (
-                                              <Image
+                                              <Image resizeMode={'contain'}
                                                 source={require('../../src/weathericon/1003.png')}
                                                 style={{
-                                                  paddingleft: 10,
-                                                  width: 80,
+                                                  width: 100,
                                                   height: 80,
                                                 }}
                                               />
@@ -506,11 +504,10 @@ export default function Dashboard({ navigation }) {
                                         {
                                           gpsWeathCondition.code == 1006 ?
                                             (
-                                              <Image
+                                              <Image resizeMode={'contain'}
                                                 source={require('../../src/weathericon/1006.png')}
                                                 style={{
-                                                  paddingleft: 10,
-                                                  width: 80,
+                                                  width: 100,
                                                   height: 80,
                                                 }}
                                               />
@@ -521,11 +518,10 @@ export default function Dashboard({ navigation }) {
                                         {
                                           gpsWeathCondition.code == 1009 ?
                                             (
-                                              <Image
+                                              <Image resizeMode={'contain'}
                                                 source={require('../../src/weathericon/1009.png')}
                                                 style={{
-                                                  paddingleft: 10,
-                                                  width: 80,
+                                                  width: 100,
                                                   height: 80,
                                                 }}
                                               />
@@ -536,11 +532,10 @@ export default function Dashboard({ navigation }) {
                                         {
                                           gpsWeathCondition.code == 1063 ?
                                             (
-                                              <Image
+                                              <Image resizeMode={'contain'}
                                                 source={require('../../src/weathericon/1063.png')}
                                                 style={{
-                                                  paddingleft: 10,
-                                                  width: 80,
+                                                  width: 100,
                                                   height: 80,
                                                 }}
                                               />
@@ -551,11 +546,10 @@ export default function Dashboard({ navigation }) {
                                         {
                                           gpsWeathCondition.code == 1087 ?
                                             (
-                                              <Image
+                                              <Image resizeMode={'contain'}
                                                 source={require('../../src/weathericon/1087.png')}
                                                 style={{
-                                                  paddingleft: 10,
-                                                  width: 80,
+                                                  width: 100,
                                                   height: 80,
                                                 }}
                                               />
@@ -566,11 +560,10 @@ export default function Dashboard({ navigation }) {
                                         {
                                           gpsWeathCondition.code == 1135 ?
                                             (
-                                              <Image
+                                              <Image resizeMode={'contain'}
                                                 source={require('../../src/weathericon/1135.png')}
                                                 style={{
-                                                  paddingleft: 10,
-                                                  width: 80,
+                                                  width: 100,
                                                   height: 80,
                                                 }}
                                               />
@@ -581,11 +574,10 @@ export default function Dashboard({ navigation }) {
                                         {
                                           gpsWeathCondition.code == 1135 ?
                                             (
-                                              <Image
+                                              <Image resizeMode={'contain'}
                                                 source={require('../../src/weathericon/1135.png')}
                                                 style={{
-                                                  paddingleft: 10,
-                                                  width: 80,
+                                                  width: 100,
                                                   height: 80,
                                                 }}
                                               />
@@ -596,11 +588,10 @@ export default function Dashboard({ navigation }) {
                                         {
                                           gpsWeathCondition.code == 1150 ?
                                             (
-                                              <Image
+                                              <Image resizeMode={'contain'}
                                                 source={require('../../src/weathericon/1150.png')}
                                                 style={{
-                                                  paddingleft: 10,
-                                                  width: 80,
+                                                  width: 100,
                                                   height: 80,
                                                 }}
                                               />
@@ -611,11 +602,10 @@ export default function Dashboard({ navigation }) {
                                         {
                                           gpsWeathCondition.code == 1153 ?
                                             (
-                                              <Image
+                                              <Image resizeMode={'contain'}
                                                 source={require('../../src/weathericon/1153.png')}
                                                 style={{
-                                                  paddingleft: 10,
-                                                  width: 80,
+                                                  width: 100,
                                                   height: 80,
                                                 }}
                                               />
@@ -626,11 +616,10 @@ export default function Dashboard({ navigation }) {
                                         {
                                           gpsWeathCondition.code == 1171 ?
                                             (
-                                              <Image
+                                              <Image resizeMode={'contain'}
                                                 source={require('../../src/weathericon/1171.png')}
                                                 style={{
-                                                  paddingleft: 10,
-                                                  width: 80,
+                                                  width: 100,
                                                   height: 80,
                                                 }}
                                               />
@@ -641,11 +630,10 @@ export default function Dashboard({ navigation }) {
                                         {
                                           gpsWeathCondition.code == 1180 ?
                                             (
-                                              <Image
+                                              <Image resizeMode={'contain'}
                                                 source={require('../../src/weathericon/1180.png')}
                                                 style={{
-                                                  paddingleft: 10,
-                                                  width: 80,
+                                                  width: 100,
                                                   height: 80,
                                                 }}
                                               />
@@ -656,11 +644,11 @@ export default function Dashboard({ navigation }) {
                                         {
                                           gpsWeathCondition.code == 1183 ?
                                             (
-                                              <Image
+                                              <Image resizeMode={'contain'}
                                                 source={require('../../src/weathericon/1183.png')}
                                                 style={{
-                                                  paddingleft: 10,
-                                                  width: 80,
+                  
+                                                  width: 100,
                                                   height: 80,
                                                 }}
                                               />
@@ -671,11 +659,11 @@ export default function Dashboard({ navigation }) {
                                         {
                                           gpsWeathCondition.code == 1186 ?
                                             (
-                                              <Image
+                                              <Image resizeMode={'contain'}
                                                 source={require('../../src/weathericon/1186.png')}
                                                 style={{
-                                                  paddingleft: 10,
-                                                  width: 80,
+                  
+                                                  width: 100,
                                                   height: 80,
                                                 }}
                                               />
@@ -686,11 +674,11 @@ export default function Dashboard({ navigation }) {
                                         {
                                           gpsWeathCondition.code == 1189 ?
                                             (
-                                              <Image
+                                              <Image resizeMode={'contain'}
                                                 source={require('../../src/weathericon/1189.png')}
                                                 style={{
-                                                  paddingleft: 10,
-                                                  width: 80,
+                  
+                                                  width: 100,
                                                   height: 80,
                                                 }}
                                               />
@@ -701,11 +689,11 @@ export default function Dashboard({ navigation }) {
                                         {
                                           gpsWeathCondition.code == 1193 ?
                                             (
-                                              <Image
+                                              <Image resizeMode={'contain'}
                                                 source={require('../../src/weathericon/1193.png')}
                                                 style={{
-                                                  paddingleft: 10,
-                                                  width: 80,
+                  
+                                                  width: 100,
                                                   height: 80,
                                                 }}
                                               />
@@ -716,11 +704,10 @@ export default function Dashboard({ navigation }) {
                                         {
                                           gpsWeathCondition.code == 1195 ?
                                             (
-                                              <Image
+                                              <Image resizeMode={'contain'}
                                                 source={require('../../src/weathericon/1195.png')}
                                                 style={{
-                                                  paddingleft: 10,
-                                                  width: 80,
+                                                  width: 100,
                                                   height: 80,
                                                 }}
                                               />
@@ -731,11 +718,11 @@ export default function Dashboard({ navigation }) {
                                         {
                                           gpsWeathCondition.code == 1198 ?
                                             (
-                                              <Image
+                                              <Image resizeMode={'contain'}
                                                 source={require('../../src/weathericon/1198.png')}
                                                 style={{
-                                                  paddingleft: 10,
-                                                  width: 80,
+                  
+                                                  width: 100,
                                                   height: 80,
                                                 }}
                                               />
@@ -746,11 +733,11 @@ export default function Dashboard({ navigation }) {
                                         {
                                           gpsWeathCondition.code == 1201 ?
                                             (
-                                              <Image
+                                              <Image resizeMode={'contain'}
                                                 source={require('../../src/weathericon/1201.png')}
                                                 style={{
-                                                  paddingleft: 10,
-                                                  width: 80,
+                  
+                                                  width: 100,
                                                   height: 80,
                                                 }}
                                               />
@@ -761,11 +748,11 @@ export default function Dashboard({ navigation }) {
                                         {
                                           gpsWeathCondition.code == 1240 ?
                                             (
-                                              <Image
+                                              <Image resizeMode={'contain'}
                                                 source={require('../../src/weathericon/1240.png')}
                                                 style={{
-                                                  paddingleft: 10,
-                                                  width: 80,
+                  
+                                                  width: 100,
                                                   height: 80,
                                                 }}
                                               />
@@ -776,11 +763,26 @@ export default function Dashboard({ navigation }) {
                                         {
                                           gpsWeathCondition.code == 1243 ?
                                             (
-                                              <Image
+                                              <Image resizeMode={'contain'}
                                                 source={require('../../src/weathericon/1243.png')}
                                                 style={{
-                                                  paddingleft: 10,
-                                                  width: 80,
+                  
+                                                  width: 100,
+                                                  height: 80,
+                                                }}
+                                              />
+                                            )
+                                            :
+                                            (null)
+                                        }
+                                         {
+                                          gpsWeathCondition.code == 1246 ?
+                                            (
+                                              <Image resizeMode={'contain'}
+                                                source={require('../../src/weathericon/1246.png')}
+                                                style={{
+                  
+                                                  width: 100,
                                                   height: 80,
                                                 }}
                                               />
@@ -791,11 +793,11 @@ export default function Dashboard({ navigation }) {
                                         {
                                           gpsWeathCondition.code == 1249 ?
                                             (
-                                              <Image
+                                              <Image resizeMode={'contain'}
                                                 source={require('../../src/weathericon/1249.png')}
                                                 style={{
-                                                  paddingleft: 10,
-                                                  width: 80,
+                  
+                                                  width: 100,
                                                   height: 80,
                                                 }}
                                               />
@@ -806,11 +808,11 @@ export default function Dashboard({ navigation }) {
                                         {
                                           gpsWeathCondition.code == 1273 ?
                                             (
-                                              <Image
+                                              <Image resizeMode={'contain'}
                                                 source={require('../../src/weathericon/1273.png')}
                                                 style={{
-                                                  paddingleft: 10,
-                                                  width: 80,
+                  
+                                                  width: 100,
                                                   height: 80,
                                                 }}
                                               />
@@ -821,11 +823,10 @@ export default function Dashboard({ navigation }) {
                                         {
                                           gpsWeathCondition.code == 1276 ?
                                             (
-                                              <Image
+                                              <Image resizeMode={'contain'}
                                                 source={require('../../src/weathericon/1276.png')}
                                                 style={{
-                                                  paddingleft: 10,
-                                                  width: 80,
+                                                  width: 100,
                                                   height: 80,
                                                 }}
                                               />
@@ -835,14 +836,6 @@ export default function Dashboard({ navigation }) {
                                         }
                                         {/* <Text>{gpsWeathCondition.code}</Text> */}
                                       </View>
-                                        {/* <Image
-                                          source={require('../../src/weathericon/1000.png')}
-                                          style={{
-                                            paddingleft: 20,
-                                            width: 80,
-                                            height: 80,
-                                          }}
-                                        /> */}
                                       </View>
 
                                       <View style={{ marginRight: 10 }}>
@@ -938,9 +931,9 @@ export default function Dashboard({ navigation }) {
                                           {
                                             adamIcon.code == 1000 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1000.png')}
-                                                  style={{ width: 45, height: 45 }}
+                                                  style={{ width: 80, height: 45 }}
                                                 />
                                               )
                                               :
@@ -949,9 +942,9 @@ export default function Dashboard({ navigation }) {
                                           {
                                             adamIcon.code == 1003 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1003.png')}
-                                                  style={{ width: 45, height: 45 }}
+                                                  style={{ width: 80, height: 45 }}
                                                 />
                                               )
                                               :
@@ -960,9 +953,9 @@ export default function Dashboard({ navigation }) {
                                           {
                                             adamIcon.code == 1006 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1006.png')}
-                                                  style={{ width: 45, height: 45 }}
+                                                  style={{ width: 80, height: 45 }}
                                                 />
                                               )
                                               :
@@ -971,9 +964,9 @@ export default function Dashboard({ navigation }) {
                                           {
                                             adamIcon.code == 1009 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1009.png')}
-                                                  style={{ width: 45, height: 45 }}
+                                                  style={{ width: 80, height: 45 }}
                                                 />
                                               )
                                               :
@@ -982,9 +975,9 @@ export default function Dashboard({ navigation }) {
                                           {
                                             adamIcon.code == 1063 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1063.png')}
-                                                  style={{ width: 45, height: 45 }}
+                                                  style={{ width: 80, height: 45 }}
                                                 />
                                               )
                                               :
@@ -993,9 +986,9 @@ export default function Dashboard({ navigation }) {
                                           {
                                             adamIcon.code == 1087 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1087.png')}
-                                                  style={{ width: 45, height: 45 }}
+                                                  style={{ width: 80, height: 45 }}
                                                 />
                                               )
                                               :
@@ -1004,9 +997,9 @@ export default function Dashboard({ navigation }) {
                                           {
                                             adamIcon.code == 1135 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1135.png')}
-                                                  style={{ width: 45, height: 45 }}
+                                                  style={{ width: 80, height: 45 }}
                                                 />
                                               )
                                               :
@@ -1015,9 +1008,9 @@ export default function Dashboard({ navigation }) {
                                           {
                                             adamIcon.code == 1135 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1135.png')}
-                                                  style={{ width: 45, height: 45 }}
+                                                  style={{ width: 80, height: 45 }}
                                                 />
                                               )
                                               :
@@ -1026,9 +1019,9 @@ export default function Dashboard({ navigation }) {
                                           {
                                             adamIcon.code == 1150 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1150.png')}
-                                                  style={{ width: 45, height: 45 }}
+                                                  style={{ width: 80, height: 45 }}
                                                 />
                                               )
                                               :
@@ -1037,9 +1030,9 @@ export default function Dashboard({ navigation }) {
                                           {
                                             adamIcon.code == 1153 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1153.png')}
-                                                  style={{ width: 45, height: 45 }}
+                                                  style={{ width: 80, height: 45 }}
                                                 />
                                               )
                                               :
@@ -1048,9 +1041,9 @@ export default function Dashboard({ navigation }) {
                                           {
                                             adamIcon.code == 1171 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1171.png')}
-                                                  style={{ width: 45, height: 45 }}
+                                                  style={{ width: 80, height: 45 }}
                                                 />
                                               )
                                               :
@@ -1059,9 +1052,9 @@ export default function Dashboard({ navigation }) {
                                           {
                                             adamIcon.code == 1180 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1180.png')}
-                                                  style={{ width: 45, height: 45 }}
+                                                  style={{ width: 80, height: 45 }}
                                                 />
                                               )
                                               :
@@ -1070,9 +1063,9 @@ export default function Dashboard({ navigation }) {
                                           {
                                             adamIcon.code == 1183 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1183.png')}
-                                                  style={{ width: 45, height: 45 }}
+                                                  style={{ width: 80, height: 45 }}
                                                 />
                                               )
                                               :
@@ -1081,9 +1074,9 @@ export default function Dashboard({ navigation }) {
                                           {
                                             adamIcon.code == 1186 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1186.png')}
-                                                  style={{ width: 45, height: 45 }}
+                                                  style={{ width: 80, height: 45 }}
                                                 />
                                               )
                                               :
@@ -1092,9 +1085,9 @@ export default function Dashboard({ navigation }) {
                                           {
                                             adamIcon.code == 1189 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1189.png')}
-                                                  style={{ width: 45, height: 45 }}
+                                                  style={{ width: 80, height: 45 }}
                                                 />
                                               )
                                               :
@@ -1103,9 +1096,9 @@ export default function Dashboard({ navigation }) {
                                           {
                                             adamIcon.code == 1193 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1193.png')}
-                                                  style={{ width: 45, height: 45 }}
+                                                  style={{ width: 80, height: 45 }}
                                                 />
                                               )
                                               :
@@ -1114,9 +1107,9 @@ export default function Dashboard({ navigation }) {
                                           {
                                             adamIcon.code == 1195 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1195.png')}
-                                                  style={{ width: 45, height: 45 }}
+                                                  style={{ width: 80, height: 45 }}
                                                 />
                                               )
                                               :
@@ -1125,9 +1118,9 @@ export default function Dashboard({ navigation }) {
                                           {
                                             adamIcon.code == 1198 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1198.png')}
-                                                  style={{ width: 45, height: 45 }}
+                                                  style={{ width: 80, height: 45 }}
                                                 />
                                               )
                                               :
@@ -1136,9 +1129,9 @@ export default function Dashboard({ navigation }) {
                                           {
                                             adamIcon.code == 1201 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1201.png')}
-                                                  style={{ width: 45, height: 45 }}
+                                                  style={{ width: 80, height: 45 }}
                                                 />
                                               )
                                               :
@@ -1147,9 +1140,9 @@ export default function Dashboard({ navigation }) {
                                           {
                                             adamIcon.code == 1240 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1240.png')}
-                                                  style={{ width: 45, height: 45 }}
+                                                  style={{ width: 80, height: 45 }}
                                                 />
                                               )
                                               :
@@ -1158,9 +1151,20 @@ export default function Dashboard({ navigation }) {
                                           {
                                             adamIcon.code == 1243 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1243.png')}
-                                                  style={{ width: 45, height: 45 }}
+                                                  style={{ width: 80, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                             {
+                                            adamIcon.code == 1246 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1246.png')}
+                                                  style={{ width: 80, height: 45 }}
                                                 />
                                               )
                                               :
@@ -1169,9 +1173,9 @@ export default function Dashboard({ navigation }) {
                                           {
                                             adamIcon.code == 1249 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1249.png')}
-                                                  style={{ width: 45, height: 45 }}
+                                                  style={{ width: 80, height: 45 }}
                                                 />
                                               )
                                               :
@@ -1180,9 +1184,9 @@ export default function Dashboard({ navigation }) {
                                           {
                                             adamIcon.code == 1273 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1273.png')}
-                                                  style={{ width: 45, height: 45 }}
+                                                  style={{ width: 80, height: 45 }}
                                                 />
                                               )
                                               :
@@ -1191,24 +1195,15 @@ export default function Dashboard({ navigation }) {
                                           {
                                             adamIcon.code == 1276 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1276.png')}
-                                                  style={{ width: 45, height: 45 }}
+                                                  style={{ width: 80, height: 45 }}
                                                 />
                                               )
                                               :
                                               (null)
                                           }
-                                            {/* <Text>{adamIcon.code}</Text> 
-
-                                          <Image
-                                            source={require('../../src/images/sunRAsset2.png')}
-                                            style={{
-                                              paddingleft: 20,
-                                              width: 80,
-                                              height: 80,
-                                            }}
-                                          /> */}
+                                            
                                         </View>
 
 
@@ -1300,7 +1295,7 @@ export default function Dashboard({ navigation }) {
                                           {
                                             bacarraIcon.code == 1000 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1000.png')}
                                                   style={{ width: 45, height: 45 }}
                                                 />
@@ -1311,7 +1306,7 @@ export default function Dashboard({ navigation }) {
                                           {
                                             bacarraIcon.code == 1003 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1003.png')}
                                                   style={{ width: 45, height: 45 }}
                                                 />
@@ -1322,7 +1317,7 @@ export default function Dashboard({ navigation }) {
                                           {
                                             bacarraIcon.code == 1006 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1006.png')}
                                                   style={{ width: 45, height: 45 }}
                                                 />
@@ -1333,7 +1328,7 @@ export default function Dashboard({ navigation }) {
                                           {
                                             bacarraIcon.code == 1009 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1009.png')}
                                                   style={{ width: 45, height: 45 }}
                                                 />
@@ -1344,7 +1339,7 @@ export default function Dashboard({ navigation }) {
                                           {
                                             bacarraIcon.code == 1063 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1063.png')}
                                                   style={{ width: 45, height: 45 }}
                                                 />
@@ -1355,7 +1350,7 @@ export default function Dashboard({ navigation }) {
                                           {
                                             bacarraIcon.code == 1087 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1087.png')}
                                                   style={{ width: 45, height: 45 }}
                                                 />
@@ -1366,7 +1361,7 @@ export default function Dashboard({ navigation }) {
                                           {
                                             bacarraIcon.code == 1135 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1135.png')}
                                                   style={{ width: 45, height: 45 }}
                                                 />
@@ -1377,7 +1372,7 @@ export default function Dashboard({ navigation }) {
                                           {
                                             bacarraIcon.code == 1135 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1135.png')}
                                                   style={{ width: 45, height: 45 }}
                                                 />
@@ -1388,7 +1383,7 @@ export default function Dashboard({ navigation }) {
                                           {
                                             bacarraIcon.code == 1150 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1150.png')}
                                                   style={{ width: 45, height: 45 }}
                                                 />
@@ -1399,7 +1394,7 @@ export default function Dashboard({ navigation }) {
                                           {
                                             bacarraIcon.code == 1153 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1153.png')}
                                                   style={{ width: 45, height: 45 }}
                                                 />
@@ -1410,7 +1405,7 @@ export default function Dashboard({ navigation }) {
                                           {
                                             bacarraIcon.code == 1171 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1171.png')}
                                                   style={{ width: 45, height: 45 }}
                                                 />
@@ -1421,7 +1416,7 @@ export default function Dashboard({ navigation }) {
                                           {
                                             bacarraIcon.code == 1180 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1180.png')}
                                                   style={{ width: 45, height: 45 }}
                                                 />
@@ -1432,7 +1427,7 @@ export default function Dashboard({ navigation }) {
                                           {
                                             bacarraIcon.code == 1183 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1183.png')}
                                                   style={{ width: 45, height: 45 }}
                                                 />
@@ -1443,7 +1438,7 @@ export default function Dashboard({ navigation }) {
                                           {
                                             bacarraIcon.code == 1186 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1186.png')}
                                                   style={{ width: 45, height: 45 }}
                                                 />
@@ -1454,7 +1449,7 @@ export default function Dashboard({ navigation }) {
                                           {
                                             bacarraIcon.code == 1189 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1189.png')}
                                                   style={{ width: 45, height: 45 }}
                                                 />
@@ -1465,7 +1460,7 @@ export default function Dashboard({ navigation }) {
                                           {
                                             bacarraIcon.code == 1193 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1193.png')}
                                                   style={{ width: 45, height: 45 }}
                                                 />
@@ -1476,7 +1471,7 @@ export default function Dashboard({ navigation }) {
                                           {
                                             bacarraIcon.code == 1195 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1195.png')}
                                                   style={{ width: 45, height: 45 }}
                                                 />
@@ -1487,7 +1482,7 @@ export default function Dashboard({ navigation }) {
                                           {
                                             bacarraIcon.code == 1198 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1198.png')}
                                                   style={{ width: 45, height: 45 }}
                                                 />
@@ -1498,7 +1493,7 @@ export default function Dashboard({ navigation }) {
                                           {
                                             bacarraIcon.code == 1201 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1201.png')}
                                                   style={{ width: 45, height: 45 }}
                                                 />
@@ -1509,7 +1504,7 @@ export default function Dashboard({ navigation }) {
                                           {
                                             bacarraIcon.code == 1240 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1240.png')}
                                                   style={{ width: 45, height: 45 }}
                                                 />
@@ -1520,7 +1515,7 @@ export default function Dashboard({ navigation }) {
                                           {
                                             bacarraIcon.code == 1243 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1243.png')}
                                                   style={{ width: 45, height: 45 }}
                                                 />
@@ -1531,7 +1526,7 @@ export default function Dashboard({ navigation }) {
                                           {
                                             bacarraIcon.code == 1249 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1249.png')}
                                                   style={{ width: 45, height: 45 }}
                                                 />
@@ -1542,7 +1537,7 @@ export default function Dashboard({ navigation }) {
                                           {
                                             bacarraIcon.code == 1273 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1273.png')}
                                                   style={{ width: 45, height: 45 }}
                                                 />
@@ -1553,7 +1548,7 @@ export default function Dashboard({ navigation }) {
                                           {
                                             bacarraIcon.code == 1276 ?
                                               (
-                                                <Image
+                                                <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1276.png')}
                                                   style={{ width: 45, height: 45 }}
                                                 />
@@ -1563,7 +1558,7 @@ export default function Dashboard({ navigation }) {
                                           }
                                             {/* <Text>{adamIcon.code}</Text> 
 
-                                          <Image
+                                          <Image resizeMode={'contain'}
                                             source={require('../../src/images/sunRAsset2.png')}
                                             style={{
                                               paddingleft: 20,
