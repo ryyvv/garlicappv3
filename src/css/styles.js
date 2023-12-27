@@ -388,6 +388,13 @@ export default globalStyles = StyleSheet.create({
         shadowRadius: 3,
         elevation: 5,
     },
+    cardCompleteProp: {
+        shadowColor: 'black',
+        shadowOffset: { width: -2, height: 4 },
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+        elevation: 10,
+    },
     dashboardAccountUser: {
         marginBottom: 25
     },

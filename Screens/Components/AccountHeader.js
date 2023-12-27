@@ -465,7 +465,7 @@ export default function AccountHeader({ navigation }) {
                                     </View>
                                 </TouchableOpacity>
                                 <View>
-                                    <Text style={{ fontSize: 12, fontWeight: 'bold', marginTop: 5 }}>Last sync: Tuesday, Dec. 23, 2022 </Text>
+                                    <Text style={{ fontSize: 12, fontWeight: 'bold', marginTop: 5 }}>Last sync: Monday, Nov. 6, 2022 </Text>
                                 </View>
                             </View>
                             {/* endform */}

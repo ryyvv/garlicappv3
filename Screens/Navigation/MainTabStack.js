@@ -8,7 +8,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { LogBox } from 'react-native';
 import Dashboardstack from '../Navigation/Dashboardstack';
 import Forecast from '../ComponentScreens/Forecast';
-import Plant from '../ComponentScreens/Plant';
+import GarlicPlant from '../ComponentScreens/GarlicPlant';
 import Profile from '../ComponentScreens/Account';
 
 export default function MainTabStack() {
@@ -49,11 +49,11 @@ export default function MainTabStack() {
         })}
       />
       <Tab.Screen
-        name="Plant"
-        component={Plant}
+        name="GarlicPlant"
+        component={GarlicPlant}
         options={{
           headerShown: false,
-          tabBarLabel: 'Plant',
+          tabBarLabel: 'GarlicPlant',
           tabBarIcon: ({ color, size }) => (
             <Icon name={"sprout-outline"} color={color} size={25} />
           ),

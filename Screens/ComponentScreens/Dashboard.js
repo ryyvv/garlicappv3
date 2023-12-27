@@ -203,6 +203,7 @@ export default function Dashboard({ navigation }) {
       { id: 1,
         pnd: 'Disease',
         name: 'Purple blotch',
+        imageb:   require('../../src/images/Purple1.jpg'),
         spname: 'Alternaria, Ellis Lif',
         description: [
           'Initial symptoms of purple blotch occurred at bulb initiation stage (development of 9th to 10th leaf) in early and regular planting while during late planting it started to appear during vegetative stage (development of 7th to 8th leaf). It first appear in older leaves as whitish sunken area that elongates and develop purplish centers and later become large and oval with concentric rings surrounded by zones of yellow and later covered with visible fruiting bodies (spores). Older leaves are more susceptible to purple blotch than younger ones. If purple blotch only attack the plant after bulb formation, then yield is not very much affected.',
@@ -219,8 +220,9 @@ export default function Dashboard({ navigation }) {
       { id: 2,
         pnd: 'Insect Pest',
         name: 'Mites',
+        imageb:    require('../../src/images/Tangle1.jpg'),
         spname: 'Aceria tulipae',
-        description: 'Insect pest',
+        description: ['Aceria tulipae, locally known as ayam Tangle top is twisting or curling of the leaves, with yellowish or pale green streak. This damage is attributed to virus disease transmitted by mites Aceria Tulipae. Bulb development is slow, and the bulbs are small if the plants are attacked at the early stages of growth.'],
         images: [
           require('../../src/images/Tangle1.jpg'),
           require('../../src/images/Tangle2.jpg'),
@@ -232,6 +234,7 @@ export default function Dashboard({ navigation }) {
       { id: 3,
         pnd: 'Insect Pest',
         name: 'Common worm',
+        imageb:   require('../../src/images/Worm1.jpg'),
         spname: 'Worm',
         description: 'Insect pest',
         images: [
@@ -245,6 +248,7 @@ export default function Dashboard({ navigation }) {
       { id: 4,
         pnd: 'Disease',
         name: 'Garlic rust',
+        imageb:  require('../../src/images/Rust1.jpg'),
         spname: 'Rust',
         description: 'Disease',
         images: [
@@ -258,6 +262,7 @@ export default function Dashboard({ navigation }) {
       { id: 5,
         pnd: 'Disease',
         name: 'Bulb/Root rot',
+        imageb:  require('../../src/images/Rootrot1.jpg'),
         spname: 'Fusarium & Sclerotium',
         description: [ 
           'The disease is caused by Fusarium and Sclerotium species. This is a soil borne fungus which attacks the basal part causing yellowing and wilting of the leaves followed by total collapse of the tops.',
@@ -274,13 +279,14 @@ export default function Dashboard({ navigation }) {
       { id: 6,
         pnd: 'Disease',
         name: 'Cercospora leaf spot ',
+        imageb:    require('../../src/images/Leap1.jpg'),
         spname: 'Cercospora duddiae Welles',
         description: [
           'This disease causes spots on foliage and these spots kill the plant cells. A plant’s yield will be reduced from the limited photosynthetic capacity.',
           'Initial symptoms of the pathogen is observe during bulb development to bulb maturity during early and regular planting, while during late planting symptoms started to appear as early as vegetative stage. Low infection is observed during early planting. During regular planting, a low infection is observed during bulb development.  Like purple blotch infection of the disease is higher during late planting, because it attacked all the different growth stages of the plant.',
           'Cercospora produces spores during warm, humid weather. The spores are transported primarily by wind carried by water or equipment. Favorable conditions such as overhead irrigation and rainy, windy weather increase the rate of spread.'
         ],
-        manageentControl:[
+        managementControl:[
           'Avoid planting infected bulbs',
           'Crop Hygiene',
           'Crop Rotation',
@@ -303,12 +309,13 @@ export default function Dashboard({ navigation }) {
       { id: 7,
         pnd: 'Insect Pest',
         name: 'Thrips',
+        imageb:   require('../../src/images/Insect1.jpg'),
         spname: 'Thrips tabaci Lindeman',
         description: [
           'Thrips feed under the leaf folds and in the protected inner leaves, both adults and nymphs cause damage. They suck the sap of the plant from younger leaves to the growing points. The older leaves become withered or silvery white blotches/blasted in appearance. Thrips are most prevalent during dry and warmer condition.',
           'Thrips are most damaging when they feed during the early bulbing stage. Thrip damage appeared as early as the development of the 4th leaf (initial stage) when there is a change (low to high) in air temperature.'
       ],
-        manageentControl:[
+        managementControl:[
           'Early planting in October to November to avoid heavy infestation.',
           'Overhead irrigation with the use of a sprinkler hose may also minimize infestation buy washing off the thrips (Overhead irrigation should be followed by spraying if  infestation is high).',
           'Use of botanical extract  and colored (blue) sticky trap.',
@@ -327,8 +334,9 @@ export default function Dashboard({ navigation }) {
       { id: 8,
         pnd: 'Insect Pest',
         name: 'Leaf Folder     ',
+        imageb:   require('../../src/images/Insect1.jpg'),
         spname: 'Homona coffearia',
-        description: 'Insect Pest',
+        description: ['Insect PestLeaf folder larvae make leaf net by webbing the leaves using silken threads and feed from the inside leaf net. Young larva prefers tender leaves while older larva is seen in the mature leaves. Leaf folder can be observed regardless of planting dates, and varieties during vegetative and bulbing stages.  '],
         images: [
           require('../../src/images/Insect1.jpg'),
           require('../../src/images/Insect2.jpg'),
@@ -349,7 +357,6 @@ export default function Dashboard({ navigation }) {
       }
     });
   };
-
 
   return (
     <View style={{ flex: 1 }}>
@@ -9962,6 +9969,7 @@ export default function Dashboard({ navigation }) {
                                     id: itemsD.id,
                                     pnd: itemsD.pnd,
                                     name: itemsD.name,
+                                    imageb: itemsD.imageb,
                                     spname: itemsD.spname,
                                     description: itemsD.description,
                                     images: [itemsD.images],
@@ -10064,6 +10072,7 @@ export default function Dashboard({ navigation }) {
                                       )}
                                     />
                                   </View>
+
                                 </View>
                               </Pressable>
                             </View>
