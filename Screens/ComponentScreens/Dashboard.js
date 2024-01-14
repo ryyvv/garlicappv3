@@ -370,6 +370,7 @@ export default function Dashboard({ navigation }) {
         }}>
         <ScrollView>
           <View style={styles.container}>
+          {/* Weather Dashboard */}
             <View style={styles.dashboardWeather}>
               <View style={{ marginBottom: 10, marginTop: 90 }}>
                 {/* shimmer */}
@@ -9904,8 +9905,9 @@ export default function Dashboard({ navigation }) {
             <View style={styles.dashboardRecent}>
             {
             listPD == null  ?  (
+                // Loading BarShimmering 
               <View>
-                 <SkeletonPlaceholder borderRadius={4} backgroundColor='white' highlightColor='#c7c4c4'>
+                <SkeletonPlaceholder borderRadius={4} backgroundColor='white' highlightColor='#c7c4c4'>
                   <View style={{marginTop: 10,flexDirection: 'row', justifyContent:'space-between'}}>
                     <View style={{flexDirection: 'row',}}>
                         <View style={{marginLeft: 5}}>
@@ -9946,10 +9948,12 @@ export default function Dashboard({ navigation }) {
                       <View style={{marginLeft: 10, width: 120, height: 140,  borderRadius:10}} />
                     </View>     
                   </View>
-                  </SkeletonPlaceholder>
+                </SkeletonPlaceholder>
               </View>
                 ) : (
+                  // Loading Data
                   <View>
+                    {/* Section_Insect Pests and Diseases */}
                     <Text
                       style={{ fontSize: 18, fontWeight: 'bold', color: '#276653' }}>
                       Insect Pests and Diseases
@@ -9958,13 +9962,11 @@ export default function Dashboard({ navigation }) {
                           return (
                             <View
                               key={d}
-                              style={[
-                                styles.cardDashboardPestDisease,
-                                styles.cardDashboardPestDiseaseProp,
-                              ]}>
+                              style={[styles.cardDashboardPestDisease,styles.cardDashboardPestDiseaseProp,]}>
                               <Pressable
                                 style={({ pressed }) => [{ opacity: pressed ? 0.5 : 1.0 }]}
                                 onPress={() => {
+                                  // Passing DataID
                                   navigation.navigate('PNDs', {
                                     id: itemsD.id,
                                     pnd: itemsD.pnd,
