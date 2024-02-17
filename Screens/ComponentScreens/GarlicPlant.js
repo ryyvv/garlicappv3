@@ -1802,663 +1802,663 @@ function Note({ route, navigation }) {
   );
 };
 
-function Tasks({ route, navigation }) {
-  const { logout, user } = useContext(AuthContext)
-  const { title } = route.params;
-  const [taskUpcom, setTaskUpc] = useState([])
+// function Tasks({ route, navigation }) {
+//   const { logout, user } = useContext(AuthContext)
+//   const { title } = route.params;
+//   const [taskUpcom, setTaskUpc] = useState([])
 
 
-  const initialLayout = { height: 300 };
-  const renderTabBar = (props) => (
-    <TabBar
-      {...props}
-      //tabStyle={{}}
-      renderLabel={({ route, focused, color }) => (
-        <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#276653', margin: 8 }}>
-          {route.title}
-        </Text>
-      )}
-      activeColor={'#276653'}
-      indicatorStyle={{ backgroundColor: '#276653', height: 5, borderRadius: 10 }}
-      style={{ backgroundColor: 'white' }}
-    />
-  );
+//   const initialLayout = { height: 300 };
+//   const renderTabBar = (props) => (
+//     <TabBar
+//       {...props}
+//       //tabStyle={{}}
+//       renderLabel={({ route, focused, color }) => (
+//         <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#276653', margin: 8 }}>
+//           {route.title}
+//         </Text>
+//       )}
+//       activeColor={'#276653'}
+//       indicatorStyle={{ backgroundColor: '#276653', height: 5, borderRadius: 10 }}
+//       style={{ backgroundColor: 'white' }}
+//     />
+//   );
 
-  const [index, setIndex] = React.useState(0);
-  const [routes] = React.useState([
-    { key: 'first', title: 'Today' },
-    { key: 'second', title: 'Upcoming' },
-    { key: 'third', title: 'Completed' },]);
+//   const [index, setIndex] = React.useState(0);
+//   const [routes] = React.useState([
+//     { key: 'first', title: 'Today' },
+//     { key: 'second', title: 'Upcoming' },
+//     { key: 'third', title: 'Completed' },]);
 
-  const renderScene = SceneMap({
-    first: FirstRoute,
-    second: SecondRoute,
-    third: ThirdRoute,
-  });
-
-
-  function FirstRoute() {
-    return (
-      <View style={{ flex: 1 }}>
-        <Text>
-          Task
-        </Text>
-      </View>
-    )
-  }
-  function SecondRoute() {
-    //use useEffect for loading data -- try offline 
-    const red = database().ref('null/plants/' + user.uid)
-    const blue = red.toString().split('/')[3];
-    if (user.uid == blue) {
-      const taskUp = database().ref('users/' + user.uid + '/plants/' + user.uid + title + '/taskUpcoming')
-      taskUp.on('value', (snapshot) => {
-        const firebaseData = snapshot.val();
-        const dataArray = Object.values(firebaseData);
-        const sorted = dataArray.sort((a, b) => {
-          const dateA = new Date(`${a.dateAction}`).valueOf();
-          const dateB = new Date(`${b.dateAction}`).valueOf();
-          if (dateA > dateB) {
-            return 1; // return -1 here for DESC order
-          }
-          return -1 // return 1 here for DESC Order
-        });
-        setTaskUpc(sorted);
-        //console.log('firebaseData: ',taskUpcom)
-      });
-      //console.log('taskUp:' ,taskUpcom) 
-      // Sort dates in ascending order
-      //const sortedDates = [...taskUp.dateAction].sort((a, b) => a - b);
-      //console.log('Date Sorted: ',sortedDates)
-      //setTaskUpc(taskUp)
-
-    }
-    //else {
-    // console.log('Data not fetch!')
-    // console.log('User UID: ',user.uid)
-    // console.log('Database: ',red)
-    // console.log('Blue: ',blue)
-    //console.log('Blue: ')
-    //}
-    //const sortedDates = [...taskUpcom].sort((a, b) => a.dateAction - b.dateAction);
-
-    return (
-      <View dtyle={{ margin: 20 }} >
-        <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//   const renderScene = SceneMap({
+//     first: FirstRoute,
+//     second: SecondRoute,
+//     third: ThirdRoute,
+//   });
 
 
+//   function FirstRoute() {
+//     return (
+//       <View style={{ flex: 1 }}>
+//         <Text>
+//           Task
+//         </Text>
+//       </View>
+//     )
+//   }
+//   function SecondRoute() {
+//     //use useEffect for loading data -- try offline 
+//     const red = database().ref('null/plants/' + user.uid)
+//     const blue = red.toString().split('/')[3];
+//     if (user.uid == blue) {
+//       const taskUp = database().ref('users/' + user.uid + '/plants/' + user.uid + title + '/taskUpcoming')
+//       taskUp.on('value', (snapshot) => {
+//         const firebaseData = snapshot.val();
+//         const dataArray = Object.values(firebaseData);
+//         const sorted = dataArray.sort((a, b) => {
+//           const dateA = new Date(`${a.dateAction}`).valueOf();
+//           const dateB = new Date(`${b.dateAction}`).valueOf();
+//           if (dateA > dateB) {
+//             return 1; // return -1 here for DESC order
+//           }
+//           return -1 // return 1 here for DESC Order
+//         });
+//         setTaskUpc(sorted);
+//         //console.log('firebaseData: ',taskUpcom)
+//       });
+//       //console.log('taskUp:' ,taskUpcom) 
+//       // Sort dates in ascending order
+//       //const sortedDates = [...taskUp.dateAction].sort((a, b) => a - b);
+//       //console.log('Date Sorted: ',sortedDates)
+//       //setTaskUpc(taskUp)
 
-        <ScrollView nestedScrollEnabled  >
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          {/* {
-        taskUpcom.map((upcom,index2) => {
-          return(
-            <View key={index2} style={{borderWidth:2, margin:10,marginTop:20,marginBottom:20}}>
-                <View style={{flexDirection:'row' }}>
-                  <Text>
-                    {upcom.action}
-                  </Text>
-                </View>
-                <View style={{flexDirection:'row' }}>
-                  <Text>
-                    {upcom.dateAction}
-                  </Text>
-                </View>
-                <View style={{flexDirection:'row' }}>
-                  <Text>
-                    {upcom.title}
-                  </Text>
-                </View>
-            </View>
-          )
-        })
-        } */}
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
-          <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//     }
+//     //else {
+//     // console.log('Data not fetch!')
+//     // console.log('User UID: ',user.uid)
+//     // console.log('Database: ',red)
+//     // console.log('Blue: ',blue)
+//     //console.log('Blue: ')
+//     //}
+//     //const sortedDates = [...taskUpcom].sort((a, b) => a.dateAction - b.dateAction);
 
-        </ScrollView>
+//     return (
+//       <View dtyle={{ margin: 20 }} >
+//         <Text> sdfdsfsdfsdfsdfsfdfas</Text>
 
-      </View>
-    )
-  }
-  function ThirdRoute() {
-    return (
-      <View style={{ flex: 1 }}>
-        <View style={{ margin: 10, marginTop: 10 }}>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingBottom: 5, alignItems: 'center' }}>
-            <Text style={{ fontSize: 20, color: '#276653', fontWeight: 'bold' }}>Findings</Text>
-            <TouchableOpacity >
-              <View style={{ flexDirection: 'row' }}>
-                <Text style={{ color: '#276653', fontWeight: 'bold' }}>See all</Text>
-                {/* <Icon name={'arrow-right-thin'} color={'#276653'} size={} style={{ width: 35}} /> */}
-              </View>
-            </TouchableOpacity>
-          </View>
-          <View>
-            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} snapToStart={true} >
-              <View style={{ marginRight: 10 }}>
-                <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, margin: 4, marginBottom: 8, padding: 20 }]}>
-                  <View style={{ flexDirection: 'row', }}>
-                    <Text style={{ fontWeight: 'bold' }}>Feb. 23, 2023 </Text>
-                  </View>
 
-                  <View style={{ flexDirection: 'row', marginTop: 5, alignItems: 'center' }}>
-                    <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
-                    <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 18 }}>Tangle Top</Text>
-                  </View>
 
-                  <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
-                    <View style={{ marginRight: 10, justifyContent: 'flex-end', marginLeft: 50 }}>
-                      {/* <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 15, height: 15 }} /> */}
-                      <View>
-                        <View style={{ borderRadius: 10, borderWidth: 1.5, borderColor: 'gray', width: 140 }}></View>
-                        <View style={{ borderRadius: 10, borderWidth: 3, borderColor: '#6fb96d', marginTop: -5, width: '40%' }}></View>
-                      </View>
-                      <Text style={{ fontWeight: 'bold', alignSelf: 'flex-end', color: '#276653' }}>40%</Text>
-                    </View>
-                    <View style={{ flexDirection: 'row', }}>
-                      <Image source={require('../../src/images/garlic1.jpg')} style={{ width: 30, height: 30, borderRadius: 25 }} />
-                      <Image source={require('../../src/images/garlic1.jpg')} style={{ width: 30, height: 30, borderRadius: 25, marginLeft: -20, opacity: 0.5 }} />
-                    </View>
-                  </View>
-                </View>
-              </View>
+//         <ScrollView nestedScrollEnabled  >
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           {/* {
+//         taskUpcom.map((upcom,index2) => {
+//           return(
+//             <View key={index2} style={{borderWidth:2, margin:10,marginTop:20,marginBottom:20}}>
+//                 <View style={{flexDirection:'row' }}>
+//                   <Text>
+//                     {upcom.action}
+//                   </Text>
+//                 </View>
+//                 <View style={{flexDirection:'row' }}>
+//                   <Text>
+//                     {upcom.dateAction}
+//                   </Text>
+//                 </View>
+//                 <View style={{flexDirection:'row' }}>
+//                   <Text>
+//                     {upcom.title}
+//                   </Text>
+//                 </View>
+//             </View>
+//           )
+//         })
+//         } */}
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
+//           <Text> sdfdsfsdfsdfsdfsfdfas</Text>
 
-              <View style={{ marginRight: 10 }}>
-                <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, margin: 4, marginBottom: 8, padding: 20 }]}>
-                  <View style={{ flexDirection: 'row', }}>
-                    <Text style={{ fontWeight: 'bold' }}>Feb. 23, 2023 </Text>
-                  </View>
+//         </ScrollView>
 
-                  <View style={{ flexDirection: 'row', marginTop: 5, alignItems: 'center' }}>
-                    <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
-                    <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 18 }}>Tangle Top</Text>
-                  </View>
+//       </View>
+//     )
+//   }
+//   function ThirdRoute() {
+//     return (
+//       <View style={{ flex: 1 }}>
+//         <View style={{ margin: 10, marginTop: 10 }}>
+//           <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingBottom: 5, alignItems: 'center' }}>
+//             <Text style={{ fontSize: 20, color: '#276653', fontWeight: 'bold' }}>Findings</Text>
+//             <TouchableOpacity >
+//               <View style={{ flexDirection: 'row' }}>
+//                 <Text style={{ color: '#276653', fontWeight: 'bold' }}>See all</Text>
+//                 {/* <Icon name={'arrow-right-thin'} color={'#276653'} size={} style={{ width: 35}} /> */}
+//               </View>
+//             </TouchableOpacity>
+//           </View>
+//           <View>
+//             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} snapToStart={true} >
+//               <View style={{ marginRight: 10 }}>
+//                 <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, margin: 4, marginBottom: 8, padding: 20 }]}>
+//                   <View style={{ flexDirection: 'row', }}>
+//                     <Text style={{ fontWeight: 'bold' }}>Feb. 23, 2023 </Text>
+//                   </View>
 
-                  <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
-                    <View style={{ marginRight: 10, justifyContent: 'flex-end', marginLeft: 50 }}>
-                      {/* <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 15, height: 15 }} /> */}
-                      <View>
-                        <View style={{ borderRadius: 10, borderWidth: 1.5, borderColor: 'gray', width: 140 }}></View>
-                        <View style={{ borderRadius: 10, borderWidth: 3, borderColor: '#df8c2e', marginTop: -5, width: '60%' }}></View>
-                      </View>
-                      <Text style={{ fontWeight: 'bold', alignSelf: 'flex-end', color: '#276653' }}>60%</Text>
-                    </View>
-                    <View style={{ flexDirection: 'row', }}>
-                      <Image source={require('../../src/images/garlic1.jpg')} style={{ width: 30, height: 30, borderRadius: 25 }} />
-                      <Image source={require('../../src/images/garlic1.jpg')} style={{ width: 30, height: 30, borderRadius: 25, marginLeft: -20, opacity: 0.5 }} />
-                    </View>
-                  </View>
-                </View>
-              </View>
+//                   <View style={{ flexDirection: 'row', marginTop: 5, alignItems: 'center' }}>
+//                     <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
+//                     <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 18 }}>Tangle Top</Text>
+//                   </View>
 
-              <View style={{ marginRight: 10 }}>
-                <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, margin: 4, marginBottom: 8, padding: 20 }]}>
-                  <View style={{ flexDirection: 'row', }}>
-                    <Text>Feb. 23, 2023 </Text>
-                  </View>
+//                   <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
+//                     <View style={{ marginRight: 10, justifyContent: 'flex-end', marginLeft: 50 }}>
+//                       {/* <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 15, height: 15 }} /> */}
+//                       <View>
+//                         <View style={{ borderRadius: 10, borderWidth: 1.5, borderColor: 'gray', width: 140 }}></View>
+//                         <View style={{ borderRadius: 10, borderWidth: 3, borderColor: '#6fb96d', marginTop: -5, width: '40%' }}></View>
+//                       </View>
+//                       <Text style={{ fontWeight: 'bold', alignSelf: 'flex-end', color: '#276653' }}>40%</Text>
+//                     </View>
+//                     <View style={{ flexDirection: 'row', }}>
+//                       <Image source={require('../../src/images/garlic1.jpg')} style={{ width: 30, height: 30, borderRadius: 25 }} />
+//                       <Image source={require('../../src/images/garlic1.jpg')} style={{ width: 30, height: 30, borderRadius: 25, marginLeft: -20, opacity: 0.5 }} />
+//                     </View>
+//                   </View>
+//                 </View>
+//               </View>
 
-                  <View style={{ flexDirection: 'row', marginTop: 5, alignItems: 'center' }}>
-                    <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
-                    <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 18 }}>Tangle Top</Text>
-                  </View>
+//               <View style={{ marginRight: 10 }}>
+//                 <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, margin: 4, marginBottom: 8, padding: 20 }]}>
+//                   <View style={{ flexDirection: 'row', }}>
+//                     <Text style={{ fontWeight: 'bold' }}>Feb. 23, 2023 </Text>
+//                   </View>
 
-                  <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
-                    <View style={{ marginRight: 10, justifyContent: 'flex-end', marginLeft: 50 }}>
-                      {/* <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 15, height: 15 }} /> */}
-                      <View>
-                        <View style={{ borderRadius: 10, borderWidth: 1.5, borderColor: 'gray', width: 140 }}></View>
-                        <View style={{ borderRadius: 10, borderWidth: 3, borderColor: '#df492e', marginTop: -5, width: '90%' }}></View>
-                      </View>
-                      <Text style={{ fontWeight: 'bold', alignSelf: 'flex-end', color: '#276653' }}>90%</Text>
-                    </View>
-                    <View style={{ flexDirection: 'row', }}>
-                      <Image source={require('../../src/images/garlic1.jpg')} style={{ width: 30, height: 30, borderRadius: 25 }} />
-                      <Image source={require('../../src/images/garlic1.jpg')} style={{ width: 30, height: 30, borderRadius: 25, marginLeft: -20, opacity: 0.5 }} />
-                    </View>
-                  </View>
-                </View>
-              </View>
-            </ScrollView>
-          </View>
-        </View>
-        <View style={{ margin: 10, marginTop: 10 }}>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingBottom: 5, alignItems: 'center' }}>
-            <Text style={{ fontSize: 20, color: '#276653', fontWeight: 'bold' }}>Findings</Text>
-            <TouchableOpacity >
-              <View style={{ flexDirection: 'row' }}>
-                <Text style={{ color: '#276653', fontWeight: 'bold' }}>See all</Text>
-                {/* <Icon name={'arrow-right-thin'} color={'#276653'} size={} style={{ width: 35}} /> */}
-              </View>
-            </TouchableOpacity>
-          </View>
-          <View>
-            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} snapToStart={true} >
-              <View style={{ marginRight: 10 }}>
-                <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, margin: 4, marginBottom: 8, padding: 20 }]}>
-                  <View style={{ flexDirection: 'row', }}>
-                    <Text style={{ fontWeight: 'bold' }}>Feb. 23, 2023 </Text>
-                  </View>
+//                   <View style={{ flexDirection: 'row', marginTop: 5, alignItems: 'center' }}>
+//                     <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
+//                     <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 18 }}>Tangle Top</Text>
+//                   </View>
 
-                  <View style={{ flexDirection: 'row', marginTop: 5, alignItems: 'center' }}>
-                    <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
-                    <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 18 }}>Tangle Top</Text>
-                  </View>
+//                   <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
+//                     <View style={{ marginRight: 10, justifyContent: 'flex-end', marginLeft: 50 }}>
+//                       {/* <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 15, height: 15 }} /> */}
+//                       <View>
+//                         <View style={{ borderRadius: 10, borderWidth: 1.5, borderColor: 'gray', width: 140 }}></View>
+//                         <View style={{ borderRadius: 10, borderWidth: 3, borderColor: '#df8c2e', marginTop: -5, width: '60%' }}></View>
+//                       </View>
+//                       <Text style={{ fontWeight: 'bold', alignSelf: 'flex-end', color: '#276653' }}>60%</Text>
+//                     </View>
+//                     <View style={{ flexDirection: 'row', }}>
+//                       <Image source={require('../../src/images/garlic1.jpg')} style={{ width: 30, height: 30, borderRadius: 25 }} />
+//                       <Image source={require('../../src/images/garlic1.jpg')} style={{ width: 30, height: 30, borderRadius: 25, marginLeft: -20, opacity: 0.5 }} />
+//                     </View>
+//                   </View>
+//                 </View>
+//               </View>
 
-                  <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
-                    <View style={{ marginRight: 10, justifyContent: 'flex-end', marginLeft: 50 }}>
-                      {/* <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 15, height: 15 }} /> */}
-                      <View>
-                        <View style={{ borderRadius: 10, borderWidth: 1.5, borderColor: 'gray', width: 140 }}></View>
-                        <View style={{ borderRadius: 10, borderWidth: 3, borderColor: '#6fb96d', marginTop: -5, width: '40%' }}></View>
-                      </View>
-                      <Text style={{ fontWeight: 'bold', alignSelf: 'flex-end', color: '#276653' }}>40%</Text>
-                    </View>
-                    <View style={{ flexDirection: 'row', }}>
-                      <Image source={require('../../src/images/garlic1.jpg')} style={{ width: 30, height: 30, borderRadius: 25 }} />
-                      <Image source={require('../../src/images/garlic1.jpg')} style={{ width: 30, height: 30, borderRadius: 25, marginLeft: -20, opacity: 0.5 }} />
-                    </View>
-                  </View>
-                </View>
-              </View>
+//               <View style={{ marginRight: 10 }}>
+//                 <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, margin: 4, marginBottom: 8, padding: 20 }]}>
+//                   <View style={{ flexDirection: 'row', }}>
+//                     <Text>Feb. 23, 2023 </Text>
+//                   </View>
 
-              <View style={{ marginRight: 10 }}>
-                <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, margin: 4, marginBottom: 8, padding: 20 }]}>
-                  <View style={{ flexDirection: 'row', }}>
-                    <Text style={{ fontWeight: 'bold' }}>Feb. 23, 2023 </Text>
-                  </View>
+//                   <View style={{ flexDirection: 'row', marginTop: 5, alignItems: 'center' }}>
+//                     <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
+//                     <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 18 }}>Tangle Top</Text>
+//                   </View>
 
-                  <View style={{ flexDirection: 'row', marginTop: 5, alignItems: 'center' }}>
-                    <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
-                    <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 18 }}>Tangle Top</Text>
-                  </View>
+//                   <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
+//                     <View style={{ marginRight: 10, justifyContent: 'flex-end', marginLeft: 50 }}>
+//                       {/* <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 15, height: 15 }} /> */}
+//                       <View>
+//                         <View style={{ borderRadius: 10, borderWidth: 1.5, borderColor: 'gray', width: 140 }}></View>
+//                         <View style={{ borderRadius: 10, borderWidth: 3, borderColor: '#df492e', marginTop: -5, width: '90%' }}></View>
+//                       </View>
+//                       <Text style={{ fontWeight: 'bold', alignSelf: 'flex-end', color: '#276653' }}>90%</Text>
+//                     </View>
+//                     <View style={{ flexDirection: 'row', }}>
+//                       <Image source={require('../../src/images/garlic1.jpg')} style={{ width: 30, height: 30, borderRadius: 25 }} />
+//                       <Image source={require('../../src/images/garlic1.jpg')} style={{ width: 30, height: 30, borderRadius: 25, marginLeft: -20, opacity: 0.5 }} />
+//                     </View>
+//                   </View>
+//                 </View>
+//               </View>
+//             </ScrollView>
+//           </View>
+//         </View>
+//         <View style={{ margin: 10, marginTop: 10 }}>
+//           <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingBottom: 5, alignItems: 'center' }}>
+//             <Text style={{ fontSize: 20, color: '#276653', fontWeight: 'bold' }}>Findings</Text>
+//             <TouchableOpacity >
+//               <View style={{ flexDirection: 'row' }}>
+//                 <Text style={{ color: '#276653', fontWeight: 'bold' }}>See all</Text>
+//                 {/* <Icon name={'arrow-right-thin'} color={'#276653'} size={} style={{ width: 35}} /> */}
+//               </View>
+//             </TouchableOpacity>
+//           </View>
+//           <View>
+//             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} snapToStart={true} >
+//               <View style={{ marginRight: 10 }}>
+//                 <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, margin: 4, marginBottom: 8, padding: 20 }]}>
+//                   <View style={{ flexDirection: 'row', }}>
+//                     <Text style={{ fontWeight: 'bold' }}>Feb. 23, 2023 </Text>
+//                   </View>
 
-                  <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
-                    <View style={{ marginRight: 10, justifyContent: 'flex-end', marginLeft: 50 }}>
-                      {/* <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 15, height: 15 }} /> */}
-                      <View>
-                        <View style={{ borderRadius: 10, borderWidth: 1.5, borderColor: 'gray', width: 140 }}></View>
-                        <View style={{ borderRadius: 10, borderWidth: 3, borderColor: '#df8c2e', marginTop: -5, width: '60%' }}></View>
-                      </View>
-                      <Text style={{ fontWeight: 'bold', alignSelf: 'flex-end', color: '#276653' }}>60%</Text>
-                    </View>
-                    <View style={{ flexDirection: 'row', }}>
-                      <Image source={require('../../src/images/garlic1.jpg')} style={{ width: 30, height: 30, borderRadius: 25 }} />
-                      <Image source={require('../../src/images/garlic1.jpg')} style={{ width: 30, height: 30, borderRadius: 25, marginLeft: -20, opacity: 0.5 }} />
-                    </View>
-                  </View>
-                </View>
-              </View>
+//                   <View style={{ flexDirection: 'row', marginTop: 5, alignItems: 'center' }}>
+//                     <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
+//                     <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 18 }}>Tangle Top</Text>
+//                   </View>
 
-              <View style={{ marginRight: 10 }}>
-                <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, margin: 4, marginBottom: 8, padding: 20 }]}>
-                  <View style={{ flexDirection: 'row', }}>
-                    <Text>Feb. 23, 2023 </Text>
-                  </View>
+//                   <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
+//                     <View style={{ marginRight: 10, justifyContent: 'flex-end', marginLeft: 50 }}>
+//                       {/* <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 15, height: 15 }} /> */}
+//                       <View>
+//                         <View style={{ borderRadius: 10, borderWidth: 1.5, borderColor: 'gray', width: 140 }}></View>
+//                         <View style={{ borderRadius: 10, borderWidth: 3, borderColor: '#6fb96d', marginTop: -5, width: '40%' }}></View>
+//                       </View>
+//                       <Text style={{ fontWeight: 'bold', alignSelf: 'flex-end', color: '#276653' }}>40%</Text>
+//                     </View>
+//                     <View style={{ flexDirection: 'row', }}>
+//                       <Image source={require('../../src/images/garlic1.jpg')} style={{ width: 30, height: 30, borderRadius: 25 }} />
+//                       <Image source={require('../../src/images/garlic1.jpg')} style={{ width: 30, height: 30, borderRadius: 25, marginLeft: -20, opacity: 0.5 }} />
+//                     </View>
+//                   </View>
+//                 </View>
+//               </View>
 
-                  <View style={{ flexDirection: 'row', marginTop: 5, alignItems: 'center' }}>
-                    <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
-                    <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 18 }}>Tangle Top</Text>
-                  </View>
+//               <View style={{ marginRight: 10 }}>
+//                 <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, margin: 4, marginBottom: 8, padding: 20 }]}>
+//                   <View style={{ flexDirection: 'row', }}>
+//                     <Text style={{ fontWeight: 'bold' }}>Feb. 23, 2023 </Text>
+//                   </View>
 
-                  <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
-                    <View style={{ marginRight: 10, justifyContent: 'flex-end', marginLeft: 50 }}>
-                      {/* <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 15, height: 15 }} /> */}
-                      <View>
-                        <View style={{ borderRadius: 10, borderWidth: 1.5, borderColor: 'gray', width: 140 }}></View>
-                        <View style={{ borderRadius: 10, borderWidth: 3, borderColor: '#df492e', marginTop: -5, width: '90%' }}></View>
-                      </View>
-                      <Text style={{ fontWeight: 'bold', alignSelf: 'flex-end', color: '#276653' }}>90%</Text>
-                    </View>
-                    <View style={{ flexDirection: 'row', }}>
-                      <Image source={require('../../src/images/garlic1.jpg')} style={{ width: 30, height: 30, borderRadius: 25 }} />
-                      <Image source={require('../../src/images/garlic1.jpg')} style={{ width: 30, height: 30, borderRadius: 25, marginLeft: -20, opacity: 0.5 }} />
-                    </View>
-                  </View>
-                </View>
-              </View>
-            </ScrollView>
-          </View>
-        </View>
+//                   <View style={{ flexDirection: 'row', marginTop: 5, alignItems: 'center' }}>
+//                     <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
+//                     <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 18 }}>Tangle Top</Text>
+//                   </View>
 
-      </View>
-    )
-  }
-  return (
-    <SafeAreaView>
-      <View style={{ padding: 20, backgroundColor: 'white', height: '100%' }}>
-        {/* <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20, paddingBottom: 5, alignItems: 'center' }}>
-          <Text style={{ fontSize: 20, color: '#276653', fontWeight: 'bold' }}>Task</Text>
-        </View> */}
-        <ScrollView>
-          <View >
-            <ScrollView horizontal={true} style={{ paddingBottom: 10 }}>
-              <View style={{ margin: 5 }}>
-                <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, paddingRight: 20, paddingLeft: 20 }]}>
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
-                    <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Water</Text>
-                  </View>
-                </View>
-              </View>
+//                   <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
+//                     <View style={{ marginRight: 10, justifyContent: 'flex-end', marginLeft: 50 }}>
+//                       {/* <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 15, height: 15 }} /> */}
+//                       <View>
+//                         <View style={{ borderRadius: 10, borderWidth: 1.5, borderColor: 'gray', width: 140 }}></View>
+//                         <View style={{ borderRadius: 10, borderWidth: 3, borderColor: '#df8c2e', marginTop: -5, width: '60%' }}></View>
+//                       </View>
+//                       <Text style={{ fontWeight: 'bold', alignSelf: 'flex-end', color: '#276653' }}>60%</Text>
+//                     </View>
+//                     <View style={{ flexDirection: 'row', }}>
+//                       <Image source={require('../../src/images/garlic1.jpg')} style={{ width: 30, height: 30, borderRadius: 25 }} />
+//                       <Image source={require('../../src/images/garlic1.jpg')} style={{ width: 30, height: 30, borderRadius: 25, marginLeft: -20, opacity: 0.5 }} />
+//                     </View>
+//                   </View>
+//                 </View>
+//               </View>
 
-              <View style={{ margin: 5 }}>
-                <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, paddingRight: 20, paddingLeft: 20 }]}>
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
-                    <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Water</Text>
-                  </View>
-                </View>
-              </View>
+//               <View style={{ marginRight: 10 }}>
+//                 <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, margin: 4, marginBottom: 8, padding: 20 }]}>
+//                   <View style={{ flexDirection: 'row', }}>
+//                     <Text>Feb. 23, 2023 </Text>
+//                   </View>
 
-              <View style={{ margin: 5 }}>
-                <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, paddingRight: 20, paddingLeft: 20 }]}>
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
-                    <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Water</Text>
-                  </View>
-                </View>
-              </View>
-            </ScrollView>
-          </View>
-          <View style={{ height: '40%' }}>
-            <TabView
-              nestedScrollEnabled={true}
-              swipeEnabled={false}
-              tabBarScrollEnabled={true}
-              navigationState={{ index, routes }}
-              renderTabBar={renderTabBar}
-              renderScene={renderScene}
-              onIndexChange={setIndex}
-              initialLayout={initialLayout}
-              style={{ backgroundColor: 'white', zIndex: 1 }}
-            />
-          </View>
-          <View >
-            <ScrollView horizontal={true} style={{ paddingBottom: 10 }}>
-              <View style={{ margin: 5 }}>
-                <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, paddingRight: 20, paddingLeft: 20 }]}>
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
-                    <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Water</Text>
-                  </View>
-                </View>
-              </View>
+//                   <View style={{ flexDirection: 'row', marginTop: 5, alignItems: 'center' }}>
+//                     <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
+//                     <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 18 }}>Tangle Top</Text>
+//                   </View>
 
-              <View style={{ margin: 5 }}>
-                <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, paddingRight: 20, paddingLeft: 20 }]}>
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
-                    <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Water</Text>
-                  </View>
-                </View>
-              </View>
+//                   <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
+//                     <View style={{ marginRight: 10, justifyContent: 'flex-end', marginLeft: 50 }}>
+//                       {/* <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 15, height: 15 }} /> */}
+//                       <View>
+//                         <View style={{ borderRadius: 10, borderWidth: 1.5, borderColor: 'gray', width: 140 }}></View>
+//                         <View style={{ borderRadius: 10, borderWidth: 3, borderColor: '#df492e', marginTop: -5, width: '90%' }}></View>
+//                       </View>
+//                       <Text style={{ fontWeight: 'bold', alignSelf: 'flex-end', color: '#276653' }}>90%</Text>
+//                     </View>
+//                     <View style={{ flexDirection: 'row', }}>
+//                       <Image source={require('../../src/images/garlic1.jpg')} style={{ width: 30, height: 30, borderRadius: 25 }} />
+//                       <Image source={require('../../src/images/garlic1.jpg')} style={{ width: 30, height: 30, borderRadius: 25, marginLeft: -20, opacity: 0.5 }} />
+//                     </View>
+//                   </View>
+//                 </View>
+//               </View>
+//             </ScrollView>
+//           </View>
+//         </View>
 
-              <View style={{ margin: 5 }}>
-                <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, paddingRight: 20, paddingLeft: 20 }]}>
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
-                    <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Water</Text>
-                  </View>
-                </View>
-              </View>
-            </ScrollView>
-          </View>
-          <View >
-            <ScrollView horizontal={true} style={{ paddingBottom: 10 }}>
-              <View style={{ margin: 5 }}>
-                <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, paddingRight: 20, paddingLeft: 20 }]}>
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
-                    <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Water</Text>
-                  </View>
-                </View>
-              </View>
+//       </View>
+//     )
+//   }
+//   return (
+//     <SafeAreaView>
+//       <View style={{ padding: 20, backgroundColor: 'white', height: '100%' }}>
+//         {/* <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20, paddingBottom: 5, alignItems: 'center' }}>
+//           <Text style={{ fontSize: 20, color: '#276653', fontWeight: 'bold' }}>Task</Text>
+//         </View> */}
+//         <ScrollView>
+//           <View >
+//             <ScrollView horizontal={true} style={{ paddingBottom: 10 }}>
+//               <View style={{ margin: 5 }}>
+//                 <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, paddingRight: 20, paddingLeft: 20 }]}>
+//                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+//                     <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
+//                     <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Water</Text>
+//                   </View>
+//                 </View>
+//               </View>
 
-              <View style={{ margin: 5 }}>
-                <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, paddingRight: 20, paddingLeft: 20 }]}>
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
-                    <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Water</Text>
-                  </View>
-                </View>
-              </View>
+//               <View style={{ margin: 5 }}>
+//                 <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, paddingRight: 20, paddingLeft: 20 }]}>
+//                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+//                     <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
+//                     <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Water</Text>
+//                   </View>
+//                 </View>
+//               </View>
 
-              <View style={{ margin: 5 }}>
-                <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, paddingRight: 20, paddingLeft: 20 }]}>
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
-                    <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Water</Text>
-                  </View>
-                </View>
-              </View>
-            </ScrollView>
-          </View>
-          <View >
-            <ScrollView horizontal={true} style={{ paddingBottom: 10 }}>
-              <View style={{ margin: 5 }}>
-                <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, paddingRight: 20, paddingLeft: 20 }]}>
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
-                    <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Water</Text>
-                  </View>
-                </View>
-              </View>
+//               <View style={{ margin: 5 }}>
+//                 <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, paddingRight: 20, paddingLeft: 20 }]}>
+//                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+//                     <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
+//                     <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Water</Text>
+//                   </View>
+//                 </View>
+//               </View>
+//             </ScrollView>
+//           </View>
+//           <View style={{ height: '40%' }}>
+//             <TabView
+//               nestedScrollEnabled={true}
+//               swipeEnabled={false}
+//               tabBarScrollEnabled={true}
+//               navigationState={{ index, routes }}
+//               renderTabBar={renderTabBar}
+//               renderScene={renderScene}
+//               onIndexChange={setIndex}
+//               initialLayout={initialLayout}
+//               style={{ backgroundColor: 'white', zIndex: 1 }}
+//             />
+//           </View>
+//           <View >
+//             <ScrollView horizontal={true} style={{ paddingBottom: 10 }}>
+//               <View style={{ margin: 5 }}>
+//                 <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, paddingRight: 20, paddingLeft: 20 }]}>
+//                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+//                     <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
+//                     <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Water</Text>
+//                   </View>
+//                 </View>
+//               </View>
 
-              <View style={{ margin: 5 }}>
-                <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, paddingRight: 20, paddingLeft: 20 }]}>
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
-                    <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Water</Text>
-                  </View>
-                </View>
-              </View>
+//               <View style={{ margin: 5 }}>
+//                 <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, paddingRight: 20, paddingLeft: 20 }]}>
+//                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+//                     <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
+//                     <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Water</Text>
+//                   </View>
+//                 </View>
+//               </View>
 
-              <View style={{ margin: 5 }}>
-                <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, paddingRight: 20, paddingLeft: 20 }]}>
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
-                    <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Water</Text>
-                  </View>
-                </View>
-              </View>
-            </ScrollView>
-          </View>
-          <View >
-            <ScrollView horizontal={true} style={{ paddingBottom: 10 }}>
-              <View style={{ margin: 5 }}>
-                <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, paddingRight: 20, paddingLeft: 20 }]}>
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
-                    <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Water</Text>
-                  </View>
-                </View>
-              </View>
+//               <View style={{ margin: 5 }}>
+//                 <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, paddingRight: 20, paddingLeft: 20 }]}>
+//                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+//                     <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
+//                     <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Water</Text>
+//                   </View>
+//                 </View>
+//               </View>
+//             </ScrollView>
+//           </View>
+//           <View >
+//             <ScrollView horizontal={true} style={{ paddingBottom: 10 }}>
+//               <View style={{ margin: 5 }}>
+//                 <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, paddingRight: 20, paddingLeft: 20 }]}>
+//                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+//                     <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
+//                     <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Water</Text>
+//                   </View>
+//                 </View>
+//               </View>
 
-              <View style={{ margin: 5 }}>
-                <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, paddingRight: 20, paddingLeft: 20 }]}>
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
-                    <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Water</Text>
-                  </View>
-                </View>
-              </View>
+//               <View style={{ margin: 5 }}>
+//                 <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, paddingRight: 20, paddingLeft: 20 }]}>
+//                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+//                     <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
+//                     <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Water</Text>
+//                   </View>
+//                 </View>
+//               </View>
 
-              <View style={{ margin: 5 }}>
-                <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, paddingRight: 20, paddingLeft: 20 }]}>
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
-                    <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Water</Text>
-                  </View>
-                </View>
-              </View>
-            </ScrollView>
-          </View>
+//               <View style={{ margin: 5 }}>
+//                 <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, paddingRight: 20, paddingLeft: 20 }]}>
+//                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+//                     <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
+//                     <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Water</Text>
+//                   </View>
+//                 </View>
+//               </View>
+//             </ScrollView>
+//           </View>
+//           <View >
+//             <ScrollView horizontal={true} style={{ paddingBottom: 10 }}>
+//               <View style={{ margin: 5 }}>
+//                 <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, paddingRight: 20, paddingLeft: 20 }]}>
+//                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+//                     <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
+//                     <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Water</Text>
+//                   </View>
+//                 </View>
+//               </View>
 
-          <View >
-            <ScrollView horizontal={true} style={{ paddingBottom: 10 }}>
-              <View style={{ margin: 5 }}>
-                <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, paddingRight: 20, paddingLeft: 20 }]}>
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
-                    <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Water</Text>
-                  </View>
-                </View>
-              </View>
+//               <View style={{ margin: 5 }}>
+//                 <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, paddingRight: 20, paddingLeft: 20 }]}>
+//                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+//                     <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
+//                     <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Water</Text>
+//                   </View>
+//                 </View>
+//               </View>
 
-              <View style={{ margin: 5 }}>
-                <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, paddingRight: 20, paddingLeft: 20 }]}>
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
-                    <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Water</Text>
-                  </View>
-                </View>
-              </View>
+//               <View style={{ margin: 5 }}>
+//                 <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, paddingRight: 20, paddingLeft: 20 }]}>
+//                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+//                     <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
+//                     <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Water</Text>
+//                   </View>
+//                 </View>
+//               </View>
+//             </ScrollView>
+//           </View>
+//           <View >
+//             <ScrollView horizontal={true} style={{ paddingBottom: 10 }}>
+//               <View style={{ margin: 5 }}>
+//                 <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, paddingRight: 20, paddingLeft: 20 }]}>
+//                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+//                     <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
+//                     <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Water</Text>
+//                   </View>
+//                 </View>
+//               </View>
 
-              <View style={{ margin: 5 }}>
-                <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, paddingRight: 20, paddingLeft: 20 }]}>
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
-                    <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Water</Text>
-                  </View>
-                </View>
-              </View>
-            </ScrollView>
-          </View>
-          <View >
-            <ScrollView horizontal={true} style={{ paddingBottom: 10 }}>
-              <View style={{ margin: 5 }}>
-                <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, paddingRight: 20, paddingLeft: 20 }]}>
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
-                    <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Water</Text>
-                  </View>
-                </View>
-              </View>
+//               <View style={{ margin: 5 }}>
+//                 <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, paddingRight: 20, paddingLeft: 20 }]}>
+//                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+//                     <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
+//                     <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Water</Text>
+//                   </View>
+//                 </View>
+//               </View>
 
-              <View style={{ margin: 5 }}>
-                <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, paddingRight: 20, paddingLeft: 20 }]}>
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
-                    <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Water</Text>
-                  </View>
-                </View>
-              </View>
+//               <View style={{ margin: 5 }}>
+//                 <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, paddingRight: 20, paddingLeft: 20 }]}>
+//                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+//                     <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
+//                     <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Water</Text>
+//                   </View>
+//                 </View>
+//               </View>
+//             </ScrollView>
+//           </View>
 
-              <View style={{ margin: 5 }}>
-                <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, paddingRight: 20, paddingLeft: 20 }]}>
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
-                    <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Water</Text>
-                  </View>
-                </View>
-              </View>
-            </ScrollView>
-          </View>
-          <View >
-            <ScrollView horizontal={true} style={{ paddingBottom: 10 }}>
-              <View style={{ margin: 5 }}>
-                <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, paddingRight: 20, paddingLeft: 20 }]}>
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
-                    <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Water</Text>
-                  </View>
-                </View>
-              </View>
+//           <View >
+//             <ScrollView horizontal={true} style={{ paddingBottom: 10 }}>
+//               <View style={{ margin: 5 }}>
+//                 <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, paddingRight: 20, paddingLeft: 20 }]}>
+//                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+//                     <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
+//                     <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Water</Text>
+//                   </View>
+//                 </View>
+//               </View>
 
-              <View style={{ margin: 5 }}>
-                <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, paddingRight: 20, paddingLeft: 20 }]}>
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
-                    <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Water</Text>
-                  </View>
-                </View>
-              </View>
+//               <View style={{ margin: 5 }}>
+//                 <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, paddingRight: 20, paddingLeft: 20 }]}>
+//                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+//                     <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
+//                     <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Water</Text>
+//                   </View>
+//                 </View>
+//               </View>
 
-              <View style={{ margin: 5 }}>
-                <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, paddingRight: 20, paddingLeft: 20 }]}>
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
-                    <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Water</Text>
-                  </View>
-                </View>
-              </View>
-            </ScrollView>
-          </View>
-        </ScrollView>
-      </View>
-    </SafeAreaView>
-  )
-}
+//               <View style={{ margin: 5 }}>
+//                 <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, paddingRight: 20, paddingLeft: 20 }]}>
+//                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+//                     <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
+//                     <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Water</Text>
+//                   </View>
+//                 </View>
+//               </View>
+//             </ScrollView>
+//           </View>
+//           <View >
+//             <ScrollView horizontal={true} style={{ paddingBottom: 10 }}>
+//               <View style={{ margin: 5 }}>
+//                 <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, paddingRight: 20, paddingLeft: 20 }]}>
+//                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+//                     <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
+//                     <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Water</Text>
+//                   </View>
+//                 </View>
+//               </View>
+
+//               <View style={{ margin: 5 }}>
+//                 <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, paddingRight: 20, paddingLeft: 20 }]}>
+//                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+//                     <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
+//                     <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Water</Text>
+//                   </View>
+//                 </View>
+//               </View>
+
+//               <View style={{ margin: 5 }}>
+//                 <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, paddingRight: 20, paddingLeft: 20 }]}>
+//                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+//                     <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
+//                     <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Water</Text>
+//                   </View>
+//                 </View>
+//               </View>
+//             </ScrollView>
+//           </View>
+//           <View >
+//             <ScrollView horizontal={true} style={{ paddingBottom: 10 }}>
+//               <View style={{ margin: 5 }}>
+//                 <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, paddingRight: 20, paddingLeft: 20 }]}>
+//                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+//                     <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
+//                     <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Water</Text>
+//                   </View>
+//                 </View>
+//               </View>
+
+//               <View style={{ margin: 5 }}>
+//                 <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, paddingRight: 20, paddingLeft: 20 }]}>
+//                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+//                     <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
+//                     <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Water</Text>
+//                   </View>
+//                 </View>
+//               </View>
+
+//               <View style={{ margin: 5 }}>
+//                 <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, paddingRight: 20, paddingLeft: 20 }]}>
+//                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+//                     <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
+//                     <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16 }}>Water</Text>
+//                   </View>
+//                 </View>
+//               </View>
+//             </ScrollView>
+//           </View>
+//         </ScrollView>
+//       </View>
+//     </SafeAreaView>
+//   )
+// }
 
 function Task({ route, navigation }) {
   useEffect(() => {
@@ -2635,7 +2635,7 @@ function Task({ route, navigation }) {
                           </View>
                           <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                              <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
+                              <Image source={require('../../src/icons/water.png')} style={{ width: 45, height: 40, marginRight: 10 }} />
                               <View>
                                 <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 18 }}>{upcom.title}</Text>
                                 <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 14 }}>{upcom.action}</Text>
@@ -2665,7 +2665,7 @@ function Task({ route, navigation }) {
                           </View>
                           <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                              <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
+                            <Image source={require('../../src/icons/Fertilizer.png')} style={{ width: 45, height: 40, marginRight: 10 }} />
                               <View>
                                 <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 18 }}>{upcom.title}</Text>
                                 <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 14 }}>{upcom.action}</Text>
@@ -2787,9 +2787,9 @@ function Task({ route, navigation }) {
                 {
                   upcom.title == 'Water' ? (<View style={[styles.cardDashboardRecentProp, { flexDirection: 'row', justifyContent: 'space-between', backgroundColor: 'white', borderRadius: 15, width: '100%', padding: 20, borderLeftColor: '#3f9cda', borderLeftWidth: 10, marginBottom: 10 }]}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                      <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
+                      <Image source={require('../../src/icons/water.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
                       <View>
-                        <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 18 }}>{upcom.title}</Text>
+                        <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 18 }}>{upcom.title}rgytrdassadasdh</Text>
                         <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 14 }}>{upcom.action}</Text>
                       </View>
                     </View>
@@ -2807,9 +2807,9 @@ function Task({ route, navigation }) {
                 {
                   upcom.title == 'Fertilizer' ? (<View style={[styles.cardDashboardRecentProp, { flexDirection: 'row', justifyContent: 'space-between', backgroundColor: 'white', borderRadius: 15, width: '100%', padding: 20, borderLeftColor: '#3fda54', borderLeftWidth: 10, marginBottom: 10 }]}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                      <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
+                      <Image source={require('../../src/icons/Fertilizer.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
                       <View>
-                        <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 18 }}>{upcom.title}</Text>
+                        <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 18 }}>{upcom.title} sdsadasd</Text>
                         <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 14 }}>{upcom.action}</Text>
                       </View>
                     </View>
@@ -2827,7 +2827,7 @@ function Task({ route, navigation }) {
                 {
                   upcom.title == 'Pest' ? (<View style={[styles.cardDashboardRecentProp, { flexDirection: 'row', justifyContent: 'space-between', backgroundColor: 'white', borderRadius: 15, width: '100%', padding: 20, borderLeftColor: '#da5e3f', borderLeftWidth: 10, marginBottom: 10 }]}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                      <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
+                      <Image source={require('../../src/icons/Pest.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
                       <View>
                         <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 18 }}>{upcom.title}</Text>
                         <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 14 }}>{upcom.action}</Text>
