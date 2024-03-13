@@ -300,6 +300,11 @@ export default function AccountHeader({ navigation }) {
         }
     }
 
+    const profileClose = () => {
+        console.log("Location changed!")
+        refRBSheet.current.close()
+      }
+    
     // imageUploadPermission
     const imageLibrary = async () => {
 
@@ -421,6 +426,7 @@ export default function AccountHeader({ navigation }) {
                                     onRequestClose={() => {
                                         Alert.alert("Modal has been closed.");
                                         setModalVisible(!modalVisible);
+                                        profileClose()
                                     }}
                                 >
                                     <View style={styles.centeredView}>
@@ -446,7 +452,7 @@ export default function AccountHeader({ navigation }) {
                                 <Text style={{ paddingLeft: 15, color: '#8eb4a9', fontWeight: 'bold' }}>Email</Text>
                                 <View style={[styles.profileTextIcon, styles.div2Row]}>
                                     <Icon name={"email-outline"} color={'#276653'} size={23} style={{ width: 22, marginRight: 8 }} />
-                                    <TextInput placeholder={email} value={email} onChangeText={text => setEmail(text)} style={styles.profileTextinput} />
+                                    <TextInput editable={false}  placeholder={email} value={email} onChangeText={text => setEmail(text)} style={styles.profileTextinput} />
                                 </View>
                             </View>
                             <View style={{ marginBottom: 5 }}>
@@ -456,7 +462,7 @@ export default function AccountHeader({ navigation }) {
                                     <TextInput placeholder={address} value={address} onChangeText={text => setAddress(text)} style={styles.profileTextinput} />
                                 </View>
                             </View>
-                            <View style={{ marginTop: 10, alignItems: 'center' }}>
+                            {/* <View style={{ marginTop: 10, alignItems: 'center' }}>
                                 <TouchableOpacity
                                     onPress={UserUpdate} >
                                     <View style={[styles.dataSyncicon, styles.div2Row]}>
@@ -467,7 +473,7 @@ export default function AccountHeader({ navigation }) {
                                 <View>
                                     <Text style={{ fontSize: 12, fontWeight: 'bold', marginTop: 5 }}>Last sync: Monday, Nov. 6, 2022 </Text>
                                 </View>
-                            </View>
+                            </View> */}
                             {/* endform */}
                         </View>
                         

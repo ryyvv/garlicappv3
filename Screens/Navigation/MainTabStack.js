@@ -5,10 +5,10 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-import { LogBox } from 'react-native';
-import Dashboardstack from '../Navigation/Dashboardstack';
+
+import Dashboard from '../Navigation/Dashboardstack';
 import Forecast from '../ComponentScreens/Forecast';
-import GarlicPlant from '../ComponentScreens/GarlicPlant';
+import GarlicPlantScreen from '../ComponentScreens/GarlicPlantScreen';
 import Profile from '../ComponentScreens/Account';
 
 export default function MainTabStack() {
@@ -27,7 +27,7 @@ export default function MainTabStack() {
       }}>
       <Tab.Screen
         name="Dashboardstack"
-        component={Dashboardstack}
+        component={Dashboard}
         options={{
           headerShown: false,
           tabBarLabel: 'Dashboard',
@@ -49,11 +49,11 @@ export default function MainTabStack() {
         })}
       />
       <Tab.Screen
-        name="GarlicPlant"
-        component={GarlicPlant}
+        name="Plant"
+        component={GarlicPlantScreen}
         options={{
           headerShown: false,
-          tabBarLabel: 'GarlicPlant',
+          tabBarLabel: 'Plant',
           tabBarIcon: ({ color, size }) => (
             <Icon name={"sprout-outline"} color={color} size={25} />
           ),

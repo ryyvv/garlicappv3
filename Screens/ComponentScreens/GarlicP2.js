@@ -213,17 +213,16 @@ function PlantDash({ route, navigation }) {
       </ScrollView>
 
       {/* Add button style={{ zIndex: 1 }}           */}
-      <View >
+    
         <TouchableOpacity
           onPress={() => {
             navigation.navigate('PlantNew')
-            alert('clicked')
+            alert('Add garlic plant button pressed!')
           }}>
-          <View style={styles.addBtn}>
+              <View style={styles.addBtn}>
             <Icon name={"plus"} color={'white'} size={23} style={{ fontWeight: 'bold' }} />
-          </View>
+            </View>
         </TouchableOpacity>
-      </View>
     </View>
 
   )
@@ -2709,8 +2708,7 @@ function Task({ route, navigation }) {
                                   onPress={() => {
                                     handlesubmit(upcom)
                                     alert('clicked title: ', upcom.title, ' dateAction', upcom.dateAction, ' Action: ', upcom.Action, ' Status: ', upcom.status)
-                                  }
-                                  }>
+                                  }}>
                                   <View style={{ borderRadius: 15, borderWidth: 1.5, borderColor: '#4a8f3cff', paddingLeft: 10, paddingRight: 10, padding: 5, marginTop: 8 }}>
                                     <Text style={{ fontSize: 12, fontWeight: 'bold' }}>Complete</Text>
                                   </View>

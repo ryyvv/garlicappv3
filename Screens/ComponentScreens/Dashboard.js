@@ -1,6 +1,6 @@
 //import axios from 'axios';
 import moment from 'moment';
-import React, { useEffect, useState, useFonts, useContext, useRef, useCallback, useMemo } from 'react';
+import React, { useEffect, useState, useFonts, useContext, useRef } from 'react';
 import {
   SafeAreaView,
   Pressable,
@@ -10,7 +10,7 @@ import {
   Text,
   View,
   Image,
-  Button,
+  Dimensions,
   LogBox,
   ImageBackground,
 } from 'react-native';
@@ -25,8 +25,6 @@ import { LocationContext } from '../Context/LocationProvider';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import Carousel from 'react-native-reanimated-carousel';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
-import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
-
 
 import PNDs from '../ComponentScreens/PNDs';
 
@@ -36,21 +34,12 @@ export default function Dashboard({ navigation }) {
   const [listPD, setListPD] = useState(null);
   const [imageIcon, setimageIcon] = useState(null);
 
-  // BottomSheetDashboard Modal
-  const snapPoints = useMemo(() => ['25%', '50%', '70%'], []);
+  const WeatherClose = () => {
+    console.log("Location changed!")
+    refRBSheets.current.close()
+  }
 
-	const bottomSheetRef = useRef();
-
-	const handleClosePress = () => bottomSheetRef.current?.close();
-	const handleOpenPress = () => bottomSheetRef.current?.expand();
-	const handleCollapsePress = () => bottomSheetRef.current?.collapse();
-	const snapeToIndex = (index) => bottomSheetRef.current?.snapToIndex(index);
-	const renderBackdrop = useCallback(
-		(props) => <BottomSheetBackdrop appearsOnIndex={0} disappearsOnIndex={-1} {...props} />,
-		[]
-	);
-
-
+  
 
   const {
     gpsName,
@@ -210,11 +199,12 @@ export default function Dashboard({ navigation }) {
     vintarCondition,
     weatherD,
   } = useContext(LocationContext);
-  const newdate = new Date();
 
   useEffect(() => {
     setInterval(PNDiseases, 3500);
   }, []);
+
+ 
 
   const PNDiseases = () => {
     const dataPD =
@@ -402,9 +392,9 @@ export default function Dashboard({ navigation }) {
               <View style={{ marginBottom: 10, marginTop: 90 }}>
                 {/* shimmer */}
                 {weathloc ? (
-                  <View>
+                  <View> 
                     <View style={{ marginBottom: 40 }}>
-                      <TouchableOpacity onPress={() => refRBSheets.current.open()}>
+                      <TouchableOpacity delayPressIn={0.1} onPress={() => refRBSheets.current.open()}>
                         <View
                           style={{ justifyContent: 'center', alignItems: 'center' }}>
                           <Text
@@ -425,8 +415,8793 @@ export default function Dashboard({ navigation }) {
                           </Text>
                         </View>
                       </TouchableOpacity>
-                    </View>
 
+                      <RBSheet
+                        ref={refRBSheets}
+                        closeOnDragDown={true}
+                        closeOnPressMask={true}
+                        closeDuration={100}
+                        openDuration={100}
+                        height={550}
+                        animationType={'slide'}
+                        customStyles={{
+                          wrapper: {
+                            backgroundColor: 'rgba(52, 52, 52, 0.4)',
+                            padding: 20,
+                            paddingBottom: 30,
+                          },
+                          draggableIcon: {
+                            backgroundColor: '#276653',
+                          },
+                          container: {
+                            borderTopLeftRadius: 20,
+                            borderTopRightRadius: 20,
+                          },
+                        }}>
+                        <View
+                          style={{
+                            marginTop: 5,
+                            marginBottom: 5,
+                            paddingLeft: 25,
+                            paddingRight: 35,
+                            flexDirection: 'row',
+                          }}>
+                          <Text style={styles.textCamTitle}>Location</Text>
+                        </View>
+
+                        {/* Weatherlist Content */}
+                        <View
+                          style={{
+                            paddingLeft: 15,
+                            paddingRight: 15,
+                            flexDirection: 'row',
+                            justifyContent: 'space-evenly',
+                          }}>
+                          <ScrollView style={{ marginBottom: 90 }}>
+                            {/* current Location */}
+                            <View>
+                              <TouchableOpacity
+                                onPress={() => {
+                                  setGpsLocationUpdate(gpsUrl),
+                                    WeatherClose()
+                                }}>
+                                <View style={styles.dashboardForecastDay}>
+                                  <View
+                                    style={[
+                                      styles.cardDashboardLocations,
+                                      styles.cardDashboardLocationsProp,
+                                      { marginBottom: 8, backgroundColor: '#EAEEE5' },
+                                    ]}>
+                                    <View
+                                      style={{
+                                        marginBottom: 10,
+                                        flexDirection: 'row',
+                                      }}>
+                                      <Icon
+                                        name={'map'}
+                                        color={'#276653'}
+                                        size={25}
+                                        style={{ width: 30 }}
+                                      />
+                                      <Text
+                                        style={{
+                                          fontSize: 18,
+                                          fontWeight: '800',
+                                          justifyContent: 'flex-end',
+                                          color: '#276653',
+                                        }}>
+                                        {gpsName} (GPS)
+                                      </Text>
+
+                                    </View>
+                                    <View style={styles.div2RowFlexStart}>
+
+                                      <View style={{ marginLeft: 18 }}>
+                                        <View>
+
+                                          {
+                                            gpsWeathCondition.code == 1000 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1000.png')}
+                                                  style={{
+                                                    width: 100,
+                                                    height: 80,
+                                                  }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            gpsWeathCondition.code == 1003 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1003.png')}
+                                                  style={{
+                                                    width: 100,
+                                                    height: 80,
+                                                  }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            gpsWeathCondition.code == 1006 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1006.png')}
+                                                  style={{
+                                                    width: 100,
+                                                    height: 80,
+                                                  }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            gpsWeathCondition.code == 1009 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1009.png')}
+                                                  style={{
+                                                    width: 100,
+                                                    height: 80,
+                                                  }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            gpsWeathCondition.code == 1063 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1063.png')}
+                                                  style={{
+                                                    width: 100,
+                                                    height: 80,
+                                                  }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            gpsWeathCondition.code == 1087 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1087.png')}
+                                                  style={{
+                                                    width: 100,
+                                                    height: 80,
+                                                  }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            gpsWeathCondition.code == 1135 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1135.png')}
+                                                  style={{
+                                                    width: 100,
+                                                    height: 80,
+                                                  }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            gpsWeathCondition.code == 1135 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1135.png')}
+                                                  style={{
+                                                    width: 100,
+                                                    height: 80,
+                                                  }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            gpsWeathCondition.code == 1150 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1150.png')}
+                                                  style={{
+                                                    width: 100,
+                                                    height: 80,
+                                                  }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            gpsWeathCondition.code == 1153 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1153.png')}
+                                                  style={{
+                                                    width: 100,
+                                                    height: 80,
+                                                  }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            gpsWeathCondition.code == 1171 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1171.png')}
+                                                  style={{
+                                                    width: 100,
+                                                    height: 80,
+                                                  }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            gpsWeathCondition.code == 1180 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1180.png')}
+                                                  style={{
+                                                    width: 100,
+                                                    height: 80,
+                                                  }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            gpsWeathCondition.code == 1183 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1183.png')}
+                                                  style={{
+
+                                                    width: 100,
+                                                    height: 80,
+                                                  }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            gpsWeathCondition.code == 1186 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1186.png')}
+                                                  style={{
+
+                                                    width: 100,
+                                                    height: 80,
+                                                  }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            gpsWeathCondition.code == 1189 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1189.png')}
+                                                  style={{
+
+                                                    width: 100,
+                                                    height: 80,
+                                                  }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            gpsWeathCondition.code == 1193 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1193.png')}
+                                                  style={{
+
+                                                    width: 100,
+                                                    height: 80,
+                                                  }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            gpsWeathCondition.code == 1195 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1195.png')}
+                                                  style={{
+                                                    width: 100,
+                                                    height: 80,
+                                                  }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            gpsWeathCondition.code == 1198 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1198.png')}
+                                                  style={{
+
+                                                    width: 100,
+                                                    height: 80,
+                                                  }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            gpsWeathCondition.code == 1201 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1201.png')}
+                                                  style={{
+
+                                                    width: 100,
+                                                    height: 80,
+                                                  }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            gpsWeathCondition.code == 1240 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1240.png')}
+                                                  style={{
+
+                                                    width: 100,
+                                                    height: 80,
+                                                  }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            gpsWeathCondition.code == 1243 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1243.png')}
+                                                  style={{
+
+                                                    width: 100,
+                                                    height: 80,
+                                                  }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            gpsWeathCondition.code == 1246 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1246.png')}
+                                                  style={{
+
+                                                    width: 100,
+                                                    height: 80,
+                                                  }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            gpsWeathCondition.code == 1249 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1249.png')}
+                                                  style={{
+
+                                                    width: 100,
+                                                    height: 80,
+                                                  }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            gpsWeathCondition.code == 1273 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1273.png')}
+                                                  style={{
+
+                                                    width: 100,
+                                                    height: 80,
+                                                  }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            gpsWeathCondition.code == 1276 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1276.png')}
+                                                  style={{
+                                                    width: 100,
+                                                    height: 80,
+                                                  }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {/* <Text>{gpsWeathCondition.code}</Text> */}
+                                        </View>
+                                      </View>
+
+                                      <View style={{ marginRight: 10 }}>
+                                        <Text
+                                          style={{
+                                            fontSize: 16,
+                                            fontWeight: '800',
+                                            color: '#3E7E55',
+                                            paddingLeft: 20,
+                                          }}>
+                                          Ave. Temp
+                                        </Text>
+                                        <View style={{ flexDirection: 'row' }}>
+                                          <Text
+                                            style={{
+                                              fontSize: 28,
+                                              fontWeight: '800',
+                                              paddingLeft: 20,
+                                              color: '#276653',
+                                            }}>
+                                            {gpsWeathData.avgtemp_c}°C
+                                          </Text>
+                                          <Icon
+                                            name={'thermometer'}
+                                            color={'#276653'}
+                                            size={23}
+                                            style={{ width: 20 }}
+                                          />
+                                        </View>
+                                        <Text
+                                          style={{
+                                            fontSize: 14,
+                                            fontWeight: '800',
+                                            paddingLeft: 1,
+                                            color: '#3E7E55',
+                                            paddingLeft: 20,
+                                            flexWrap: 'wrap',
+                                            alignItems: 'flex-start',
+                                          }}>
+                                          {gpsWeathCondition.text}
+                                        </Text>
+                                      </View>
+                                    </View>
+                                  </View>
+                                </View>
+                              </TouchableOpacity>
+                            </View>
+
+                            {/* List */}
+                            {/* <View>
+                              <Text style={{color:'red'}}>Location {holdlocation}</Text>
+                            </View> */}
+
+                            {/* Adams */}
+                            {
+                              <View>
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    setLOCATION('Adams')
+                                    WeatherClose()
+                                  }}>
+                                  <View style={styles.dashboardLocationDay}>
+                                    <View
+                                      style={[
+                                        styles.cardDashboardLocations,
+                                        styles.cardDashboardLocationsProp,
+                                        { marginBottom: 8 },
+                                      ]}>
+                                      <View
+                                        style={{
+                                          marginBottom: 10,
+                                          flexDirection: 'row',
+                                        }}>
+                                        <Icon
+                                          name={'map'}
+                                          color={'#276653'}
+                                          size={25}
+                                          style={{ width: 30 }}
+                                        />
+                                        <Text
+                                          style={{
+                                            fontSize: 18,
+                                            fontWeight: '800',
+                                            justifyContent: 'flex-end',
+                                            color: '#276653',
+                                          }}>
+                                          {adamloc.name}
+                                        </Text>
+                                      </View>
+                                      <View style={styles.div2RowFlexStart}>
+
+
+                                        <View style={{ marginLeft: 18 }}>
+                                          {
+                                            adamIcon.code == 1000 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1000.png')}
+                                                  style={{ width: 80, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            adamIcon.code == 1003 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1003.png')}
+                                                  style={{ width: 80, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            adamIcon.code == 1006 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1006.png')}
+                                                  style={{ width: 80, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            adamIcon.code == 1009 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1009.png')}
+                                                  style={{ width: 80, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            adamIcon.code == 1063 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1063.png')}
+                                                  style={{ width: 80, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            adamIcon.code == 1087 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1087.png')}
+                                                  style={{ width: 80, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            adamIcon.code == 1135 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1135.png')}
+                                                  style={{ width: 80, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            adamIcon.code == 1135 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1135.png')}
+                                                  style={{ width: 80, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            adamIcon.code == 1150 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1150.png')}
+                                                  style={{ width: 80, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            adamIcon.code == 1153 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1153.png')}
+                                                  style={{ width: 80, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            adamIcon.code == 1171 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1171.png')}
+                                                  style={{ width: 80, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            adamIcon.code == 1180 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1180.png')}
+                                                  style={{ width: 80, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            adamIcon.code == 1183 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1183.png')}
+                                                  style={{ width: 80, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            adamIcon.code == 1186 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1186.png')}
+                                                  style={{ width: 80, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            adamIcon.code == 1189 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1189.png')}
+                                                  style={{ width: 80, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            adamIcon.code == 1193 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1193.png')}
+                                                  style={{ width: 80, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            adamIcon.code == 1195 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1195.png')}
+                                                  style={{ width: 80, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            adamIcon.code == 1198 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1198.png')}
+                                                  style={{ width: 80, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            adamIcon.code == 1201 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1201.png')}
+                                                  style={{ width: 80, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            adamIcon.code == 1240 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1240.png')}
+                                                  style={{ width: 80, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            adamIcon.code == 1243 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1243.png')}
+                                                  style={{ width: 80, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            adamIcon.code == 1246 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1246.png')}
+                                                  style={{ width: 80, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            adamIcon.code == 1249 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1249.png')}
+                                                  style={{ width: 80, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            adamIcon.code == 1273 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1273.png')}
+                                                  style={{ width: 80, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            adamIcon.code == 1276 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1276.png')}
+                                                  style={{ width: 80, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+
+                                        </View>
+
+
+                                        <View style={{ marginRight: 10 }}>
+                                          <Text
+                                            style={{
+                                              fontSize: 16,
+                                              fontWeight: '800',
+                                              color: '#3E7E55',
+                                              paddingLeft: 20,
+                                            }}>
+                                            Ave. Temp
+                                          </Text>
+                                          <View style={{ flexDirection: 'row' }}>
+                                            <Text
+                                              style={{
+                                                fontSize: 28,
+                                                fontWeight: '800',
+                                                paddingLeft: 20,
+                                                color: '#276653',
+                                              }}>
+                                              {adamData.maxtemp_c}
+                                            </Text>
+                                            <Icon
+                                              name={'thermometer'}
+                                              color={'#276653'}
+                                              size={23}
+                                              style={{ width: 20 }}
+                                            />
+                                          </View>
+                                          <Text
+                                            style={{
+                                              fontSize: 14,
+                                              fontWeight: '800',
+                                              paddingLeft: 1,
+                                              color: '#3E7E55',
+                                              paddingLeft: 20,
+                                              flexWrap: 'wrap',
+                                              alignItems: 'flex-start',
+                                            }}>
+                                            {adamCondition.text}
+                                          </Text>
+                                        </View>
+                                      </View>
+                                    </View>
+                                  </View>
+                                </TouchableOpacity>
+                              </View>
+                            }
+
+
+                            {/* Bacarra */}
+                            {
+                              <View>
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    setLOCATION('Bacarra');
+                                    WeatherClose()
+                                  }}>
+                                  <View style={styles.dashboardLocationDay}>
+                                    <View
+                                      style={[
+                                        styles.cardDashboardLocations,
+                                        styles.cardDashboardLocationsProp,
+                                        { marginBottom: 8 },
+                                      ]}>
+                                      <View
+                                        style={{
+                                          marginBottom: 10,
+                                          flexDirection: 'row',
+                                        }}>
+                                        <Icon
+                                          name={'map'}
+                                          color={'#276653'}
+                                          size={25}
+                                          style={{ width: 30 }}
+                                        />
+                                        <Text
+                                          style={{
+                                            fontSize: 18,
+                                            fontWeight: '800',
+                                            justifyContent: 'flex-end',
+                                            color: '#276653',
+                                          }}>
+                                          {bacarraloc.name}
+                                        </Text>
+                                      </View>
+                                      <View style={styles.div2RowFlexStart}>
+                                        <View style={{ marginLeft: 18 }}>
+                                          {
+                                            bacarraIcon.code == 1000 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1000.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            bacarraIcon.code == 1003 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1003.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            bacarraIcon.code == 1006 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1006.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            bacarraIcon.code == 1009 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1009.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            bacarraIcon.code == 1063 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1063.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            bacarraIcon.code == 1087 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1087.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            bacarraIcon.code == 1135 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1135.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            bacarraIcon.code == 1135 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1135.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            bacarraIcon.code == 1150 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1150.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            bacarraIcon.code == 1153 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1153.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            bacarraIcon.code == 1171 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1171.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            bacarraIcon.code == 1180 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1180.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            bacarraIcon.code == 1183 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1183.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            bacarraIcon.code == 1186 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1186.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            bacarraIcon.code == 1189 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1189.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            bacarraIcon.code == 1193 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1193.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            bacarraIcon.code == 1195 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1195.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            bacarraIcon.code == 1198 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1198.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            bacarraIcon.code == 1201 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1201.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            bacarraIcon.code == 1240 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1240.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            bacarraIcon.code == 1243 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1243.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            bacarraIcon.code == 1249 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1249.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            bacarraIcon.code == 1273 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1273.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            bacarraIcon.code == 1276 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1276.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {/* <Text>{adamIcon.code}</Text> 
+
+                                          <Image resizeMode={'contain'}
+                                            source={require('../../src/images/sunRAsset2.png')}
+                                            style={{
+                                              paddingleft: 20,
+                                              width: 80,
+                                              height: 80,
+                                            }}
+                                          /> */}
+                                        </View>
+                                        <View style={{ marginRight: 10 }}>
+                                          <Text
+                                            style={{
+                                              fontSize: 16,
+                                              fontWeight: '800',
+                                              color: '#3E7E55',
+                                              paddingLeft: 20,
+                                            }}>
+                                            Ave. Temp
+                                          </Text>
+                                          <View style={{ flexDirection: 'row' }}>
+                                            <Text
+                                              style={{
+                                                fontSize: 28,
+                                                fontWeight: '800',
+                                                paddingLeft: 20,
+                                                color: '#276653',
+                                              }}>
+                                              {bacarraData.maxtemp_c}
+                                            </Text>
+                                            <Icon
+                                              name={'thermometer'}
+                                              color={'#276653'}
+                                              size={23}
+                                              style={{ width: 20 }}
+                                            />
+                                          </View>
+                                          <Text
+                                            style={{
+                                              fontSize: 14,
+                                              fontWeight: '800',
+                                              paddingLeft: 1,
+                                              color: '#3E7E55',
+                                              paddingLeft: 20,
+                                              flexWrap: 'wrap',
+                                              alignItems: 'flex-start',
+                                            }}>
+                                            {bacarraCondition.text}
+                                          </Text>
+                                        </View>
+                                      </View>
+                                    </View>
+                                  </View>
+                                </TouchableOpacity>
+                              </View>
+                            }
+
+                            {/* Badoc */}
+                            {
+                              <View>
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    setLOCATION('Badoc');
+                                    WeatherClose()
+                                  }}>
+                                  <View style={styles.dashboardLocationDay}>
+                                    <View
+                                      style={[
+                                        styles.cardDashboardLocations,
+                                        styles.cardDashboardLocationsProp,
+                                        { marginBottom: 8 },
+                                      ]}>
+                                      <View
+                                        style={{
+                                          marginBottom: 10,
+                                          flexDirection: 'row',
+                                        }}>
+                                        <Icon
+                                          name={'map'}
+                                          color={'#276653'}
+                                          size={25}
+                                          style={{ width: 30 }}
+                                        />
+                                        <Text
+                                          style={{
+                                            fontSize: 18,
+                                            fontWeight: '800',
+                                            justifyContent: 'flex-end',
+                                            color: '#276653',
+                                          }}>
+                                          {badocloc.name}
+                                        </Text>
+                                      </View>
+                                      <View style={styles.div2RowFlexStart}>
+                                        <View style={{ marginLeft: 18 }}>
+                                          {
+                                            bacarraIcon.code == 1000 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1000.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            bacarraIcon.code == 1003 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1003.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            bacarraIcon.code == 1006 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1006.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            bacarraIcon.code == 1009 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1009.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            bacarraIcon.code == 1063 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1063.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            bacarraIcon.code == 1087 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1087.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            bacarraIcon.code == 1135 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1135.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            bacarraIcon.code == 1135 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1135.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            bacarraIcon.code == 1150 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1150.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            bacarraIcon.code == 1153 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1153.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            bacarraIcon.code == 1171 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1171.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            bacarraIcon.code == 1180 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1180.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            bacarraIcon.code == 1183 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1183.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            bacarraIcon.code == 1186 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1186.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            bacarraIcon.code == 1189 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1189.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            bacarraIcon.code == 1193 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1193.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            bacarraIcon.code == 1195 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1195.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            bacarraIcon.code == 1198 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1198.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            bacarraIcon.code == 1201 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1201.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            bacarraIcon.code == 1240 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1240.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            bacarraIcon.code == 1243 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1243.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            bacarraIcon.code == 1249 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1249.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            bacarraIcon.code == 1273 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1273.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            bacarraIcon.code == 1276 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1276.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {/* <Text>{adamIcon.code}</Text> 
+
+                                          <Image
+                                            source={require('../../src/images/sunRAsset2.png')}
+                                            style={{
+                                              paddingleft: 20,
+                                              width: 80,
+                                              height: 80,
+                                            }}
+                                          /> */}
+                                        </View>
+                                        <View style={{ marginRight: 10 }}>
+                                          <Text
+                                            style={{
+                                              fontSize: 16,
+                                              fontWeight: '800',
+                                              color: '#3E7E55',
+                                              paddingLeft: 20,
+                                            }}>
+                                            Ave. Temp
+                                          </Text>
+                                          <View style={{ flexDirection: 'row' }}>
+                                            <Text
+                                              style={{
+                                                fontSize: 28,
+                                                fontWeight: '800',
+                                                paddingLeft: 20,
+                                                color: '#276653',
+                                              }}>
+                                              {badocData.maxtemp_c}
+                                            </Text>
+                                            <Icon
+                                              name={'thermometer'}
+                                              color={'#276653'}
+                                              size={23}
+                                              style={{ width: 20 }}
+                                            />
+                                          </View>
+                                          <Text
+                                            style={{
+                                              fontSize: 14,
+                                              fontWeight: '800',
+                                              paddingLeft: 1,
+                                              color: '#3E7E55',
+                                              paddingLeft: 20,
+                                              flexWrap: 'wrap',
+                                            }}>
+                                            {badocCondition.text}
+                                          </Text>
+                                        </View>
+                                      </View>
+                                    </View>
+                                  </View>
+                                </TouchableOpacity>
+                              </View>
+                            }
+
+                            {/* bangui */}
+                            {
+                              <View>
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    setLOCATION('Bangui');
+                                    WeatherClose()
+                                  }}>
+                                  <View style={styles.dashboardLocationDay}>
+                                    <View
+                                      style={[
+                                        styles.cardDashboardLocations,
+                                        styles.cardDashboardLocationsProp,
+                                        { marginBottom: 8 },
+                                      ]}>
+                                      <View
+                                        style={{
+                                          marginBottom: 10,
+                                          flexDirection: 'row',
+                                        }}>
+                                        <Icon
+                                          name={'map'}
+                                          color={'#276653'}
+                                          size={25}
+                                          style={{ width: 30 }}
+                                        />
+                                        <Text
+                                          style={{
+                                            fontSize: 18,
+                                            fontWeight: '800',
+                                            justifyContent: 'flex-end',
+                                            color: '#276653',
+                                          }}>
+                                          {banguiloc.name}
+                                        </Text>
+                                      </View>
+                                      <View style={styles.div2RowFlexStart}>
+                                        <View style={{ marginLeft: 18 }}>
+                                          {
+                                            banguiIcon.code == 1000 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1000.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            banguiIcon.code == 1003 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1003.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            banguiIcon.code == 1006 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1006.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            banguiIcon.code == 1009 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1009.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            banguiIcon.code == 1063 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1063.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            banguiIcon.code == 1087 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1087.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            banguiIcon.code == 1135 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1135.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            banguiIcon.code == 1135 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1135.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            banguiIcon.code == 1150 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1150.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            banguiIcon.code == 1153 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1153.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            banguiIcon.code == 1171 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1171.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            banguiIcon.code == 1180 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1180.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            banguiIcon.code == 1183 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1183.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            banguiIcon.code == 1186 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1186.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            banguiIcon.code == 1189 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1189.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            banguiIcon.code == 1193 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1193.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            banguiIcon.code == 1195 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1195.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            banguiIcon.code == 1198 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1198.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            banguiIcon.code == 1201 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1201.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            banguiIcon.code == 1240 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1240.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            banguiIcon.code == 1243 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1243.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            banguiIcon.code == 1249 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1249.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            banguiIcon.code == 1273 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1273.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            banguiIcon.code == 1276 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1276.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {/* <Text>{adamIcon.code}</Text> 
+
+                                          <Image
+                                            source={require('../../src/images/sunRAsset2.png')}
+                                            style={{
+                                              paddingleft: 20,
+                                              width: 80,
+                                              height: 80,
+                                            }}
+                                          /> */}
+                                        </View>
+                                        <View style={{ marginRight: 10 }}>
+                                          <Text
+                                            style={{
+                                              fontSize: 16,
+                                              fontWeight: '800',
+                                              color: '#3E7E55',
+                                              paddingLeft: 20,
+                                            }}>
+                                            Ave. Temp
+                                          </Text>
+                                          <View style={{ flexDirection: 'row' }}>
+                                            <Text
+                                              style={{
+                                                fontSize: 28,
+                                                fontWeight: '800',
+                                                paddingLeft: 20,
+                                                color: '#276653',
+                                              }}>
+                                              {banguiData.maxtemp_c}
+                                            </Text>
+                                            <Icon
+                                              name={'thermometer'}
+                                              color={'#276653'}
+                                              size={23}
+                                              style={{ width: 20 }}
+                                            />
+                                          </View>
+                                          <Text
+                                            style={{
+                                              fontSize: 14,
+                                              fontWeight: '800',
+                                              paddingLeft: 1,
+                                              color: '#3E7E55',
+                                              paddingLeft: 20,
+                                              flexWrap: 'wrap',
+                                              alignItems: 'flex-start',
+                                            }}>
+                                            {banguiCondition.text}
+                                          </Text>
+                                        </View>
+                                      </View>
+                                    </View>
+                                  </View>
+                                </TouchableOpacity>
+                              </View>
+                            }
+
+                            {/* Batac */}
+                            {
+                              <View>
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    setLOCATION('Batac');
+                                    WeatherClose()
+                                  }}>
+                                  <View style={styles.dashboardLocationDay}>
+                                    <View
+                                      style={[
+                                        styles.cardDashboardLocations,
+                                        styles.cardDashboardLocationsProp,
+                                        { marginBottom: 8 },
+                                      ]}>
+                                      <View
+                                        style={{
+                                          marginBottom: 10,
+                                          flexDirection: 'row',
+                                        }}>
+                                        <Icon
+                                          name={'map'}
+                                          color={'#276653'}
+                                          size={25}
+                                          style={{ width: 30 }}
+                                        />
+                                        <Text
+                                          style={{
+                                            fontSize: 18,
+                                            fontWeight: '800',
+                                            justifyContent: 'flex-end',
+                                            color: '#276653',
+                                          }}>
+                                          {batacloc.name}
+                                        </Text>
+                                      </View>
+                                      <View style={styles.div2RowFlexStart}>
+                                        <View style={{ marginLeft: 18 }}>
+                                          {
+                                            batacIcon.code == 1000 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1000.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            batacIcon.code == 1003 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1003.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            batacIcon.code == 1006 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1006.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            batacIcon.code == 1009 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1009.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            batacIcon.code == 1063 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1063.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            batacIcon.code == 1087 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1087.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            batacIcon.code == 1135 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1135.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            batacIcon.code == 1135 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1135.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            batacIcon.code == 1150 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1150.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            batacIcon.code == 1153 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1153.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            batacIcon.code == 1171 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1171.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            batacIcon.code == 1180 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1180.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            batacIcon.code == 1183 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1183.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            batacIcon.code == 1186 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1186.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            batacIcon.code == 1189 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1189.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            batacIcon.code == 1193 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1193.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            batacIcon.code == 1195 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1195.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            batacIcon.code == 1198 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1198.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            batacIcon.code == 1201 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1201.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            batacIcon.code == 1240 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1240.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            batacIcon.code == 1243 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1243.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            batacIcon.code == 1249 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1249.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            batacIcon.code == 1273 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1273.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            batacIcon.code == 1276 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1276.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {/* <Text>{adamIcon.code}</Text> 
+
+                                          <Image
+                                            source={require('../../src/images/sunRAsset2.png')}
+                                            style={{
+                                              paddingleft: 20,
+                                              width: 80,
+                                              height: 80,
+                                            }}
+                                          /> */}
+                                        </View>
+                                        <View style={{ marginRight: 10 }}>
+                                          <Text
+                                            style={{
+                                              fontSize: 16,
+                                              fontWeight: '800',
+                                              color: '#3E7E55',
+                                              paddingLeft: 20,
+                                            }}>
+                                            Ave. Temp
+                                          </Text>
+                                          <View style={{ flexDirection: 'row' }}>
+                                            <Text
+                                              style={{
+                                                fontSize: 28,
+                                                fontWeight: '800',
+                                                paddingLeft: 20,
+                                                color: '#276653',
+                                              }}>
+                                              {batacData.maxtemp_c}
+                                            </Text>
+                                            <Icon
+                                              name={'thermometer'}
+                                              color={'#276653'}
+                                              size={23}
+                                              style={{ width: 20 }}
+                                            />
+                                          </View>
+                                          <Text
+                                            style={{
+                                              fontSize: 14,
+                                              fontWeight: '800',
+                                              paddingLeft: 1,
+                                              color: '#3E7E55',
+                                              paddingLeft: 20,
+                                              flexWrap: 'wrap',
+                                              alignItems: 'flex-start',
+                                            }}>
+                                            {batacCondition.text}
+                                          </Text>
+                                        </View>
+                                      </View>
+                                    </View>
+                                  </View>
+                                </TouchableOpacity>
+                              </View>
+                            }
+
+                            {/* Burgos */}
+                            {
+                              <View>
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    setLOCATION('Burgos');
+                                    WeatherClose()
+                                  }}>
+                                  <View style={styles.dashboardLocationDay}>
+                                    <View
+                                      style={[
+                                        styles.cardDashboardLocations,
+                                        styles.cardDashboardLocationsProp,
+                                        { marginBottom: 8 },
+                                      ]}>
+                                      <View
+                                        style={{
+                                          marginBottom: 10,
+                                          flexDirection: 'row',
+                                        }}>
+                                        <Icon
+                                          name={'map'}
+                                          color={'#276653'}
+                                          size={25}
+                                          style={{ width: 30 }}
+                                        />
+                                        <Text
+                                          style={{
+                                            fontSize: 18,
+                                            fontWeight: '800',
+                                            justifyContent: 'flex-end',
+                                            color: '#276653',
+                                          }}>
+                                          {burgosloc.name}
+                                        </Text>
+                                      </View>
+                                      <View style={styles.div2RowFlexStart}>
+                                        <View style={{ marginLeft: 18 }}>
+                                          {
+                                            burgosIcon.code == 1000 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1000.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            burgosIcon.code == 1003 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1003.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            burgosIcon.code == 1006 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1006.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            burgosIcon.code == 1009 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1009.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            burgosIcon.code == 1063 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1063.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            burgosIcon.code == 1087 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1087.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            burgosIcon.code == 1135 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1135.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            burgosIcon.code == 1135 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1135.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            burgosIcon.code == 1150 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1150.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            burgosIcon.code == 1153 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1153.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            burgosIcon.code == 1171 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1171.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            burgosIcon.code == 1180 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1180.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            burgosIcon.code == 1183 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1183.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            burgosIcon.code == 1186 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1186.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            burgosIcon.code == 1189 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1189.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            burgosIcon.code == 1193 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1193.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            burgosIcon.code == 1195 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1195.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            burgosIcon.code == 1198 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1198.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            burgosIcon.code == 1201 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1201.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            burgosIcon.code == 1240 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1240.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            burgosIcon.code == 1243 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1243.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            burgosIcon.code == 1249 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1249.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            burgosIcon.code == 1273 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1273.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            burgosIcon.code == 1276 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1276.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {/* <TexburgosIcont>{adamIcon.code}</Text> 
+
+                                          <Image
+                                            source={require('../../src/images/sunRAsset2.png')}
+                                            style={{
+                                              paddingleft: 20,
+                                              width: 80,
+                                              height: 80,
+                                            }}
+                                          /> */}
+                                        </View>
+                                        <View style={{ marginRight: 10 }}>
+                                          <Text
+                                            style={{
+                                              fontSize: 16,
+                                              fontWeight: '800',
+                                              color: '#3E7E55',
+                                              paddingLeft: 20,
+                                            }}>
+                                            Ave. Temp
+                                          </Text>
+                                          <View style={{ flexDirection: 'row' }}>
+                                            <Text
+                                              style={{
+                                                fontSize: 28,
+                                                fontWeight: '800',
+                                                paddingLeft: 20,
+                                                color: '#276653',
+                                              }}>
+                                              {burgosData.maxtemp_c}
+                                            </Text>
+                                            <Icon
+                                              name={'thermometer'}
+                                              color={'#276653'}
+                                              size={23}
+                                              style={{ width: 20 }}
+                                            />
+                                          </View>
+                                          <Text
+                                            style={{
+                                              fontSize: 14,
+                                              fontWeight: '800',
+                                              paddingLeft: 1,
+                                              color: '#3E7E55',
+                                              paddingLeft: 20,
+                                              flexWrap: 'wrap',
+                                              alignItems: 'flex-start',
+                                            }}>
+                                            {burgosCondition.text}
+                                          </Text>
+                                        </View>
+                                      </View>
+                                    </View>
+                                  </View>
+                                </TouchableOpacity>
+                              </View>
+                            }
+
+                            {/* Carasi */}
+                            {
+                              <View>
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    setLOCATION('Carasi');
+                                    WeatherClose()
+                                  }}>
+                                  <View style={styles.dashboardLocationDay}>
+                                    <View
+                                      style={[
+                                        styles.cardDashboardLocations,
+                                        styles.cardDashboardLocationsProp,
+                                        { marginBottom: 8 },
+                                      ]}>
+                                      <View
+                                        style={{
+                                          marginBottom: 10,
+                                          flexDirection: 'row',
+                                        }}>
+                                        <Icon
+                                          name={'map'}
+                                          color={'#276653'}
+                                          size={25}
+                                          style={{ width: 30 }}
+                                        />
+                                        <Text
+                                          style={{
+                                            fontSize: 18,
+                                            fontWeight: '800',
+                                            justifyContent: 'flex-end',
+                                            color: '#276653',
+                                          }}>
+                                          {carasiloc.name}
+                                        </Text>
+                                      </View>
+                                      <View style={styles.div2RowFlexStart}>
+                                        <View style={{ marginLeft: 18 }}>
+                                          {
+                                            carasiIcon.code == 1000 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1000.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            carasiIcon.code == 1003 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1003.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            carasiIcon.code == 1006 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1006.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            carasiIcon.code == 1009 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1009.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            carasiIcon.code == 1063 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1063.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            carasiIcon.code == 1087 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1087.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            carasiIcon.code == 1135 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1135.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            carasiIcon.code == 1135 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1135.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            carasiIcon.code == 1150 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1150.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            carasiIcon.code == 1153 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1153.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            carasiIcon.code == 1171 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1171.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            carasiIcon.code == 1180 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1180.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            carasiIcon.code == 1183 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1183.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            carasiIcon.code == 1186 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1186.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            carasiIcon.code == 1189 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1189.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            carasiIcon.code == 1193 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1193.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            carasiIcon.code == 1195 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1195.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            carasiIcon.code == 1198 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1198.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            carasiIcon.code == 1201 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1201.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            carasiIcon.code == 1240 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1240.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            carasiIcon.code == 1243 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1243.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            carasiIcon.code == 1249 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1249.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            carasiIcon.code == 1273 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1273.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            carasiIcon.code == 1276 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1276.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {/* <Text>{adamIcon.code}</Text> 
+
+                                          <Image
+                                            source={require('../../src/images/sunRAsset2.png')}
+                                            style={{
+                                              paddingleft: 20,
+                                              width: 80,
+                                              height: 80,
+                                            }}
+                                          /> */}
+                                        </View>
+                                        <View style={{ marginRight: 10 }}>
+                                          <Text
+                                            style={{
+                                              fontSize: 16,
+                                              fontWeight: '800',
+                                              color: '#3E7E55',
+                                              paddingLeft: 20,
+                                            }}>
+                                            Ave. Temp
+                                          </Text>
+                                          <View style={{ flexDirection: 'row' }}>
+                                            <Text
+                                              style={{
+                                                fontSize: 28,
+                                                fontWeight: '800',
+                                                paddingLeft: 20,
+                                                color: '#276653',
+                                              }}>
+                                              {carasiData.maxtemp_c}
+                                            </Text>
+                                            <Icon
+                                              name={'thermometer'}
+                                              color={'#276653'}
+                                              size={23}
+                                              style={{ width: 20 }}
+                                            />
+                                          </View>
+                                          <Text
+                                            style={{
+                                              fontSize: 14,
+                                              fontWeight: '800',
+                                              paddingLeft: 1,
+                                              color: '#3E7E55',
+                                              paddingLeft: 20,
+                                              flexWrap: 'wrap',
+                                              alignItems: 'flex-start',
+                                            }}>
+                                            {carasiCondition.text}
+                                          </Text>
+                                        </View>
+                                      </View>
+                                    </View>
+                                  </View>
+                                </TouchableOpacity>
+                              </View>
+                            }
+
+                            {/* Currimao */}
+                            {
+                              <View>
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    setLOCATION('Currimao');
+                                    WeatherClose()
+                                  }}>
+                                  <View style={styles.dashboardLocationDay}>
+                                    <View
+                                      style={[
+                                        styles.cardDashboardLocations,
+                                        styles.cardDashboardLocationsProp,
+                                        { marginBottom: 8 },
+                                      ]}>
+                                      <View
+                                        style={{
+                                          marginBottom: 10,
+                                          flexDirection: 'row',
+                                        }}>
+                                        <Icon
+                                          name={'map'}
+                                          color={'#276653'}
+                                          size={25}
+                                          style={{ width: 30 }}
+                                        />
+                                        <Text
+                                          style={{
+                                            fontSize: 18,
+                                            fontWeight: '800',
+                                            justifyContent: 'flex-end',
+                                            color: '#276653',
+                                          }}>
+                                          {currimaoloc.name}
+                                        </Text>
+                                      </View>
+                                      <View style={styles.div2RowFlexStart}>
+                                        <View style={{ marginLeft: 18 }}>
+                                          {
+                                            currimaoIcon.code == 1000 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1000.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            currimaoIcon.code == 1003 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1003.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            currimaoIcon.code == 1006 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1006.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            currimaoIcon.code == 1009 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1009.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            currimaoIcon.code == 1063 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1063.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            currimaoIcon.code == 1087 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1087.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            currimaoIcon.code == 1135 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1135.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            currimaoIcon.code == 1135 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1135.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            currimaoIcon.code == 1150 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1150.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            currimaoIcon.code == 1153 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1153.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            currimaoIcon.code == 1171 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1171.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            currimaoIcon.code == 1180 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1180.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            currimaoIcon.code == 1183 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1183.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            currimaoIcon.code == 1186 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1186.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            currimaoIcon.code == 1189 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1189.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            currimaoIcon.code == 1193 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1193.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            currimaoIcon.code == 1195 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1195.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            currimaoIcon.code == 1198 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1198.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            currimaoIcon.code == 1201 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1201.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            currimaoIcon.code == 1240 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1240.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            currimaoIcon.code == 1243 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1243.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            currimaoIcon.code == 1249 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1249.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            currimaoIcon.code == 1273 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1273.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            currimaoIcon.code == 1276 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1276.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {/* <Text>{adamIcon.code}</Text> 
+
+                                          <Image
+                                            source={require('../../src/images/sunRAsset2.png')}
+                                            style={{
+                                              paddingleft: 20,
+                                              width: 80,
+                                              height: 80,
+                                            }}
+                                          /> */}
+                                        </View>
+                                        <View style={{ marginRight: 10 }}>
+                                          <Text
+                                            style={{
+                                              fontSize: 16,
+                                              fontWeight: '800',
+                                              color: '#3E7E55',
+                                              paddingLeft: 20,
+                                            }}>
+                                            Ave. Temp
+                                          </Text>
+                                          <View style={{ flexDirection: 'row' }}>
+                                            <Text
+                                              style={{
+                                                fontSize: 28,
+                                                fontWeight: '800',
+                                                paddingLeft: 20,
+                                                color: '#276653',
+                                              }}>
+                                              {currimaoData.maxtemp_c}
+                                            </Text>
+                                            <Icon
+                                              name={'thermometer'}
+                                              color={'#276653'}
+                                              size={23}
+                                              style={{ width: 20 }}
+                                            />
+                                          </View>
+                                          <Text
+                                            style={{
+                                              fontSize: 14,
+                                              fontWeight: '800',
+                                              paddingLeft: 1,
+                                              color: '#3E7E55',
+                                              paddingLeft: 20,
+                                              flexWrap: 'wrap',
+                                              alignItems: 'flex-start',
+                                            }}>
+                                            {currimaoCondition.text}
+                                          </Text>
+                                        </View>
+                                      </View>
+                                    </View>
+                                  </View>
+                                </TouchableOpacity>
+                              </View>
+                            }
+
+                            {/* Dingras */}
+                            {
+                              <View>
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    setLOCATION('Dingras');
+                                    WeatherClose()
+                                  }}>
+                                  <View style={styles.dashboardLocationDay}>
+                                    <View
+                                      style={[
+                                        styles.cardDashboardLocations,
+                                        styles.cardDashboardLocationsProp,
+                                        { marginBottom: 8 },
+                                      ]}>
+                                      <View
+                                        style={{
+                                          marginBottom: 10,
+                                          flexDirection: 'row',
+                                        }}>
+                                        <Icon
+                                          name={'map'}
+                                          color={'#276653'}
+                                          size={25}
+                                          style={{ width: 30 }}
+                                        />
+                                        <Text
+                                          style={{
+                                            fontSize: 18,
+                                            fontWeight: '800',
+                                            justifyContent: 'flex-end',
+                                            color: '#276653',
+                                          }}>
+                                          {dingrasloc.name}
+                                        </Text>
+                                      </View>
+                                      <View style={styles.div2RowFlexStart}>
+                                        <View style={{ marginLeft: 18 }}>
+                                          {
+                                            dingrasIcon.code == 1000 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1000.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            dingrasIcon.code == 1003 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1003.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            dingrasIcon.code == 1006 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1006.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            dingrasIcon.code == 1009 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1009.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            dingrasIcon.code == 1063 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1063.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            dingrasIcon.code == 1087 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1087.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            dingrasIcon.code == 1135 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1135.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            dingrasIcon.code == 1135 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1135.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            dingrasIcon.code == 1150 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1150.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            dingrasIcon.code == 1153 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1153.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            dingrasIcon.code == 1171 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1171.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            dingrasIcon.code == 1180 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1180.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            dingrasIcon.code == 1183 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1183.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            dingrasIcon.code == 1186 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1186.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            dingrasIcon.code == 1189 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1189.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            dingrasIcon.code == 1193 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1193.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            dingrasIcon.code == 1195 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1195.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            dingrasIcon.code == 1198 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1198.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            dingrasIcon.code == 1201 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1201.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            dingrasIcon.code == 1240 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1240.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            dingrasIcon.code == 1243 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1243.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            dingrasIcon.code == 1249 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1249.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            dingrasIcon.code == 1273 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1273.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            dingrasIcon.code == 1276 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1276.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {/* <Text>{adamIcon.code}</Text> 
+
+                                          <Image
+                                            source={require('../../src/images/sunRAsset2.png')}
+                                            style={{
+                                              paddingleft: 20,
+                                              width: 80,
+                                              height: 80,
+                                            }}
+                                          /> */}
+                                        </View>
+                                        <View style={{ marginRight: 10 }}>
+                                          <Text
+                                            style={{
+                                              fontSize: 16,
+                                              fontWeight: '800',
+                                              color: '#3E7E55',
+                                              paddingLeft: 20,
+                                            }}>
+                                            Ave. Temp
+                                          </Text>
+                                          <View style={{ flexDirection: 'row' }}>
+                                            <Text
+                                              style={{
+                                                fontSize: 28,
+                                                fontWeight: '800',
+                                                paddingLeft: 20,
+                                                color: '#276653',
+                                              }}>
+                                              {dingrasData.maxtemp_c}
+                                            </Text>
+                                            <Icon
+                                              name={'thermometer'}
+                                              color={'#276653'}
+                                              size={23}
+                                              style={{ width: 20 }}
+                                            />
+                                          </View>
+                                          <Text
+                                            style={{
+                                              fontSize: 14,
+                                              fontWeight: '800',
+                                              paddingLeft: 1,
+                                              color: '#3E7E55',
+                                              paddingLeft: 20,
+                                              flexWrap: 'wrap',
+                                              alignItems: 'flex-start',
+                                            }}>
+                                            {dingrasCondition.text}
+                                          </Text>
+                                        </View>
+                                      </View>
+                                    </View>
+                                  </View>
+                                </TouchableOpacity>
+                              </View>
+                            }
+
+                            {/* Dumalneg */}
+                            {
+                              <View>
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    setLOCATION('Dumalneg');
+                                    WeatherClose()
+                                  }}>
+                                  <View style={styles.dashboardLocationDay}>
+                                    <View
+                                      style={[
+                                        styles.cardDashboardLocations,
+                                        styles.cardDashboardLocationsProp,
+                                        { marginBottom: 8 },
+                                      ]}>
+                                      <View
+                                        style={{
+                                          marginBottom: 10,
+                                          flexDirection: 'row',
+                                        }}>
+                                        <Icon
+                                          name={'map'}
+                                          color={'#276653'}
+                                          size={25}
+                                          style={{ width: 30 }}
+                                        />
+                                        <Text
+                                          style={{
+                                            fontSize: 18,
+                                            fontWeight: '800',
+                                            justifyContent: 'flex-end',
+                                            color: '#276653',
+                                          }}>
+                                          {dumalnegloc.name}
+                                        </Text>
+                                      </View>
+                                      <View style={styles.div2RowFlexStart}>
+                                        <View style={{ marginLeft: 18 }}>
+                                          {
+                                            dumalnegIcon.code == 1000 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1000.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            dumalnegIcon.code == 1003 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1003.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            dumalnegIcon.code == 1006 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1006.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            dumalnegIcon.code == 1009 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1009.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            dumalnegIcon.code == 1063 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1063.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            dumalnegIcon.code == 1087 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1087.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            dumalnegIcon.code == 1135 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1135.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            dumalnegIcon.code == 1135 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1135.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            dumalnegIcon.code == 1150 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1150.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            dumalnegIcon.code == 1153 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1153.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            dumalnegIcon.code == 1171 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1171.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            dumalnegIcon.code == 1180 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1180.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            dumalnegIcon.code == 1183 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1183.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            dumalnegIcon.code == 1186 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1186.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            dumalnegIcon.code == 1189 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1189.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            dumalnegIcon.code == 1193 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1193.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            dumalnegIcon.code == 1195 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1195.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            dumalnegIcon.code == 1198 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1198.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            dumalnegIcon.code == 1201 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1201.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            dumalnegIcon.code == 1240 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1240.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            dumalnegIcon.code == 1243 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1243.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            dumalnegIcon.code == 1249 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1249.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            dumalnegIcon.code == 1273 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1273.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            dumalnegIcon.code == 1276 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1276.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {/* <Text>{adamIcon.code}</Text> 
+
+                                          <Image
+                                            source={require('../../src/images/sunRAsset2.png')}
+                                            style={{
+                                              paddingleft: 20,
+                                              width: 80,
+                                              height: 80,
+                                            }}
+                                          /> */}
+                                        </View>
+                                        <View style={{ marginRight: 10 }}>
+                                          <Text
+                                            style={{
+                                              fontSize: 16,
+                                              fontWeight: '800',
+                                              color: '#3E7E55',
+                                              paddingLeft: 20,
+                                            }}>
+                                            Ave. Temp
+                                          </Text>
+                                          <View style={{ flexDirection: 'row' }}>
+                                            <Text
+                                              style={{
+                                                fontSize: 28,
+                                                fontWeight: '800',
+                                                paddingLeft: 20,
+                                                color: '#276653',
+                                              }}>
+                                              {dumalnegData.maxtemp_c}
+                                            </Text>
+                                            <Icon
+                                              name={'thermometer'}
+                                              color={'#276653'}
+                                              size={23}
+                                              style={{ width: 20 }}
+                                            />
+                                          </View>
+                                          <Text
+                                            style={{
+                                              fontSize: 14,
+                                              fontWeight: '800',
+                                              paddingLeft: 1,
+                                              color: '#3E7E55',
+                                              paddingLeft: 20,
+                                              flexWrap: 'wrap',
+                                              alignItems: 'flex-start',
+                                            }}>
+                                            {dumalnegCondition.text}
+                                          </Text>
+                                        </View>
+                                      </View>
+                                    </View>
+                                  </View>
+                                </TouchableOpacity>
+                              </View>
+                            }
+
+                            {/* Espiritu */}
+                            {
+                              <View>
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    setLOCATION('Espiritu');
+                                    WeatherClose()
+                                  }}>
+                                  <View style={styles.dashboardLocationDay}>
+                                    <View
+                                      style={[
+                                        styles.cardDashboardLocations,
+                                        styles.cardDashboardLocationsProp,
+                                        { marginBottom: 8 },
+                                      ]}>
+                                      <View
+                                        style={{
+                                          marginBottom: 10,
+                                          flexDirection: 'row',
+                                        }}>
+                                        <Icon
+                                          name={'map'}
+                                          color={'#276653'}
+                                          size={25}
+                                          style={{ width: 30 }}
+                                        />
+                                        <Text
+                                          style={{
+                                            fontSize: 18,
+                                            fontWeight: '800',
+                                            justifyContent: 'flex-end',
+                                            color: '#276653',
+                                          }}>
+                                          {espirituloc.name}
+                                        </Text>
+                                      </View>
+                                      <View style={styles.div2RowFlexStart}>
+                                        <View style={{ marginLeft: 18 }}>
+                                          {
+                                            espirituIcon.code == 1000 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1000.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            espirituIcon.code == 1003 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1003.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            espirituIcon.code == 1006 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1006.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            espirituIcon.code == 1009 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1009.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            espirituIcon.code == 1063 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1063.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            espirituIcon.code == 1087 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1087.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            espirituIcon.code == 1135 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1135.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            espirituIcon.code == 1135 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1135.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            espirituIcon.code == 1150 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1150.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            espirituIcon.code == 1153 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1153.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            espirituIcon.code == 1171 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1171.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            espirituIcon.code == 1180 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1180.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            espirituIcon.code == 1183 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1183.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            espirituIcon.code == 1186 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1186.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            espirituIcon.code == 1189 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1189.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            espirituIcon.code == 1193 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1193.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            espirituIcon.code == 1195 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1195.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            espirituIcon.code == 1198 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1198.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            espirituIcon.code == 1201 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1201.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            espirituIcon.code == 1240 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1240.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            espirituIcon.code == 1243 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1243.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            espirituIcon.code == 1249 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1249.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            espirituIcon.code == 1273 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1273.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            espirituIcon.code == 1276 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1276.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {/* <Text>{adamIcon.code}</Text> 
+
+                                          <Image
+                                            source={require('../../src/images/sunRAsset2.png')}
+                                            style={{
+                                              paddingleft: 20,
+                                              width: 80,
+                                              height: 80,
+                                            }}
+                                          /> */}
+                                        </View>
+                                        <View style={{ marginRight: 10 }}>
+                                          <Text
+                                            style={{
+                                              fontSize: 16,
+                                              fontWeight: '800',
+                                              color: '#3E7E55',
+                                              paddingLeft: 20,
+                                            }}>
+                                            Ave. Temp
+                                          </Text>
+                                          <View style={{ flexDirection: 'row' }}>
+                                            <Text
+                                              style={{
+                                                fontSize: 28,
+                                                fontWeight: '800',
+                                                paddingLeft: 20,
+                                                color: '#276653',
+                                              }}>
+                                              {espirituData.maxtemp_c}
+                                            </Text>
+                                            <Icon
+                                              name={'thermometer'}
+                                              color={'#276653'}
+                                              size={23}
+                                              style={{ width: 20 }}
+                                            />
+                                          </View>
+                                          <Text
+                                            style={{
+                                              fontSize: 14,
+                                              fontWeight: '800',
+                                              paddingLeft: 1,
+                                              color: '#3E7E55',
+                                              paddingLeft: 20,
+                                              flexWrap: 'wrap',
+                                              alignItems: 'flex-start',
+                                            }}>
+                                            {espirituCondition.text}
+                                          </Text>
+                                        </View>
+                                      </View>
+                                    </View>
+                                  </View>
+                                </TouchableOpacity>
+                              </View>
+                            }
+
+                            {/* Laoag */}
+                            {
+                              <View>
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    setLOCATION('Laoag');
+                                    WeatherClose()
+                                  }}>
+                                  <View style={styles.dashboardLocationDay}>
+                                    <View
+                                      style={[
+                                        styles.cardDashboardLocations,
+                                        styles.cardDashboardLocationsProp,
+                                        { marginBottom: 8 },
+                                      ]}>
+                                      <View
+                                        style={{
+                                          marginBottom: 10,
+                                          flexDirection: 'row',
+                                        }}>
+                                        <Icon
+                                          name={'map'}
+                                          color={'#276653'}
+                                          size={25}
+                                          style={{ width: 30 }}
+                                        />
+                                        <Text
+                                          style={{
+                                            fontSize: 18,
+                                            fontWeight: '800',
+                                            justifyContent: 'flex-end',
+                                            color: '#276653',
+                                          }}>
+                                          {laoagloc.name}
+                                        </Text>
+                                      </View>
+                                      <View style={styles.div2RowFlexStart}>
+                                        <View style={{ marginLeft: 18 }}>
+                                          {
+                                            laoagIcon.code == 1000 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1000.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            laoagIcon.code == 1003 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1003.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            laoagIcon.code == 1006 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1006.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            laoagIcon.code == 1009 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1009.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            laoagIcon.code == 1063 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1063.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            laoagIcon.code == 1087 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1087.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            laoagIcon.code == 1135 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1135.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            laoagIcon.code == 1135 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1135.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            laoagIcon.code == 1150 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1150.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            laoagIcon.code == 1153 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1153.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            laoagIcon.code == 1171 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1171.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            laoagIcon.code == 1180 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1180.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            laoagIcon.code == 1183 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1183.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            laoagIcon.code == 1186 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1186.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            laoagIcon.code == 1189 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1189.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            laoagIcon.code == 1193 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1193.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            laoagIcon.code == 1195 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1195.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            laoagIcon.code == 1198 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1198.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            laoagIcon.code == 1201 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1201.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            laoagIcon.code == 1240 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1240.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            laoagIcon.code == 1243 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1243.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            laoagIcon.code == 1249 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1249.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            laoagIcon.code == 1273 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1273.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            laoagIcon.code == 1276 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1276.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {/* <Text>{adamIcon.code}</Text> 
+
+                                          <Image
+                                            source={require('../../src/images/sunRAsset2.png')}
+                                            style={{
+                                              paddingleft: 20,
+                                              width: 80,
+                                              height: 80,
+                                            }}
+                                          /> */}
+                                        </View>
+                                        <View style={{ marginRight: 10 }}>
+                                          <Text
+                                            style={{
+                                              fontSize: 16,
+                                              fontWeight: '800',
+                                              color: '#3E7E55',
+                                              paddingLeft: 20,
+                                            }}>
+                                            Ave. Temp
+                                          </Text>
+                                          <View style={{ flexDirection: 'row' }}>
+                                            <Text
+                                              style={{
+                                                fontSize: 28,
+                                                fontWeight: '800',
+                                                paddingLeft: 20,
+                                                color: '#276653',
+                                              }}>
+                                              {laoagData.maxtemp_c}
+                                            </Text>
+                                            <Icon
+                                              name={'thermometer'}
+                                              color={'#276653'}
+                                              size={23}
+                                              style={{ width: 20 }}
+                                            />
+                                          </View>
+                                          <Text
+                                            style={{
+                                              fontSize: 14,
+                                              fontWeight: '800',
+                                              paddingLeft: 1,
+                                              color: '#3E7E55',
+                                              paddingLeft: 20,
+                                              flexWrap: 'wrap',
+                                              alignItems: 'flex-start',
+                                            }}>
+                                            {laoagCondition.text}
+                                          </Text>
+                                        </View>
+                                      </View>
+                                    </View>
+                                  </View>
+                                </TouchableOpacity>
+                              </View>
+                            }
+
+                            {/* Marcos */}
+                            {
+                              <View>
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    setLOCATION('Marcos');
+                                    WeatherClose()
+                                  }}>
+                                  <View style={styles.dashboardLocationDay}>
+                                    <View
+                                      style={[
+                                        styles.cardDashboardLocations,
+                                        styles.cardDashboardLocationsProp,
+                                        { marginBottom: 8 },
+                                      ]}>
+                                      <View
+                                        style={{
+                                          marginBottom: 10,
+                                          flexDirection: 'row',
+                                        }}>
+                                        <Icon
+                                          name={'map'}
+                                          color={'#276653'}
+                                          size={25}
+                                          style={{ width: 30 }}
+                                        />
+                                        <Text
+                                          style={{
+                                            fontSize: 18,
+                                            fontWeight: '800',
+                                            justifyContent: 'flex-end',
+                                            color: '#276653',
+                                          }}>
+                                          {marcosloc.name}
+                                        </Text>
+                                      </View>
+                                      <View style={styles.div2RowFlexStart}>
+                                        <View style={{ marginLeft: 18 }}>
+                                          {
+                                            marcosIcon.code == 1000 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1000.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            marcosIcon.code == 1003 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1003.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            marcosIcon.code == 1006 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1006.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            marcosIcon.code == 1009 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1009.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            marcosIcon.code == 1063 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1063.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            marcosIcon.code == 1087 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1087.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            marcosIcon.code == 1135 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1135.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            marcosIcon.code == 1135 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1135.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            marcosIcon.code == 1150 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1150.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            marcosIcon.code == 1153 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1153.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            marcosIcon.code == 1171 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1171.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            marcosIcon.code == 1180 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1180.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            marcosIcon.code == 1183 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1183.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            marcosIcon.code == 1186 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1186.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            marcosIcon.code == 1189 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1189.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            marcosIcon.code == 1193 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1193.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            marcosIcon.code == 1195 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1195.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            marcosIcon.code == 1198 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1198.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            marcosIcon.code == 1201 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1201.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            marcosIcon.code == 1240 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1240.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            marcosIcon.code == 1243 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1243.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            marcosIcon.code == 1249 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1249.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            marcosIcon.code == 1273 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1273.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            marcosIcon.code == 1276 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1276.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {/* <Text>{adamIcon.code}</Text> 
+
+                                          <Image
+                                            source={require('../../src/images/sunRAsset2.png')}
+                                            style={{
+                                              paddingleft: 20,
+                                              width: 80,
+                                              height: 80,
+                                            }}
+                                          /> */}
+                                        </View>
+                                        <View style={{ marginRight: 10 }}>
+                                          <Text
+                                            style={{
+                                              fontSize: 16,
+                                              fontWeight: '800',
+                                              color: '#3E7E55',
+                                              paddingLeft: 20,
+                                            }}>
+                                            Ave. Temp
+                                          </Text>
+                                          <View style={{ flexDirection: 'row' }}>
+                                            <Text
+                                              style={{
+                                                fontSize: 28,
+                                                fontWeight: '800',
+                                                paddingLeft: 20,
+                                                color: '#276653',
+                                              }}>
+                                              {marcosData.maxtemp_c}
+                                            </Text>
+                                            <Icon
+                                              name={'thermometer'}
+                                              color={'#276653'}
+                                              size={23}
+                                              style={{ width: 20 }}
+                                            />
+                                          </View>
+                                          <Text
+                                            style={{
+                                              fontSize: 14,
+                                              fontWeight: '800',
+                                              paddingLeft: 1,
+                                              color: '#3E7E55',
+                                              paddingLeft: 20,
+                                              flexWrap: 'wrap',
+                                              alignItems: 'flex-start',
+                                            }}>
+                                            {marcosCondition.text}
+                                          </Text>
+                                        </View>
+                                      </View>
+                                    </View>
+                                  </View>
+                                </TouchableOpacity>
+                              </View>
+                            }
+
+                            {/* Nueva Era */}
+                            {
+                              <View>
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    setLOCATION('Nuevaera');
+                                    WeatherClose()
+                                  }}>
+                                  <View style={styles.dashboardLocationDay}>
+                                    <View
+                                      style={[
+                                        styles.cardDashboardLocations,
+                                        styles.cardDashboardLocationsProp,
+                                        { marginBottom: 8 },
+                                      ]}>
+                                      <View
+                                        style={{
+                                          marginBottom: 10,
+                                          flexDirection: 'row',
+                                        }}>
+                                        <Icon
+                                          name={'map'}
+                                          color={'#276653'}
+                                          size={25}
+                                          style={{ width: 30 }}
+                                        />
+                                        <Text
+                                          style={{
+                                            fontSize: 18,
+                                            fontWeight: '800',
+                                            justifyContent: 'flex-end',
+                                            color: '#276653',
+                                          }}>
+                                          {nuevaeraloc.name}
+                                        </Text>
+                                      </View>
+                                      <View style={styles.div2RowFlexStart}>
+                                        <View style={{ marginLeft: 18 }}>
+                                          {
+                                            nuevaeraIcon.code == 1000 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1000.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            nuevaeraIcon.code == 1003 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1003.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            nuevaeraIcon.code == 1006 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1006.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            nuevaeraIcon.code == 1009 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1009.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            nuevaeraIcon.code == 1063 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1063.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            nuevaeraIcon.code == 1087 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1087.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            nuevaeraIcon.code == 1135 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1135.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            nuevaeraIcon.code == 1135 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1135.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            nuevaeraIcon.code == 1150 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1150.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            nuevaeraIcon.code == 1153 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1153.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            nuevaeraIcon.code == 1171 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1171.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            nuevaeraIcon.code == 1180 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1180.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            nuevaeraIcon.code == 1183 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1183.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            nuevaeraIcon.code == 1186 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1186.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            nuevaeraIcon.code == 1189 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1189.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            nuevaeraIcon.code == 1193 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1193.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            nuevaeraIcon.code == 1195 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1195.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            nuevaeraIcon.code == 1198 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1198.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            nuevaeraIcon.code == 1201 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1201.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            nuevaeraIcon.code == 1240 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1240.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            nuevaeraIcon.code == 1243 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1243.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            nuevaeraIcon.code == 1249 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1249.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            nuevaeraIcon.code == 1273 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1273.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            nuevaeraIcon.code == 1276 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1276.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {/* <Text>{adamIcon.code}</Text> 
+
+                                          <Image
+                                            source={require('../../src/images/sunRAsset2.png')}
+                                            style={{
+                                              paddingleft: 20,
+                                              width: 80,
+                                              height: 80,
+                                            }}
+                                          /> */}
+                                        </View>
+                                        <View style={{ marginRight: 10 }}>
+                                          <Text
+                                            style={{
+                                              fontSize: 16,
+                                              fontWeight: '800',
+                                              color: '#3E7E55',
+                                              paddingLeft: 20,
+                                            }}>
+                                            Ave. Temp
+                                          </Text>
+                                          <View style={{ flexDirection: 'row' }}>
+                                            <Text
+                                              style={{
+                                                fontSize: 28,
+                                                fontWeight: '800',
+                                                paddingLeft: 20,
+                                                color: '#276653',
+                                              }}>
+                                              {nuevaeraData.maxtemp_c}
+                                            </Text>
+                                            <Icon
+                                              name={'thermometer'}
+                                              color={'#276653'}
+                                              size={23}
+                                              style={{ width: 20 }}
+                                            />
+                                          </View>
+                                          <Text
+                                            style={{
+                                              fontSize: 14,
+                                              fontWeight: '800',
+                                              paddingLeft: 1,
+                                              color: '#3E7E55',
+                                              paddingLeft: 20,
+                                              flexWrap: 'wrap',
+                                              alignItems: 'flex-start',
+                                            }}>
+                                            {nuevaeraCondition.text}
+                                          </Text>
+                                        </View>
+                                      </View>
+                                    </View>
+                                  </View>
+                                </TouchableOpacity>
+                              </View>
+                            }
+
+                            {/* Pagudpud */}
+                            {
+                              <View>
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    setLOCATION('Adams');
+                                    WeatherClose()
+                                  }}>
+                                  <View style={styles.dashboardLocationDay}>
+                                    <View
+                                      style={[
+                                        styles.cardDashboardLocations,
+                                        styles.cardDashboardLocationsProp,
+                                        { marginBottom: 8 },
+                                      ]}>
+                                      <View
+                                        style={{
+                                          marginBottom: 10,
+                                          flexDirection: 'row',
+                                        }}>
+                                        <Icon
+                                          name={'map'}
+                                          color={'#276653'}
+                                          size={25}
+                                          style={{ width: 30 }}
+                                        />
+                                        <Text
+                                          style={{
+                                            fontSize: 18,
+                                            fontWeight: '800',
+                                            justifyContent: 'flex-end',
+                                            color: '#276653',
+                                          }}>
+                                          {pagudpudloc.name}
+                                        </Text>
+                                      </View>
+                                      <View style={styles.div2RowFlexStart}>
+                                        <View style={{ marginLeft: 18 }}>
+                                          {
+                                            pagudpudIcon.code == 1000 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1000.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            pagudpudIcon.code == 1003 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1003.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            pagudpudIcon.code == 1006 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1006.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            pagudpudIcon.code == 1009 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1009.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            pagudpudIcon.code == 1063 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1063.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            pagudpudIcon.code == 1087 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1087.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            pagudpudIcon.code == 1135 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1135.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            pagudpudIcon.code == 1135 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1135.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            pagudpudIcon.code == 1150 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1150.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            pagudpudIcon.code == 1153 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1153.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            pagudpudIcon.code == 1171 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1171.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            pagudpudIcon.code == 1180 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1180.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            pagudpudIcon.code == 1183 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1183.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            pagudpudIcon.code == 1186 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1186.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            pagudpudIcon.code == 1189 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1189.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            pagudpudIcon.code == 1193 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1193.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            pagudpudIcon.code == 1195 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1195.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            pagudpudIcon.code == 1198 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1198.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            pagudpudIcon.code == 1201 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1201.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            pagudpudIcon.code == 1240 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1240.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            pagudpudIcon.code == 1243 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1243.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            pagudpudIcon.code == 1249 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1249.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            pagudpudIcon.code == 1273 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1273.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            pagudpudIcon.code == 1276 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1276.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {/* <Text>{adamIcon.code}</Text> 
+
+                                          <Image
+                                            source={require('../../src/images/sunRAsset2.png')}
+                                            style={{
+                                              paddingleft: 20,
+                                              width: 80,
+                                              height: 80,
+                                            }}
+                                          /> */}
+                                        </View>
+                                        <View style={{ marginRight: 10 }}>
+                                          <Text
+                                            style={{
+                                              fontSize: 16,
+                                              fontWeight: '800',
+                                              color: '#3E7E55',
+                                              paddingLeft: 20,
+                                            }}>
+                                            Ave. Temp
+                                          </Text>
+                                          <View style={{ flexDirection: 'row' }}>
+                                            <Text
+                                              style={{
+                                                fontSize: 28,
+                                                fontWeight: '800',
+                                                paddingLeft: 20,
+                                                color: '#276653',
+                                              }}>
+                                              {pagudpudData.maxtemp_c}
+                                            </Text>
+                                            <Icon
+                                              name={'thermometer'}
+                                              color={'#276653'}
+                                              size={23}
+                                              style={{ width: 20 }}
+                                            />
+                                          </View>
+                                          <Text
+                                            style={{
+                                              fontSize: 14,
+                                              fontWeight: '800',
+                                              paddingLeft: 1,
+                                              color: '#3E7E55',
+                                              paddingLeft: 20,
+                                              flexWrap: 'wrap',
+                                              alignItems: 'flex-start',
+                                            }}>
+                                            {pagudpudCondition.text}
+                                          </Text>
+                                        </View>
+                                      </View>
+                                    </View>
+                                  </View>
+                                </TouchableOpacity>
+                              </View>
+                            }
+
+                            {/* Paoay */}
+                            {
+                              <View>
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    setLOCATION('Paoay');
+                                    WeatherClose()
+                                  }}>
+                                  <View style={styles.dashboardLocationDay}>
+                                    <View
+                                      style={[
+                                        styles.cardDashboardLocations,
+                                        styles.cardDashboardLocationsProp,
+                                        { marginBottom: 8 },
+                                      ]}>
+                                      <View
+                                        style={{
+                                          marginBottom: 10,
+                                          flexDirection: 'row',
+                                        }}>
+                                        <Icon
+                                          name={'map'}
+                                          color={'#276653'}
+                                          size={25}
+                                          style={{ width: 30 }}
+                                        />
+                                        <Text
+                                          style={{
+                                            fontSize: 18,
+                                            fontWeight: '800',
+                                            justifyContent: 'flex-end',
+                                            color: '#276653',
+                                          }}>
+                                          {paoayloc.name}
+                                        </Text>
+                                      </View>
+                                      <View style={styles.div2RowFlexStart}>
+                                        <View style={{ marginLeft: 18 }}>
+                                          {
+                                            paoayIcon.code == 1000 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1000.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            paoayIcon.code == 1003 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1003.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            paoayIcon.code == 1006 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1006.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            paoayIcon.code == 1009 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1009.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            paoayIcon.code == 1063 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1063.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            paoayIcon.code == 1087 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1087.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            paoayIcon.code == 1135 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1135.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            paoayIcon.code == 1135 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1135.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            paoayIcon.code == 1150 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1150.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            paoayIcon.code == 1153 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1153.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            paoayIcon.code == 1171 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1171.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            paoayIcon.code == 1180 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1180.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            paoayIcon.code == 1183 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1183.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            paoayIcon.code == 1186 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1186.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            paoayIcon.code == 1189 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1189.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            paoayIcon.code == 1193 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1193.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            paoayIcon.code == 1195 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1195.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            paoayIcon.code == 1198 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1198.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            paoayIcon.code == 1201 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1201.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            paoayIcon.code == 1240 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1240.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            paoayIcon.code == 1243 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1243.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            paoayIcon.code == 1249 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1249.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            paoayIcon.code == 1273 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1273.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            paoayIcon.code == 1276 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1276.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {/* <Text>{adamIcon.code}</Text> 
+
+                                          <Image
+                                            source={require('../../src/images/sunRAsset2.png')}
+                                            style={{
+                                              paddingleft: 20,
+                                              width: 80,
+                                              height: 80,
+                                            }}
+                                          /> */}
+                                        </View>
+                                        <View style={{ marginRight: 10 }}>
+                                          <Text
+                                            style={{
+                                              fontSize: 16,
+                                              fontWeight: '800',
+                                              color: '#3E7E55',
+                                              paddingLeft: 20,
+                                            }}>
+                                            Ave. Temp
+                                          </Text>
+                                          <View style={{ flexDirection: 'row' }}>
+                                            <Text
+                                              style={{
+                                                fontSize: 28,
+                                                fontWeight: '800',
+                                                paddingLeft: 20,
+                                                color: '#276653',
+                                              }}>
+                                              {paoayData.maxtemp_c}
+                                            </Text>
+                                            <Icon
+                                              name={'thermometer'}
+                                              color={'#276653'}
+                                              size={23}
+                                              style={{ width: 20 }}
+                                            />
+                                          </View>
+                                          <Text
+                                            style={{
+                                              fontSize: 14,
+                                              fontWeight: '800',
+                                              paddingLeft: 1,
+                                              color: '#3E7E55',
+                                              paddingLeft: 20,
+                                              flexWrap: 'wrap',
+                                              alignItems: 'flex-start',
+                                            }}>
+                                            {paoayCondition.text}
+                                          </Text>
+                                        </View>
+                                      </View>
+                                    </View>
+                                  </View>
+                                </TouchableOpacity>
+                              </View>
+                            }
+
+                            {/* Pasuquin */}
+                            {
+                              <View>
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    setLOCATION('Adams');
+                                    WeatherClose()
+                                  }}>
+                                  <View style={styles.dashboardLocationDay}>
+                                    <View
+                                      style={[
+                                        styles.cardDashboardLocations,
+                                        styles.cardDashboardLocationsProp,
+                                        { marginBottom: 8 },
+                                      ]}>
+                                      <View
+                                        style={{
+                                          marginBottom: 10,
+                                          flexDirection: 'row',
+                                        }}>
+                                        <Icon
+                                          name={'map'}
+                                          color={'#276653'}
+                                          size={25}
+                                          style={{ width: 30 }}
+                                        />
+                                        <Text
+                                          style={{
+                                            fontSize: 18,
+                                            fontWeight: '800',
+                                            justifyContent: 'flex-end',
+                                            color: '#276653',
+                                          }}>
+                                          {pasuquinloc.name}
+                                        </Text>
+                                      </View>
+                                      <View style={styles.div2RowFlexStart}>
+                                        <View style={{ marginLeft: 18 }}>
+                                          {
+                                            pasuquinIcon.code == 1000 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1000.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            pasuquinIcon.code == 1003 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1003.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            pasuquinIcon.code == 1006 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1006.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            pasuquinIcon.code == 1009 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1009.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            pasuquinIcon.code == 1063 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1063.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            pasuquinIcon.code == 1087 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1087.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            pasuquinIcon.code == 1135 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1135.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            pasuquinIcon.code == 1135 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1135.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            pasuquinIcon.code == 1150 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1150.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            pasuquinIcon.code == 1153 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1153.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            pasuquinIcon.code == 1171 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1171.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            pasuquinIcon.code == 1180 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1180.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            pasuquinIcon.code == 1183 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1183.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            pasuquinIcon.code == 1186 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1186.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            pasuquinIcon.code == 1189 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1189.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            pasuquinIcon.code == 1193 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1193.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            pasuquinIcon.code == 1195 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1195.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            pasuquinIcon.code == 1198 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1198.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            pasuquinIcon.code == 1201 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1201.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            pasuquinIcon.code == 1240 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1240.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            pasuquinIcon.code == 1243 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1243.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            pasuquinIcon.code == 1249 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1249.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            pasuquinIcon.code == 1273 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1273.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            pasuquinIcon.code == 1276 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1276.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {/* <Text>{adamIcon.code}</Text> 
+
+                                          <Image
+                                            source={require('../../src/images/sunRAsset2.png')}
+                                            style={{
+                                              paddingleft: 20,
+                                              width: 80,
+                                              height: 80,
+                                            }}
+                                          /> */}
+                                        </View>
+                                        <View style={{ marginRight: 10 }}>
+                                          <Text
+                                            style={{
+                                              fontSize: 16,
+                                              fontWeight: '800',
+                                              color: '#3E7E55',
+                                              paddingLeft: 20,
+                                            }}>
+                                            Ave. Temp
+                                          </Text>
+                                          <View style={{ flexDirection: 'row' }}>
+                                            <Text
+                                              style={{
+                                                fontSize: 28,
+                                                fontWeight: '800',
+                                                paddingLeft: 20,
+                                                color: '#276653',
+                                              }}>
+                                              {pasuquinData.maxtemp_c}
+                                            </Text>
+                                            <Icon
+                                              name={'thermometer'}
+                                              color={'#276653'}
+                                              size={23}
+                                              style={{ width: 20 }}
+                                            />
+                                          </View>
+                                          <Text
+                                            style={{
+                                              fontSize: 14,
+                                              fontWeight: '800',
+                                              paddingLeft: 1,
+                                              color: '#3E7E55',
+                                              paddingLeft: 20,
+                                              flexWrap: 'wrap',
+                                              alignItems: 'flex-start',
+                                            }}>
+                                            {pasuquinCondition.text}
+                                          </Text>
+                                        </View>
+                                      </View>
+                                    </View>
+                                  </View>
+                                </TouchableOpacity>
+                              </View>
+                            }
+
+                            {/* Piddig */}
+                            {
+                              <View>
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    setLOCATION('Piddig');
+                                    WeatherClose()
+                                  }}>
+                                  <View style={styles.dashboardLocationDay}>
+                                    <View
+                                      style={[
+                                        styles.cardDashboardLocations,
+                                        styles.cardDashboardLocationsProp,
+                                        { marginBottom: 8 },
+                                      ]}>
+                                      <View
+                                        style={{
+                                          marginBottom: 10,
+                                          flexDirection: 'row',
+                                        }}>
+                                        <Icon
+                                          name={'map'}
+                                          color={'#276653'}
+                                          size={25}
+                                          style={{ width: 30 }}
+                                        />
+                                        <Text
+                                          style={{
+                                            fontSize: 18,
+                                            fontWeight: '800',
+                                            justifyContent: 'flex-end',
+                                            color: '#276653',
+                                          }}>
+                                          {piddigloc.name}
+                                        </Text>
+                                      </View>
+                                      <View style={styles.div2RowFlexStart}>
+                                        <View style={{ marginLeft: 18 }}>
+                                          {
+                                            piddigIcon.code == 1000 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1000.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            piddigIcon.code == 1003 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1003.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            piddigIcon.code == 1006 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1006.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            piddigIcon.code == 1009 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1009.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            piddigIcon.code == 1063 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1063.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            piddigIcon.code == 1087 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1087.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            piddigIcon.code == 1135 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1135.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            piddigIcon.code == 1135 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1135.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            piddigIcon.code == 1150 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1150.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            piddigIcon.code == 1153 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1153.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            piddigIcon.code == 1171 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1171.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            piddigIcon.code == 1180 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1180.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            piddigIcon.code == 1183 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1183.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            piddigIcon.code == 1186 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1186.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            piddigIcon.code == 1189 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1189.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            piddigIcon.code == 1193 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1193.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            piddigIcon.code == 1195 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1195.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            piddigIcon.code == 1198 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1198.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            piddigIcon.code == 1201 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1201.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            piddigIcon.code == 1240 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1240.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            piddigIcon.code == 1243 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1243.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            piddigIcon.code == 1249 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1249.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            piddigIcon.code == 1273 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1273.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            piddigIcon.code == 1276 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1276.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {/* <Text>{adamIcon.code}</Text> 
+
+                                          <Image
+                                            source={require('../../src/images/sunRAsset2.png')}
+                                            style={{
+                                              paddingleft: 20,
+                                              width: 80,
+                                              height: 80,
+                                            }}
+                                          /> */}
+                                        </View>
+                                        <View style={{ marginRight: 10 }}>
+                                          <Text
+                                            style={{
+                                              fontSize: 16,
+                                              fontWeight: '800',
+                                              color: '#3E7E55',
+                                              paddingLeft: 20,
+                                            }}>
+                                            Ave. Temp
+                                          </Text>
+                                          <View style={{ flexDirection: 'row' }}>
+                                            <Text
+                                              style={{
+                                                fontSize: 28,
+                                                fontWeight: '800',
+                                                paddingLeft: 20,
+                                                color: '#276653',
+                                              }}>
+                                              {piddigData.maxtemp_c}
+                                            </Text>
+                                            <Icon
+                                              name={'thermometer'}
+                                              color={'#276653'}
+                                              size={23}
+                                              style={{ width: 20 }}
+                                            />
+                                          </View>
+                                          <Text
+                                            style={{
+                                              fontSize: 14,
+                                              fontWeight: '800',
+                                              paddingLeft: 1,
+                                              color: '#3E7E55',
+                                              paddingLeft: 20,
+                                              flexWrap: 'wrap',
+                                              alignItems: 'flex-start',
+                                            }}>
+                                            {piddigCondition.text}
+                                          </Text>
+                                        </View>
+                                      </View>
+                                    </View>
+                                  </View>
+                                </TouchableOpacity>
+                              </View>
+                            }
+
+                            {/* Pinili */}
+                            {
+                              <View>
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    setLOCATION('Pinili');
+                                    WeatherClose()
+                                  }}>
+                                  <View style={styles.dashboardLocationDay}>
+                                    <View
+                                      style={[
+                                        styles.cardDashboardLocations,
+                                        styles.cardDashboardLocationsProp,
+                                        { marginBottom: 8 },
+                                      ]}>
+                                      <View
+                                        style={{
+                                          marginBottom: 10,
+                                          flexDirection: 'row',
+                                        }}>
+                                        <Icon
+                                          name={'map'}
+                                          color={'#276653'}
+                                          size={25}
+                                          style={{ width: 30 }}
+                                        />
+                                        <Text
+                                          style={{
+                                            fontSize: 18,
+                                            fontWeight: '800',
+                                            justifyContent: 'flex-end',
+                                            color: '#276653',
+                                          }}>
+                                          {pinililoc.name}
+                                        </Text>
+                                      </View>
+                                      <View style={styles.div2RowFlexStart}>
+                                        <View style={{ marginLeft: 18 }}>
+                                          {
+                                            piniliIcon.code == 1000 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1000.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            piniliIcon.code == 1003 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1003.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            piniliIcon.code == 1006 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1006.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            piniliIcon.code == 1009 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1009.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            piniliIcon.code == 1063 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1063.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            piniliIcon.code == 1087 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1087.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            piniliIcon.code == 1135 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1135.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            piniliIcon.code == 1135 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1135.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            piniliIcon.code == 1150 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1150.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            piniliIcon.code == 1153 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1153.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            piniliIcon.code == 1171 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1171.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            piniliIcon.code == 1180 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1180.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            piniliIcon.code == 1183 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1183.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            piniliIcon.code == 1186 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1186.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            piniliIcon.code == 1189 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1189.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            piniliIcon.code == 1193 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1193.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            piniliIcon.code == 1195 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1195.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            piniliIcon.code == 1198 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1198.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            piniliIcon.code == 1201 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1201.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            piniliIcon.code == 1240 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1240.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            piniliIcon.code == 1243 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1243.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            piniliIcon.code == 1249 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1249.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            piniliIcon.code == 1273 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1273.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            piniliIcon.code == 1276 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1276.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {/* <Text>{adamIcon.code}</Text> 
+
+                                          <Image
+                                            source={require('../../src/images/sunRAsset2.png')}
+                                            style={{
+                                              paddingleft: 20,
+                                              width: 80,
+                                              height: 80,
+                                            }}
+                                          /> */}
+                                        </View>
+                                        <View style={{ marginRight: 10 }}>
+                                          <Text
+                                            style={{
+                                              fontSize: 16,
+                                              fontWeight: '800',
+                                              color: '#3E7E55',
+                                              paddingLeft: 20,
+                                            }}>
+                                            Ave. Temp
+                                          </Text>
+                                          <View style={{ flexDirection: 'row' }}>
+                                            <Text
+                                              style={{
+                                                fontSize: 28,
+                                                fontWeight: '800',
+                                                paddingLeft: 20,
+                                                color: '#276653',
+                                              }}>
+                                              {piniliData.maxtemp_c}
+                                            </Text>
+                                            <Icon
+                                              name={'thermometer'}
+                                              color={'#276653'}
+                                              size={23}
+                                              style={{ width: 20 }}
+                                            />
+                                          </View>
+                                          <Text
+                                            style={{
+                                              fontSize: 14,
+                                              fontWeight: '800',
+                                              paddingLeft: 1,
+                                              color: '#3E7E55',
+                                              paddingLeft: 20,
+                                              flexWrap: 'wrap',
+                                              alignItems: 'flex-start',
+                                            }}>
+                                            {piniliCondition.text}
+                                          </Text>
+                                        </View>
+                                      </View>
+                                    </View>
+                                  </View>
+                                </TouchableOpacity>
+                              </View>
+                            }
+
+                            {/* San Nicolas */}
+                            {
+                              <View>
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    setLOCATION('San Nicolas');
+                                    WeatherClose()
+                                  }}>
+                                  <View style={styles.dashboardLocationDay}>
+                                    <View
+                                      style={[
+                                        styles.cardDashboardLocations,
+                                        styles.cardDashboardLocationsProp,
+                                        { marginBottom: 8 },
+                                      ]}>
+                                      <View
+                                        style={{
+                                          marginBottom: 10,
+                                          flexDirection: 'row',
+                                        }}>
+                                        <Icon
+                                          name={'map'}
+                                          color={'#276653'}
+                                          size={25}
+                                          style={{ width: 30 }}
+                                        />
+                                        <Text
+                                          style={{
+                                            fontSize: 18,
+                                            fontWeight: '800',
+                                            justifyContent: 'flex-end',
+                                            color: '#276653',
+                                          }}>
+                                          {sanicolasloc.name}
+                                        </Text>
+                                      </View>
+                                      <View style={styles.div2RowFlexStart}>
+                                        <View style={{ marginLeft: 18 }}>
+                                          {
+                                            sanicolasIcon.code == 1000 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1000.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            sanicolasIcon.code == 1003 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1003.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            sanicolasIcon.code == 1006 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1006.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            sanicolasIcon.code == 1009 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1009.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            sanicolasIcon.code == 1063 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1063.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            sanicolasIcon.code == 1087 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1087.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            sanicolasIcon.code == 1135 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1135.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            sanicolasIcon.code == 1135 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1135.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            sanicolasIcon.code == 1150 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1150.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            sanicolasIcon.code == 1153 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1153.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            sanicolasIcon.code == 1171 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1171.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            sanicolasIcon.code == 1180 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1180.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            sanicolasIcon.code == 1183 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1183.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            sanicolasIcon.code == 1186 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1186.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            sanicolasIcon.code == 1189 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1189.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            sanicolasIcon.code == 1193 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1193.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            sanicolasIcon.code == 1195 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1195.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            sanicolasIcon.code == 1198 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1198.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            sanicolasIcon.code == 1201 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1201.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            sanicolasIcon.code == 1240 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1240.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            sanicolasIcon.code == 1243 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1243.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            sanicolasIcon.code == 1249 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1249.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            sanicolasIcon.code == 1273 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1273.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            sanicolasIcon.code == 1276 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1276.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {/* <Text>{adamIcon.code}</Text> 
+
+                                          <Image
+                                            source={require('../../src/images/sunRAsset2.png')}
+                                            style={{
+                                              paddingleft: 20,
+                                              width: 80,
+                                              height: 80,
+                                            }}
+                                          /> */}
+                                        </View>
+                                        <View style={{ marginRight: 10 }}>
+                                          <Text
+                                            style={{
+                                              fontSize: 16,
+                                              fontWeight: '800',
+                                              color: '#3E7E55',
+                                              paddingLeft: 20,
+                                            }}>
+                                            Ave. Temp
+                                          </Text>
+                                          <View style={{ flexDirection: 'row' }}>
+                                            <Text
+                                              style={{
+                                                fontSize: 28,
+                                                fontWeight: '800',
+                                                paddingLeft: 20,
+                                                color: '#276653',
+                                              }}>
+                                              {sanicolasData.maxtemp_c}
+                                            </Text>
+                                            <Icon
+                                              name={'thermometer'}
+                                              color={'#276653'}
+                                              size={23}
+                                              style={{ width: 20 }}
+                                            />
+                                          </View>
+                                          <Text
+                                            style={{
+                                              fontSize: 14,
+                                              fontWeight: '800',
+                                              paddingLeft: 1,
+                                              color: '#3E7E55',
+                                              paddingLeft: 20,
+                                              flexWrap: 'wrap',
+                                              alignItems: 'flex-start',
+                                            }}>
+                                            {sanicolasCondition.text}
+                                          </Text>
+                                        </View>
+                                      </View>
+                                    </View>
+                                  </View>
+                                </TouchableOpacity>
+                              </View>
+                            }
+
+                            {/* Sarrat */}
+                            {
+                              <View>
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    setLOCATION('Sarrat');
+                                    WeatherClose()
+                                  }}>
+                                  <View style={styles.dashboardLocationDay}>
+                                    <View
+                                      style={[
+                                        styles.cardDashboardLocations,
+                                        styles.cardDashboardLocationsProp,
+                                        { marginBottom: 8 },
+                                      ]}>
+                                      <View
+                                        style={{
+                                          marginBottom: 10,
+                                          flexDirection: 'row',
+                                        }}>
+                                        <Icon
+                                          name={'map'}
+                                          color={'#276653'}
+                                          size={25}
+                                          style={{ width: 30 }}
+                                        />
+                                        <Text
+                                          style={{
+                                            fontSize: 18,
+                                            fontWeight: '800',
+                                            justifyContent: 'flex-end',
+                                            color: '#276653',
+                                          }}>
+                                          {sarratloc.name}
+                                        </Text>
+                                      </View>
+                                      <View style={styles.div2RowFlexStart}>
+                                        <View style={{ marginLeft: 18 }}>
+                                          {
+                                            sarratIcon.code == 1000 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1000.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            sarratIcon.code == 1003 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1003.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            sarratIcon.code == 1006 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1006.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            sarratIcon.code == 1009 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1009.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            sarratIcon.code == 1063 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1063.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            sarratIcon.code == 1087 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1087.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            sarratIcon.code == 1135 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1135.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            sarratIcon.code == 1135 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1135.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            sarratIcon.code == 1150 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1150.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            sarratIcon.code == 1153 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1153.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            sarratIcon.code == 1171 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1171.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            sarratIcon.code == 1180 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1180.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            sarratIcon.code == 1183 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1183.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            sarratIcon.code == 1186 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1186.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            sarratIcon.code == 1189 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1189.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            sarratIcon.code == 1193 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1193.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            sarratIcon.code == 1195 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1195.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            sarratIcon.code == 1198 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1198.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            sarratIcon.code == 1201 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1201.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            sarratIcon.code == 1240 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1240.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            sarratIcon.code == 1243 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1243.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            sarratIcon.code == 1249 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1249.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            sarratIcon.code == 1273 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1273.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            sarratIcon.code == 1276 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1276.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {/* <Text>{adamIcon.code}</Text> 
+
+                                          <Image
+                                            source={require('../../src/images/sunRAsset2.png')}
+                                            style={{
+                                              paddingleft: 20,
+                                              width: 80,
+                                              height: 80,
+                                            }}
+                                          /> */}
+                                        </View>
+                                        <View style={{ marginRight: 10 }}>
+                                          <Text
+                                            style={{
+                                              fontSize: 16,
+                                              fontWeight: '800',
+                                              color: '#3E7E55',
+                                              paddingLeft: 20,
+                                            }}>
+                                            Ave. Temp
+                                          </Text>
+                                          <View style={{ flexDirection: 'row' }}>
+                                            <Text
+                                              style={{
+                                                fontSize: 28,
+                                                fontWeight: '800',
+                                                paddingLeft: 20,
+                                                color: '#276653',
+                                              }}>
+                                              {sarratData.maxtemp_c}
+                                            </Text>
+                                            <Icon
+                                              name={'thermometer'}
+                                              color={'#276653'}
+                                              size={23}
+                                              style={{ width: 20 }}
+                                            />
+                                          </View>
+                                          <Text
+                                            style={{
+                                              fontSize: 14,
+                                              fontWeight: '800',
+                                              paddingLeft: 1,
+                                              color: '#3E7E55',
+                                              paddingLeft: 20,
+                                              flexWrap: 'wrap',
+                                              alignItems: 'flex-start',
+                                            }}>
+                                            {sarratCondition.text}
+                                          </Text>
+                                        </View>
+                                      </View>
+                                    </View>
+                                  </View>
+                                </TouchableOpacity>
+                              </View>
+                            }
+
+                            {/* Solsona */}
+                            {
+                              <View>
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    setLOCATION('Solsona');
+                                    WeatherClose()
+                                  }}>
+                                  <View style={styles.dashboardLocationDay}>
+                                    <View
+                                      style={[
+                                        styles.cardDashboardLocations,
+                                        styles.cardDashboardLocationsProp,
+                                        { marginBottom: 8 },
+                                      ]}>
+                                      <View
+                                        style={{
+                                          marginBottom: 10,
+                                          flexDirection: 'row',
+                                        }}>
+                                        <Icon
+                                          name={'map'}
+                                          color={'#276653'}
+                                          size={25}
+                                          style={{ width: 30 }}
+                                        />
+                                        <Text
+                                          style={{
+                                            fontSize: 18,
+                                            fontWeight: '800',
+                                            justifyContent: 'flex-end',
+                                            color: '#276653',
+                                          }}>
+                                          {solsonaloc.name}
+                                        </Text>
+                                      </View>
+                                      <View style={styles.div2RowFlexStart}>
+                                        <View style={{ marginLeft: 18 }}>
+                                          {
+                                            solsonaIcon.code == 1000 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1000.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            solsonaIcon.code == 1003 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1003.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            solsonaIcon.code == 1006 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1006.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            solsonaIcon.code == 1009 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1009.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            solsonaIcon.code == 1063 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1063.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            solsonaIcon.code == 1087 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1087.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            solsonaIcon.code == 1135 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1135.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            solsonaIcon.code == 1135 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1135.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            solsonaIcon.code == 1150 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1150.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            solsonaIcon.code == 1153 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1153.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            solsonaIcon.code == 1171 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1171.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            solsonaIcon.code == 1180 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1180.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            solsonaIcon.code == 1183 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1183.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            solsonaIcon.code == 1186 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1186.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            solsonaIcon.code == 1189 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1189.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            solsonaIcon.code == 1193 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1193.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            solsonaIcon.code == 1195 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1195.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            solsonaIcon.code == 1198 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1198.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            solsonaIcon.code == 1201 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1201.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            solsonaIcon.code == 1240 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1240.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            solsonaIcon.code == 1243 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1243.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            solsonaIcon.code == 1249 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1249.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            solsonaIcon.code == 1273 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1273.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            solsonaIcon.code == 1276 ?
+                                              (
+                                                <Image
+                                                  source={require('../../src/weathericon/1276.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {/* <Text>{adamIcon.code}</Text> 
+
+                                          <Image
+                                            source={require('../../src/images/sunRAsset2.png')}
+                                            style={{
+                                              paddingleft: 20,
+                                              width: 80,
+                                              height: 80,
+                                            }}
+                                          /> */}
+                                        </View>
+                                        <View style={{ marginRight: 10 }}>
+                                          <Text
+                                            style={{
+                                              fontSize: 16,
+                                              fontWeight: '800',
+                                              color: '#3E7E55',
+                                              paddingLeft: 20,
+                                            }}>
+                                            Ave. Temp
+                                          </Text>
+                                          <View style={{ flexDirection: 'row' }}>
+                                            <Text
+                                              style={{
+                                                fontSize: 28,
+                                                fontWeight: '800',
+                                                paddingLeft: 20,
+                                                color: '#276653',
+                                              }}>
+                                              {solsonaData.maxtemp_c}
+                                            </Text>
+                                            <Icon
+                                              name={'thermometer'}
+                                              color={'#276653'}
+                                              size={23}
+                                              style={{ width: 20 }}
+                                            />
+                                          </View>
+                                          <Text
+                                            style={{
+                                              fontSize: 14,
+                                              fontWeight: '800',
+                                              paddingLeft: 1,
+                                              color: '#3E7E55',
+                                              paddingLeft: 20,
+                                              flexWrap: 'wrap',
+                                              alignItems: 'flex-start',
+                                            }}>
+                                            {solsonaCondition.text}
+                                          </Text>
+                                        </View>
+                                      </View>
+                                    </View>
+                                  </View>
+                                </TouchableOpacity>
+                              </View>
+                            }
+
+                            {/* Vintar */}
+                            {
+                              <View>
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    setLOCATION('Vintar');
+                                    WeatherClose()
+                                  }}>
+                                  <View style={styles.dashboardLocationDay}>
+                                    <View
+                                      style={[
+                                        styles.cardDashboardLocations,
+                                        styles.cardDashboardLocationsProp,
+                                        { marginBottom: 8 },
+                                      ]}>
+                                      <View
+                                        style={{
+                                          marginBottom: 10,
+                                          flexDirection: 'row',
+                                        }}>
+                                        <Icon
+                                          name={'map'}
+                                          color={'#276653'}
+                                          size={25}
+                                          style={{ width: 30 }}
+                                        />
+                                        <Text
+                                          style={{
+                                            fontSize: 18,
+                                            fontWeight: '800',
+                                            justifyContent: 'flex-end',
+                                            color: '#276653',
+                                          }}>
+                                          {vintarloc.name}
+                                        </Text>
+                                      </View>
+                                      <View style={styles.div2RowFlexStart}>
+
+                                        <View style={{ marginLeft: 18 }}>
+                                          {
+                                            vintarIcon.code == 1000 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1000.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            vintarIcon.code == 1003 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1003.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            vintarIcon.code == 1006 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1006.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            vintarIcon.code == 1009 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1009.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            vintarIcon.code == 1063 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1063.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            vintarIcon.code == 1087 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1087.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+
+                                          {
+                                            vintarIcon.code == 1135 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1135.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            vintarIcon.code == 1150 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1150.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            vintarIcon.code == 1153 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1153.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            vintarIcon.code == 1171 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1171.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            vintarIcon.code == 1180 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1180.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            vintarIcon.code == 1183 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1183.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            vintarIcon.code == 1186 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1186.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            vintarIcon.code == 1189 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1189.png')}
+                                                  style={{ width: 65, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            vintarIcon.code == 1193 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1193.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            vintarIcon.code == 1195 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1195.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            vintarIcon.code == 1198 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1198.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            vintarIcon.code == 1201 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1201.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            vintarIcon.code == 1240 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1240.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            vintarIcon.code == 1243 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1243.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            vintarIcon.code == 1246 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1246.png')}
+                                                  style={{ width: 65, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            vintarIcon.code == 1249 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1249.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            vintarIcon.code == 1273 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1273.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          {
+                                            vintarIcon.code == 1276 ?
+                                              (
+                                                <Image resizeMode={'contain'}
+                                                  source={require('../../src/weathericon/1276.png')}
+                                                  style={{ width: 45, height: 45 }}
+                                                />
+                                              )
+                                              :
+                                              (null)
+                                          }
+                                          <View>
+                                            <Text>{vintarIcon.code}</Text>
+                                          </View>
+
+                                        </View>
+
+                                        <View style={{ marginRight: 10 }}>
+                                          <Text
+                                            style={{
+                                              fontSize: 16,
+                                              fontWeight: '800',
+                                              color: '#3E7E55',
+                                              paddingLeft: 20,
+                                            }}>
+                                            Ave. Temp
+                                          </Text>
+                                          <View style={{ flexDirection: 'row' }}>
+                                            <Text
+                                              style={{
+                                                fontSize: 28,
+                                                fontWeight: '800',
+                                                paddingLeft: 20,
+                                                color: '#276653',
+                                              }}>
+                                              {vintarData.maxtemp_c}
+                                            </Text>
+                                            <Icon
+                                              name={'thermometer'}
+                                              color={'#276653'}
+                                              size={23}
+                                              style={{ width: 20 }}
+                                            />
+                                          </View>
+                                          <Text
+                                            style={{
+                                              fontSize: 14,
+                                              fontWeight: '800',
+                                              paddingLeft: 1,
+                                              color: '#3E7E55',
+                                              paddingLeft: 20,
+                                              flexWrap: 'wrap',
+                                              alignItems: 'flex-start',
+                                            }}>
+                                            {vintarCondition.text}
+                                          </Text>
+                                        </View>
+                                      </View>
+                                    </View>
+                                  </View>
+                                </TouchableOpacity>
+                              </View>
+                            }
+                          </ScrollView>
+                        </View>
+                      </RBSheet>
+
+                    </View>
 
 
                     {/* Customize ov0erlay View000layer   */}
@@ -776,12 +9551,11 @@ export default function Dashboard({ navigation }) {
 
                     {/* Hours */}
                     <View style={[styles.cardDashboardProp, styles.dashboardHourly, { backgroundColor: 'white', width: '100%', borderRadius: 10 }]}>
-                      <ScrollView horizontal={true}
-                        showsVerticalScrollIndicator={false}>
+                      <ScrollView horizontal={true}   showsVerticalScrollIndicator={false}  >
                         <View style={{ flexDirection: 'row', paddingTop: 10, paddingBottom: 10 }}>
-                          {weathPerHour.map((wperhour, p) => {
+                          {weathPerHour.map((wperhour, index) => {
                             return (
-                              <View key={p} style={{ marginRight: 12, }}>
+                              <View key={index} style={{ marginRight: 12, }}>
                                 <View style={{ alignItems: 'center', margin: 5, marginLeft: 10 }}>
                                   <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                                     <Text style={{ fontSize: 14, fontWeight: 'bold', color: '#8eb4a9' }}>{moment(wperhour.time).format('hh:mmA')}
@@ -1170,9 +9944,8 @@ export default function Dashboard({ navigation }) {
                 )}
               </View>
             </View>
-
             
-
+            {/* Garlic Insect pests and Diseases */}
             <View style={styles.dashboardRecent}>
               {
                 listPD == null ? (
@@ -1357,36 +10130,7 @@ export default function Dashboard({ navigation }) {
             </View>
 
           </View>
-          <View style={{
-              flex: 1,
-              padding: 24,
-              backgroundColor: 'grey',
-            }}>
-              <Button title="Open" onPress={handleOpenPress} />
-              <Button title="Close" onPress={handleClosePress} />
-              <Button title="Collapse" onPress={handleCollapsePress} />
-              <Button title="Snap To 0" onPress={() => snapeToIndex(0)} />
-              <Button title="Snap To 1" onPress={() => snapeToIndex(1)} />
-              <Button title="Snap To 2" onPress={() => snapeToIndex(2)} />
-
-              <BottomSheet
-                ref={bottomSheetRef}
-                index={0}
-                snapPoints={snapPoints}
-                enablePanDownToClose={true}
-                handleIndicatorStyle={{ backgroundColor: '#fff' }}
-                backgroundStyle={{ backgroundColor: '#1d0f4e' }}
-                backdropComponent={renderBackdrop}
-              >
-                <View style={styles.contentContainer}>
-                  <Text style={styles.containerHeadline}>Awesome Bottom Sheet 🎉</Text>
-                  <Button title="Close" onPress={handleClosePress} />
-                </View>
-              </BottomSheet>
-
-            </View>
         </ScrollView>
-        
       </ImageBackground>
     </View>
   );
