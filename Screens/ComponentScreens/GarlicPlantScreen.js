@@ -255,7 +255,8 @@ function PlantNew({ navigation }) {
   const [plantArea, setPlantArea] = useState('')
   const [plantDate, setPlantDate] = useState(new Date())
   const [plantAddress, setPlantAddress] = useState(weathloc.name + ', ' + weathloc.region)
-  const [upcoming, setUpcoming] = useState([])
+  const [upcoming1, setUpcoming1] = useState([])
+  const [upcoming2, setUpcoming2] = useState([])
   const [completed, setCompleted] = useState([])
   const [dataloading, setDataloading] = useState(false);
   const [image, setImage] = useState(null); //Test
@@ -452,15 +453,21 @@ function PlantNew({ navigation }) {
 
 
       const currentDate = new Date();
+      
+
+
+
+
       // Spray foliar
       for (let i = 0; i <= 3; i++) {
         const newDate = new Date(currentDate.getTime() + i * 14 * 24 * 60 * 60 * 1000);
         const blue = moment(newDate).format()
-        upcoming.push({
+        upcoming1.push({
           title: 'Fertilizer',
           action: 'Spray foliar fertilizer',
           dateAction: blue,
-          status:false
+          status:0,
+          count:0
         });
       }
 
@@ -468,11 +475,12 @@ function PlantNew({ navigation }) {
       for (let i = 0; i <= 33; i++) {
         const newDate = new Date(currentDate.getTime() + i * 3 * 24 * 60 * 60 * 1000);
         const blue = moment(newDate).format()
-        upcoming.push({
+        upcoming1.push({
           title: 'Water',
           action: 'Water plants',
           dateAction: blue,
-          status:false
+          status:0,
+          count:0
         });
       }
 
@@ -539,6 +547,8 @@ function PlantNew({ navigation }) {
       setImage(null);
     }
   }
+
+
 
   const displayListplant = async () => {
     const displayList = database().ref('/plants')
@@ -1271,6 +1281,8 @@ const  completedTaskfetch =  () => {
 }
 
 
+
+
 //function uploading Completed Task
 const [taskcomplete, setTaskcomplete] = useState(); 
 const completedtaskActivity = (upcom) => {
@@ -1282,7 +1294,27 @@ const completedtaskActivity = (upcom) => {
   //setTaskcomplete()
   //console.log(taskcomplete);
 }
-  
+
+  //generate generateUpcoming2Task  from completedTask and save it to UpcomingTask#2 holder
+  const generateUpcoming2Task = () => {
+    //get reference Data
+    //find the last activity for Irrigation
+    //find the last activity for Fertilizer 
+    //find the last activity for Fungicide
+    
+    //if the original upcoming task == to generated upcoming task#2
+    //todaytask is equal to original upcomingtask#1
+    
+    //else
+    //get date today and cut/remove schedTomorrow until 100day 
+    //add generated upcoming date from the day treated the plant
+    //filter &  display taskToday and the expected/adjusted date for plant treatment
+    //use another function (TaskToday list should be display even the activities are already completed..
+    // this is to notify user/farmers 
+  }
+
+
+
 
 
 return (
