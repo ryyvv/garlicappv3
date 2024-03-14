@@ -94,7 +94,6 @@ function PlantDash({ route, navigation }) {
 
   useEffect(() => {
     displayList();
-
   }, []);
 
   const displayList = async () => {
@@ -113,9 +112,11 @@ function PlantDash({ route, navigation }) {
 
   // datalist
   const renderDisplayList = ({ item }) => {
+    const number = 0;
     return (
       <TouchableOpacity onPress={() => {
         navigation.navigate('PlantID', {
+          key: item.id, 
           title: item.title,
           imageIcons: item.image,
           variety: item.variety,
@@ -203,7 +204,7 @@ function PlantDash({ route, navigation }) {
       {
         recent == null ? (null) : (<Text style={{marginLeft:25,marginTop:20,fontSize:16, fontWeight:'900',color: '#276653',}}>Recent</Text>)
       }
-      <ScrollView>
+      <ScrollView scrollEnabled={true}>
         <View style={styles.accountcontainer}>
           <FlatList
             data={plantData}
@@ -493,7 +494,7 @@ function PlantNew({ navigation }) {
       // Task then
       task.then(async () => {
         // get imageDownloadURL
-        const downloadURL = await Storage().ref('images/' + filename).getDownloadURL();
+        const downloadURL = await Storage().ref('plantProfile/' + filename).getDownloadURL();
 
         // store data in realtime database
         //database().ref('/plants/' + user.uid + plantTitle)
@@ -505,6 +506,7 @@ function PlantNew({ navigation }) {
             area: plantArea,
             date: plantDate.toISOString(),
             taskUpcoming: upcoming,
+            tastToday: null,
             taskCompleted: null,
             plantAddress: plantAddress,
             plantStatus: 'false'
@@ -1271,13 +1273,14 @@ const  completedTaskfetch =  () => {
 
 //function uploading Completed Task
 const [taskcomplete, setTaskcomplete] = useState(); 
-const completedtaskActivity = () => {
+const completedtaskActivity = (upcom) => {
   // CALL DATABASE REALTIME DATABASE
   //CALL PLANT DETAILS
-  console.log(com);
+  console.log(upcom);
+  alert('clicked title: ',upcom.title, ' dateAction', upcom.dateAction, ' Action: ', upcom.Action, ' Status: ', upcom.status )
 
-  setTaskcomplete()
-  console.log(taskcomplete);
+  //setTaskcomplete()
+  //console.log(taskcomplete);
 }
   
 
@@ -1507,7 +1510,7 @@ return (
               </TouchableOpacity>
             </View>
 
-            <View dtyle={{ margin: 20 }} >
+            <View  >
              
               {
                 com.map((upcom, index2) => {
@@ -1529,14 +1532,17 @@ return (
                                     </View>
                                   </View>
                                   <View>
-                                    <TouchableOpacity disabled={true}
-                                      // onPress={
-                                      //   handlesubmit(upcom)
-                                      //    alert('clicked title: ',upcom.title, ' dateAction', upcom.dateAction, ' Action: ', upcom.Action, ' Status: ', upcom.status )}
-                                      // }
-                                      >
+                                    <TouchableOpacity 
+                                      onPress={() => {
+
+                                        //the data  will submit to realtime database
+                                          completedtaskActivity(upcom)
+                                        
+                                          
+                                        
+                                         }}>
                                       <View style={{ borderRadius: 15, borderWidth: 1.5, borderColor: '#4a8f3cff', paddingLeft: 10, paddingRight: 10, padding: 5, marginTop: 8 }}>
-                                        <Text style={{ fontSize: 12, fontWeight: 'bold' }}>Complete</Text>
+                                        <Text style={{ fontSize: 12, fontWeight: 'bold' }}>Done</Text>
                                       </View>
                                     </TouchableOpacity>
                                   </View>
@@ -1569,7 +1575,7 @@ return (
                                         // }
                                         >
                                         <View style={{ borderRadius: 15, borderWidth: 1.5, borderColor: '#4a8f3cff', paddingLeft: 10, paddingRight: 10, padding: 5, marginTop: 8 }}>
-                                          <Text style={{ fontSize: 12, fontWeight: 'bold' }}>Complete</Text>
+                                          <Text style={{ fontSize: 12, fontWeight: 'bold' }}>Done</Text>
                                         </View>
                                       </TouchableOpacity>
                                     </View>
@@ -1601,7 +1607,7 @@ return (
                                         // }}
                                         >
                                         <View style={{ borderRadius: 15, borderWidth: 1.5, borderColor: '#4a8f3cff', paddingLeft: 10, paddingRight: 10, padding: 5, marginTop: 8 }}>
-                                          <Text style={{ fontSize: 12, fontWeight: 'bold' }}>Complete</Text>
+                                          <Text style={{ fontSize: 12, fontWeight: 'bold' }}>Done</Text>
                                         </View>
                                       </TouchableOpacity>
                                     </View>
@@ -1635,7 +1641,7 @@ return (
                                         // }
                                         >
                                         <View style={{ borderRadius: 15, borderWidth: 1.5, borderColor: '#4a8f3cff', paddingLeft: 10, paddingRight: 10, padding: 5, marginTop: 8 }}>
-                                          <Text style={{ fontSize: 12, fontWeight: 'bold' }}>Complete</Text>
+                                          <Text style={{ fontSize: 12, fontWeight: 'bold' }}>Done</Text>
                                         </View>
                                       </TouchableOpacity>
                                     </View>
