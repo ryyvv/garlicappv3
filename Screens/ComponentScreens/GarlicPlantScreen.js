@@ -455,9 +455,6 @@ function PlantNew({ navigation }) {
       const currentDate = new Date();
       
 
-
-
-
       // Spray foliar
       for (let i = 0; i <= 3; i++) {
         const newDate = new Date(currentDate.getTime() + i * 14 * 24 * 60 * 60 * 1000);
@@ -513,7 +510,7 @@ function PlantNew({ navigation }) {
             variety: plantVariety,
             area: plantArea,
             date: plantDate.toISOString(),
-            taskUpcoming: upcoming,
+            taskUpcoming: upcoming1,
             tastToday: null,
             taskCompleted: null,
             plantAddress: plantAddress,
@@ -547,7 +544,6 @@ function PlantNew({ navigation }) {
       setImage(null);
     }
   }
-
 
 
   const displayListplant = async () => {
@@ -683,7 +679,6 @@ function PlantNew({ navigation }) {
                     </View>
                   </TouchableOpacity>
                 </View >
-
               </View>
             </View>
           </View>
@@ -691,9 +686,14 @@ function PlantNew({ navigation }) {
       </ImageBackground>
     </View>
   )
+
 }
 
-function PlantID({ route, navigation }) {{ route, navigation }
+function PlantID({ route, navigation }) {
+  const [uploading, setUploading] = useState(false);    //setUploaders
+  const [downloadURL, setDownloadURL] = useState(null);   //imagelink uploader getdownload image
+  const [transferred, setTransferred] = useState(0);    //Progress upload  image
+
   const [mrhr3humidity, setMRHr3humidity] = useState([])
   const [afhr3humidity, setAFHr3humidity] = useState([])
 
@@ -1285,7 +1285,86 @@ const  completedTaskfetch =  () => {
 
 //function uploading Completed Task
 const [taskcomplete, setTaskcomplete] = useState(); 
-const completedtaskActivity = (upcom) => {
+const completedtaskActivity = async(upcom) => {
+      setUploading(true);
+      setTransferred(0);
+
+      const currentDate = new Date();
+      
+      // Spray foliar
+      // for (let i = 0; i <= 3; i++) {
+      //   const newDate = new Date(currentDate.getTime() + i * 14 * 24 * 60 * 60 * 1000);
+      //   const blue = moment(newDate).format()
+      //   upcoming1.push({
+      //     title: 'Fertilizer',
+      //     action: 'Spray foliar fertilizer',
+      //     dateAction: blue,
+      //     status:0,
+      //     count:0
+      //   });
+      // }
+
+      // irrigate plant
+      // for (let i = 0; i <= 33; i++) {
+      //   const newDate = new Date(currentDate.getTime() + i * 3 * 24 * 60 * 60 * 1000);
+      //   const blue = moment(newDate).format()
+      //   upcoming1.push({
+      //     title: 'Water',
+      //     action: 'Water plants',
+      //     dateAction: blue,
+      //     status:0,
+      //     count:0
+      //   });
+      // }
+
+
+      // Process 
+      task.on('state_changed', snapshot => {
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log(`Upload is ${progress}% done`);
+
+        setTransferred(
+          Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        );
+      });
+
+      // Task then
+      task.then(async () => {
+    
+        // store data in realtime database
+        //database().ref('/plants/' + user.uid + plantTitle)
+        database().ref('/users/' + user.uid + '/plants/' + user.uid + plantTitle)
+          .set({
+            image: downloadURL,
+            title: plantTitle,
+            variety: plantVariety,
+            area: plantArea,
+            date: plantDate.toISOString(),
+            taskUpcoming: upcoming1,
+            tastToday: null,
+            taskCompleted: null,
+            plantAddress: plantAddress,
+            plantStatus: 'false'
+          })
+          .then(async () => {
+            alert('Plant data stored successfully!')
+            navigation.goBack()
+          });
+
+    
+      });
+
+      try {
+        await task;
+      } catch (e) {
+        console.error(e);
+      }
+
+      setUploading(false);
+      setImage(null);
+  
+
+
   // CALL DATABASE REALTIME DATABASE
   //CALL PLANT DETAILS
   console.log(upcom);
