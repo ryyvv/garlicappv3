@@ -1321,10 +1321,8 @@ const  completedTaskfetch =  () => {
 
 //function uploading Completed Task
 const [taskcomplete, setTaskcomplete] = useState(); 
-const completedtaskActivity = async(upcom) => {
-      setUploading(true);
-      setTransferred(0);
-
+const completedtaskActivity = async({upcom, title}) => {
+ 
       const currentDate = new Date();
       
       // Spray foliar
@@ -1353,53 +1351,31 @@ const completedtaskActivity = async(upcom) => {
       //   });
       // }
 
-
-      // Process 
-      task.on('state_changed', snapshot => {
-        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log(`Upload is ${progress}% done`);
-
-        setTransferred(
-          Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 100
-        );
-      });
-
-      // Task then
-      task.then(async () => {
+      
     
         // store data in realtime database
         //database().ref('/plants/' + user.uid + plantTitle)
-        database().ref('/users/' + user.uid + '/plants/' + user.uid + plantTitle)
-          .set({
-            image: downloadURL,
-            title: plantTitle,
-            variety: plantVariety,
-            area: plantArea,
-            date: plantDate.toISOString(),
-            taskUpcoming: upcoming1,
-            tastToday: null,
-            taskCompleted: null,
-            plantAddress: plantAddress,
-            plantStatus: 'false'
+const dataUpload = database().ref('/users/' + user.uid + '/plants/' + user.uid + title + '/taskComplete')
+          .set({ 
+            title: upcom.title,   //water
+            action: upcom.action,  //irrigation
+            dateAction: upcom.dateAction ,  //datetreated
+            plantStatus: 0,  
+            counts: 0,  
           })
           .then(async () => {
-            alert('Plant data stored successfully!')
+            alert('Task done!')
             navigation.goBack()
           });
 
-    
-      });
 
       try {
-        await task;
+        await dataUpload;
       } catch (e) {
         console.error(e);
       }
 
-      setUploading(false);
-      setImage(null);
-  
-
+      
 
   // CALL DATABASE REALTIME DATABASE
   //CALL PLANT DETAILS
@@ -1683,7 +1659,7 @@ return (
                                       onPress={() => {
 
                                         //the data  will submit to realtime database
-                                          completedtaskActivity(upcom)
+                                          completedtaskActivity({upcom, title})
                                         
                                           
                                         
