@@ -21,7 +21,7 @@ import {
 } from 'react-native';
 import { AuthContext } from '../Context/AuthProvider';
 import auth from '@react-native-firebase/auth';
-import Login from './login';
+import Login from './Login';
 
 const Register = ({ navigation }) => {
   LogBox.ignoreAllLogs();

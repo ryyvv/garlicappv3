@@ -220,6 +220,7 @@ function PlantDash({ route, navigation }) {
           onPress={() => {
             navigation.navigate('PlantNew')
             alert('Add garlic plant button pressed!')
+            console.log("Add button pressed!r")
           }}>
               <View style={styles.addBtn}>
             <Icon name={"plus"} color={'white'} size={23} style={{ fontWeight: 'bold' }} />
@@ -265,6 +266,44 @@ function PlantNew({ navigation }) {
   const [downloadURL, setDownloadURL] = useState(null);   //imagelink uploader getdownload image
   const [transferred, setTransferred] = useState(0);    //Progress upload  image
 
+
+  // useEffect(() => {
+  //   createImageBucketIfNotExistforGarlicImageProfile();
+  //   createImageBucketIfNotExistforGarlicImageData();
+  // })
+
+  // Creating Imagebucket (garlic image for profile)
+//   const createImageBucketIfNotExistforGarlicImageProfile = async () => {
+//     try {
+//         const bucketRef = Storage().ref('garlicImageProfile');
+//         const bucketExists = await bucketRef.getMetadata();
+//         if (!bucketExists) {
+//             await bucketRef.put(); // Create the bucket
+//             console.log('Image bucket created successfully!');
+//         } else {
+//             console.log('Image bucket already exists!');
+//         }
+//     } catch (error) {
+//         console.error('Error creating image bucket:', error);
+//     }
+// };
+
+  // Creating Imagebucket (image storage for garlic image data)
+//   const createImageBucketIfNotExistforGarlicImageData = async () => {
+//     try {
+//         const bucketRef = Storage().ref('garlicImageData');
+//         const bucketExists = await bucketRef.getMetadata();
+//         if (!bucketExists) {
+//             await bucketRef.put(); // Create the bucket
+//             console.log('Image bucket created successfully!');
+//         } else {
+//             console.log('Image bucket already exists!');
+//         }
+//     } catch (error) {
+//         console.error('Error creating image bucket:', error);
+//     }
+// };
+  
 
   // ImageDefault Display
   const ImageDefault = () => {
@@ -445,6 +484,7 @@ function PlantNew({ navigation }) {
       alert('Please enter address!');
       return;
     } else {
+
       const uri = imagePathCapture;
       const filename = uri.substring(uri.lastIndexOf('/') + 1);
       const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
@@ -453,8 +493,6 @@ function PlantNew({ navigation }) {
 
 
       const currentDate = new Date();
-      
-
       // Spray foliar
       for (let i = 0; i <= 3; i++) {
         const newDate = new Date(currentDate.getTime() + i * 14 * 24 * 60 * 60 * 1000);
@@ -483,10 +521,8 @@ function PlantNew({ navigation }) {
 
 
       // storagePath and imagePath
-      const task = Storage().ref('images/' + filename).putFile(uploadUri)
+      const task = Storage().ref('garlicImageProfile/' + filename).putFile(uploadUri)
 
-      // const task= Storage().ref('images/' + user.uid+'/'+filename).putFile(uploadUri)
-      // Process 
       task.on('state_changed', snapshot => {
         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         console.log(`Upload is ${progress}% done`);
@@ -499,7 +535,7 @@ function PlantNew({ navigation }) {
       // Task then
       task.then(async () => {
         // get imageDownloadURL
-        const downloadURL = await Storage().ref('plantProfile/' + filename).getDownloadURL();
+        const downloadURL = await Storage().ref('garlicImageProfile/' + filename).getDownloadURL();
 
         // store data in realtime database
         //database().ref('/plants/' + user.uid + plantTitle)
@@ -521,17 +557,17 @@ function PlantNew({ navigation }) {
             navigation.goBack()
           });
 
-        database().ref('/images/plantimages/' + plantTitle)
-          .set({
-            image: modelDownloadURL,
-            userid: user.uid,
-            identified: '',
-            severity: '',
-            status: 'true',
-          })
-          .then(async () => {
-            navigation.goBack()
-          });
+        // database().ref('/images/plantimages/' + plantTitle)
+        //   .set({
+        //     image: modelDownloadURL,
+        //     userid: user.uid,
+        //     identified: '',
+        //     severity: '',
+        //     status: 'true',
+        //   })
+        //   .then(async () => {
+        //     navigation.goBack()
+        //   });
       });
 
       try {
