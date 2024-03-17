@@ -1353,20 +1353,40 @@ const completedtaskActivity = async({upcom, title}) => {
 
       
     
-        // store data in realtime database
-        //database().ref('/plants/' + user.uid + plantTitle)
-const dataUpload = database().ref('/users/' + user.uid + '/plants/' + user.uid + title + '/taskComplete')
-          .set({ 
-            title: upcom.title,   //water
-            action: upcom.action,  //irrigation
-            dateAction: upcom.dateAction ,  //datetreated
-            plantStatus: 0,  
-            counts: 0,  
+        // store data in realtime database 
+        //Path for databse reference data
+        const dataUpload = database().ref('/users/' + user.uid + '/plants/' + user.uid + title + '/taskComplete').pushh();
+        const postDataID = dataupload.key;
+        
+
+        const postData = {
+          title: upcom.title,  
+          action: upcom.action,  
+          dateAction: upcom.dateAction ,  
+          plantStatus: 0,  
+          counts: 0,  
+        }
+
+        dataUpload.set(postData)
+          .then( async() => {
+            console.log("Data added successfully with ID: " + postId);
           })
-          .then(async () => {
-            alert('Task done!')
-            navigation.goBack()
+          .catch(function(error) {
+            console.error("Error adding data: ", error);
           });
+
+
+        // .set({ 
+        //     title: upcom.title,  
+        //     action: upcom.action,  
+        //     dateAction: upcom.dateAction ,  
+        //     plantStatus: 0,  
+        //     counts: 0,  
+        //   })
+        //   .then(async () => {
+        //     alert('Task done!')
+        //     navigation.goBack()
+        //   });
 
 
       try {
@@ -2328,7 +2348,7 @@ function Task({ route, navigation }) {
       const red = database().ref('null/plants/' + user.uid)
       const blue = red.toString().split('/')[3];
       if (user.uid == blue) {
-        const taskCom = database().ref('users/' + user.uid + '/plants/' + user.uid + title + '/taskUpcoming')
+        const taskCom = database().ref('users/' + user.uid + '/plants/' + user.uid + title + '/taskComplete')
         taskCom.on('value', (snapshot) => {
           const firebaseData = snapshot.val();
           const dataArray = Object.values(firebaseData);
