@@ -199,7 +199,7 @@ function PlantDash({ route, navigation }) {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#cbdeda' }}>
+    <View style={{ height:'100%', backgroundColor: '#cbdeda' }}>
       <StatusBar animated={true} barStyle={statusBarStyle} translucent={true} />
       {
         recent == null ? (null) : (<Text style={{marginLeft:25,marginTop:20,fontSize:16, fontWeight:'900',color: '#276653',}}>Recent</Text>)
@@ -216,11 +216,10 @@ function PlantDash({ route, navigation }) {
 
       {/* Add button style={{ zIndex: 1 }}           */}
     
-        <TouchableOpacity
+        <TouchableOpacity style={{position: 'absolute',bottom: 0,right: 0,}}
           onPress={() => {
             navigation.navigate('PlantNew')
-            alert('Add garlic plant button pressed!')
-            console.log("Add button pressed!r")
+            console.log('Add garlic plant button pressed!')
           }}>
               <View style={styles.addBtn}>
             <Icon name={"plus"} color={'white'} size={23} style={{ fontWeight: 'bold' }} />
@@ -496,12 +495,15 @@ function PlantNew({ navigation }) {
       // Spray foliar
       for (let i = 0; i <= 3; i++) {
         const newDate = new Date(currentDate.getTime() + i * 14 * 24 * 60 * 60 * 1000);
-        const blue = moment(newDate).format()
+        const blue = moment(newDate).format('MM-DD-YYYY')
         upcoming1.push({
+          image: 'false',
+          dateupload:'false',
+          imageResult: 'false',
           title: 'Fertilizer',
           action: 'Spray foliar fertilizer',
           dateAction: blue,
-          status:0,
+          plantstatus:0,
           count:0
         });
       }
@@ -511,10 +513,13 @@ function PlantNew({ navigation }) {
         const newDate = new Date(currentDate.getTime() + i * 3 * 24 * 60 * 60 * 1000);
         const blue = moment(newDate).format()
         upcoming1.push({
+          image: 'false',
+          dateupload:'false',
+          imageResult: 'false',
           title: 'Water',
           action: 'Water plants',
           dateAction: blue,
-          status:0,
+          plantStatus:0,
           count:0
         });
       }
@@ -547,10 +552,13 @@ function PlantNew({ navigation }) {
             area: plantArea,
             date: plantDate.toISOString(),
             taskUpcoming: upcoming1,
-            tastToday: null,
-            taskCompleted: null,
+            tastToday: 'null',
+            taskCompleted: 'null',
+            taskUpcoming: 'null',
             plantAddress: plantAddress,
-            plantStatus: 'false'
+            plantStatus: 'false',
+            harvestedStatus:'false',
+            dateHarvested: 'false' //if not null set set as Completed garlic plant
           })
           .then(async () => {
             alert('Plant data stored successfully!')
@@ -1316,95 +1324,10 @@ const  completedTaskfetch =  () => {
   }
 }
 
+useEffect(() => {
+  //create a function for updateTask from Task Completed
 
-
-
-//function uploading Completed Task
-const [taskcomplete, setTaskcomplete] = useState(); 
-const completedtaskActivity = async({upcom, title}) => {
- 
-      const currentDate = new Date();
-      
-      // Spray foliar
-      // for (let i = 0; i <= 3; i++) {
-      //   const newDate = new Date(currentDate.getTime() + i * 14 * 24 * 60 * 60 * 1000);
-      //   const blue = moment(newDate).format()
-      //   upcoming1.push({
-      //     title: 'Fertilizer',
-      //     action: 'Spray foliar fertilizer',
-      //     dateAction: blue,
-      //     status:0,
-      //     count:0
-      //   });
-      // }
-
-      // irrigate plant
-      // for (let i = 0; i <= 33; i++) {
-      //   const newDate = new Date(currentDate.getTime() + i * 3 * 24 * 60 * 60 * 1000);
-      //   const blue = moment(newDate).format()
-      //   upcoming1.push({
-      //     title: 'Water',
-      //     action: 'Water plants',
-      //     dateAction: blue,
-      //     status:0,
-      //     count:0
-      //   });
-      // }
-
-      
-    
-        // store data in realtime database 
-        //Path for databse reference data
-        const dataUpload = database().ref('/users/' + user.uid + '/plants/' + user.uid + title + '/taskComplete').pushh();
-        const postDataID = dataupload.key;
-        
-
-        const postData = {
-          title: upcom.title,  
-          action: upcom.action,  
-          dateAction: upcom.dateAction ,  
-          plantStatus: 0,  
-          counts: 0,  
-        }
-
-        dataUpload.set(postData)
-          .then( async() => {
-            console.log("Data added successfully with ID: " + postId);
-          })
-          .catch(function(error) {
-            console.error("Error adding data: ", error);
-          });
-
-
-        // .set({ 
-        //     title: upcom.title,  
-        //     action: upcom.action,  
-        //     dateAction: upcom.dateAction ,  
-        //     plantStatus: 0,  
-        //     counts: 0,  
-        //   })
-        //   .then(async () => {
-        //     alert('Task done!')
-        //     navigation.goBack()
-        //   });
-
-
-      try {
-        await dataUpload;
-      } catch (e) {
-        console.error(e);
-      }
-
-      
-
-  // CALL DATABASE REALTIME DATABASE
-  //CALL PLANT DETAILS
-  console.log(upcom);
-  alert('clicked title: ',upcom.title, ' dateAction', upcom.dateAction, ' Action: ', upcom.Action, ' Status: ', upcom.status )
-
-  //setTaskcomplete()
-  //console.log(taskcomplete);
-}
+})
 
   //generate generateUpcoming2Task  from completedTask and save it to UpcomingTask#2 holder
   const generateUpcoming2Task = () => {
@@ -1423,6 +1346,50 @@ const completedtaskActivity = async({upcom, title}) => {
     //use another function (TaskToday list should be display even the activities are already completed..
     // this is to notify user/farmers 
   }
+
+
+//function uploading Completed Task
+const [taskcomplete, setTaskcomplete] = useState(); 
+const completedtaskActivity = async({upcom, title}) => {
+ 
+      const currentDate = new Date();
+      const dates = moment(currentDate).format('MM-DD-YYYY');
+
+        // store data in realtime database 
+        //Path for databse reference data
+        const dataUpload = database().ref('/users/' + user.uid + '/plants/' + user.uid + title + '/taskComplete/' + upcom.title + '_' + dates)
+        .set({ 
+            title: upcom.title,  
+            action: upcom.action,  
+            dateAction: dates ,  
+            plantStatus: 1,  
+            counts: 0,  
+          })
+          .then(async () => {
+            alert('Task done!')
+            //navigation.goBack()
+          });
+
+
+      try {
+        await dataUpload;
+        generateUpcoming2Task()
+      } catch (e) {
+        console.error(e);
+      }
+
+      
+
+  // CALL DATABASE REALTIME DATABASE
+  //CALL PLANT DETAILS
+  console.log(upcom);
+  alert('clicked title: ',upcom.title, ' dateAction', upcom.dateAction, ' Action: ', upcom.Action, ' Status: ', upcom.status )
+
+  //setTaskcomplete()
+  //console.log(taskcomplete);
+}
+
+
 
 
 

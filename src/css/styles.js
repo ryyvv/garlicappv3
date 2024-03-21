@@ -869,7 +869,7 @@ export default globalStyles = StyleSheet.create({
         bottom: 20,
         right: 30,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center', 
     },
 
     progressBarContainer: {
