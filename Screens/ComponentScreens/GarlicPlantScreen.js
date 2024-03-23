@@ -540,6 +540,7 @@ function PlantNew({ navigation }) {
       // Task then
       task.then(async () => {
         // get imageDownloadURL
+        console.log(upcoming1)
         const downloadURL = await Storage().ref('garlicImageProfile/' + filename).getDownloadURL();
 
         // store data in realtime database
@@ -552,9 +553,8 @@ function PlantNew({ navigation }) {
             area: plantArea,
             date: plantDate.toISOString(),
             taskUpcoming: upcoming1,
-            tastToday: 'null',
-            taskCompleted: 'null',
-            taskUpcoming: 'null',
+            tastToday: ' ',
+            taskCompleted: ' ',
             plantAddress: plantAddress,
             plantStatus: 'false',
             harvestedStatus:'false',
@@ -1324,10 +1324,6 @@ const  completedTaskfetch =  () => {
   }
 }
 
-useEffect(() => {
-  //create a function for updateTask from Task Completed
-
-})
 
   //generate generateUpcoming2Task  from completedTask and save it to UpcomingTask#2 holder
   const generateUpcoming2Task = () => {
@@ -1388,11 +1384,6 @@ const completedtaskActivity = async({upcom, title}) => {
   //setTaskcomplete()
   //console.log(taskcomplete);
 }
-
-
-
-
-
 
 
 return (
