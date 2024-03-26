@@ -695,7 +695,7 @@ export default globalStyles = StyleSheet.create({
 
     },
     accountcontainer: {
-        flex: 1,
+        // flex: 1,
         marginBottom: 20,
         marginTop: 10,
         marginLeft: 25,

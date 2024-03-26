@@ -111,7 +111,48 @@ function PlantDash({ route, navigation }) {
   }
 
   // datalist
-  const renderDisplayList = ({ item }) => {
+  const renderDisplayList1 = ({ item }) => {
+    const number = 0;
+    return (
+      <TouchableOpacity onPress={() => {
+        navigation.navigate('PlantID', {
+          key: item.id, 
+          title: item.title,
+          imageIcons: item.image,
+          variety: item.variety,
+          area: item.area,
+          date: item.date,
+          plantAddress: item.plantAddress,
+        });
+      }}>
+        <View style={styles.cardDataPlant}>
+          <View style={styles.div2RowSpaceEvenNoAlignItems}>
+
+            <View style={styles.div2Row}>
+              {/* <Image source={{ uri: item.image }} style={{ width: 50, height: 50, borderRadius: 50 / 2, marginRight: 10 }}/> */}
+              <LazyLoadImage source={{ uri: item.image }} style={{ width: 50, height: 50, borderRadius: 50 / 2, marginRight: 10 }} />
+              <View>
+                <Text style={{ color: '#276653', fontWeight: 'bold', fontSize: 17 }}>{item.title}</Text>
+                <Text>{moment(item.date).format('MMMM D, YYYY')}</Text>
+              </View>
+            </View>
+
+
+            {/* Button option */}
+            <View style={[styles.div2RowDatalist, { padding: 10 }]}>
+              <Icon name={"bell-outline"} color={'#276653'} size={23} style={{ width: 20, marginRight: 20 }} />
+              <TouchableOpacity>
+                <Icon name={"dots-vertical"} color={'#276653'} size={23} style={{ width: 20 }} />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </TouchableOpacity>
+    );
+  };
+
+   // datalist
+   const renderDisplayList2 = ({ item }) => {
     const number = 0;
     return (
       <TouchableOpacity onPress={() => {
@@ -153,7 +194,7 @@ function PlantDash({ route, navigation }) {
   };
 
   // datalist
-  const renderDisplayList2 = ({ item }) => {
+  const renderDisplayList3 = ({ item }) => {
     return (
       <TouchableOpacity onPress={() => {
         navigation.navigate('PlantID', {
@@ -204,19 +245,29 @@ function PlantDash({ route, navigation }) {
       {
         recent == null ? (null) : (<Text style={{marginLeft:25,marginTop:20,fontSize:16, fontWeight:'900',color: '#276653',}}>Recent</Text>)
       }
-      <ScrollView scrollEnabled={true}>
+      {/* <ScrollView scrollEnabled={true} style={{zIndex:1}}> */}
         <View style={styles.accountcontainer}>
           <FlatList
             data={plantData}
-            renderItem={renderDisplayList}
+            renderItem={renderDisplayList1}
             keyExtractor={(item) => item.id}
             ListEmptyComponent={showEmptyListView()} />
         </View>
-      </ScrollView>
+        {
+        recent == null ? (null) : (<Text style={{marginLeft:25,marginTop:20,fontSize:16, fontWeight:'900',color: '#276653',}}>Completed</Text>)
+        }
+        <View style={styles.accountcontainer}>
+          <FlatList
+            data={plantData}
+            renderItem={renderDisplayList2}
+            keyExtractor={(item) => item.id}
+            ListEmptyComponent={showEmptyListView()} />
+        </View>
+      {/* </ScrollView> */}
 
       {/* Add button style={{ zIndex: 1 }}           */}
     
-        <TouchableOpacity style={{position: 'absolute',bottom: 0,right: 0,}}
+        <TouchableOpacity style={{zIndex:5, position: 'absolute',bottom: 0,right: 0,}}
           onPress={() => {
             navigation.navigate('PlantNew')
             console.log('Add garlic plant button pressed!')
@@ -225,6 +276,7 @@ function PlantDash({ route, navigation }) {
             <Icon name={"plus"} color={'white'} size={23} style={{ fontWeight: 'bold' }} />
             </View>
         </TouchableOpacity>
+      
     </View>
 
   )
@@ -490,13 +542,14 @@ function PlantNew({ navigation }) {
       setUploading(true);
       setTransferred(0);
 
-
       const currentDate = new Date();
-      // Spray foliar
-      for (let i = 0; i <= 3; i++) {
+
+       // Spray foliar
+       for (let i = 0; i <= 3; i++) {
         const newDate = new Date(currentDate.getTime() + i * 14 * 24 * 60 * 60 * 1000);
         const blue = moment(newDate).format('MM-DD-YYYY')
         upcoming1.push({
+          id_completed: 'Fertilizer_'+blue,
           image: 'false',
           dateupload:'false',
           imageResult: 'false',
@@ -507,30 +560,33 @@ function PlantNew({ navigation }) {
           count:0
         });
       }
+     
 
-      // irrigate plant
-      for (let i = 0; i <= 33; i++) {
-        const newDate = new Date(currentDate.getTime() + i * 3 * 24 * 60 * 60 * 1000);
-        const blue = moment(newDate).format()
-        upcoming1.push({
-          image: 'false',
-          dateupload:'false',
-          imageResult: 'false',
-          title: 'Water',
-          action: 'Water plants',
-          dateAction: blue,
-          plantStatus:0,
-          count:0
-        });
-      }
-
-
+  
+        // irrigate plant
+        for (let i = 0; i <= 33; i++) {
+          const newDate = new Date(currentDate.getTime() + i * 3 * 24 * 60 * 60 * 1000);
+          const blue = moment(newDate).format()
+         upcoming1.push({
+            id_completed: 'Water_'+blue,
+            image: 'false',
+            dateupload:'false',
+            imageResult: 'false',
+            title: 'Water',
+            action: 'Water plants',
+            dateAction: blue,
+            plantStatus:0,
+            count:0
+          });
+        }
+    
       // storagePath and imagePath
       const task = Storage().ref('garlicImageProfile/' + filename).putFile(uploadUri)
 
       task.on('state_changed', snapshot => {
         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         console.log(`Upload is ${progress}% done`);
+        console.log(`Upload complete!`);
 
         setTransferred(
           Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 100
@@ -540,7 +596,6 @@ function PlantNew({ navigation }) {
       // Task then
       task.then(async () => {
         // get imageDownloadURL
-        console.log(upcoming1)
         const downloadURL = await Storage().ref('garlicImageProfile/' + filename).getDownloadURL();
 
         // store data in realtime database
@@ -552,9 +607,9 @@ function PlantNew({ navigation }) {
             variety: plantVariety,
             area: plantArea,
             date: plantDate.toISOString(),
-            taskUpcoming: upcoming1,
             tastToday: ' ',
-            taskCompleted: ' ',
+            taskCompleted: ' ', 
+            taskUpcoming: upcoming1,
             plantAddress: plantAddress,
             plantStatus: 'false',
             harvestedStatus:'false',
@@ -565,21 +620,13 @@ function PlantNew({ navigation }) {
             navigation.goBack()
           });
 
-        // database().ref('/images/plantimages/' + plantTitle)
-        //   .set({
-        //     image: modelDownloadURL,
-        //     userid: user.uid,
-        //     identified: '',
-        //     severity: '',
-        //     status: 'true',
-        //   })
-        //   .then(async () => {
-        //     navigation.goBack()
-        //   });
+          // irrigationSched();
+          // fertilizerSched();
       });
 
       try {
         await task;
+     
       } catch (e) {
         console.error(e);
       }
@@ -595,7 +642,6 @@ function PlantNew({ navigation }) {
   }
 
   const addressloc = weathloc.name + weathloc.region;
-
   return (
     <View style={{ flex: 1, backgroundColor: '#AADCB6' }}>
 
@@ -788,6 +834,7 @@ function PlantID({ route, navigation }) {
   // Data
   // =================================================
   useEffect(() => {
+    dataCompare()
     plantDisplayList();
     weatherPlant();
     plantFindings();
@@ -1215,6 +1262,7 @@ function PlantID({ route, navigation }) {
     console.log(plantDataID.image)
   }
 
+
   const display = () => {
     console.log('Morning: ', mrhr3humidity)
     console.log('Afternoon: ', afhr3humidity)
@@ -1326,7 +1374,7 @@ const  completedTaskfetch =  () => {
 
 
   //generate generateUpcoming2Task  from completedTask and save it to UpcomingTask#2 holder
-  const generateUpcoming2Task = () => {
+  const generateUpcoming2Task = async({upcom}) => {
     //get reference Data
     //find the last activity for Irrigation
     //find the last activity for Fertilizer 
@@ -1343,6 +1391,30 @@ const  completedTaskfetch =  () => {
     // this is to notify user/farmers 
   }
 
+const dataCompare = () => {
+  try {
+    const data1 = database().ref('/users/' + user.uid + '/plants/' + user.uid + title + '/taskCompleted/').once('value');
+    const data2 = database().ref('/users/' + user.uid + '/plants/' + user.uid + title + '/taskUpcoming/').once('value');
+  
+    // const table1Data = data1.val();
+    // const table2Data = data2.val();
+  
+    console.log('function dataCompare') 
+    console.log('Fetching DataCompleted: ' + data1)
+    console.log('Fetching Dataupcoming: ' + data2)
+    for (const item1 of Object.values(data2)) {
+      for (const item2 of Object.values(data1)) {
+        if (item2.action === item1.action  ) {
+            console.log(item2.action)
+          console.log("Values matched for key: " +item2.action);
+        }
+      }
+    }
+  } catch (error) {
+    console.error("Error fetching DataComplete and DataTask ", error);
+  }
+
+}
 
 //function uploading Completed Task
 const [taskcomplete, setTaskcomplete] = useState(); 
@@ -1353,7 +1425,7 @@ const completedtaskActivity = async({upcom, title}) => {
 
         // store data in realtime database 
         //Path for databse reference data
-        const dataUpload = database().ref('/users/' + user.uid + '/plants/' + user.uid + title + '/taskComplete/' + upcom.title + '_' + dates)
+        const dataUpload = database().ref('/users/' + user.uid + '/plants/' + user.uid + title + '/taskCompleted/' + upcom.title + '_' + dates)
         .set({ 
             title: upcom.title,  
             action: upcom.action,  
@@ -1379,7 +1451,7 @@ const completedtaskActivity = async({upcom, title}) => {
   // CALL DATABASE REALTIME DATABASE
   //CALL PLANT DETAILS
   console.log(upcom);
-  alert('clicked title: ',upcom.title, ' dateAction', upcom.dateAction, ' Action: ', upcom.Action, ' Status: ', upcom.status )
+  alert('clicked title: ',upcom.title)
 
   //setTaskcomplete()
   //console.log(taskcomplete);
@@ -1638,6 +1710,7 @@ return (
 
                                         //the data  will submit to realtime database
                                           completedtaskActivity({upcom, title})
+                                          dataCompare()
                                         
                                           
                                         
@@ -1668,12 +1741,11 @@ return (
                                   </View>
                                   <View>
                                     <View>
-                                      <TouchableOpacity disabled={true}
-                                        // onPress={() => {
-                                        //   handlesubmit(upcom)
-                                        //   alert('clicked title: ', upcom.title, ' dateAction', upcom.dateAction, ' Action: ', upcom.Action, ' Status: ', upcom.status)
-                                        // }
-                                        // }
+                                      <TouchableOpacity
+                                        onPress={() => {
+                                          completedtaskActivity({upcom, title})
+                                        }
+                                        }
                                         >
                                         <View style={{ borderRadius: 15, borderWidth: 1.5, borderColor: '#4a8f3cff', paddingLeft: 10, paddingRight: 10, padding: 5, marginTop: 8 }}>
                                           <Text style={{ fontSize: 12, fontWeight: 'bold' }}>Done</Text>
