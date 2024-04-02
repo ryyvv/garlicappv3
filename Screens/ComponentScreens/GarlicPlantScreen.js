@@ -69,7 +69,9 @@ function PlantDash({ route, navigation }) {
   const { logout, user } = useContext(AuthContext)
   const [plants, setPlants] = useState('');
   const [plantData, setPlantData] = useState([])
-  const [recent,setRecent] = useState('')
+  const [plantDataCompleted, setPlantDataCompleted] = useState([])
+  const [recent,setRecent] = useState(false)
+  const [completed,setCompleted] = useState(false)
 
   // const {plantData, setPlantData} =  route.params;
 
@@ -94,6 +96,7 @@ function PlantDash({ route, navigation }) {
 
   useEffect(() => {
     displayList();
+    displayListCompleted();
   }, []);
 
   const displayList = async () => {
@@ -102,11 +105,46 @@ function PlantDash({ route, navigation }) {
       const firebaseData = snapshot.val();
       if (firebaseData == null) {
         setPlantData(null);
+        setRecent(null)
       } else {
         const dataArray = Object.values(firebaseData);
         setPlantData(dataArray);
-        setRecent('Ongoing')
+        setRecent(true)
       }
+    });
+  }
+  const displayListCompleted = async () => {
+    const dbRefcompleted = database().ref('/users/' + user.uid + '/plants/');
+    dbRefcompleted.on('value', (snapshot) => {
+      const firebaseData = snapshot.val();
+      if (firebaseData == null) {
+        console.log('data not found!')
+      } else {
+        console.log('data found!')
+          - snapshot.forEach((childSnapshot) => {
+            const childKey = childSnapshot.key;
+            const childData = childSnapshot.val();
+            // Do something with each child data
+            console.log("Key: ", childKey);
+            console.log("Data: ", childData.harvestedStatus);
+          });
+      }
+
+
+      // if (firebaseData == null) {
+      //   setPlantDataCompleted(null);
+      //   setCompleted(null)
+      // } else {
+      //   const dataArrayCompleted = [];
+      //   Object.values(firebaseData).forEach(item => {
+      //     if (item.harvestedStatus  === true){
+      //       dataArrayCompleted.push(item)
+      //     }
+      //   })
+      //   setPlantDataCompleted(dataArrayCompleted)
+      //   setCompleted(true)
+      //   console.log(plantDataCompleted)
+      // }
     });
   }
 
@@ -114,7 +152,13 @@ function PlantDash({ route, navigation }) {
   const renderDisplayList1 = ({ item }) => {
     const number = 0;
     return (
-      <TouchableOpacity onPress={() => {
+
+        
+      //create a if-else condition that display ongoing and completed project
+
+
+
+      <Pressable onPress={() => {
         navigation.navigate('PlantID', {
           key: item.id, 
           title: item.title,
@@ -141,41 +185,40 @@ function PlantDash({ route, navigation }) {
             {/* Button option */}
             <View style={[styles.div2RowDatalist, { padding: 10 }]}>
               <Icon name={"bell-outline"} color={'#276653'} size={23} style={{ width: 20, marginRight: 20 }} />
-              <TouchableOpacity>
+              {/* <TouchableOpacity> */}
                 <Icon name={"dots-vertical"} color={'#276653'} size={23} style={{ width: 20 }} />
-              </TouchableOpacity>
+              {/* </TouchableOpacity> */}
             </View>
           </View>
         </View>
-      </TouchableOpacity>
+      </Pressable>
     );
   };
 
    // datalist
-   const renderDisplayList2 = ({ item }) => {
+   const renderDisplayList2 = ({ items }) => {
     const number = 0;
     return (
       <TouchableOpacity onPress={() => {
         navigation.navigate('PlantID', {
-          key: item.id, 
-          title: item.title,
-          imageIcons: item.image,
-          variety: item.variety,
-          area: item.area,
-          date: item.date,
-          plantAddress: item.plantAddress,
+          key: items.id, 
+          title: items.title,
+          imageIcons: items.image,
+          variety: items.variety,
+          area: items.area,
+          date: items.date,
+          plantAddress: items.plantAddress,
         });
-        console.log(item.image)
       }}>
         <View style={styles.cardDataPlant}>
           <View style={styles.div2RowSpaceEvenNoAlignItems}>
 
             <View style={styles.div2Row}>
               {/* <Image source={{ uri: item.image }} style={{ width: 50, height: 50, borderRadius: 50 / 2, marginRight: 10 }}/> */}
-              <LazyLoadImage source={{ uri: item.image }} style={{ width: 50, height: 50, borderRadius: 50 / 2, marginRight: 10 }} />
+              <LazyLoadImage source={{ uri: items.image }} style={{ width: 50, height: 50, borderRadius: 50 / 2, marginRight: 10 }} />
               <View>
-                <Text style={{ color: '#276653', fontWeight: 'bold', fontSize: 17 }}>{item.title}</Text>
-                <Text>{moment(item.date).format('MMMM D, YYYY')}</Text>
+                <Text style={{ color: '#276653', fontWeight: 'bold', fontSize: 17 }}>{items.title}</Text>
+                <Text>{moment(items.date).format('MMMM D, YYYY')}</Text>
               </View>
             </View>
 
@@ -239,11 +282,24 @@ function PlantDash({ route, navigation }) {
     )
   }
 
+  const addNewData = () => {
+    <Pressable style={{  floatingButton: {position: 'absolute',bottom: 20,right: 20,backgroundColor: 'blue',borderRadius: 30,width: 60,height: 60,justifyContent: 'center',alignItems: 'center',
+    },}}
+      onPress={() => {
+        navigation.navigate('PlantNew')
+        console.log('Add garlic plant button pressed!')
+      }}>
+      <View style={styles.addBtn}>
+        <Icon name={"plus"} color={'white'} size={23} style={{ fontWeight: 'bold' }} />
+      </View>
+    </Pressable>
+  }
+
   return (
-    <View style={{ height:'100%', backgroundColor: '#cbdeda' }}>
+    <View style={{ flex:1, backgroundColor: '#cbdeda' }}>
       <StatusBar animated={true} barStyle={statusBarStyle} translucent={true} />
       {
-        recent == null ? (null) : (<Text style={{marginLeft:25,marginTop:20,fontSize:16, fontWeight:'900',color: '#276653',}}>Recent</Text>)
+        recent == true ? (<Text style={{marginLeft:25,marginTop:20,fontSize:16, fontWeight:'900',color: '#276653',}}>Recent</Text>) : (null)
       }
       {/* <ScrollView scrollEnabled={true} style={{zIndex:1}}> */}
         <View style={styles.accountcontainer}>
@@ -254,28 +310,17 @@ function PlantDash({ route, navigation }) {
             ListEmptyComponent={showEmptyListView()} />
         </View>
         {
-        recent == null ? (null) : (<Text style={{marginLeft:25,marginTop:20,fontSize:16, fontWeight:'900',color: '#276653',}}>Completed</Text>)
+          completed == true ? (<Text style={{marginLeft:25,marginTop:20,fontSize:16, fontWeight:'900',color: '#276653',}}>Completed</Text>) : (null)
         }
         <View style={styles.accountcontainer}>
-          <FlatList
-            data={plantData}
-            renderItem={renderDisplayList2}
-            keyExtractor={(item) => item.id}
-            ListEmptyComponent={showEmptyListView()} />
+      
+    
         </View>
       {/* </ScrollView> */}
 
       {/* Add button style={{ zIndex: 1 }}           */}
-    
-        <TouchableOpacity style={{zIndex:5, position: 'absolute',bottom: 0,right: 0,}}
-          onPress={() => {
-            navigation.navigate('PlantNew')
-            console.log('Add garlic plant button pressed!')
-          }}>
-              <View style={styles.addBtn}>
-            <Icon name={"plus"} color={'white'} size={23} style={{ fontWeight: 'bold' }} />
-            </View>
-        </TouchableOpacity>
+      {addNewData()}
+       
       
     </View>
 
@@ -1372,7 +1417,6 @@ const  completedTaskfetch =  () => {
   }
 }
 
-
   //generate generateUpcoming2Task  from completedTask and save it to UpcomingTask#2 holder
   const generateUpcoming2Task = async({upcom}) => {
     //get reference Data
@@ -1413,7 +1457,6 @@ const dataCompare = () => {
   } catch (error) {
     console.error("Error fetching DataComplete and DataTask ", error);
   }
-
 }
 
 //function uploading Completed Task
@@ -1457,7 +1500,6 @@ const completedtaskActivity = async({upcom, title}) => {
   //console.log(taskcomplete);
 }
 
-
 return (
     <SafeAreaView >
       <ScrollView >
@@ -1492,19 +1534,7 @@ return (
                     <Text style={{ fontSize: 16, color: 'white', fontWeight: '900' }}> {moment(date).format("MMMM D, YYYY")}</Text>
                   </View>
                   <View style={{ flexDirection: 'row', marginTop: 15 }}>
-                    <TouchableOpacity
-                      // onPress={() => {
-                      //   navigation.navigate('PlantCam', {
-                      //     title: title,
-                      //     image: image,
-                      //     variety: variety,
-                      //     date: date,
-                      //     plantAddress: plantAddress,
-                      //   })
-                      // }}
-                      // onPress={AndroidPermissionCamera}
-                      onPress={() => refRBSheetCapture.current.open()}
-                      >
+                    <TouchableOpacity onPress={() => refRBSheetCapture.current.open()}>
                       <View style={{ padding: 7, borderWidth: 1, borderColor: '#5BB761', backgroundColor: '#EAFFE8', borderRadius: 20, flexDirection: 'row', paddingLeft: 15, paddingRight: 10 }}>
                         <Icon name={'camera-outline'} color={' #276653'} size={20} style={{ width: 20, marginRight: 5 }} />
                         <Text style={{ fontWeight: 'bold' }}>Identify</Text>
@@ -1683,8 +1713,7 @@ return (
               </TouchableOpacity>
             </View>
 
-            <View  >
-             
+            <View>
               {
                 com.map((upcom, index2) => {
                         return (
