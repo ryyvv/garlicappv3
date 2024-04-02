@@ -108,7 +108,15 @@ function PlantDash({ route, navigation }) {
         setRecent(null)
       } else {
         const dataArray = Object.values(firebaseData);
-        setPlantData(dataArray);
+        const sortedStatus = dataArray.sort((a,b) => {
+          const dateA = new Date(`${a.dateAction}`).valueOf();
+          const dateB = new Date(`${b.dateAction}`).valueOf();
+          if (dateA > dateB) {
+            return 1; // return -1 here for DESC order
+          }
+          return -1 // return 1 here for DESC Order
+        });
+        setPlantData(sortedStatus);
         setRecent(true)
       }
     });
@@ -155,8 +163,7 @@ function PlantDash({ route, navigation }) {
 
         
       //create a if-else condition that display ongoing and completed project
-
-
+  
 
       <Pressable onPress={() => {
         navigation.navigate('PlantID', {
@@ -192,6 +199,8 @@ function PlantDash({ route, navigation }) {
           </View>
         </View>
       </Pressable>
+
+      
     );
   };
 
@@ -283,8 +292,7 @@ function PlantDash({ route, navigation }) {
   }
 
   const addNewData = () => {
-    <Pressable style={{  floatingButton: {position: 'absolute',bottom: 20,right: 20,backgroundColor: 'blue',borderRadius: 30,width: 60,height: 60,justifyContent: 'center',alignItems: 'center',
-    },}}
+    <Pressable style={{ position: 'absolute',bottom: 0,right: 0,backgroundColor: 'blue',borderRadius: 30,width: 60,height: 60,justifyContent: 'center',alignItems: 'center',}}
       onPress={() => {
         navigation.navigate('PlantNew')
         console.log('Add garlic plant button pressed!')
@@ -295,33 +303,118 @@ function PlantDash({ route, navigation }) {
     </Pressable>
   }
 
+
   return (
-    <View style={{ flex:1, backgroundColor: '#cbdeda' }}>
+    <View style={{ flex: 1, backgroundColor: '#cbdeda' }}>
       <StatusBar animated={true} barStyle={statusBarStyle} translucent={true} />
       {
-        recent == true ? (<Text style={{marginLeft:25,marginTop:20,fontSize:16, fontWeight:'900',color: '#276653',}}>Recent</Text>) : (null)
+        recent == true ? (<Text style={{ marginLeft: 25, marginTop: 20, fontSize: 16, fontWeight: '900', color: '#276653', }}>Recent</Text>) : (null)
       }
       {/* <ScrollView scrollEnabled={true} style={{zIndex:1}}> */}
-        <View style={styles.accountcontainer}>
-          <FlatList
-            data={plantData}
-            renderItem={renderDisplayList1}
-            keyExtractor={(item) => item.id}
-            ListEmptyComponent={showEmptyListView()} />
-        </View>
+      <View >
         {
-          completed == true ? (<Text style={{marginLeft:25,marginTop:20,fontSize:16, fontWeight:'900',color: '#276653',}}>Completed</Text>) : (null)
-        }
-        <View style={styles.accountcontainer}>
-      
-    
-        </View>
-      {/* </ScrollView> */}
+          plantData === null ? (
+            <View style={{ marginTop: 300, flexDirection: 'row', justifyContent: 'center', alignItem: 'center' }}>
+              <Text style={{ fontSize: 20, fontWeight: 'bold', alignItem: 'center', justifyContent: 'center', }}><Icon name={"plus-circle"} color={'#276653'} size={30} style={{ width: 20 }} />Add a plant to get started!  </Text>
+            </View>) : (
+            plantData.map((plant, index) => {
+              return (
+                <View key={index} style={{ margin: 10, marginTop: 4, marginBottom: 4 }}>
+                  {
+                    plant.harvestedStatus === 'false' ? (<View key={index} style={styles.cardDataPlant}>
+                      <Pressable onPress={() => {
+                        navigation.navigate('PlantID', {
+                          key: plant.id,
+                          title: plant.title,
+                          imageIcons: plant.image,
+                          variety: plant.variety,
+                          area: plant.area,
+                          date: plant.date,
+                          plantAddress: plant.plantAddress,
+                        });
+                      }}>
 
-      {/* Add button style={{ zIndex: 1 }}           */}
-      {addNewData()}
-       
-      
+                        <View style={styles.div2RowSpaceEvenNoAlignItems}>
+
+                          <View style={styles.div2Row}>
+                            {/* <Image source={{ uri: plant.image }} style={{ width: 50, height: 50, borderRadius: 50 / 2, marginRight: 10 }}/> */}
+                            <LazyLoadImage source={{ uri: plant.image }} style={{ width: 50, height: 50, borderRadius: 50 / 2, marginRight: 10 }} />
+                            <View>
+                              <Text style={{ color: '#276653', fontWeight: 'bold', fontSize: 17 }}>{plant.title}</Text>
+                              <Text>{moment(plant.date).format('MMMM D, YYYY')}</Text>
+                              <Text>Ongoing</Text>
+                            </View>
+                          </View>
+
+
+                          {/* Button option */}
+                          <View style={[styles.div2RowDatalist, { padding: 10 }]}>
+                            <Icon name={"bell-outline"} color={'#276653'} size={23} style={{ width: 20, marginRight: 20 }} />
+                            {/* <TouchableOpacity> */}
+                            <Icon name={"dots-vertical"} color={'#276653'} size={23} style={{ width: 20 }} />
+                            {/* </TouchableOpacity> */}
+                          </View>
+                        </View>
+                      </Pressable>
+                    </View>) : (
+                      <View key={index} style={[styles.cardDataPlant, { backgroundColor: '#D9EDBF' }]}>
+                        <Pressable onPress={() => {
+                          navigation.navigate('Completed', {
+                            key: plant.id,
+                            title: plant.title,
+                            imageIcons: plant.image,
+                            variety: plant.variety,
+                            area: plant.area,
+                            date: plant.date,
+                            plantAddress: plant.plantAddress,
+                          });
+                        }}>
+
+                          <View style={styles.div2RowSpaceEvenNoAlignItems}>
+
+                            <View style={styles.div2Row}>
+                              {/* <Image source={{ uri: plant.image }} style={{ width: 50, height: 50, borderRadius: 50 / 2, marginRight: 10 }}/> */}
+                              <LazyLoadImage source={{ uri: plant.image }} style={{ width: 50, height: 50, borderRadius: 50 / 2, marginRight: 10 }} />
+                              <View>
+                                <Text style={{ color: '#276653', fontWeight: 'bold', fontSize: 17 }}>{plant.title}</Text>
+                                <Text>{moment(plant.date).format('MMMM D, YYYY')}</Text>
+                                <Text>Completed</Text>
+                              </View>
+                            </View>
+
+
+                            {/* Button option */}
+                            <View style={[styles.div2RowDatalist, { padding: 10 }]}>
+                              {/* <TouchableOpacity> */}
+                              <Icon name={"dots-vertical"} color={'#276653'} size={23} style={{ width: 20 }} />
+                              {/* </TouchableOpacity> */}
+                            </View>
+                          </View>
+                        </Pressable>
+                      </View>
+                    )
+                  }
+                </View>
+
+
+              )
+            })
+          )
+        }
+      </View>
+
+
+      <Pressable style={{ position: 'absolute', bottom: 0, right: 0, borderRadius: 30, width: 60, height: 60, justifyContent: 'center', alignItems: 'center', }}
+        onPress={() => {
+          navigation.navigate('PlantNew')
+          console.log('Add garlic plant button pressed!')
+        }}>
+        <View style={styles.addBtn}>
+          <Icon name={"plus"} color={'white'} size={23} style={{ fontWeight: 'bold' }} />
+        </View>
+      </Pressable>
+
+
     </View>
 
   )
@@ -1733,22 +1826,7 @@ return (
                                       <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 14 }}>{upcom.action}</Text> 
                                     </View>
                                   </View>
-                                  <View>
-                                    <TouchableOpacity 
-                                      onPress={() => {
-
-                                        //the data  will submit to realtime database
-                                          completedtaskActivity({upcom, title})
-                                          dataCompare()
-                                        
-                                          
-                                        
-                                         }}>
-                                      <View style={{ borderRadius: 15, borderWidth: 1.5, borderColor: '#4a8f3cff', paddingLeft: 10, paddingRight: 10, padding: 5, marginTop: 8 }}>
-                                        <Text style={{ fontSize: 12, fontWeight: 'bold' }}>Done</Text>
-                                      </View>
-                                    </TouchableOpacity>
-                                  </View>
+       
                                 </View>
                               </View>) : (null)
                             }
@@ -1846,6 +1924,635 @@ return (
                                           <Text style={{ fontSize: 12, fontWeight: 'bold' }}>Done</Text>
                                         </View>
                                       </TouchableOpacity>
+                                    </View>
+                                  </View>
+                                </View>
+                              </View>) : (null)
+                            }
+                          </View>
+                        )
+                })
+              }
+            </View>   
+              
+          </View>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
+function PlantCompleted({ route, navigation }) {
+  const [uploading, setUploading] = useState(false);    //setUploaders
+  const [downloadURL, setDownloadURL] = useState(null);   //imagelink uploader getdownload image
+  const [transferred, setTransferred] = useState(0);    //Progress upload  image
+
+  const [mrhr3humidity, setMRHr3humidity] = useState([])
+  const [afhr3humidity, setAFHr3humidity] = useState([])
+
+  const [activities, setActivities] = useState([])
+  const [irrigate, setIrrigate] = useState([])
+  const [imageIcon, setimageIcon] = useState('');
+
+  const [humis, setHumis] = useState('');
+  const [humis2, setHumis2] = useState('');
+  const { title, imageIcons, area, variety, date, plantAddress } = route.params;
+  const [plantDataID, setPlantDataID] = useState([])
+
+  const { logout, user } = useContext(AuthContext)
+  const {
+    gpsName,
+    gpsUrl,
+    gpsWeathData,
+    gpsWeathCondition,
+    locationList,
+    weathloc,
+    weathDate,
+    weathIcon,
+    weathData,
+    weathPerHour,
+    weathCondition,
+    weathPerDay,
+    setLOCATION,
+    setGpsLocationUpdate,
+    holdlocation,
+    setWeatherHoldLocation,
+    weatherD
+  } = useContext(LocationContext);
+
+  const { data, humi,
+    predHumi,
+    temp,
+    predTemp,
+    wind,
+    predWind,
+    preci,
+    predPreci
+  } = useContext(WeatherContext);
+
+  const [weathplantData, setWeathplantData] = useState('');
+  const [findings, setFindings] = useState('')
+  const [weathDataAstro, setWeathDataAstro] = useState('')
+  const [weathDataDay, setWeathDay] = useState('')
+  // Data
+  // =================================================
+  useEffect(() => {
+    dataCompare()
+    plantDisplayList();
+    weatherPlant();
+    plantFindings();
+    //imageFetch();
+    //wfActivities()
+
+    completedTaskfetch()
+    irrigation()
+    foliar()
+    fungicide()
+    cDatas()
+
+  }, []);
+
+  const plantDisplayList = async () => {
+    const dbRef = database().ref('/database/' + user.uid + '/plants');
+    dbRef.on('value', (snapshot) => {
+      const firebaseData = snapshot.val();
+      if (firebaseData == null) {
+        setFindings(null);
+      } else {
+        const dataArray = Object.values(firebaseData);
+        setPlantDataID(dataArray);
+      }
+    });
+  }
+
+  const plantFindings = async () => {
+    const dbRef = database().ref('/users/' + user.uid + '/plants/modelImages');
+    dbRef.on('value', (snapshot) => {
+      const firebaseData = snapshot.val();
+      if (firebaseData == null) {
+        setFindings(null);
+      } else {
+        const dataArrayfindings = Object.values(firebaseData);
+        setFindings(dataArrayfindings);
+      }
+    });
+  }
+
+
+  const apiKey = 'eb40ebc2fe0c4d02b2735258230304';
+  const weatherPlant = async () => {
+    const response = await fetch('http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=' + plantAddress + '&days=10&aqi=yes&alerts=yes')
+      .then((response) => response.json())
+      .catch((error) => {
+        console.error(error);
+      })
+
+    setWeathDay(response?.forecast?.forecastday[0]?.day)
+    // console.log(weatherIcon)
+    setWeathDataAstro(response?.forecast?.forecastday[0]?.astro)
+
+  }
+
+  // datalist
+  const renderDisplayList = ({ item }) => {
+    return (
+      <TouchableOpacity onPress={() => {
+        navigation.navigate('PlantID', {
+          title: item.title,
+          image: item.image,
+          variety: item.variety,
+          area: item.area,
+          date: item.date,
+          plantAddress: item.plantAddress,
+        });
+      }}>
+        <View style={styles.cardDataPlant}>
+          <View style={styles.div2RowSpaceEvenNoAlignItems}>
+
+            <View style={styles.div2Row}>
+              {/* <Image source={{ uri: item.image }} style={{ width: 50, height: 50, borderRadius: 50 / 2, marginRight: 10 }}/> */}
+              <LazyLoadImage source={{ uri: item.image }} style={{ width: 50, height: 50, borderRadius: 50 / 2, marginRight: 10 }} />
+              <View>
+                <Text style={{ color: '#276653', fontWeight: 'bold', fontSize: 17 }}>{item.title}</Text>
+                <Text>{moment(item.date).format('MMMM D, YYYY')}</Text>
+              </View>
+            </View>
+
+
+            {/* Button option */}
+            <View style={[styles.div2RowDatalist, { padding: 10 }]}>
+              <Icon name={"bell-outline"} color={'#276653'} size={23} style={{ width: 20, marginRight: 20 }} />
+              <TouchableOpacity>
+                <Icon name={"dots-vertical"} color={'#276653'} size={23} style={{ width: 20 }} />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </TouchableOpacity>
+    );
+  };
+
+
+
+
+
+
+  const [imageAna,setimageaAna] = useState();
+   // imageCameraPermission
+   const AndroidPermissionCameraAnalysis = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+        {
+          title: "Camera Permission",
+          message:
+            "Garlic App needs access to your camera " +
+            "so you can take garlic images.",
+          buttonNeutral: "Ask Me Later",
+          buttonNegative: "Cancel",
+          buttonPositive: "OK"
+        }
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        const resultImageCaptured = await launchCamera(optioncam)
+        if (resultImageCaptured.didCancel == true) {
+          alert('Please try again!')
+        }
+        setimageaAna(resultImageCaptured.assets[0].uri);
+        console.log('Image URI: ', imageAna.uri);
+
+      } else {
+        console.log("Camera permission denied");
+        alert("Camera permission denied")
+      }
+    } catch (error) {
+      alert('Please try again!')
+      console.log(error)
+    }
+  }
+
+
+  const Harea = () => {
+    return (
+      <Text style={{ fontWeight: 'bold', fontSize: 17, color: '#276653', lineHeight: 17, paddingLeft: 7 }}>{area} hectare</Text>
+    )
+  }
+
+  const Hsarea = () => {
+    return (
+      <Text style={{ fontWeight: 'bold', fontSize: 17, color: '#276653', lineHeight: 17, paddingLeft: 7 }}>{area} hectares</Text>
+    )
+  }
+
+  const cDatas = () => {
+   console.log(weathData)
+  }
+
+  const checkDatass = () => {
+
+    console.log(weathData)
+
+    //PlantStatus(false)
+    weathData.forEach(function(elem) {
+      //console.log("Hour: ", elem)
+
+      const day1 = moment(elem.date).format('ll');
+      const today = moment().toDate();
+      const currentDay = moment(today).format('ll');
+      const rain = elem.day.daily_chance_of_rain;
+      const rainCondition = elem.day.condition.text;
+
+      //check if weather date data == current data 
+      //get data if true
+      // Today
+      if (day1 == currentDay) {
+
+        //push data[0] to dataa hours Humidity
+        elem.hour.forEach((elem2) => {
+          const timecheck = moment(elem2.time).format('LT');
+          if (timecheck == '5:00 AM' || timecheck == '6:00 AM' || timecheck == '7:00 AM') {
+            //console.log(timecheck)
+            console.log('check', timecheck)
+            if (mrhr3humidity.length <= 2) {
+              mrhr3humidity.push(elem2.humidity)
+            } else {
+              console.log('Humidity data for this morning is updated!')
+            }
+          } else {
+            console.log(timecheck)
+          }
+
+          if (timecheck == '1:00 PM' || timecheck == '2:00 PM' || timecheck == '3:00 PM') {
+            //console.log(timecheck)
+            console.log('check', timecheck)
+            if (afhr3humidity.length <= 2) {
+              afhr3humidity.push(elem2.humidity)
+            } else {
+              console.log('Humidity data for this afternoon is updated!')
+            }
+          } else {
+            console.log(timecheck)
+          }
+        })
+
+        //console.log('Rain: ',rain)
+        if (rain >= 80) {
+          console.log('Chance of rain: ', rain, '%', 'Condition: ', rainCondition)
+          console.log('push data')
+        }
+
+        // average Temperature
+        if (elem.day.avgtemp_c >= 28) {
+          // assign value for irrigating plants
+
+          console.log('Need water today!')
+          // to UPCOMING activity-check schedule if matches the data of plant irrigation
+          // upcoming schedule == today  == push irrigate
+        } else {
+          console.log('40-50% Depletion!')
+        }
+
+
+      }
+
+    })
+
+    const currentDate = new Date();
+
+    for (let i = 0; i <= 3; i++) {
+      const newDate = new Date(currentDate.getTime() + i * 14 * 24 * 60 * 60 * 1000);
+      const blue = moment(newDate).format('MMMM DD YYYY')
+      activities.push({
+        title: 'Fertilizer',
+        action: 'Spray Foliar fertilizer',
+        dateAction: blue,
+        status: 'on'
+      });
+    }
+
+    // irrigate plant
+    for (let i = 0; i <= 33; i++) {
+      const newDate = new Date(currentDate.getTime() + i * 3 * 24 * 60 * 60 * 1000);
+      console.log(newDate);
+      const blue = moment(newDate).format()
+      //irrigate
+      activities.push({
+        title: 'Water',
+        action: 'Water plants',
+        dateAction: blue,
+        status: 'on'
+      });
+    }
+    //setFoliar(newDateStack);
+
+    console.log(plantDataID.image)
+  }
+
+
+  const display = () => {
+    console.log('Morning: ', mrhr3humidity)
+    console.log('Afternoon: ', afhr3humidity)
+    console.log('Foliar: ', foliar)
+    //console.table('irrigating: ',irrigate)
+  }
+
+  // const imageFetch = async() => {
+  //   const image  = await  fetch(imageIcons)
+  //   return setimageIcon(image.url)
+  // }
+
+
+
+//create temporary varHolder 
+const [comActivity, setcomActivity] = useState(0)
+const [todayActivity, settodayActivity] = useState(0)
+const currentDate2 = new Date();
+
+
+// if date today == date irri , date foliar, date fungicide
+// display list
+
+
+//Date captured = loop starteds 
+//Date planted -- 
+const [irri, setIrri] = useState([]);
+const irrigation =  async () => {
+console.log('irrigation',WeatherContext.temp)
+}
+
+//Date captured = loop starteds 
+//Date planted --
+const [fol, setFol] = useState([]);
+const foliar =  async () => {
+console.log('precipitation',WeatherContext.preci)
+}
+
+//Date captured = loop starteds 
+//Date planted --
+const [fungi, setFungi] = useState([]);
+const fungicide = async () => {
+console.log('wind', WeatherContext.wind)
+}
+
+const chectdata = () => {
+  // irrigate plant
+  const currentDate = new Date();
+  for (let i = 0; i <= 33; i++) {
+      const newDate = new Date(currentDate.getTime() + i * 3 * 24 * 60 * 60 * 1000);
+      const blue = moment(newDate).format()
+      //irrigate
+      foliar.push({
+        title: 'Water',
+        action: 'Water plants',
+        dateAction: blue,
+      });
+    }
+
+}
+
+const [activeTab, setActiveTab] = useState('tab1');
+
+//fetch Completed activities
+const [com, setCom] = useState([])
+const  completedTaskfetch =  () => {
+  const red = database().ref('null/plants/' + user.uid)
+  const blue = red.toString().split('/')[3];
+
+  if (user.uid == blue) {
+    const taskCom =  database().ref('users/' + user.uid + '/plants/' + user.uid + title + '/taskUpcoming')
+    taskCom.on('value', (snapshot) => {
+      const firebaseData = snapshot.val();
+      const dataArray = Object.values(firebaseData);
+      const sorted = dataArray.sort((a, b) => {
+        const dateA = new Date(`${a.dateAction}`).valueOf();
+        const dateB = new Date(`${b.dateAction}`).valueOf();
+        if (dateA > dateB) {
+          return 1; // return -1 here for DESC order
+        }
+        return -1 // return 1 here for DESC Order
+      });
+      setCom(sorted);
+    });
+  }
+}
+
+
+const dataCompare = () => {
+  try {
+    const data1 = database().ref('/users/' + user.uid + '/plants/' + user.uid + title + '/taskCompleted/').once('value');
+    const data2 = database().ref('/users/' + user.uid + '/plants/' + user.uid + title + '/taskUpcoming/').once('value');
+  
+    // const table1Data = data1.val();
+    // const table2Data = data2.val();
+  
+    console.log('function dataCompare') 
+    console.log('Fetching DataCompleted: ' + data1)
+    console.log('Fetching Dataupcoming: ' + data2)
+    for (const item1 of Object.values(data2)) {
+      for (const item2 of Object.values(data1)) {
+        if (item2.action === item1.action  ) {
+            console.log(item2.action)
+          console.log("Values matched for key: " +item2.action);
+        }
+      }
+    }
+  } catch (error) {
+    console.error("Error fetching DataComplete and DataTask ", error);
+  }
+}
+
+//function uploading Completed Task
+const [taskcomplete, setTaskcomplete] = useState(); 
+const completedtaskActivity = async({upcom, title}) => {
+ 
+      const currentDate = new Date();
+      const dates = moment(currentDate).format('MM-DD-YYYY');
+
+        // store data in realtime database 
+        //Path for databse reference data
+        const dataUpload = database().ref('/users/' + user.uid + '/plants/' + user.uid + title + '/taskCompleted/' + upcom.title + '_' + dates)
+        .set({ 
+            title: upcom.title,  
+            action: upcom.action,  
+            dateAction: dates ,  
+            plantStatus: 1,  
+            counts: 0,  
+          })
+          .then(async () => {
+            alert('Task done!')
+            //navigation.goBack()
+          });
+
+
+      try {
+        await dataUpload;
+        generateUpcoming2Task()
+      } catch (e) {
+        console.error(e);
+      }
+
+      
+
+  // CALL DATABASE REALTIME DATABASE
+  //CALL PLANT DETAILS
+  console.log(upcom);
+  alert('clicked title: ',upcom.title)
+
+  //setTaskcomplete()
+  //console.log(taskcomplete);
+}
+
+return (
+    <SafeAreaView >
+      <ScrollView >
+        <ImageBackground
+          source={require('../../src/images/Insect4.jpg')}
+          resizeMode="cover"
+          style={{ flex: 1, height: 400, }}
+          imageStyle={{ borderBottomLeftRadius: 60, borderBottomRightRadius: 60 }}>
+          <LinearGradient colors={['#ffffff00', '#92df9748', '#5bb761ce']} style={{ flex: 1, borderBottomLeftRadius: 60, borderBottomRightRadius: 60 }}>
+            {/* opacity: 0.1 */}
+            <View style={{ marginTop: 90, width: '100%', }}>
+              <View style={{ margin: 20, padding: 15, backgroundColor: 'rgba(255, 255, 255, 0.548)', borderRadius: 15, flexDirection: 'row', justifyContent: 'flex-start' }}>
+                <View>
+
+                {
+                  imageIcon  === null ? (
+                  <View  style={{ backgroundColor:'white', borderRadius:10, justifyContent:'center', alignItems:'center', width:100, height:100, marginRight: 10 }}>
+                      <Image source={require('../../src/icons/Garlic.png')} style={{width:80, height:60}} />
+                  </View>
+                  ) : ( <LazyLoadImage source={{ uri: imageIcon }} style={{ width: 100, height: 100, borderRadius:10, marginRight: 10 }} />) 
+                }
+
+                  {/* <Image source={require('../../src/images/Insect5.jpg')} style={{ width: 100, height: 100, borderRadius: 15, marginRight: 10 }} /> */}
+                </View>
+                <View style={{ flexDirection: 'column' }}>
+                  <View>
+                    <Text style={{ fontSize: 18, color: 'white', fontWeight: '900' }}> {title}</Text>
+                    <Text style={{ fontSize: 16, color: 'white', fontWeight: '900' }}> {moment(date).format("MMMM D, YYYY")}</Text>
+                  </View>
+                </View>
+              </View>
+            </View>
+          </LinearGradient>
+        </ImageBackground>
+
+        <View style={{
+          flex: 2, padding: 10, borderTopRightRadius: 25,
+          borderTopLeftRadius: 25, paddingTop: 30, marginTop: -200, height: undefined
+        }}>
+
+          {/* Overview */}
+          <View style={{ marginTop: 10, marginRight: 10, margin: 10 }}>
+            <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, borderLeftWidth: 10, borderLeftColor: '#6fb96d' }]}>
+              <View>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                  <View style={{ width: '50%' }}>
+                    <Text style={{ fontWeight: 'bold', fontSize: 14, color: '#687773', }}>Variety:</Text>
+                    <Text style={{ fontWeight: 'bold', fontSize: 17, color: '#276653', lineHeight: 17, paddingLeft: 7 }}>{variety}</Text>
+                  </View>
+                  <View style={{ width: '50%' }}>
+                    <Text style={{ fontWeight: 'bold', fontSize: 14, color: '#687773' }}>Location:</Text>
+                    <Text style={{ fontWeight: 'bold', fontSize: 17, color: '#276653', lineHeight: 17, paddingLeft: 7 }}>{plantAddress}</Text>
+                  </View>
+                </View>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
+                  <View style={{ width: '50%' }}>
+                    <Text style={{ fontWeight: 'bold', fontSize: 14, color: '#687773' }}>Area Planted:</Text>
+                    {
+                      area <= 1 ? (<Harea />) : (<Hsarea />)
+                    }
+                  </View>
+                  <View style={{ width: '50%' }}>
+                    <Text style={{ fontWeight: 'bold', fontSize: 14, color: '#687773' }}>Date Planted:</Text>
+                    <Text style={{ fontWeight: 'bold', fontSize: 17, color: '#276653', lineHeight: 17, paddingLeft: 7 }}>{moment(date).format("MMMM D, YYYY")}</Text>
+                  </View>
+                </View>
+              </View>
+            </View>
+          </View>
+
+
+          {/* Task */}
+          <View style={{ margin: 10, marginTop: 10, }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingBottom: 5, alignItems: 'center' }}>
+              <Text style={{ fontSize: 20, color: '#276653', fontWeight: 'bold' }}>Task Completed</Text>
+            </View>
+
+            <View>
+              {
+                com.map((upcom, index2) => {
+                        return (
+                          <View key={index2} style={{ margin: 10, marginTop: 4, marginBottom: 4 }}>
+                            {
+                              upcom.title == 'Water' ? (<View style={[styles.cardDashboardRecentProp, { flexDirection: 'column', justifyContent: 'space-between', backgroundColor: 'white', borderRadius: 15, width: '100%', padding: 20, borderLeftColor: '#389cdf', borderLeftWidth: 10, marginBottom: 10, alignItems: 'center' }]}>
+                                <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'flex-end', marginTop: -20 }}>
+                                  <View style={{ padding: 5 }}>
+                                    <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 13, fontStyle: 'italic' }}>{moment(upcom.dateAction).format('ll')}</Text>
+                                  </View>
+                                </View>
+                                <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
+                                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                    <Image source={require('../../src/icons/water.png')} style={{ width: 45, height: 40, marginRight: 10 }} />
+                                    <View>
+                                      <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 18 }}>{upcom.title}</Text>
+                                      <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 14 }}>{upcom.action}</Text> 
+                                    </View>
+                                  </View>
+       
+                                </View>
+                              </View>) : (null)
+                            }
+
+                            {
+                              upcom.title == 'Fertilizer' ? (<View style={[styles.cardDashboardRecentProp, { flexDirection: 'column', justifyContent: 'space-between', backgroundColor: 'white', borderRadius: 15, width: '100%', padding: 20, borderLeftColor: '#3fda54', borderLeftWidth: 10, marginBottom: 10, alignItems: 'center' }]}>
+                                <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'flex-end', marginTop: -20 }}>
+                                  <View style={{ padding: 5 }}>
+                                    <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 13, fontStyle: 'italic' }}>{moment(upcom.dateAction).format('ll')}</Text>
+                                  </View>
+                                </View>
+                                <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
+                                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                    <Image source={require('../../src/icons/Fertilizer.png')} style={{ width: 45, height: 40, marginRight: 10 }} />
+                                    <View>
+                                      <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 18 }}>{upcom.title}</Text>
+                                      <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 14 }}>{upcom.action}</Text>
+                                    </View>
+                                  </View>
+                                </View>
+                              </View>) : (null)
+                            }
+                            {
+                              upcom.title == 'Pest' ? (<View style={[styles.cardDashboardRecentProp, { flexDirection: 'column', justifyContent: 'space-between', backgroundColor: 'white', borderRadius: 15, width: '100%', padding: 20, borderLeftColor: '#e45138', borderLeftWidth: 10, marginBottom: 10, alignItems: 'center' }]}>
+                                <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'flex-end', marginTop: -20 }}>
+                                  <View style={{ padding: 5 }}>
+                                    <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 13, fontStyle: 'italic' }}>{moment(upcom.dateAction).format('ll')}</Text>
+                                  </View>
+                                </View>
+                                <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
+                                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                    <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
+                                    <View>
+                                      <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 18 }}>{upcom.title}</Text>
+                                      <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 14 }}>{upcom.action}</Text>
+                                    </View>
+                                  </View>
+                                </View>
+                              </View>) : (null)
+                            }
+
+                            {
+                              upcom.title == 'Disease' ? (<View style={[styles.cardDashboardRecentProp, { flexDirection: 'column', justifyContent: 'space-between', backgroundColor: 'white', borderRadius: 15, width: '100%', padding: 20, borderLeftColor: '#ebde31', borderLeftWidth: 10, marginBottom: 10, alignItems: 'center' }]}>
+                                <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'flex-end', marginTop: -20 }}>
+                                  <View style={{ padding: 5 }}>
+                                    <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 13, fontStyle: 'italic' }}>{moment(upcom.dateAction).format('ll')}</Text>
+                                  </View>
+                                </View>
+                                <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
+                                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                    <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
+                                    <View>
+                                      <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 18 }}>{upcom.title}</Text>
+                                      <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 14 }}>{upcom.action}</Text>
                                     </View>
                                   </View>
                                 </View>
@@ -2852,6 +3559,7 @@ export default function GarlicPlantScreen({ navigation }) {
           { headerShown: false }
         } />
       <PlantStack.Screen name="PlantID" component={PlantID} />
+      <PlantStack.Screen name="Completed" component={PlantCompleted} />
       {/* <PlantStack.Screen name="PlantCam" component={PlantCam} />
       <PlantStack.Screen name="PlantCamResult" component={PlantCamResult} />
       <PlantStack.Screen name="Note" component={Note} /> */}
