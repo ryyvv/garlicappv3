@@ -2021,9 +2021,9 @@ function Task({ route, navigation }) {
            });
            sorted.forEach((index) => {
       
-            const dA =  moment(index.dateAction).format('LL');
+            const dA =  moment(index.dateAction).format('ll');
             const nDate = new Date();
-            const dnewDate = moment(nDate).format('LL'); 
+            const dnewDate = moment(nDate).format('ll'); 
             //console.log('dAdAdAd: ',dA)
             //console.log('current: ',dAnewDate )
 
