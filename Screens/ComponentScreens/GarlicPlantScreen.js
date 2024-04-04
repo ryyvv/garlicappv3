@@ -1280,11 +1280,11 @@ const [activeTab, setActiveTab] = useState('tab1');
 
 //function uploading Completed Task
 useEffect(() => {
-  // checkToday()
+  checkerTodayTask()
   // checkCompleted()
-  checkUpcoming()
+  // checkUpcoming()
 
-  taskPendingToday()
+  // taskPendingToday()
 
 }, []);
 
@@ -1314,172 +1314,170 @@ const checkTodayChecker = () => {
 } 
 
 const [completeds, setCompleteds] =useState([])
-const checkCompleted = () => {
+// const checkCompleted = () => {
 
-  const databaseurl = database().ref('null/plants/' + user.uid)
-  const userID = databaseurl.toString().split('/')[3];
+//   const databaseurl = database().ref('null/plants/' + user.uid)
+//   const userID = databaseurl.toString().split('/')[3];
 
-  if(user.uid == userID) {
-    const userTaskCompleted= database().ref('null/plants/' + user.uid + '/plants/' + user.uid+title+'/taskCompleted')
-    userTaskCompleted.on('value', (snapshot) => {
-      const firebaseData = snapshot.val();
-        const dataArray = Object.values(firebaseData);
-        const sortedStatus = dataArray.sort((a,b) => {
-          const dateA = new Date(`${a.dateAction}`).valueOf();
-          const dateB = new Date(`${b.dateAction}`).valueOf();
-          if (dateA > dateB) {
-            return 1; // return -1 here for DESC order
-          }
-          return -1 // return 1 here for DESC Order
-        });
-        setCompleteds(sortedStatus); 
-        console.log('CheckCompleted: ', completeds)
-    });
-  }
+//   if(user.uid == userID) {
+//     const userTaskCompleted= database().ref('null/plants/' + user.uid + '/plants/' + user.uid+title+'/taskCompleted')
+//     userTaskCompleted.on('value', (snapshot) => {
+//       const firebaseData = snapshot.val();
+//         const dataArray = Object.values(firebaseData);
+//         const sortedStatus = dataArray.sort((a,b) => {
+//           const dateA = new Date(`${a.dateAction}`).valueOf();
+//           const dateB = new Date(`${b.dateAction}`).valueOf();
+//           if (dateA > dateB) {
+//             return 1; // return -1 here for DESC order
+//           }
+//           return -1 // return 1 here for DESC Order
+//         });
+//         setCompleteds(sortedStatus); 
+//         console.log('CheckCompleted: ', completeds)
+//     });
+//   }
 
-} 
+// } 
 
 const [upcoming, setUpcoming] = useState([])
 const [sortedTask, setsortedTaskUpcom] = useState([])
-const checkUpcoming = () => {
+// const checkUpcoming = () => {
 
-  const currentDate = new Date();
-  const newDate = moment().toDate();
-  const DnewDate = moment(newDate).add(1, 'days');
+//   const currentDate = new Date();
+//   const newDate = moment().toDate();
+//   const DnewDate = moment(newDate).add(1, 'days');
 
+//   const red = database().ref('null/plants/' + user.uid)
+//   const blue = red.toString().split('/')[3];
+
+//   if (user.uid == blue) {
+//     const taskCom =  database().ref('users/' + user.uid + '/plants/' + user.uid + title + '/taskUpcoming')
+//     taskCom.on('value', (snapshot) => {
+//       const firebaseData = snapshot.val();
+//       const dataArray = Object.values(firebaseData);
+//       const sortedUpcoming = dataArray.sort((a, b) => {
+//         const dateA = new Date(`${a.dateAction}`).valueOf();
+//         const dateB = new Date(`${b.dateAction}`).valueOf();
+//         if (dateA > dateB) {
+//           return 1; // return -1 here for DESC order
+//         }
+//         return -1 // return 1 here for DESC Order
+//       });
+//       sortedUpcoming.forEach((index) => {
+
+//         const dA = index.dateAction;
+//         const dAnewDate = DnewDate;
+
+//         //console.log('dAdAdAd: ',dA)
+//         //console.log('current: ',dAnewDate )
+
+//         const date1 = new Date(dA);
+//         const date2 = new Date(dAnewDate);
+
+//         if (date1 >  date2) {
+//           sortedTask.push({ 
+//             'id_completed': index.id_completed,
+//             'action': index.action,
+//             'dateAction': index.dateAction, 
+//             'title': index.title,
+//             'dateUpload' : index.dateUpload,
+//             'image': index.image,
+//             'imageResult' : index.imageResult,
+//             'count' : index.count,
+//             'plantstatus' : index.plantStatus
+//           })
+//           console.table('Push Date: ', dA)
+//         } else {
+//           console.table('Cannot Push Date: ', dA)
+//         }
+//       })
+//       setUpcoming(sortedTask);
+//     });
+//   }
+// }
+
+const [loadings, setLoadings] = useState(false); 
+const [sortedToday, setsortedToday] = useState([])
+const [taskToday, setTaskToday] = useState([])
+const checkerTodayTask = () => {
+  setLoadings(true)
   const red = database().ref('null/plants/' + user.uid)
   const blue = red.toString().split('/')[3];
 
-  if (user.uid == blue) {
-    const taskCom =  database().ref('users/' + user.uid + '/plants/' + user.uid + title + '/taskUpcoming')
-    taskCom.on('value', (snapshot) => {
-      const firebaseData = snapshot.val();
-      const dataArray = Object.values(firebaseData);
-      const sortedUpcoming = dataArray.sort((a, b) => {
-        const dateA = new Date(`${a.dateAction}`).valueOf();
-        const dateB = new Date(`${b.dateAction}`).valueOf();
-        if (dateA > dateB) {
-          return 1; // return -1 here for DESC order
-        }
-        return -1 // return 1 here for DESC Order
-      });
-      sortedUpcoming.forEach((index) => {
-
-        const dA = index.dateAction;
-        const dAnewDate = DnewDate;
-
-        //console.log('dAdAdAd: ',dA)
-        //console.log('current: ',dAnewDate )
-
-        const date1 = new Date(dA);
-        const date2 = new Date(dAnewDate);
-
-        if (date1 >  date2) {
-          sortedTask.push({ 
-            'id_completed': index.id_completed,
-            'action': index.action,
-            'dateAction': index.dateAction, 
-            'title': index.title,
-            'dateUpload' : index.dateUpload,
-            'image': index.image,
-            'imageResult' : index.imageResult,
-            'count' : index.count,
-            'plantstatus' : index.plantStatus
-          })
-          console.table('Push Date: ', dA)
-        } else {
-          console.table('Cannot Push Date: ', dA)
-        }
-      })
-      setUpcoming(sortedTask);
-    });
-  }
-}
-const checkUpcoming2 = () => {
-
   const currentDate = new Date();
   const newDate = moment().toDate();
-  const DnewDate = moment(newDate).add(1, 'days');
-
-  const red = database().ref('null/plants/' + user.uid)
-  const blue = red.toString().split('/')[3];
 
   if (user.uid == blue) {
-    const taskCom =  database().ref('users/' + user.uid + '/plants/' + user.uid + title + '/taskUpcoming')
-    taskCom.on('value', (snapshot) => {
+    const task = database().ref('users/' + user.uid + '/plants/' + user.uid + title + '/taskUpcoming')
+    task.on('value', (snapshot) => {
       const firebaseData = snapshot.val();
-      const dataArray = Object.values(firebaseData);
-      const sorted = dataArray.sort((a, b) => {
-        const dateA = new Date(`${a.dateAction}`).valueOf();
-        const dateB = new Date(`${b.dateAction}`).valueOf();
-        if (dateA > dateB) {
-          return 1; // return -1 here for DESC order
-        }
-        return -1 // return 1 here for DESC Order
-      });
-      sorted.forEach((index) => {
-
-        const dA = index.dateAction;
-        const dAnewDate = DnewDate;
-
+        const dataArray = Object.values(firebaseData);
+         const sorted = dataArray.sort((a, b) => {
+           const dateA = new Date(`${a.dateAction}`).valueOf();
+           const dateB = new Date(`${b.dateAction}`).valueOf();
+           if (dateA > dateB) {
+             return 1; // return -1 here for DESC order
+           }
+           return -1 // return 1 here for DESC Order
+    
+       });
+       sorted.forEach((index) => {
+  
+        const dA =  moment(index.dateAction).format('ll');
+        const nDate = new Date();
+        const dnewDate = moment(nDate).format('ll'); 
         //console.log('dAdAdAd: ',dA)
         //console.log('current: ',dAnewDate )
 
-        const date1 = new Date(dA);
-        const date2 = new Date(dAnewDate);
+        const date1 = dA;
+        const date2 = dnewDate;
+        console.log('Date1: ',date1 )
+        console.log('current: ',date2 )
+        if(  date1 == date2 ){
+          sortedToday.push({'action':index.action,'dateAction':index.dateAction,'title':index.title })
+          console.log('Push Date: ',dA)
+        }else {
+            console.log('Cannot Push Date: ',dA)
+          }
+       })
+       setTaskToday(sortedToday)  
 
-        if (date1 > date2) {
-          sortedTaskUpcom.push({ 
-            'id_completed': index.id_completed,
-            'action': index.action,
-            'dateAction': index.dateAction, 
-            'title': index.title,
-            'dateUpload' : index.dateUpload,
-            'image': index.image,
-            'imageResult' : index.imageResult,
-            'count' : index.count,
-            'plantstatus' : index.plantStatus
-          })
-          console.table('Push Date: ', dA)
-        } else {
-          console.table('Cannot Push Date: ', dA)
-        }
-      })
-      setUpcoming(sortedTaskUpcom);
     });
+
   }
+  setLoadings(false)
 }
 
 // State variable to store equal values
-const [equalValues, setEqualValues] = useState([]);
-const [completeHandle, setCompleteHandle] = useState([]);
-const [upcomingHandle, setUpcomingHandle] = useState([]);
-const taskPendingToday = () => {
-  const users = database().ref('null/plants/' + user.uid)
-  const userUID = users.toString().split('/')[3];
+// const [equalValues, setEqualValues] = useState([]);
+// const [completeHandle, setCompleteHandle] = useState([]);
+// const [upcomingHandle, setUpcomingHandle] = useState([]);
+// const taskPendingToday = () => {
+//   const users = database().ref('null/plants/' + user.uid)
+//   const userUID = users.toString().split('/')[3];
 
-    if (user.uid == userUID) {
-      const equalValuesArray = [];
+//     if (user.uid == userUID) {
+//       const equalValuesArray = [];
       
-      const taskCom =  database().ref('users/' + user.uid + '/plants/' + user.uid + title + '/taskUpcoming')
-      taskCom.on('value', (snapshot1) => {
-        const firebaseData1 = snapshot1.val();
-        const dataArray1 = Object.values(firebaseData1);
-        const sortedUpcoming1 = dataArray1.sort((a1, b1) => {
-          const dateA1 = new Date(`${a1.dateAction}`).valueOf();
-          const dateB1 = new Date(`${b1.dateAction}`).valueOf();
-          if (dateA1 > dateB1) {
-            return 1; // return -1 here for DESC order
-          }
-          return -1 // return 1 here for DESC Order
-        });
-        setUpcomingHandle(sortedUpcoming1);
-      });
+//       const taskCom =  database().ref('users/' + user.uid + '/plants/' + user.uid + title + '/taskUpcoming')
+//       taskCom.on('value', (snapshot1) => {
+//         const firebaseData1 = snapshot1.val();
+//         const dataArray1 = Object.values(firebaseData1);
+//         const sortedUpcoming1 = dataArray1.sort((a1, b1) => {
+//           const dateA1 = new Date(`${a1.dateAction}`).valueOf();
+//           const dateB1 = new Date(`${b1.dateAction}`).valueOf();
+//           if (dateA1 > dateB1) {
+//             return 1; // return -1 here for DESC order
+//           }
+//           return -1 // return 1 here for DESC Order
+//         });
+//         setUpcomingHandle(sortedUpcoming1);
+//       });
 
 
 
-    }
-}
+//     }
+// }
 
 const [taskcomplete, setTaskcomplete] = useState(); 
 const completedtaskActivity = async({upcom, title}) => {
@@ -1719,166 +1717,281 @@ return (
             </View>
           </View>
 
+            {/* Findings */}
+            <View style={{ margin: 10, marginTop: 10 }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingBottom: 5, alignItems: 'center' }}>
+               <Text style={{ fontSize: 17, color: '#276653', fontWeight: 'bold' }}>Uploaded samples</Text>
+              {/* <TouchableOpacity onPress={() => { navigation.navigate('Task') }}>
+                <View style={{ flexDirection: 'row' }}> */}
+                  {/* <Text style={{ color: '#276653', fontWeight: 'bold' }}>See all</Text> */}
+                  {/* <Icon name={'arrow-right-thin'} color={'#276653'} size={} style={{ width: 35}} /> */}
+                {/* </View>
+              </TouchableOpacity> */}
+            </View>
+            <View>
+              <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} snapToStart={true} >
+                
+                <View style={{ marginRight: 10 }}>
+                  <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, margin: 4, marginBottom: 8, padding: 20 }]}>
+                    <View style={{ flexDirection: 'row', }}>
+                      <Text style={{ fontWeight: 'bold' }}>Feb. 23, 2023 </Text>
+                    </View>
+                    <View style={{ flexDirection: 'row', marginTop: 5, alignItems: 'center' }}>
+                      <View style={{ flexDirection: 'row', }}>
+                        <Image source={require('../../src/images/garlic1.jpg')} style={{ width: 50, height: 50, borderRadius: 25 }} />
+                        <Image source={require('../../src/images/garlic1.jpg')} style={{ width: 50, height: 50, borderRadius: 25, marginLeft: -20, opacity: 0.5 }} />
+                      </View>
+                      {/* <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} /> */}
+                      <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 18,marginLeft: 5 }}>Tangle Top</Text>
+                    </View>
+                    <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
+                      <View style={{ marginRight: 10, justifyContent: 'flex-end', marginLeft: 50 }}>
+                        {/* <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 15, height: 15 }} /> */}
+                        <View>
+                          <View style={{ borderRadius: 10, borderWidth: 1.5, borderColor: 'gray', width: 140 }}></View>
+                          <View style={{ borderRadius: 10, borderWidth: 3, borderColor: '#6fb96d', marginTop: -5, width: '40%' }}></View>
+                        </View>
+                      </View>
+                      <View style={{ flexDirection: 'row', }}>
+                        <Text style={{ fontWeight: 'bold', alignSelf: 'flex-end', color: '#276653' }}>40%</Text>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+
+                <View style={{ marginRight: 10 }}>
+                  <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, margin: 4, marginBottom: 8, padding: 20 }]}>
+                    <View style={{ flexDirection: 'row', }}>
+                      <Text style={{ fontWeight: 'bold' }}>Feb. 23, 2023 </Text>
+                    </View>
+
+                    <View style={{ flexDirection: 'row', marginTop: 5, alignItems: 'center' }}>
+                      <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
+                      <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 18 }}>Tangle Top</Text>
+                    </View>
+
+                    <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
+                      <View style={{ marginRight: 10, justifyContent: 'flex-end', marginLeft: 50 }}>
+                        {/* <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 15, height: 15 }} /> */}
+                        <View>
+                          <View style={{ borderRadius: 10, borderWidth: 1.5, borderColor: 'gray', width: 140 }}></View>
+                          <View style={{ borderRadius: 10, borderWidth: 3, borderColor: '#df8c2e', marginTop: -5, width: '60%' }}></View>
+                        </View>
+                        <Text style={{ fontWeight: 'bold', alignSelf: 'flex-end', color: '#276653' }}>60%</Text>
+                      </View>
+                      <View style={{ flexDirection: 'row', }}>
+                        <Image source={require('../../src/images/garlic1.jpg')} style={{ width: 30, height: 30, borderRadius: 25 }} />
+                        <Image source={require('../../src/images/garlic1.jpg')} style={{ width: 30, height: 30, borderRadius: 25, marginLeft: -20, opacity: 0.5 }} />
+                      </View>
+                    </View>
+                  </View>
+                </View>
+
+                <View style={{ marginRight: 10 }}>
+                  <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, margin: 4, marginBottom: 8, padding: 20 }]}>
+                    <View style={{ flexDirection: 'row', }}>
+                      <Text>Feb. 23, 2023 </Text>
+                    </View>
+
+                    <View style={{ flexDirection: 'row', marginTop: 5, alignItems: 'center' }}>
+                      <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
+                      <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 18 }}>Tangle Top</Text>
+                    </View>
+
+                    <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
+                      <View style={{ marginRight: 10, justifyContent: 'flex-end', marginLeft: 50 }}>
+                        {/* <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 15, height: 15 }} /> */}
+                        <View>
+                          <View style={{ borderRadius: 10, borderWidth: 1.5, borderColor: 'gray', width: 140 }}></View>
+                          <View style={{ borderRadius: 10, borderWidth: 3, borderColor: '#df492e', marginTop: -5, width: '90%' }}></View>
+                        </View>
+                        <Text style={{ fontWeight: 'bold', alignSelf: 'flex-end', color: '#276653' }}>90%</Text>
+                      </View>
+                      <View style={{ flexDirection: 'row', }}>
+                        <Image source={require('../../src/images/garlic1.jpg')} style={{ width: 30, height: 30, borderRadius: 25 }} />
+                        <Image source={require('../../src/images/garlic1.jpg')} style={{ width: 30, height: 30, borderRadius: 25, marginLeft: -20, opacity: 0.5 }} />
+                      </View>
+                    </View>
+                  </View>
+                </View>
+
+              </ScrollView>
+            </View>
+          </View>
+
 
           {/* Task */}
           <View style={{ margin: 10, marginTop: 10, }}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingBottom: 5, alignItems: 'center' }}>
-              <Text style={{ fontSize: 20, color: '#276653', fontWeight: 'bold' }}>Today's Activity</Text>
+              <Text style={{ fontSize: 17, color: '#276653', fontWeight: 'bold' }}>Today's Activity</Text>
               <TouchableOpacity onPress={() => {
                 navigation.navigate('Task', {
                   title: title,
                 });
               }}>
                 <View>
-                  <Text style={{ color: '#276653', fontWeight: 'bold' }}>see all</Text>
+                  <Text style={{ fontSize:14,color: '#276653', fontWeight: 'bold' }}>Show more</Text>
                 </View>
               </TouchableOpacity>
             </View>
 
-           
-
-            <View>
-              <Text>Upcoming</Text>
-              {
-                upcoming.map((upcom, index3) => {
-                        return (
-                          <View key={index3} style={{ margin: 10, marginTop: 4, marginBottom: 4 }}>
-                            {
-                              upcom.title == 'Water' ? (<View style={[styles.cardDashboardRecentProp, { flexDirection: 'column', justifyContent: 'space-between', backgroundColor: 'white', borderRadius: 15, width: '100%', padding: 20, borderLeftColor: '#389cdf', borderLeftWidth: 10, marginBottom: 10, alignItems: 'center' }]}>
-                                <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'flex-end', marginTop: -20 }}>
-                                  <View style={{ padding: 5 }}>
-                                    <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 13, fontStyle: 'italic' }}>{moment(upcom.dateAction).format('LL')}</Text>
-                                  </View>
-                                </View>
-                                <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
-                                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                    <Image source={require('../../src/icons/water.png')} style={{ width: 45, height: 40, marginRight: 10 }} />
-                                    <View>
-                                      <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 18 }}>{upcom.title}</Text>
-                                      <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 14 }}>{upcom.action}</Text> 
-                                    </View>
-                                  </View>
-                                  <View>
-                                    <View>
-                                      <TouchableOpacity
-                                        onPress={() => {
-                                          completedtaskActivity({upcom, title})
-                                        }
-                                        }
-                                        >
-                                        <View style={{ borderRadius: 15, borderWidth: 1.5, borderColor: '#4a8f3cff', paddingLeft: 10, paddingRight: 10, padding: 5, marginTop: 8 }}>
-                                          <Text style={{ fontSize: 12, fontWeight: 'bold' }}>Done</Text>
-                                        </View>
-                                      </TouchableOpacity>
-                                    </View>
-                                  </View>
-                                </View>
-                              </View>) : (null)
-                            }
-
-                            {
-                              upcom.title == 'Fertilizer' ? (<View style={[styles.cardDashboardRecentProp, { flexDirection: 'column', justifyContent: 'space-between', backgroundColor: 'white', borderRadius: 15, width: '100%', padding: 20, borderLeftColor: '#3fda54', borderLeftWidth: 10, marginBottom: 10, alignItems: 'center' }]}>
-                                <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'flex-end', marginTop: -20 }}>
-                                  <View style={{ padding: 5 }}>
-                                    <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 13, fontStyle: 'italic' }}>{moment(upcom.dateAction).format('LL')}</Text>
-                                  </View>
-                                </View>
-                                <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
-                                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                    <Image source={require('../../src/icons/Fertilizer.png')} style={{ width: 45, height: 40, marginRight: 10 }} />
-                                    <View>
-                                      <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 18 }}>{upcom.title}</Text>
-                                      <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 14 }}>{upcom.action}</Text>
-                                    </View>
-                                  </View>
-                                  <View>
-                                    <View>
-                                      <TouchableOpacity
-                                        onPress={() => {
-                                          completedtaskActivity({upcom, title})
-                                        }
-                                        }
-                                        >
-                                        <View style={{ borderRadius: 15, borderWidth: 1.5, borderColor: '#4a8f3cff', paddingLeft: 10, paddingRight: 10, padding: 5, marginTop: 8 }}>
-                                          <Text style={{ fontSize: 12, fontWeight: 'bold' }}>Done</Text>
-                                        </View>
-                                      </TouchableOpacity>
-                                    </View>
-                                  </View>
-                                </View>
-                              </View>) : (null)
-                            }
-                            {
-                              upcom.title == 'Pest' ? (<View style={[styles.cardDashboardRecentProp, { flexDirection: 'column', justifyContent: 'space-between', backgroundColor: 'white', borderRadius: 15, width: '100%', padding: 20, borderLeftColor: '#e45138', borderLeftWidth: 10, marginBottom: 10, alignItems: 'center' }]}>
-                                <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'flex-end', marginTop: -20 }}>
-                                  <View style={{ padding: 5 }}>
-                                    <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 13, fontStyle: 'italic' }}>{moment(upcom.dateAction).format('LL')}</Text>
-                                  </View>
-                                </View>
-                                <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
-                                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                    <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
-                                    <View>
-                                      <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 18 }}>{upcom.title}</Text>
-                                      <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 14 }}>{upcom.action}</Text>
-                                    </View>
-                                  </View>
-                                  <View>
-                                    <View>
-                                      <TouchableOpacity disabled={true}
-                                        // onPress={() => {
-                                        //   handlesubmit(upcom)
-                                        //   alert('clicked title: ', upcom.title, ' dateAction', upcom.dateAction, ' Action: ', upcom.Action, ' Status: ', upcom.status)
-                                        // }}
-                                        >
-                                        <View style={{ borderRadius: 15, borderWidth: 1.5, borderColor: '#4a8f3cff', paddingLeft: 10, paddingRight: 10, padding: 5, marginTop: 8 }}>
-                                          <Text style={{ fontSize: 12, fontWeight: 'bold' }}>Done</Text>
-                                        </View>
-                                      </TouchableOpacity>
-                                    </View>
-                                  </View>
-                                </View>
-                              </View>) : (null)
-                            }
-
-                            {
-                              upcom.title == 'Disease' ? (<View style={[styles.cardDashboardRecentProp, { flexDirection: 'column', justifyContent: 'space-between', backgroundColor: 'white', borderRadius: 15, width: '100%', padding: 20, borderLeftColor: '#ebde31', borderLeftWidth: 10, marginBottom: 10, alignItems: 'center' }]}>
-                                <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'flex-end', marginTop: -20 }}>
-                                  <View style={{ padding: 5 }}>
-                                    <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 13, fontStyle: 'italic' }}>{moment(upcom.dateAction).format('LL')}</Text>
-                                  </View>
-                                </View>
-                                <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
-                                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                    <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
-                                    <View>
-                                      <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 18 }}>{upcom.title}</Text>
-                                      <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 14 }}>{upcom.action}</Text>
-                                    </View>
-                                  </View>
-                                  <View>
-                                    <View>
-                                      <TouchableOpacity disabled={true}
-                                        // onPress={() => {
-                                        //   handlesubmit(upcom)
-                                        //   alert('clicked title: ', upcom.title, ' dateAction', upcom.dateAction, ' Action: ', upcom.Action, ' Status: ', upcom.status)
-                                        // }
-                                        // }
-                                        >
-                                        <View style={{ borderRadius: 15, borderWidth: 1.5, borderColor: '#4a8f3cff', paddingLeft: 10, paddingRight: 10, padding: 5, marginTop: 8 }}>
-                                          <Text style={{ fontSize: 12, fontWeight: 'bold' }}>Done</Text>
-                                        </View>
-                                      </TouchableOpacity>
-                                    </View>
-                                  </View>
-                                </View>
-                              </View>) : (null)
-                            }
+          <View>
+            {
+              taskToday.map((upcom, index3) => {
+                return (
+                  <View key={index3} style={{ margin: 10, marginTop: 4, marginBottom: 4 }}>
+                    {
+                      upcom.title == 'Water' ? (<View style={[styles.cardDashboardRecentProp, { flexDirection: 'column', justifyContent: 'space-between', backgroundColor: 'white', borderRadius: 15, width: '100%', padding: 20, borderLeftColor: '#389cdf', borderLeftWidth: 10, marginBottom: 10, alignItems: 'center' }]}>
+                        <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'flex-end', marginTop: -20 }}>
+                          <View style={{ padding: 5 }}>
+                            <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 13, fontStyle: 'italic' }}>{moment(upcom.dateAction).format('LL')}</Text>
                           </View>
-                        )
-                })
-              }
-            </View>
+                        </View>
+                        <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
+                          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <Image source={require('../../src/icons/water.png')} style={{ width: 45, height: 40, marginRight: 10 }} />
+                            <View>
+                              <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 18 }}>{upcom.title}</Text>
+                              <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 14 }}>{upcom.action}</Text>
+                            </View>
+                          </View>
+                          <View>
+                            <View>
+                              <TouchableOpacity
+                                onPress={() => {
+                                  completedtaskActivity({ upcom, title })
+                                }}>
+                                <View style={{ borderRadius: 15, borderWidth: 1.5, borderColor: '#4a8f3cff', paddingLeft: 10, paddingRight: 10, padding: 5, marginTop: 8 }}>
+                                  <Text style={{ fontSize: 12, fontWeight: 'bold' }}>Done</Text>
+                                </View>
+                              </TouchableOpacity>
+                            </View>
+                          </View>
+                        </View>
+                      </View>) : (null)
+                    }
+
+                    {
+                      upcom.title == 'Fertilizer' ? (<View style={[styles.cardDashboardRecentProp, { flexDirection: 'column', justifyContent: 'space-between', backgroundColor: 'white', borderRadius: 15, width: '100%', padding: 20, borderLeftColor: '#3fda54', borderLeftWidth: 10, marginBottom: 10, alignItems: 'center' }]}>
+                        <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'flex-end', marginTop: -20 }}>
+                          <View style={{ padding: 5 }}>
+                            <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 13, fontStyle: 'italic' }}>{moment(upcom.dateAction).format('LL')}</Text>
+                          </View>
+                        </View>
+                        <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
+                          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <Image source={require('../../src/icons/Fertilizer.png')} style={{ width: 45, height: 40, marginRight: 10 }} />
+                            <View>
+                              <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 18 }}>{upcom.title}</Text>
+                              <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 14 }}>{upcom.action}</Text>
+                            </View>
+                          </View>
+                          <View>
+                            <View>
+                              <TouchableOpacity
+                                onPress={() => {
+                                  completedtaskActivity({ upcom, title })
+                                }
+                                }
+                              >
+                                <View style={{ borderRadius: 15, borderWidth: 1.5, borderColor: '#4a8f3cff', paddingLeft: 10, paddingRight: 10, padding: 5, marginTop: 8 }}>
+                                  <Text style={{ fontSize: 12, fontWeight: 'bold' }}>Done</Text>
+                                </View>
+                              </TouchableOpacity>
+                            </View>
+                          </View>
+                        </View>
+                      </View>) : (null)
+                    }
+                    {
+                      upcom.title == 'Pest' ? (<View style={[styles.cardDashboardRecentProp, { flexDirection: 'column', justifyContent: 'space-between', backgroundColor: 'white', borderRadius: 15, width: '100%', padding: 20, borderLeftColor: '#e45138', borderLeftWidth: 10, marginBottom: 10, alignItems: 'center' }]}>
+                        <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'flex-end', marginTop: -20 }}>
+                          <View style={{ padding: 5 }}>
+                            <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 13, fontStyle: 'italic' }}>{moment(upcom.dateAction).format('LL')}</Text>
+                          </View>
+                        </View>
+                        <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
+                          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
+                            <View>
+                              <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 18 }}>{upcom.title}</Text>
+                              <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 14 }}>{upcom.action}</Text>
+                            </View>
+                          </View>
+                          <View>
+                            <View>
+                              <TouchableOpacity disabled={true}
+                              // onPress={() => {
+                              //   handlesubmit(upcom)
+                              //   alert('clicked title: ', upcom.title, ' dateAction', upcom.dateAction, ' Action: ', upcom.Action, ' Status: ', upcom.status)
+                              // }}
+                              >
+                                <View style={{ borderRadius: 15, borderWidth: 1.5, borderColor: '#4a8f3cff', paddingLeft: 10, paddingRight: 10, padding: 5, marginTop: 8 }}>
+                                  <Text style={{ fontSize: 12, fontWeight: 'bold' }}>Done</Text>
+                                </View>
+                              </TouchableOpacity>
+                            </View>
+                          </View>
+                        </View>
+                      </View>) : (null)
+                    }
+
+                    {
+                      upcom.title == 'Disease' ? (<View style={[styles.cardDashboardRecentProp, { flexDirection: 'column', justifyContent: 'space-between', backgroundColor: 'white', borderRadius: 15, width: '100%', padding: 20, borderLeftColor: '#ebde31', borderLeftWidth: 10, marginBottom: 10, alignItems: 'center' }]}>
+                        <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'flex-end', marginTop: -20 }}>
+                          <View style={{ padding: 5 }}>
+                            <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 13, fontStyle: 'italic' }}>{moment(upcom.dateAction).format('LL')}</Text>
+                          </View>
+                        </View>
+                        <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
+                          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
+                            <View>
+                              <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 18 }}>{upcom.title}</Text>
+                              <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 14 }}>{upcom.action}</Text>
+                            </View>
+                          </View>
+                          <View>
+                            <View>
+                              <TouchableOpacity disabled={true}
+                              // onPress={() => {
+                              //   handlesubmit(upcom)
+                              //   alert('clicked title: ', upcom.title, ' dateAction', upcom.dateAction, ' Action: ', upcom.Action, ' Status: ', upcom.status)
+                              // }
+                              // }
+                              >
+                                <View style={{ borderRadius: 15, borderWidth: 1.5, borderColor: '#4a8f3cff', paddingLeft: 10, paddingRight: 10, padding: 5, marginTop: 8 }}>
+                                  <Text style={{ fontSize: 12, fontWeight: 'bold' }}>Done</Text>
+                                </View>
+                              </TouchableOpacity>
+                            </View>
+                          </View>
+                        </View>
+                      </View>) : (null)
+                    }
+
+                   
+                  </View>
+                )
+              })
+            }
+
+            {
+              taskToday == ' ' ? 
+                (
+                 
+                  <View style={{ marginTop: 10}}>
+                    <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, borderLeftWidth: 10, borderLeftColor: '#FFC700' }]}>
+                      <View style={{ marginTop: 5, marginBottom: 5, flexDirection: 'row', alignItems: 'center' }}>
+                        <Text style={{ fontSize: 14, fontWeight: 'bold', color: '#649183' }}>No tasks for today!</Text>
+                      </View>
+                    </View>
+                  </View>
+                ) : (null)
+            } 
+          </View>
+
+
               
           </View>
         </View>
@@ -3048,7 +3161,7 @@ function Task({ route, navigation }) {
       const red = database().ref('null/plants/' + user.uid)
       const blue = red.toString().split('/')[3];
       if (user.uid == blue) {
-        const taskCom = database().ref('users/' + user.uid + '/plants/' + user.uid + title + '/taskUpcoming')
+        const taskCom = database().ref('users/' + user.uid + '/plants/' + user.uid + title + '/taskCompleted')
         taskCom.on('value', (snapshot) => {
           const firebaseData = snapshot.val();
           const dataArray = Object.values(firebaseData);
@@ -3218,10 +3331,10 @@ function Task({ route, navigation }) {
               }
 
               {
-                taskToday ? (null):
+                taskToday == ' ' ? (null):
                 (
-                  <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
-                    <Text style={{fontSize:20, fontWeight:'bold'}}>No tasks for today!</Text>
+                  <View style={{marginTop:20 ,marginBottom:50,flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
+                    <Text style={{fontSize:16, fontWeight:'bold', color: '#649183'}}>No tasks for today!</Text>
                   </View>
                 )
               } 
@@ -3248,7 +3361,7 @@ function Task({ route, navigation }) {
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                       <Image source={require('../../src/icons/water.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
                       <View>
-                        <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 18 }}>{upcom.title}rgytrdassadasdh</Text>
+                        <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 18 }}>{upcom.title}</Text>
                         <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 14 }}>{upcom.action}</Text>
                       </View>
                     </View>
@@ -3268,7 +3381,7 @@ function Task({ route, navigation }) {
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                       <Image source={require('../../src/icons/Fertilizer.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
                       <View>
-                        <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 18 }}>{upcom.title} sdsadasd</Text>
+                        <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 18 }}>{upcom.title}</Text>
                         <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 14 }}>{upcom.action}</Text>
                       </View>
                     </View>
@@ -3343,7 +3456,7 @@ function Task({ route, navigation }) {
                     <View style={[styles.cardCompleteProp, { backgroundColor: 'white', padding: 17, borderRadius: 10, width: undefined, borderRightWidth: 30, borderRightColor: '#3f9cda' }]}>
                       <View>
                         <View style={{ flexDirection: 'row' }}>
-                          <Text style={{ fontSize: 14, fontWeight: 'bold', color: '#649183' }}>{moment(com.dateAction).format('ll')}</Text>
+                          <Text style={{ fontSize: 14, fontWeight: 'bold', color: '#649183' }}>{moment(com.dateAction).format('LL')}</Text>
                         </View>
                         <View style={{ flexDirection: 'row' }}>
                           <Text style={{ marginLeft: 22, fontSize: 18, fontWeight: 'bold', fontStyle: 'italic', color: '#276653' }}>{com.action}</Text>
@@ -3359,7 +3472,7 @@ function Task({ route, navigation }) {
                     <View style={[styles.cardCompleteProp, { backgroundColor: 'white', padding: 17, borderRadius: 10, width: undefined, borderRightWidth: 30, borderRightColor: '#3fda54' }]}>
                       <View>
                         <View style={{ flexDirection: 'row' }}>
-                          <Text style={{ fontSize: 14, fontWeight: 'bold', color: '#649183' }}>{moment(com.dateAction).format('ll')}</Text>
+                          <Text style={{ fontSize: 14, fontWeight: 'bold', color: '#649183' }}>{moment(com.dateAction).format('LL')}</Text>
                         </View>
                         <View style={{ flexDirection: 'row' }}>
                           <Text style={{ marginLeft: 22, fontSize: 18, fontWeight: 'bold', fontStyle: 'italic', color: '#276653' }}>{com.action}</Text>
@@ -3375,7 +3488,7 @@ function Task({ route, navigation }) {
                     <View style={[styles.cardCompleteProp, { backgroundColor: 'white', padding: 17, borderRadius: 10, width: undefined, borderRightWidth: 30, borderRightColor: '#da5e3f' }]}>
                       <View>
                         <View style={{ flexDirection: 'row' }}>
-                          <Text style={{ fontSize: 14, fontWeight: 'bold', color: '#649183' }}>{moment(com.dateAction).format('ll')}</Text>
+                          <Text style={{ fontSize: 14, fontWeight: 'bold', color: '#649183' }}>{moment(com.dateAction).format('LL')}</Text>
                         </View>
                         <View style={{ flexDirection: 'row' }}>
                           <Text style={{ marginLeft: 22, fontSize: 18, fontWeight: 'bold', fontStyle: 'italic', color: '#276653' }}>{com.action}</Text>
@@ -3391,7 +3504,7 @@ function Task({ route, navigation }) {
                     <View style={[styles.cardCompleteProp, { backgroundColor: 'white', padding: 17, borderRadius: 10, width: undefined, borderRightWidth: 30, borderRightColor: '#dabe3f' }]}>
                       <View>
                         <View style={{ flexDirection: 'row' }}>
-                          <Text style={{ fontSize: 14, fontWeight: 'bold', color: '#649183' }}>{moment(com.dateAction).format('ll')}</Text>
+                          <Text style={{ fontSize: 14, fontWeight: 'bold', color: '#649183' }}>{moment(com.dateAction).format('LL')}</Text>
                         </View>
                         <View style={{ flexDirection: 'row' }}>
                           <Text style={{ marginLeft: 22, fontSize: 18, fontWeight: 'bold', fontStyle: 'italic', color: '#276653' }}>{com.action}</Text>
@@ -3400,12 +3513,21 @@ function Task({ route, navigation }) {
                     </View>
                   </View>) : (null)
                 }
+                {
+                  com == ' ' ? (
+                  <View style={{marginTop:20}}>
+                    <Text>No task Available.</Text>
+                  </View>
+                  ) : (null)
+                }
 
 
               </View>
             )
           })
         }
+
+        
         <View style={{marginBottom:30}}/>
       </View>
     )
