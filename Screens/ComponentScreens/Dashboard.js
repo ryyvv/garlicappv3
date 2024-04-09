@@ -485,7 +485,7 @@ export default function Dashboard({ navigation }) {
                                       />
                                       <Text
                                         style={{
-                                          fontSize: 18,
+                                          fontSize: 16,
                                           fontWeight: '800',
                                           justifyContent: 'flex-end',
                                           color: '#276653',
@@ -505,7 +505,7 @@ export default function Dashboard({ navigation }) {
                                                 <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1000.png')}
                                                   style={{
-                                                    width: 100,
+                                                    width: 90,
                                                     height: 80,
                                                   }}
                                                 />
@@ -519,7 +519,7 @@ export default function Dashboard({ navigation }) {
                                                 <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1003.png')}
                                                   style={{
-                                                    width: 100,
+                                                    width: 90,
                                                     height: 80,
                                                   }}
                                                 />
@@ -533,7 +533,7 @@ export default function Dashboard({ navigation }) {
                                                 <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1006.png')}
                                                   style={{
-                                                    width: 100,
+                                                    width: 90,
                                                     height: 80,
                                                   }}
                                                 />
@@ -547,7 +547,7 @@ export default function Dashboard({ navigation }) {
                                                 <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1009.png')}
                                                   style={{
-                                                    width: 100,
+                                                    width: 90,
                                                     height: 80,
                                                   }}
                                                 />
@@ -561,7 +561,7 @@ export default function Dashboard({ navigation }) {
                                                 <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1063.png')}
                                                   style={{
-                                                    width: 100,
+                                                    width: 90,
                                                     height: 80,
                                                   }}
                                                 />
@@ -575,7 +575,7 @@ export default function Dashboard({ navigation }) {
                                                 <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1087.png')}
                                                   style={{
-                                                    width: 100,
+                                                    width: 90,
                                                     height: 80,
                                                   }}
                                                 />
@@ -589,7 +589,7 @@ export default function Dashboard({ navigation }) {
                                                 <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1135.png')}
                                                   style={{
-                                                    width: 100,
+                                                    width: 90,
                                                     height: 80,
                                                   }}
                                                 />
@@ -603,7 +603,7 @@ export default function Dashboard({ navigation }) {
                                                 <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1135.png')}
                                                   style={{
-                                                    width: 100,
+                                                    width: 90,
                                                     height: 80,
                                                   }}
                                                 />
@@ -617,7 +617,7 @@ export default function Dashboard({ navigation }) {
                                                 <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1150.png')}
                                                   style={{
-                                                    width: 100,
+                                                    width: 90,
                                                     height: 80,
                                                   }}
                                                 />
@@ -631,7 +631,7 @@ export default function Dashboard({ navigation }) {
                                                 <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1153.png')}
                                                   style={{
-                                                    width: 100,
+                                                    width: 90,
                                                     height: 80,
                                                   }}
                                                 />
@@ -645,7 +645,7 @@ export default function Dashboard({ navigation }) {
                                                 <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1171.png')}
                                                   style={{
-                                                    width: 100,
+                                                    width: 90,
                                                     height: 80,
                                                   }}
                                                 />
@@ -659,7 +659,7 @@ export default function Dashboard({ navigation }) {
                                                 <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1180.png')}
                                                   style={{
-                                                    width: 100,
+                                                    width: 90,
                                                     height: 80,
                                                   }}
                                                 />
@@ -674,7 +674,7 @@ export default function Dashboard({ navigation }) {
                                                   source={require('../../src/weathericon/1183.png')}
                                                   style={{
 
-                                                    width: 100,
+                                                    width: 90,
                                                     height: 80,
                                                   }}
                                                 />
@@ -689,7 +689,7 @@ export default function Dashboard({ navigation }) {
                                                   source={require('../../src/weathericon/1186.png')}
                                                   style={{
 
-                                                    width: 100,
+                                                    width: 90,
                                                     height: 80,
                                                   }}
                                                 />
@@ -704,7 +704,7 @@ export default function Dashboard({ navigation }) {
                                                   source={require('../../src/weathericon/1189.png')}
                                                   style={{
 
-                                                    width: 100,
+                                                    width: 90,
                                                     height: 80,
                                                   }}
                                                 />
@@ -719,7 +719,7 @@ export default function Dashboard({ navigation }) {
                                                   source={require('../../src/weathericon/1193.png')}
                                                   style={{
 
-                                                    width: 100,
+                                                    width: 90,
                                                     height: 80,
                                                   }}
                                                 />
@@ -733,7 +733,7 @@ export default function Dashboard({ navigation }) {
                                                 <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1195.png')}
                                                   style={{
-                                                    width: 100,
+                                                    width: 90,
                                                     height: 80,
                                                   }}
                                                 />
@@ -748,7 +748,7 @@ export default function Dashboard({ navigation }) {
                                                   source={require('../../src/weathericon/1198.png')}
                                                   style={{
 
-                                                    width: 100,
+                                                    width: 90,
                                                     height: 80,
                                                   }}
                                                 />
@@ -763,7 +763,7 @@ export default function Dashboard({ navigation }) {
                                                   source={require('../../src/weathericon/1201.png')}
                                                   style={{
 
-                                                    width: 100,
+                                                    width: 90,
                                                     height: 80,
                                                   }}
                                                 />
@@ -778,7 +778,7 @@ export default function Dashboard({ navigation }) {
                                                   source={require('../../src/weathericon/1240.png')}
                                                   style={{
 
-                                                    width: 100,
+                                                    width: 90,
                                                     height: 80,
                                                   }}
                                                 />
@@ -793,7 +793,7 @@ export default function Dashboard({ navigation }) {
                                                   source={require('../../src/weathericon/1243.png')}
                                                   style={{
 
-                                                    width: 100,
+                                                    width: 90,
                                                     height: 80,
                                                   }}
                                                 />
@@ -808,7 +808,7 @@ export default function Dashboard({ navigation }) {
                                                   source={require('../../src/weathericon/1246.png')}
                                                   style={{
 
-                                                    width: 100,
+                                                    width: 90,
                                                     height: 80,
                                                   }}
                                                 />
@@ -823,7 +823,7 @@ export default function Dashboard({ navigation }) {
                                                   source={require('../../src/weathericon/1249.png')}
                                                   style={{
 
-                                                    width: 100,
+                                                    width: 90,
                                                     height: 80,
                                                   }}
                                                 />
@@ -838,7 +838,7 @@ export default function Dashboard({ navigation }) {
                                                   source={require('../../src/weathericon/1273.png')}
                                                   style={{
 
-                                                    width: 100,
+                                                    width: 90,
                                                     height: 80,
                                                   }}
                                                 />
@@ -852,7 +852,7 @@ export default function Dashboard({ navigation }) {
                                                 <Image resizeMode={'contain'}
                                                   source={require('../../src/weathericon/1276.png')}
                                                   style={{
-                                                    width: 100,
+                                                    width: 90,
                                                     height: 80,
                                                   }}
                                                 />

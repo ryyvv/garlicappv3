@@ -126,14 +126,15 @@ function PlantDash({ route, navigation }) {
     <View style={{ flex: 1, backgroundColor: '#cbdeda' }}>
       <StatusBar animated={true} barStyle={statusBarStyle} translucent={true} />
       {
-        recent == true ? (<Text style={{ marginLeft: 25, marginTop: 20,marginBottom: 10, fontSize: 16, fontWeight: '900', color: '#276653', }}>Recent</Text>) : (null)
+        recent == true ? (<Text style={{ marginLeft: 25, marginTop: 20, marginBottom: 10, fontSize: 16, fontWeight: '900', color: '#276653', }}>Recent</Text>) : (null)
       }
       {/* <ScrollView scrollEnabled={true} style={{zIndex:1}}> */}
       <View >
         {
           plantData === null ? (
             <View style={{ marginTop: 300, flexDirection: 'row', justifyContent: 'center', alignItem: 'center' }}>
-              <Text style={{ fontSize: 20, fontWeight: 'bold', alignItem: 'center', justifyContent: 'center', }}><Icon name={"plus-circle"} color={'#276653'} size={30} style={{ width: 20 }} />Add a plant to get started!  </Text>
+              <Text style={{ fontSize: 20, fontWeight: 'bold', alignItem: 'center', justifyContent: 'center', }}><Icon name={"plus-circle"} color={'#276653'} size={30} style={{ width: 20 }} />There is no project available</Text>
+              <Text style={{ fontSize: 20, fontWeight: 'bold', alignItem: 'center', justifyContent: 'center', }}><Icon name={"plus-circle"} color={'#276653'} size={30} style={{ width: 20 }} />Press " + " to add new project</Text>
             </View>) : (
             plantData.map((plant, index) => {
               return (
@@ -478,8 +479,6 @@ function PlantNew({ navigation }) {
           count:0
         });
       }
-     
-
   
         // irrigate plant
         for (let i = 0; i <= 33; i++) {
@@ -1438,6 +1437,7 @@ const checkerTodayTask = () => {
           console.log('Push Date: ',dA)
         }else {
             console.log('Cannot Push Date: ',dA)
+            setsortedToday(null)
           }
        })
        setTaskToday(sortedToday)  
@@ -1503,7 +1503,7 @@ const completedtaskActivity = async({upcom, title}) => {
 
       try {
         await dataUpload;
-        generateUpcoming2Task()
+        //generateUpcoming2Task()
       } catch (e) {
         console.error(e);
       }
@@ -1719,105 +1719,58 @@ return (
 
             {/* Findings */}
             <View style={{ margin: 10, marginTop: 10 }}>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingBottom: 5, alignItems: 'center' }}>
-               <Text style={{ fontSize: 17, color: '#276653', fontWeight: 'bold' }}>Uploaded samples</Text>
-              {/* <TouchableOpacity onPress={() => { navigation.navigate('Task') }}>
-                <View style={{ flexDirection: 'row' }}> */}
-                  {/* <Text style={{ color: '#276653', fontWeight: 'bold' }}>See all</Text> */}
-                  {/* <Icon name={'arrow-right-thin'} color={'#276653'} size={} style={{ width: 35}} /> */}
-                {/* </View>
-              </TouchableOpacity> */}
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingBottom: 5, alignItems: 'center' }}>
+                <Text style={{ fontSize: 17, color: '#276653', fontWeight: 'bold' }}>Uploaded samples</Text>
+              </View>
+              <View>
+                <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} snapToStart={true} >
+
+                  <View style={{ marginRight: 10 }}>
+                      <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, margin: 4, marginBottom: 8, padding: 8 }]}>
+                        <View>
+                           <View>
+                            <Image source={require('../../src/images/Tangle1.jpg')} style={{ width: 155, height: 155, borderRadius: 5,}} />
+                            {/* <Image source={require('../../src/images/garlic1.jpg')} style={{ width: 175, height: 175, borderRadius: 5,zIndex:1,Bottom: -10,marginLeft: 30, opacity: 0.5}} /> */}
+                           </View>
+                        </View>
+                        <View style={{ flexDirection: 'row', marginTop: 5, alignItems: 'center' , paddingLeft: 5,paddingBottom: 8}}>
+                          <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16, }}>Tangle Top</Text>
+                        </View>
+                        <View style={{ flexDirection: 'row', marginTop:-10, alignItems: 'center' , paddingLeft: 8,paddingBottom: 8}}>
+                          <Text style={{ fontWeight: 'bold', color: '#687773', fontSize: 14, }}>severe</Text>
+                        </View>
+                        <View style={{ flexDirection: 'row', paddingLeft: 8}}>
+                          <Text style={{ fontWeight: 'bold',fontSize: 12, }}>Feb. 23, 2023 </Text>
+                        </View>
+                      </View>
+                  </View>
+
+                  {/* <View style={{ marginRight: 10 }}>
+                    <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, margin: 4, marginBottom: 8, padding: 20 }]}>
+                      <View style={{ flexDirection: 'row', }}>
+                        <Text style={{ fontWeight: 'bold' }}>Feb. 23, 2023 </Text>
+                      </View>
+                      <View style={{ flexDirection: 'row', marginTop: 5, alignItems: 'center' }}>
+                        <View style={{ flexDirection: 'row', }}>
+                          <Image source={require('../../src/images/garlic1.jpg')} style={{ width: 35, height: 35, borderRadius: 25 }} />
+                          <Image source={require('../../src/images/garlic1.jpg')} style={{ width: 35, height: 35, borderRadius: 25, marginLeft: -20, opacity: 0.5 }} />
+                        </View><Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 18, marginLeft: 5 }}>Tangle Top</Text>
+                      </View>
+                      <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
+                        <View style={{ marginRight: 10, justifyContent: 'flex-end', marginLeft: 50 }}><View>
+                            <View style={{  marginRight: 10, borderRadius: 10, borderWidth: 1.5, borderColor: 'gray', width: 140 }}></View>
+                            <View style={{  marginRight: 10, borderRadius: 10, borderWidth: 3, borderColor: '#6fb96d', marginTop: -5, width: '40%' }}></View>
+                          </View>
+                        </View>
+                        <View style={{ flexDirection: 'row', }}>
+                          <Text style={{ fontWeight: 'bold', alignSelf: 'flex-end', color: '#276653' }}>40%</Text>
+                        </View>
+                      </View>
+                    </View>
+                  </View> */}
+                </ScrollView>
+              </View>
             </View>
-            <View>
-              <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} snapToStart={true} >
-                
-                <View style={{ marginRight: 10 }}>
-                  <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, margin: 4, marginBottom: 8, padding: 20 }]}>
-                    <View style={{ flexDirection: 'row', }}>
-                      <Text style={{ fontWeight: 'bold' }}>Feb. 23, 2023 </Text>
-                    </View>
-                    <View style={{ flexDirection: 'row', marginTop: 5, alignItems: 'center' }}>
-                      <View style={{ flexDirection: 'row', }}>
-                        <Image source={require('../../src/images/garlic1.jpg')} style={{ width: 50, height: 50, borderRadius: 25 }} />
-                        <Image source={require('../../src/images/garlic1.jpg')} style={{ width: 50, height: 50, borderRadius: 25, marginLeft: -20, opacity: 0.5 }} />
-                      </View>
-                      {/* <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} /> */}
-                      <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 18,marginLeft: 5 }}>Tangle Top</Text>
-                    </View>
-                    <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
-                      <View style={{ marginRight: 10, justifyContent: 'flex-end', marginLeft: 50 }}>
-                        {/* <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 15, height: 15 }} /> */}
-                        <View>
-                          <View style={{ borderRadius: 10, borderWidth: 1.5, borderColor: 'gray', width: 140 }}></View>
-                          <View style={{ borderRadius: 10, borderWidth: 3, borderColor: '#6fb96d', marginTop: -5, width: '40%' }}></View>
-                        </View>
-                      </View>
-                      <View style={{ flexDirection: 'row', }}>
-                        <Text style={{ fontWeight: 'bold', alignSelf: 'flex-end', color: '#276653' }}>40%</Text>
-                      </View>
-                    </View>
-                  </View>
-                </View>
-
-                <View style={{ marginRight: 10 }}>
-                  <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, margin: 4, marginBottom: 8, padding: 20 }]}>
-                    <View style={{ flexDirection: 'row', }}>
-                      <Text style={{ fontWeight: 'bold' }}>Feb. 23, 2023 </Text>
-                    </View>
-
-                    <View style={{ flexDirection: 'row', marginTop: 5, alignItems: 'center' }}>
-                      <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
-                      <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 18 }}>Tangle Top</Text>
-                    </View>
-
-                    <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
-                      <View style={{ marginRight: 10, justifyContent: 'flex-end', marginLeft: 50 }}>
-                        {/* <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 15, height: 15 }} /> */}
-                        <View>
-                          <View style={{ borderRadius: 10, borderWidth: 1.5, borderColor: 'gray', width: 140 }}></View>
-                          <View style={{ borderRadius: 10, borderWidth: 3, borderColor: '#df8c2e', marginTop: -5, width: '60%' }}></View>
-                        </View>
-                        <Text style={{ fontWeight: 'bold', alignSelf: 'flex-end', color: '#276653' }}>60%</Text>
-                      </View>
-                      <View style={{ flexDirection: 'row', }}>
-                        <Image source={require('../../src/images/garlic1.jpg')} style={{ width: 30, height: 30, borderRadius: 25 }} />
-                        <Image source={require('../../src/images/garlic1.jpg')} style={{ width: 30, height: 30, borderRadius: 25, marginLeft: -20, opacity: 0.5 }} />
-                      </View>
-                    </View>
-                  </View>
-                </View>
-
-                <View style={{ marginRight: 10 }}>
-                  <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, margin: 4, marginBottom: 8, padding: 20 }]}>
-                    <View style={{ flexDirection: 'row', }}>
-                      <Text>Feb. 23, 2023 </Text>
-                    </View>
-
-                    <View style={{ flexDirection: 'row', marginTop: 5, alignItems: 'center' }}>
-                      <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 40, height: 40, marginRight: 10 }} />
-                      <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 18 }}>Tangle Top</Text>
-                    </View>
-
-                    <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
-                      <View style={{ marginRight: 10, justifyContent: 'flex-end', marginLeft: 50 }}>
-                        {/* <Image source={require('../../src/images/sunRAsset2.png')} style={{ width: 15, height: 15 }} /> */}
-                        <View>
-                          <View style={{ borderRadius: 10, borderWidth: 1.5, borderColor: 'gray', width: 140 }}></View>
-                          <View style={{ borderRadius: 10, borderWidth: 3, borderColor: '#df492e', marginTop: -5, width: '90%' }}></View>
-                        </View>
-                        <Text style={{ fontWeight: 'bold', alignSelf: 'flex-end', color: '#276653' }}>90%</Text>
-                      </View>
-                      <View style={{ flexDirection: 'row', }}>
-                        <Image source={require('../../src/images/garlic1.jpg')} style={{ width: 30, height: 30, borderRadius: 25 }} />
-                        <Image source={require('../../src/images/garlic1.jpg')} style={{ width: 30, height: 30, borderRadius: 25, marginLeft: -20, opacity: 0.5 }} />
-                      </View>
-                    </View>
-                  </View>
-                </View>
-
-              </ScrollView>
-            </View>
-          </View>
 
 
           {/* Task */}
@@ -1836,6 +1789,20 @@ return (
             </View>
 
           <View>
+
+            {/* {
+              taskToday == null ? (null) :
+                (
+                 
+                  <View style={{ marginTop: 10}}>
+                    <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, borderLeftWidth: 10, borderLeftColor: '#FFC700' }]}>
+                      <View style={{ marginTop: 5, marginBottom: 5, flexDirection: 'row', alignItems: 'center' }}>
+                        <Text style={{ fontSize: 14, fontWeight: 'bold', color: '#649183' }}>No tasks for today!</Text>
+                      </View>
+                    </View>
+                  </View>
+                )  
+            }  */}
             {
               taskToday.map((upcom, index3) => {
                 return (
@@ -1976,19 +1943,7 @@ return (
               })
             }
 
-            {
-              taskToday == ' ' ? 
-                (
-                 
-                  <View style={{ marginTop: 10}}>
-                    <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, padding: 15, borderLeftWidth: 10, borderLeftColor: '#FFC700' }]}>
-                      <View style={{ marginTop: 5, marginBottom: 5, flexDirection: 'row', alignItems: 'center' }}>
-                        <Text style={{ fontSize: 14, fontWeight: 'bold', color: '#649183' }}>No tasks for today!</Text>
-                      </View>
-                    </View>
-                  </View>
-                ) : (null)
-            } 
+         
           </View>
 
 
@@ -3330,14 +3285,14 @@ function Task({ route, navigation }) {
                 })
               }
 
-              {
+              {/* {
                 taskToday == ' ' ? (null):
                 (
                   <View style={{marginTop:20 ,marginBottom:50,flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
                     <Text style={{fontSize:16, fontWeight:'bold', color: '#649183'}}>No tasks for today!</Text>
                   </View>
                 )
-              } 
+              }  */}
             </View>)
         }
 
@@ -3513,13 +3468,13 @@ function Task({ route, navigation }) {
                     </View>
                   </View>) : (null)
                 }
-                {
+                {/* {
                   com == ' ' ? (
-                  <View style={{marginTop:20}}>
-                    <Text>No task Available.</Text>
-                  </View>
+                    <View style={{marginTop:20 ,marginBottom:50,flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
+                      <Text style={{fontSize:16, fontWeight:'bold', color: '#649183'}}>You don't have any completed activity yet</Text>
+                    </View>
                   ) : (null)
-                }
+                } */}
 
 
               </View>

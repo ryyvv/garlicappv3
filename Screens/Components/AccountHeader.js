@@ -49,6 +49,60 @@ export default function AccountHeader({ navigation }) {
     const userID = 'userData/' + user.id;  // userID
 
     // updateUserData
+
+    const checks = async() => {
+        alert('dataSync Clicked!: ', email,username,user.uid, address )
+
+        const uploadURI = imagePathCapture;
+        let filename = uploadURI.substring(uploadURI.lastIndexOf('/') + 1);
+        const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
+        //console.log(filename)
+        setuploadingImage(true);
+        settransferedImage(0)
+
+        const currentDataAccount = new Date();
+        const imageprofile = storage().ref('userProfilepic/').putFile(uploadUri);
+
+        imageprofile.on('state_changed', snapshot => {
+            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log(`Upload is ${progress}% done`);
+            console.log(`Upload complete!`);
+
+            setTransferred(
+                Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 100
+            );
+        });
+
+        // Task then
+        imageprofile.then(async () => {
+            // get imageDownloadURL
+            const downloadURL = await Storage().ref('userProfilepic/' + filename).getDownloadURL();
+
+            // store data in realtime database
+            //database().ref('/plants/' + user.uid + plantTitle)
+            database().ref('/users/' + user.uid + '/userData/')
+                .set({
+                    UserProfile: downloadURL,
+                    dateSync: plantDate.toISOString(),
+                    email: email,
+                    username: username,
+                    address: address,
+                    message: 'Connected',
+                    userid: user.uid
+                })
+                .then(async () => {
+                    alert('User data updated!')
+                });
+        });
+
+        try {
+            await task;
+
+        } catch (e) {
+            console.error(e);
+        }
+
+    }
     const UserUpdate = async () => {
         // const storage = getStorage();
         // const imagesRef = ref(storage, 'userProfilepic');
@@ -76,12 +130,58 @@ export default function AccountHeader({ navigation }) {
 
         const uploadURI = imagePathCapture;
         let filename = uploadURI.substring(uploadURI.lastIndexOf('/') + 1);
-        console.log(filename)
+        const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
+        //console.log(filename)
+        setuploadingImage(true);
+        settransferedImage(0)
 
-        const pathToFile = `${utils.FilePath.PICTURES_DIRECTORY}/` + filename;
+        const currentDataAccount = new Date();
+
+        //const pathToFile = `${utils.FilePath.PICTURES_DIRECTORY}/` + filename;
         // uploads file
-        console.log(pathToFile)
-        await storage().ref('userProfilepic/').putFile(pathToFile);
+        //console.log(pathToFile)
+
+        const imageprofile = storage().ref('userProfilepic/').putFile(uploadUri);
+
+        imageprofile.on('state_changed', snapshot => {
+            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log(`Upload is ${progress}% done`);
+            console.log(`Upload complete!`);
+
+            setTransferred(
+                Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 100
+            );
+        });
+
+        // Task then
+        imageprofile.then(async () => {
+            // get imageDownloadURL
+            const downloadURL = await Storage().ref('userProfilepic/' + filename).getDownloadURL();
+
+            // store data in realtime database
+            //database().ref('/plants/' + user.uid + plantTitle)
+            database().ref('/users/' + user.uid + '/userData/')
+                .set({
+                    UserProfile: downloadURL,
+                    dateSync: plantDate.toISOString(),
+                    email: email,
+                    username: username,
+                    address: address,
+                    message: 'Connected',
+                    userid: user.uid
+                })
+                .then(async () => {
+                    alert('User data updated!')
+                });
+        });
+
+        try {
+            await task;
+
+        } catch (e) {
+            console.error(e);
+        }
+
         // setuploadingImage(true)
         // settransferedImage(0)
         // const task = storage().ref('/userProfilepic/' + filename).putFile(uploadURI);
@@ -194,7 +294,7 @@ export default function AccountHeader({ navigation }) {
     }
     // userName
     const UserName = async () => {
-        await database().ref('/users/' + user.uid+'/userData/').once('value').then(snapshot => {
+        await database().ref('/users/' + user.uid + '/userData/').once('value').then(snapshot => {
             // console.log('UserD data: ', snapshot.val().Address);
             const val = snapshot.val().userName;
             setName(val)
@@ -205,7 +305,7 @@ export default function AccountHeader({ navigation }) {
     const UserEmail = () => {
         setEmail(user.email);
     }
-    
+
     // userAddress
     const UserAddress = async () => {
         await database().ref('/userData/' + user.uid).once('value').then(snapshot => {
@@ -303,8 +403,8 @@ export default function AccountHeader({ navigation }) {
     const profileClose = () => {
         console.log("Location changed!")
         refRBSheet.current.close()
-      }
-    
+    }
+
     // imageUploadPermission
     const imageLibrary = async () => {
 
@@ -438,8 +538,10 @@ export default function AccountHeader({ navigation }) {
                                 </Modal>) : null
 
                         }
+
+                        {/* form */}
                         <View>
-                            {/* form */}
+                         
                             <View style={{ marginBottom: 15 }}>
                                 <Text style={{ paddingLeft: 15, color: '#8eb4a9', fontWeight: 'bold' }}>Name</Text>
                                 <View style={[styles.profileTextIcon, styles.div2Row]}>
@@ -452,7 +554,7 @@ export default function AccountHeader({ navigation }) {
                                 <Text style={{ paddingLeft: 15, color: '#8eb4a9', fontWeight: 'bold' }}>Email</Text>
                                 <View style={[styles.profileTextIcon, styles.div2Row]}>
                                     <Icon name={"email-outline"} color={'#276653'} size={23} style={{ width: 22, marginRight: 8 }} />
-                                    <TextInput editable={false}  placeholder={email} value={email} onChangeText={text => setEmail(text)} style={styles.profileTextinput} />
+                                    <TextInput editable={false} placeholder={email} value={email} onChangeText={text => setEmail(text)} style={styles.profileTextinput} />
                                 </View>
                             </View>
                             <View style={{ marginBottom: 5 }}>
@@ -462,9 +564,9 @@ export default function AccountHeader({ navigation }) {
                                     <TextInput placeholder={address} value={address} onChangeText={text => setAddress(text)} style={styles.profileTextinput} />
                                 </View>
                             </View>
-                            {/* <View style={{ marginTop: 10, alignItems: 'center' }}>
+                            <View style={{ marginTop: 10, alignItems: 'center' }}>
                                 <TouchableOpacity
-                                    onPress={UserUpdate} >
+                                    onPress={checks} >
                                     <View style={[styles.dataSyncicon, styles.div2Row]}>
                                         <Icon name={"cached"} color={'white'} size={20} style={{ marginRight: 1 }} />
                                         <Text style={{ fontSize: 14, color: 'white', fontWeight: 'bold', padding: 3 }}>Data sync</Text>
@@ -473,10 +575,10 @@ export default function AccountHeader({ navigation }) {
                                 <View>
                                     <Text style={{ fontSize: 12, fontWeight: 'bold', marginTop: 5 }}>Last sync: Monday, Nov. 6, 2022 </Text>
                                 </View>
-                            </View> */}
+                            </View>
                             {/* endform */}
                         </View>
-                        
+
                         {/* Logout */}
                         <View style={{ marginTop: 40 }}>
                             <View style={{ marginTop: 20, alignItems: 'center' }}>
