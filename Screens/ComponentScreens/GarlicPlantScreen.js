@@ -1790,8 +1790,8 @@ return (
 
           <View>
 
-            {/* {
-              taskToday == null ? (null) :
+            {
+              taskToday.length == 0 ? (null) :
                 (
                  
                   <View style={{ marginTop: 10}}>
@@ -1802,7 +1802,7 @@ return (
                     </View>
                   </View>
                 )  
-            }  */}
+            } 
             {
               taskToday.map((upcom, index3) => {
                 return (
@@ -3285,14 +3285,14 @@ function Task({ route, navigation }) {
                 })
               }
 
-              {/* {
-                taskToday == ' ' ? (null):
+              {
+                taskToday.length == 0 ? (null):
                 (
                   <View style={{marginTop:20 ,marginBottom:50,flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
                     <Text style={{fontSize:16, fontWeight:'bold', color: '#649183'}}>No tasks for today!</Text>
                   </View>
                 )
-              }  */}
+              } 
             </View>)
         }
 
@@ -3391,6 +3391,14 @@ function Task({ route, navigation }) {
             )
           })
         }
+
+        {
+          upcom.length == 0 ? (
+            <View style={{ marginTop: 20, marginBottom: 50, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+              <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#649183' }}>No Upcoming activities</Text>
+            </View>
+          ) : (null)
+        }
         <View style={{marginBottom:30}}/>
       </View>
 
@@ -3468,13 +3476,13 @@ function Task({ route, navigation }) {
                     </View>
                   </View>) : (null)
                 }
-                {/* {
-                  com == ' ' ? (
+                {
+                  com.length == 0 ? (
                     <View style={{marginTop:20 ,marginBottom:50,flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
                       <Text style={{fontSize:16, fontWeight:'bold', color: '#649183'}}>You don't have any completed activity yet</Text>
                     </View>
                   ) : (null)
-                } */}
+                }
 
 
               </View>
