@@ -837,55 +837,48 @@ export default globalStyles = StyleSheet.create({
         color: '#276653',
     },
 
-    // Modal
+    //Modal
     centeredView: {
         flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        marginTop: 22,
-        backgroundColor: 'rgba(52, 52, 52, 0.4)'
-    },
-    modalView: {
+        justifyContent: 'center',
+        alignItems: 'center',
+      },
+      modalView: {
         margin: 20,
-        backgroundColor: "white",
+        backgroundColor: 'white',
         borderRadius: 20,
         padding: 35,
-        alignItems: "center",
-        shadowColor: "#000",
+        alignItems: 'center',
+        shadowColor: '#23242c',
         shadowOffset: {
-            width: 0,
-            height: 2
+          width: 0,
+          height: 2,
         },
         shadowOpacity: 0.25,
         shadowRadius: 4,
-        elevation: 5
-    },
-    addBtn: {
-        width: 60,
-        height: 60,
-        borderRadius: 30,
-        backgroundColor: '#7ABD87',
-        position: 'absolute',
-        bottom: 20,
-        right: 30,
-        justifyContent: 'center',
-        alignItems: 'center', 
-    },
-
-    progressBarContainer: {
-        marginTop: 20
+        elevation: 5,
+      },
+      button: {
+        borderRadius: 20,
+        padding: 10,
+        elevation: 2,
+      },
+      buttonOpen: {
+        backgroundColor: '#F194FF',
+      },
+      buttonClose: {
+        backgroundColor: '#2196F3',
+      },
+      textStyle: {
+        color: 'white',
+        fontWeight: 'bold',
+        textAlign: 'center',
+      },
+      modalText: {
+        marginBottom: 15,
+        textAlign: 'center',
       },
 
-      activeTab : {
-        borderBottomColor:'#276653',
-        borderBottomWidth:2.5,
-      },
-      activeText : {
-       color:'#276653',
-   
-      },
-    //   tabItem: {
-    //     backgroundColor: '#95b99c'
-    //   }
+    
 
 });

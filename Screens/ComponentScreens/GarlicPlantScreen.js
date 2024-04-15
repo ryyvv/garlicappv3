@@ -94,7 +94,7 @@ function PlantDash({ route, navigation }) {
     console.log(plantData)
   }, [navigation])
 
-  useEffect(() => {
+    useEffect(() => {
     displayList();
   }, []);
 
@@ -312,7 +312,7 @@ function PlantNew({ navigation }) {
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.CAMERA,
         {
-          title: "Garlic photo App Camera Permission",
+          title: "Garlic App Camera Permission",
           message:
             "Garlic photo App needs access to your camera " +
             "so you can take awesome pictures.",
@@ -515,7 +515,7 @@ function PlantNew({ navigation }) {
         // get imageDownloadURL
         const downloadURL = await Storage().ref('garlicImageProfile/' + filename).getDownloadURL();
 
-        // store data in realtime database
+        //store data in realtime database
         //database().ref('/plants/' + user.uid + plantTitle)
         database().ref('/users/' + user.uid + '/plants/' + user.uid + plantTitle)
           .set({
@@ -693,7 +693,6 @@ function PlantNew({ navigation }) {
       </ImageBackground>
     </View>
   )
-
 }
 
 function PlantID({ route, navigation }) {
@@ -1171,7 +1170,6 @@ function PlantID({ route, navigation }) {
     console.log(plantDataID.image)
   }
 
-
   const display = () => {
     console.log('Morning: ', mrhr3humidity)
     console.log('Afternoon: ', afhr3humidity)
@@ -1280,12 +1278,16 @@ const [activeTab, setActiveTab] = useState('tab1');
 //function uploading Completed Task
 useEffect(() => {
   checkerTodayTask()
-  // checkCompleted()
-  // checkUpcoming()
 
-  // taskPendingToday()
+  //finddings image Fetching
+  //findings image upload
 
 }, []);
+
+
+ const [anaImage, setAnaImage] =useState(null)
+
+
 
 const [todays, setTodays] =useState([])
 const checkTodayChecker = () => {
@@ -1448,37 +1450,6 @@ const checkerTodayTask = () => {
   setLoadings(false)
 }
 
-// State variable to store equal values
-// const [equalValues, setEqualValues] = useState([]);
-// const [completeHandle, setCompleteHandle] = useState([]);
-// const [upcomingHandle, setUpcomingHandle] = useState([]);
-// const taskPendingToday = () => {
-//   const users = database().ref('null/plants/' + user.uid)
-//   const userUID = users.toString().split('/')[3];
-
-//     if (user.uid == userUID) {
-//       const equalValuesArray = [];
-      
-//       const taskCom =  database().ref('users/' + user.uid + '/plants/' + user.uid + title + '/taskUpcoming')
-//       taskCom.on('value', (snapshot1) => {
-//         const firebaseData1 = snapshot1.val();
-//         const dataArray1 = Object.values(firebaseData1);
-//         const sortedUpcoming1 = dataArray1.sort((a1, b1) => {
-//           const dateA1 = new Date(`${a1.dateAction}`).valueOf();
-//           const dateB1 = new Date(`${b1.dateAction}`).valueOf();
-//           if (dateA1 > dateB1) {
-//             return 1; // return -1 here for DESC order
-//           }
-//           return -1 // return 1 here for DESC Order
-//         });
-//         setUpcomingHandle(sortedUpcoming1);
-//       });
-
-
-
-//     }
-// }
-
 const [taskcomplete, setTaskcomplete] = useState(); 
 const completedtaskActivity = async({upcom, title}) => {
  
@@ -1588,7 +1559,7 @@ return (
                             </View>
                             <View style={{ marginTop: 5, paddingLeft: 25, paddingRight: 25, flexDirection: 'row', justifyContent: 'space-evenly' }}>
                                 <TouchableOpacity
-                                    onPress={AndroidPermissionCamera}
+                                    onPress={AndroidPermissionCameraAnalysis}
                                     style={[styles.cardCamera, styles.cardCameraProps]}>
                                     <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                                         <View style={{ padding: 16, backgroundColor: '#f0f9f6', borderRadius: 10 }}>
@@ -1598,7 +1569,7 @@ return (
                                     </View>
                                 </TouchableOpacity>
                                 <TouchableOpacity
-                                    onPress={imageLibrary}
+                                    onPress={imageLibraryAnalysis}
                                     style={[styles.cardCamera, styles.cardCameraProps]}>
                                     <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                                         <View style={{ padding: 16, backgroundColor: '#f0f9f6', borderRadius: 10 }}>
@@ -1791,7 +1762,7 @@ return (
           <View>
 
             {
-              taskToday.length == 0 ? (null) :
+              taskToday.length == 0 ? 
                 (
                  
                   <View style={{ marginTop: 10}}>
@@ -1801,7 +1772,7 @@ return (
                       </View>
                     </View>
                   </View>
-                )  
+                )  : (null) 
             } 
             {
               taskToday.map((upcom, index3) => {
@@ -3286,12 +3257,12 @@ function Task({ route, navigation }) {
               }
 
               {
-                taskToday.length == 0 ? (null):
+                taskToday.length == 0 ? 
                 (
                   <View style={{marginTop:20 ,marginBottom:50,flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
                     <Text style={{fontSize:16, fontWeight:'bold', color: '#649183'}}>No tasks for today!</Text>
                   </View>
-                )
+                ) : (null)
               } 
             </View>)
         }
@@ -3393,7 +3364,7 @@ function Task({ route, navigation }) {
         }
 
         {
-          upcom.length == 0 ? (
+          taskUpcom.length == 0 ? (
             <View style={{ marginTop: 20, marginBottom: 50, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
               <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#649183' }}>No Upcoming activities</Text>
             </View>

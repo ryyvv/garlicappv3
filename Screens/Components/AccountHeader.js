@@ -3,6 +3,8 @@ import React, { useContext, useState, useRef, useEffect } from 'react';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { AuthContext } from '../Context/AuthProvider';
 import RBSheet from "react-native-raw-bottom-sheet";
+//import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-alert-notification';
+import { AlertNotification } from 'react-native-alert-notification';
 import {
     StyleSheet,
     ScrollView,
@@ -20,23 +22,24 @@ import {
     Alert,
     ActivityIndicator,
     Modal,
+    Pressable
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import BottomSheet from '../Components/BottomSheet'
 import styles from '../../src/css/styles';
-import { getStorage, ref, uploadBytesResumable, getDownloadURL } from '@react-native-firebase/storage';
-import { utils } from '@react-native-firebase/app';
+
 
 import database from '@react-native-firebase/database';
-
+import Storage from '@react-native-firebase/storage';
+import { LazyLoadImage } from 'react-native-lazy-load-image';
 
 export default function AccountHeader({ navigation }) {
     const refRBSheet = useRef();
     const { logout, user } = useContext(AuthContext)
     const hidden = true;
     const statusBarStyle = 'dark-content';
-    const [imagePathCapture, setimagePathCapture] = useState();
+    const [imagePathCaptureUserProfile, setimagePathCaptureUserProfile] = useState();
     const [imageContent, setimageContent] = useState('');
     const [uploadingImage, setuploadingImage] = useState(false)
     const [transferedImage, settransferedImage] = useState(0)
@@ -44,298 +47,175 @@ export default function AccountHeader({ navigation }) {
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [address, setAddress] = useState('Please enter your address')
+    const [message, setMessage] = useState('Connected')
     const [dateSync, setdateSync] = useState('')
+    const [userContent, setUserContent] = useState([])
+    const [modalVisible, setModalVisible] = useState(false);
 
     const userID = 'userData/' + user.id;  // userID
-
-    // updateUserData
-
-    const checks = async() => {
-        alert('dataSync Clicked!: ', email,username,user.uid, address )
-
-        const uploadURI = imagePathCapture;
-        let filename = uploadURI.substring(uploadURI.lastIndexOf('/') + 1);
-        const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
-        //console.log(filename)
-        setuploadingImage(true);
-        settransferedImage(0)
-
-        const currentDataAccount = new Date();
-        const imageprofile = storage().ref('userProfilepic/').putFile(uploadUri);
-
-        imageprofile.on('state_changed', snapshot => {
-            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            console.log(`Upload is ${progress}% done`);
-            console.log(`Upload complete!`);
-
-            setTransferred(
-                Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 100
-            );
-        });
-
-        // Task then
-        imageprofile.then(async () => {
-            // get imageDownloadURL
-            const downloadURL = await Storage().ref('userProfilepic/' + filename).getDownloadURL();
-
-            // store data in realtime database
-            //database().ref('/plants/' + user.uid + plantTitle)
-            database().ref('/users/' + user.uid + '/userData/')
-                .set({
-                    UserProfile: downloadURL,
-                    dateSync: plantDate.toISOString(),
-                    email: email,
-                    username: username,
-                    address: address,
-                    message: 'Connected',
-                    userid: user.uid
-                })
-                .then(async () => {
-                    alert('User data updated!')
-                });
-        });
-
-        try {
-            await task;
-
-        } catch (e) {
-            console.error(e);
-        }
-
-    }
-    const UserUpdate = async () => {
-        // const storage = getStorage();
-        // const imagesRef = ref(storage, 'userProfilepic');
-        // const spaceRef = ref(storage, 'images/space.jpg');
-        // if (imageContent === null) {
-        //     alert('Please choose an image!');
-        // }
-        // else {
-        //     //create data to realtime database       
-        //     database()
-        //         .ref('userData/1112tsghtwehr3q')
-        //         .set({
-        //             userid: '1112tsghtwehr3q',
-        //             email: email,
-        //             Address: address,
-        //             dataSync: now,
-        //             userProfile: 'NONE'
-
-        //         }).then(() => {
-        //             console.log('Data synced')
-        //         });
-        // }
-        // const url = storage().ref('/userProfilepic/' + imagePathCapture).getDownloadURL();
-        // console.log(url)
-
-        const uploadURI = imagePathCapture;
-        let filename = uploadURI.substring(uploadURI.lastIndexOf('/') + 1);
-        const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
-        //console.log(filename)
-        setuploadingImage(true);
-        settransferedImage(0)
-
-        const currentDataAccount = new Date();
-
-        //const pathToFile = `${utils.FilePath.PICTURES_DIRECTORY}/` + filename;
-        // uploads file
-        //console.log(pathToFile)
-
-        const imageprofile = storage().ref('userProfilepic/').putFile(uploadUri);
-
-        imageprofile.on('state_changed', snapshot => {
-            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            console.log(`Upload is ${progress}% done`);
-            console.log(`Upload complete!`);
-
-            setTransferred(
-                Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 100
-            );
-        });
-
-        // Task then
-        imageprofile.then(async () => {
-            // get imageDownloadURL
-            const downloadURL = await Storage().ref('userProfilepic/' + filename).getDownloadURL();
-
-            // store data in realtime database
-            //database().ref('/plants/' + user.uid + plantTitle)
-            database().ref('/users/' + user.uid + '/userData/')
-                .set({
-                    UserProfile: downloadURL,
-                    dateSync: plantDate.toISOString(),
-                    email: email,
-                    username: username,
-                    address: address,
-                    message: 'Connected',
-                    userid: user.uid
-                })
-                .then(async () => {
-                    alert('User data updated!')
-                });
-        });
-
-        try {
-            await task;
-
-        } catch (e) {
-            console.error(e);
-        }
-
-        // setuploadingImage(true)
-        // settransferedImage(0)
-        // const task = storage().ref('/userProfilepic/' + filename).putFile(uploadURI);
-        // // set transfered state
-        // task.on('state_changed', taskSnapshot => {
-        //     console.log(`${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`);
-
-        //     // loadingState
-        //     settransferedImage(
-        //         Math.round(taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) * 100
-        //     );
-        // });
-
-        // task.then(() => {
-        //     console.log('Image uploaded to the bucket!');
-        //     let imageRef = storage().ref('userProfilepic/' + filename)
-        //     imageRef.getDownloadURL()
-        //         .then((url) => {
-        //             //from url you can fetched the uploaded image easily
-        //             setimagePathCapture(url);
-        //         })
-        //         .catch((e) => console.log('getting downloadURL of image error => ', e));
-
-        // });
-        // try {
-        //     // uploading image file
-        //     await task
-
-        //     setuploadingImage(false)
-        //     Alert.alert(
-        //         'Image uploaded!',
-        //         'Your image has been uploaded to database successfully!'
-        //     )
-        // } catch (e) {
-        //     console.log(e)
-        // }
-
-        // let userUid = auth().currentUser.uid
-        // database()
-        //     .ref('userData/' + userUid)
-        //     .set({
-        //         userid: userUid,
-        //         email: email,
-        //         Address: address,
-        //         dataSync: now,
-        //         userProfile: imagePathCapture,
-
-        //     }).then(() => {
-        //         console.log('Data synced')
-        //     });
-        // setimagePathCapture(null)
-        const storage = getStorage();
-
-        // Create the file metadata
-        /** @type {any} */
-        const metadata = {
-            contentType: 'image/jpeg'
-        };
-
-        // Upload file and metadata to the object 'images/mountains.jpg'
-        const storageRef = ref(storage, 'images/' + file.name);
-        const uploadTask = uploadBytesResumable(storageRef, file, metadata);
-
-        // Listen for state changes, errors, and completion of the upload.
-        uploadTask.on('state_changed',
-            (snapshot) => {
-                // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                console.log('Upload is ' + progress + '% done');
-                switch (snapshot.state) {
-                    case 'paused':
-                        console.log('Upload is paused');
-                        break;
-                    case 'running':
-                        console.log('Upload is running');
-                        break;
-                }
-            },
-            (error) => {
-                // A full list of error codes is available at
-                // https://firebase.google.com/docs/storage/web/handle-errors
-                switch (error.code) {
-                    case 'storage/unauthorized':
-                        // User doesn't have permission to access the object
-                        break;
-                    case 'storage/canceled':
-                        // User canceled the upload
-                        break;
-
-                    // ...
-
-                    case 'storage/unknown':
-                        // Unknown error occurred, inspect error.serverResponse
-                        break;
-                }
-            },
-            () => {
-                // Upload completed successfully, now we can get the download URL
-                getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                    console.log('File available at', downloadURL);
-                });
-            }
-        );
-    }
-
-
-    //UserProfile
-    const UserProfile = async (imageContent) => {
-        const url = await storage().ref('/userProfilepic/' + imageContent).getDownloadURL();
-    }
-    // userName
-    const UserName = async () => {
-        await database().ref('/users/' + user.uid + '/userData/').once('value').then(snapshot => {
-            // console.log('UserD data: ', snapshot.val().Address);
-            const val = snapshot.val().userName;
-            setName(val)
-        })
-    }
-
-    // userName
-    const UserEmail = () => {
-        setEmail(user.email);
-    }
-
-    // userAddress
-    const UserAddress = async () => {
-        await database().ref('/userData/' + user.uid).once('value').then(snapshot => {
-            // console.log('UserD data: ', snapshot.val().Address);
-            const val = snapshot.val().Address;
-            setAddress(val)
-        })
-    }
-
-    // userName
-    const UserDate = async () => {
-        await database().ref('/userData/' + user.uid).once('value').then(snapshot => {
-            // console.log('UserD data: ', snapshot.val().Address);
-            const val = snapshot.val().dateSync;
-            setdateSync(val)
-        })
-    }
 
     useEffect(() => {
         // Date 
         let now = moment().utcOffset(15.2).format('l');
-
-        UserEmail(); // userEmail
-        UserName();  //userName
-        UserAddress(); //userAddress
-        UserDate(); // last date synced
-
+        displayAccountDetails();
     }, []);
 
 
+    const displayAccountDetails = async () => {
+        const dataImage = database().ref('/users/' + user.uid + '/userData/')
+        dataImage.on('value', (snapshot) => {
+            const userProfileVal = snapshot.val()
+            setimageContent(userProfileVal.userProfile)
+            setName(userProfileVal.name)
+            setEmail(userProfileVal.email)
+            setAddress(userProfileVal.Address)
+            setMessage(userProfileVal.message)
+            setdateSync(userProfileVal.dataSync)
+            setUserContent(userProfileVal)
+           
+        })
+    }
+
+    const uploadUserData = async () => {
+        console.log('dataSync Clicked!')
+        console.log('UserDetails-AcountHeader:  ', userContent);
+        //let now = moment().utcOffset(15.2).format('l');
+        const date = new Date();
+        let now = moment(date).format('LL');
+
+        if (imageContent == null || imageContent == '') {
+            console.log('imageContent == null&_!');
+            if (imagePathCaptureUserProfile != null) {
+                setdateSync(now)
+                const imagePath = imagePathCaptureUserProfile;
+                let filename = imagePath.substring(imagePath.lastIndexOf('/') + 1);
+                const uploadUri = Platform.OS === 'ios' ? imagePath.replace('file://', '') : imagePath;
+                setuploadingImage(true);
+                settransferedImage(0);
+
+                console.log('Upload new user profile! ', filename);
+                 
+                // storagePath and imagePath
+                const imageURL = Storage().ref('userProfilepic/' + filename).putFile(uploadUri)
+
+                imageURL.on('state_changed', snapshot => {
+                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    console.log(`Upload is ${progress}% done`);
+                    console.log(`Upload complete!`);
+
+                    setTransferred(
+                        Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                    );
+                });
+
+                //imageURL then
+                imageURL.then(async () => {
+                    // get imageDownloadURL
+                    const downloadURL = await Storage().ref('userProfilepic/' + filename).getDownloadURL();
+
+                    //store data in realtime database
+                    //database().ref('/plants/' + user.uid + plantTitle)
+                    database().ref('/users/'+ user.uid + '/userData/')
+                        .set({
+                            userid: user.uid,
+                            userProfile: downloadURL,
+                            name: name,
+                            email: email,
+                            Address: address,
+                            message: message,
+                            dataSync: dateSync,
+                        })
+                        .then(async () => {
+                            alert('UserData updated successfully!') 
+                        });
+ 
+                });
+
+                try {
+                    await imageURL;
+
+                } catch (e) {
+                    console.error(e);
+                }
+
+                setuploadingImage(false);
+                //setImage(null);
+            }
+        } else {
+            console.log('imageContent != null!');
+            if (imagePathCaptureUserProfile != null) {
+                setdateSync(now)
+                const imagePath = imagePathCaptureUserProfile;
+                let filename = imagePath.substring(imagePath.lastIndexOf('/') + 1);
+                const uploadUri = Platform.OS === 'ios' ? imagePath.replace('file://', '') : imagePath;
+                setuploadingImage(true);
+                settransferedImage(0);
+
+                console.log('Upload new user profile! ', filename);
+                 
+                // storagePath and imagePath
+                const imageURL = Storage().ref('userProfilepic/' + filename).putFile(uploadUri)
+
+                imageURL.on('state_changed', snapshot => {
+                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    console.log(`Upload is ${progress}% done`);
+                    console.log(`Upload complete!`);
+
+                    setTransferred(
+                        Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                    );
+                });
+
+                //imageURL then
+                imageURL.then(async () => {
+                    // get imageDownloadURL
+                    const downloadURL = await Storage().ref('userProfilepic/' + filename).getDownloadURL();
+
+                    //store data in realtime database
+                    //database().ref('/plants/' + user.uid + plantTitle)
+                    database().ref('/users/'+ user.uid + '/userData/')
+                        .set({
+                            userProfile: downloadURL,
+                            name: name,
+                            email: email,
+                            Address: address,
+                            userid: user.uid,
+                            message:'Connected',
+                            dataSync: dateSync,
+                        })
+                        .then(async () => {
+                            alert('UserData updated successfully!') 
+                        });
+ 
+                });
+
+                try {
+                    await imageURL;
+
+                } catch (e) {
+                    console.error(e);
+                }
+
+                setuploadingImage(false);
+                //setImage(null);
+            }else {
+                setdateSync(now)
+                database().ref('/users/'+ user.uid + '/userData/')
+                .set({
+                    userProfile: imageContent,
+                    name: name,
+                    email: email,
+                    Address: address,
+                    userid: user.uid,
+                    message:'Connected',
+                    dataSync: dateSync,
+                })
+                .then(async () => {
+                    alert('UserData updated successfully!') 
+                });
+            }
+        }
+    }
 
 
     // imageDefault
@@ -348,7 +228,8 @@ export default function AccountHeader({ navigation }) {
     // ImageChange
     const ImageChange = (props) => {
         return (
-            <Image source={{ uri: imagePathCapture }} style={{ width: '100%', height: 70, alignItems: 'center', borderRadius: 10 }} />
+            //<Image source={{ uri: imagePathCaptureUserProfile }} style={{ width: '100%', height: 70, alignItems: 'center', borderRadius: 10 }} />
+             <LazyLoadImage source={{ uri: imageContent }} resizeMode='center' style={{ width: 70,height: 70, alignItems: 'center', borderRadius: 10 }} />
         )
     }
 
@@ -356,28 +237,28 @@ export default function AccountHeader({ navigation }) {
     let optioncam = {
         saveToPhotos: true,
         mediaType: 'photo',
-        cameraType: 'back',
+        cameraType: 'front',
         selectionLimit: 1,
         includeBase64: false,
-        // path: 'image',
+        path: 'image',
     };
 
     // UploadProperties
     let optionImageupload = {
         mediaType: 'photo',
         includeBase64: false,
-        // path: 'image',
+        path: 'image',
     };
 
     // imageCameraPermission
-    const AndroidPermissionCamera = async () => {
+    const AndroidPermissionCameraUserProfile = async () => {
         try {
             const granted = await PermissionsAndroid.request(
                 PermissionsAndroid.PERMISSIONS.CAMERA,
                 {
-                    title: "Cool Photo App Camera Permission",
+                    title: "Garlic App Camera Permission",
                     message:
-                        "Cool Photo App needs access to your camera " +
+                        "Garlic photo App needs access to your camera " +
                         "so you can take awesome pictures.",
                     buttonNeutral: "Ask Me Later",
                     buttonNegative: "Cancel",
@@ -389,24 +270,20 @@ export default function AccountHeader({ navigation }) {
                 if (resultImageCaptured.didCancel == true) {
                     alert('Please try again!')
                 }
-                setimagePathCapture(resultImageCaptured.assets[0].uri);
+                setimagePathCaptureUserProfile(resultImageCaptured.assets[0].uri);
 
             } else {
                 console.log("Camera permission denied");
                 alert("Camera permission denied")
             }
         } catch (error) {
-            alert('Please try again!')
+            //alert('Please try again!')
+            console.log(error)
         }
     }
 
-    const profileClose = () => {
-        console.log("Location changed!")
-        refRBSheet.current.close()
-    }
-
     // imageUploadPermission
-    const imageLibrary = async () => {
+    const imageLibraryUserProfile = async () => {
 
         try {
             const granted = await PermissionsAndroid.request(
@@ -422,21 +299,29 @@ export default function AccountHeader({ navigation }) {
             );
             if (granted === PermissionsAndroid.RESULTS.GRANTED) {
                 const resultImageToUpload = await launchImageLibrary(optionImageupload)
-                setimagePathCapture(resultImageToUpload.assets[0].uri);
+
                 if (resultImageToUpload.didCancel == true) {
                     alert('Please try again!')
                     // alert('No images in gallery selected!')
                 }
-                alert(imagePathCapture)
-
+                setimagePathCaptureUserProfile(resultImageToUpload.assets[0].uri);
+                //alert(imagePathCaptureUserProfile)
+                RBSheet.close()
             } else {
                 console.log("Camera permission denied");
                 alert("Camera permission denied")
             }
         } catch (error) {
-            alert('Please try again!', error)
+            //alert('Please try again!', error)
+            console.log(error)
         }
     }
+
+    const profileClose = () => {
+        console.log("Location changed!")
+        refRBSheet.current.close()
+    }
+
 
     return (
         <SafeAreaView edges={['top']} style={{ flex: 1, backgroundColor: '#AADCB6' }}>
@@ -456,7 +341,7 @@ export default function AccountHeader({ navigation }) {
                                         <View style={{ borderRadius: 15 }}>
                                             <View style={{ justifyContent: 'center', alignItems: 'center', backgroundColor: 'white', borderRadius: 15 }}>
                                                 {
-                                                    imagePathCapture == null ? <ImageDefault /> : <ImageChange />
+                                                    imageContent == null ? <ImageDefault /> : <ImageChange />
                                                 }
                                             </View>
                                             <View style={{ position: 'absolute', backgroundColor: 'white', marginTop: 48, marginLeft: -15, padding: 5, borderRadius: 10, borderWidth: 1, borderColor: '#AADCB6' }}>
@@ -467,13 +352,14 @@ export default function AccountHeader({ navigation }) {
                                 </View>
                             </View>
                         </View>
+
                         <RBSheet
                             ref={refRBSheet}
                             closeOnDragDown={true}
                             closeOnPressMask={true}
-                            closeDuration={500}
-                            openDuration={500}
-                            height={250}
+                            closeDuration={300}
+                            openDuration={300}
+                            height={230}
                             animationType={'fade'}
                             customStyles={{
                                 wrapper: {
@@ -487,14 +373,14 @@ export default function AccountHeader({ navigation }) {
                                     borderTopRightRadius: 20,
                                 }
                             }}>
-                            <View style={{ marginTop: 5, paddingLeft: 48, paddingRight: 25, flexDirection: 'row', }}>
+                            <View style={{ marginTop: 5, paddingLeft: 48, paddingRight: 25, flexDirection: 'row', marginBottom: 15 }}>
                                 <Text style={styles.textCamTitle}>
                                     Add Profile Picture
                                 </Text>
                             </View>
                             <View style={{ marginTop: 5, paddingLeft: 25, paddingRight: 25, flexDirection: 'row', justifyContent: 'space-evenly' }}>
                                 <TouchableOpacity
-                                    onPress={AndroidPermissionCamera}
+                                    onPress={AndroidPermissionCameraUserProfile}
                                     style={[styles.cardCamera, styles.cardCameraProps]}>
                                     <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                                         <View style={{ padding: 16, backgroundColor: '#f0f9f6', borderRadius: 10 }}>
@@ -504,7 +390,7 @@ export default function AccountHeader({ navigation }) {
                                     </View>
                                 </TouchableOpacity>
                                 <TouchableOpacity
-                                    onPress={imageLibrary}
+                                    onPress={imageLibraryUserProfile}
                                     style={[styles.cardCamera, styles.cardCameraProps]}>
                                     <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                                         <View style={{ padding: 16, backgroundColor: '#f0f9f6', borderRadius: 10 }}>
@@ -516,7 +402,7 @@ export default function AccountHeader({ navigation }) {
                             </View>
                         </RBSheet>
 
-                        {
+                        {/* {
                             uploadingImage ? (
 
                                 <Modal
@@ -537,12 +423,12 @@ export default function AccountHeader({ navigation }) {
                                     </View>
                                 </Modal>) : null
 
-                        }
+                        } */}
 
                         {/* form */}
                         <View>
-                         
                             <View style={{ marginBottom: 15 }}>
+                                {/* <Text style={{ paddingLeft: 15, color: '#8eb4a9', fontWeight: 'bold' }}>{imageContent}</Text> */}
                                 <Text style={{ paddingLeft: 15, color: '#8eb4a9', fontWeight: 'bold' }}>Name</Text>
                                 <View style={[styles.profileTextIcon, styles.div2Row]}>
                                     <Icon name={"account-outline"} color={'#276653'} size={23} style={{ width: 20, marginRight: 8 }} />
@@ -554,7 +440,8 @@ export default function AccountHeader({ navigation }) {
                                 <Text style={{ paddingLeft: 15, color: '#8eb4a9', fontWeight: 'bold' }}>Email</Text>
                                 <View style={[styles.profileTextIcon, styles.div2Row]}>
                                     <Icon name={"email-outline"} color={'#276653'} size={23} style={{ width: 22, marginRight: 8 }} />
-                                    <TextInput editable={false} placeholder={email} value={email} onChangeText={text => setEmail(text)} style={styles.profileTextinput} />
+                                    <TextInput editable={false} placeholder={email} value={email} onChangeText={text => setEmail(text)} style={styles.profileTextinput}  />
+                                    
                                 </View>
                             </View>
                             <View style={{ marginBottom: 5 }}>
@@ -564,16 +451,49 @@ export default function AccountHeader({ navigation }) {
                                     <TextInput placeholder={address} value={address} onChangeText={text => setAddress(text)} style={styles.profileTextinput} />
                                 </View>
                             </View>
+
+                            <View>
+                                <Modal
+                                    animationType="fade"
+                                    transparent={true}
+                                    visible={modalVisible}
+                                    onRequestClose={() => {
+                                        Alert.alert('Modal has been closed.');
+                                        setModalVisible(!modalVisible);
+                                    }}>
+                                    <View style={styles.centeredView}>
+                                        <View style={styles.modalView}>
+                                            <Image
+                                                source={require('../../src/gif/CheckComplete.gif')}
+                                                style={{ width: 50, height: 50 }}
+                                            />
+                                            <Text style={styles.modalText}>Hello World!</Text>
+                                            <Pressable
+                                                style={[styles.button, styles.buttonClose]}
+                                                onPress={() => setModalVisible(!modalVisible)}>
+                                                <Text style={styles.textStyle}>Hide Modal</Text>
+                                            </Pressable>
+                                        </View>
+                                    </View>
+                                </Modal>
+                            </View>
+                           <View>
+                           <Pressable
+                                style={[styles.button, styles.buttonOpen]}
+                                onPress={() => setModalVisible(true)}>
+                                <Text style={styles.textStyle}>Show Modal</Text>
+                            </Pressable>
+                           </View>
                             <View style={{ marginTop: 10, alignItems: 'center' }}>
                                 <TouchableOpacity
-                                    onPress={checks} >
+                                    onPress={uploadUserData} >
                                     <View style={[styles.dataSyncicon, styles.div2Row]}>
                                         <Icon name={"cached"} color={'white'} size={20} style={{ marginRight: 1 }} />
                                         <Text style={{ fontSize: 14, color: 'white', fontWeight: 'bold', padding: 3 }}>Data sync</Text>
                                     </View>
                                 </TouchableOpacity>
                                 <View>
-                                    <Text style={{ fontSize: 12, fontWeight: 'bold', marginTop: 5 }}>Last sync: Monday, Nov. 6, 2022 </Text>
+                                    <Text style={{ fontSize: 12, fontWeight: 'bold', marginTop: 5 }}>Last sync: {dateSync} </Text>
                                 </View>
                             </View>
                             {/* endform */}

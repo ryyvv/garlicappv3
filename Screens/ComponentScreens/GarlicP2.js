@@ -764,7 +764,6 @@ function PlantID({ route, navigation }) {
     });
   }
 
-
   const apiKey = 'eb40ebc2fe0c4d02b2735258230304';
   const weatherPlant = async () => {
     const response = await fetch('http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=' + plantAddress + '&days=10&aqi=yes&alerts=yes')
