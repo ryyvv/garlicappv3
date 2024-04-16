@@ -12,7 +12,7 @@ export const LocationProvider = ({ children }) => {
 
 
     
-    const apiKey = 'eb40ebc2fe0c4d02b2735258230304';
+    const apiKey = '096c5c5cfe81428389e33810241604';
     // const [locations, setLocation] = useState('http://api.weatherapi.com/v1/forecast.json?key=eb40ebc2fe0c4d02b2735258230304&q=batac, ilocos norte&days=7&aqi=yes&alerts=yes')
     const [loooo, setLoooo] = useState(null)
     const [locas, setLocas] = useState([])
@@ -326,7 +326,8 @@ export const LocationProvider = ({ children }) => {
 
         // getdatalocation
         const fetchWeatherData = async (latitude, longitude) => {
-                const apiKey = 'eb40ebc2fe0c4d02b2735258230304';
+                //const apiKey = 'eb40ebc2fe0c4d02b2735258230304'; garlicaccount
+                const apiKey = '096c5c5cfe81428389e33810241604';
                 const  baseURL1 =`https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${latitude},${longitude}&days=7&aqi=yes&alerts=yes`;
                console.log('Url: ',baseURL1)
                fetchDatas(baseURL1);
@@ -1964,39 +1965,54 @@ export const LocationProvider = ({ children }) => {
         // console.log(weatherPerHour)
     }
 
+    // const lBurgos = async () => {
+    //     const response = await fetch('http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=burgos , ilocos norte&days=10&aqi=yes&alerts=yes')
+    //         .then((response) => response.json())
+    //         .catch((error) => {
+    //             console.error(error);
+    //         })
+
+    //     setburgosloc(response?.location)
+    //     // console.log(weatherloc)
+    //     // setWeatherData
+    //     setburgosDate(response?.forecast?.forecastday[0])
+    //     // console.log(weatherDate)
+    //     //Condition Text&Icon
+    //     setburgosIcon(response?.forecast?.forecastday[0]?.day?.condition)
+    //     // console.log(weatherIcon)
+    //     setburgosCondition(response?.forecast?.forecastday[0]?.day?.condition)
+    //     // console.log(weatherCondition)
+    //     // setWeatherData
+    //     setburgosData(response?.forecast?.forecastday[0]?.day)
+    //     // console.log(weatherData)
+    //     // setCurrent(response?.current?.last_updated) //date&Time
+    //     setburgosPerHour(response?.forecast?.forecastday[0]?.hour)
+
+    //     setburgosPerDay(response?.forecast?.forecastday?.day)
+    //     // console.log(weatherPerHour)
+    // }
+
     const lBurgos = async () => {
-        const response = await fetch('http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=burgos , ilocos norte&days=10&aqi=yes&alerts=yes')
+        try {
+            const response = await fetch('http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=burgos , ilocos norte&days=10&aqi=yes&alerts=yes')
             .then((response) => response.json())
-            .catch((error) => {
-                console.error(error);
-            })
 
-        setburgosloc(response?.location)
-        // console.log(weatherloc)
-        // setWeatherData
-        setburgosDate(response?.forecast?.forecastday[0])
-        // console.log(weatherDate)
-        //Condition Text&Icon
-        setburgosIcon(response?.forecast?.forecastday[0]?.day?.condition)
-        // console.log(weatherIcon)
-        setburgosCondition(response?.forecast?.forecastday[0]?.day?.condition)
-        // console.log(weatherCondition)
-        // setWeatherData
-        setburgosData(response?.forecast?.forecastday[0]?.day)
-        // console.log(weatherData)
-        // setCurrent(response?.current?.last_updated) //date&Time
-        setburgosPerHour(response?.forecast?.forecastday[0]?.hour)
-
-        setburgosPerDay(response?.forecast?.forecastday?.day)
-        // console.log(weatherPerHour)
+            setburgosloc(response?.location)
+            setburgosDate(response?.forecast?.forecastday[0])
+            setburgosIcon(response?.forecast?.forecastday[0]?.day?.condition)
+            setburgosCondition(response?.forecast?.forecastday[0]?.day?.condition)
+            setburgosData(response?.forecast?.forecastday[0]?.day)
+            setburgosPerHour(response?.forecast?.forecastday[0]?.hour)
+            setburgosPerDay(response?.forecast?.forecastday?.day)
+        } catch (error) {
+            console.error('Error fetching Burgos Wdata:', error);
+        }
     }
 
     const lCarasi = async () => {
-        const response = await fetch('http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=carasi , ilocos norte&days=10&aqi=yes&alerts=yes')
+        try {
+            const response = await fetch('http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=carasi , ilocos norte&days=10&aqi=yes&alerts=yes')
             .then((response) => response.json())
-            .catch((error) => {
-                console.error(error);
-            })
 
         setcarasiloc(response?.location)
         // console.log(weatherloc)
@@ -2016,10 +2032,14 @@ export const LocationProvider = ({ children }) => {
 
         setcarasiPerDay(response?.forecast?.forecastday?.day)
         // console.log(weatherPerHour)
+        }catch(error) {
+            console.error('Error fetching Carasi  Wdata:', error);
+        }
     }
 
     const lCurrimao = async () => {
-        const response = await fetch('http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=currimao , ilocos norte&days=10&aqi=yes&alerts=yes')
+        try {
+            const response = await fetch('http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=currimao , ilocos norte&days=10&aqi=yes&alerts=yes')
             .then((response) => response.json())
             .catch((error) => {
                 console.error(error);
@@ -2043,15 +2063,16 @@ export const LocationProvider = ({ children }) => {
 
         setcurrimaoPerDay(response?.forecast?.forecastday?.day)
         // console.log(weatherPerHour)
+        }catch(error){
+            console.error('Error fetching Currimoa Wdata:', error);
+        }
         
     }
 
     const lDingras = async () => {
-        const response = await fetch('http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=dingras , ilocos norte&days=10&aqi=yes&alerts=yes')
+        try {
+            const response = await fetch('http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=dingras , ilocos norte&days=10&aqi=yes&alerts=yes')
             .then((response) => response.json())
-            .catch((error) => {
-                console.error(error);
-            })
 
         setdingrasloc(response?.location)
         // console.log(weatherloc)
@@ -2071,43 +2092,45 @@ export const LocationProvider = ({ children }) => {
 
         setdingrasPerDay(response?.forecast?.forecastday?.day)
         // console.log(weatherPerHour)
+        }catch(error){
+            console.error('Error fetching Dingras Wdata:', error);
+        }
 
     }
 
     const lDumalneg = async () => {
+       try{
         const response = await fetch('http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=dumalneg , ilocos norte&days=10&aqi=yes&alerts=yes')
-            .then((response) => response.json())
-            .catch((error) => {
-                console.error(error);
-            })
+        .then((response) => response.json())
 
-        setdumalnegloc(response?.location)
-        // console.log(weatherloc)
-        // setWeatherData
-        setdumalnegDate(response?.forecast?.forecastday[0])
-        // console.log(weatherDate)
-        //Condition Text&Icon
-        setdumalnegIcon(response?.forecast?.forecastday[0]?.day?.condition)
-        // console.log(weatherIcon)
-        setdumalnegCondition(response?.forecast?.forecastday[0]?.day?.condition)
-        // console.log(weatherCondition)
-        // setWeatherData
-        setdumalnegData(response?.forecast?.forecastday[0]?.day)
-        // console.log(weatherData)
-        // setCurrent(response?.current?.last_updated) //date&Time
-        setdumalnegPerHour(response?.forecast?.forecastday[0]?.hour)
+    setdumalnegloc(response?.location)
+    // console.log(weatherloc)
+    // setWeatherData
+    setdumalnegDate(response?.forecast?.forecastday[0])
+    // console.log(weatherDate)
+    //Condition Text&Icon
+    setdumalnegIcon(response?.forecast?.forecastday[0]?.day?.condition)
+    // console.log(weatherIcon)
+    setdumalnegCondition(response?.forecast?.forecastday[0]?.day?.condition)
+    // console.log(weatherCondition)
+    // setWeatherData
+    setdumalnegData(response?.forecast?.forecastday[0]?.day)
+    // console.log(weatherData)
+    // setCurrent(response?.current?.last_updated) //date&Time
+    setdumalnegPerHour(response?.forecast?.forecastday[0]?.hour)
 
-        setdumalnegPerDay(response?.forecast?.forecastday?.day)
-        // console.log(weatherPerHour)
+    setdumalnegPerDay(response?.forecast?.forecastday?.day)
+    // console.log(weatherPerHour)
+       }catch(error){
+        console.error('Error fetching Dumalneg Wdata:', error);
+       }
 
     }
 
     const lEspiritu = async () => {
-        const response = await fetch('http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=espiritu, ilocos norte&days=10&aqi=yes&alerts=yes')
+        try{
+            const response = await fetch('http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=espiritu, ilocos norte&days=10&aqi=yes&alerts=yes')
             .then((response) => response.json())
-            .catch((error) => {
-                console.error(error);
-            })
 
         setespirituloc(response?.location)
         // console.log(weatherloc)
@@ -2127,16 +2150,17 @@ export const LocationProvider = ({ children }) => {
 
         setespirituPerDay(response?.forecast?.forecastday?.day)
         // console.log(weatherPerHour)
+        }catch(error){
+            console.error('Error fetching Spiritu Wdata:', error);
+        }
 
         // return locations
     }
 
     const lLaoag = async () => {
-        const response = await fetch('http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=laoag , ilocos norte&days=10&aqi=yes&alerts=yes')
+        try {
+            const response = await fetch('http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=laoag , ilocos norte&days=10&aqi=yes&alerts=yes')
             .then((response) => response.json())
-            .catch((error) => {
-                console.error(error);
-            })
 
         setlaoagloc(response?.location)
         // console.log(weatherloc)
@@ -2156,15 +2180,16 @@ export const LocationProvider = ({ children }) => {
 
         setlaoagPerDay(response?.forecast?.forecastday?.day)
         // console.log(weatherPerHour)
+        }catch(error){
+            console.error('Error fetching Laoag Wdata:', error);
+        }
 
     }
 
     const lMarcos = async () => {
-        const response = await fetch('http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=marcos , ilocos norte&days=10&aqi=yes&alerts=yes')
+        try{
+            const response = await fetch('http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=marcos , ilocos norte&days=10&aqi=yes&alerts=yes')
             .then((response) => response.json())
-            .catch((error) => {
-                console.error(error);
-            })
 
         setmarcosloc(response?.location)
         // console.log(weatherloc)
@@ -2183,43 +2208,45 @@ export const LocationProvider = ({ children }) => {
         setmarcosPerHour(response?.forecast?.forecastday[0]?.hour)
         setmarcosPerDay(response?.forecast?.forecastday?.day)
         // console.log(weatherPerHour)
+        }catch(error){
+            console.error('Error fetching Marcos Wdata:', error);
+        }
 
         // return locations
     }
 
     const lNuevaEra = async () => {
+       try{
         const response = await fetch('http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=nueva era , ilocos norte&days=10&aqi=yes&alerts=yes')
-            .then((response) => response.json())
-            .catch((error) => {
-                console.error(error);
-            })
+        .then((response) => response.json())
 
-        setnuevaeraloc(response?.location)
-        // console.log(weatherloc)
-        // setWeatherData
-        setnuevaeraDate(response?.forecast?.forecastday[0])
-        // console.log(weatherDate)
-        //Condition Text&Icon
-        setnuevaeraIcon(response?.forecast?.forecastday[0]?.day?.condition)
-        // console.log(weatherIcon)
-        setnuevaeraCondition(response?.forecast?.forecastday[0]?.day?.condition)
-        // console.log(weatherCondition)
-        // setWeatherData
-        setnuevaeraData(response?.forecast?.forecastday[0]?.day)
-        // console.log(weatherData)
-        // setCurrent(response?.current?.last_updated) //date&Time
-        setnuevaeraPerHour(response?.forecast?.forecastday[0]?.hour)
-        // console.log(weatherPerHour)
-        setnuevaeraPerDay(response?.forecast?.forecastday?.day)
-        // return locations
+    setnuevaeraloc(response?.location)
+    // console.log(weatherloc)
+    // setWeatherData
+    setnuevaeraDate(response?.forecast?.forecastday[0])
+    // console.log(weatherDate)
+    //Condition Text&Icon
+    setnuevaeraIcon(response?.forecast?.forecastday[0]?.day?.condition)
+    // console.log(weatherIcon)
+    setnuevaeraCondition(response?.forecast?.forecastday[0]?.day?.condition)
+    // console.log(weatherCondition)
+    // setWeatherData
+    setnuevaeraData(response?.forecast?.forecastday[0]?.day)
+    // console.log(weatherData)
+    // setCurrent(response?.current?.last_updated) //date&Time
+    setnuevaeraPerHour(response?.forecast?.forecastday[0]?.hour)
+    // console.log(weatherPerHour)
+    setnuevaeraPerDay(response?.forecast?.forecastday?.day)
+    // return locations
+       }catch(error){
+        console.error('Error fetching Marcos Wdata:', error);
+       }
     }
 
     const lPagudpud = async () => {
-        const response = await fetch('http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=pagudpud , ilocos norte&days=10&aqi=yes&alerts=yes')
+        try{
+            const response = await fetch('http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=pagudpud , ilocos norte&days=10&aqi=yes&alerts=yes')
             .then((response) => response.json())
-            .catch((error) => {
-                console.error(error);
-            })
 
         setpagudpudloc(response?.location)
         // console.log(weatherloc)
@@ -2238,16 +2265,17 @@ export const LocationProvider = ({ children }) => {
         setpagudpudPerHour(response?.forecast?.forecastday[0]?.hour)
         // console.log(weatherPerHour)
         setpagudpudPerDay(response?.forecast?.forecastday?.day)
+        }catch(error){
+            console.error('Error fetching Pagudpud Wdata:', error);
+        }
 
         // return locations
     }
 
     const lPaoay = async () => {
-        const response = await fetch('http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=paoay , ilocos norte&days=10&aqi=yes&alerts=yes')
+        try {
+            const response = await fetch('http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=paoay , ilocos norte&days=10&aqi=yes&alerts=yes')
             .then((response) => response.json())
-            .catch((error) => {
-                console.error(error);
-            })
 
         setpaoayloc(response?.location)
         // console.log(weatherloc)
@@ -2267,16 +2295,17 @@ export const LocationProvider = ({ children }) => {
 
         setpaoayPerDay(response?.forecast?.forecastday?.day)
         // console.log(weatherPerHour)
+        }catch(error){
+            console.error('Error fetching Paoay Wdata:', error);
+        }
 
         // return locations
     }
 
     const lPasuquin = async () => {
-        const response = await fetch('http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=pasuquin , ilocos norte&days=10&aqi=yes&alerts=yes')
+        try {
+            const response = await fetch('http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=pasuquin , ilocos norte&days=10&aqi=yes&alerts=yes')
             .then((response) => response.json())
-            .catch((error) => {
-                console.error(error);
-            })
 
         setpasuquinloc(response?.location)
         // console.log(weatherloc)
@@ -2295,72 +2324,75 @@ export const LocationProvider = ({ children }) => {
         setpasuquinPerHour(response?.forecast?.forecastday[0]?.hour)
         // console.log(weatherPerHour)
         setpasuquinPerDay(response?.forecast?.forecastday?.day)
+        }catch(error){
+            console.error('Error fetching Pasuquin Wdata:', error);
+        }
 
         // return locations
     }
 
     const lPiddig = async () => {
+       try {
         const response = await fetch('http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=piddig , ilocos norte&days=10&aqi=yes&alerts=yes')
-            .then((response) => response.json())
-            .catch((error) => {
-                console.error(error);
-            })
+        .then((response) => response.json())
 
-        setpiddigloc(response?.location)
-        // console.log(weatherloc)
-        // setWeatherData
-        setpiddigDate(response?.forecast?.forecastday[0])
-        // console.log(weatherDate)
-        //Condition Text&Icon
-        setpiddigIcon(response?.forecast?.forecastday[0]?.day?.condition)
-        // console.log(weatherIcon)
-        setpiddigCondition(response?.forecast?.forecastday[0]?.day?.condition)
-        // console.log(weatherCondition)
-        // setWeatherData
-        setpiddigData(response?.forecast?.forecastday[0]?.day)
-        // console.log(weatherData)
-        // setCurrent(response?.current?.last_updated) //date&Time
-        setpiddigPerHour(response?.forecast?.forecastday[0]?.hour)
-        // console.log(weatherPerHour)
-        setpiddigPerDay(response?.forecast?.forecastday?.day)
+    setpiddigloc(response?.location)
+    // console.log(weatherloc)
+    // setWeatherData
+    setpiddigDate(response?.forecast?.forecastday[0])
+    // console.log(weatherDate)
+    //Condition Text&Icon
+    setpiddigIcon(response?.forecast?.forecastday[0]?.day?.condition)
+    // console.log(weatherIcon)
+    setpiddigCondition(response?.forecast?.forecastday[0]?.day?.condition)
+    // console.log(weatherCondition)
+    // setWeatherData
+    setpiddigData(response?.forecast?.forecastday[0]?.day)
+    // console.log(weatherData)
+    // setCurrent(response?.current?.last_updated) //date&Time
+    setpiddigPerHour(response?.forecast?.forecastday[0]?.hour)
+    // console.log(weatherPerHour)
+    setpiddigPerDay(response?.forecast?.forecastday?.day)
+       }catch(error){
+        console.error('Error fetching Piddig Wdata:', error);
+       }
 
         //return locations
     }
 
     const lPinili = async () => {
+       try {
         const response = await fetch('http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=pinili, ilocos norte&days=10&aqi=yes&alerts=yes')
-            .then((response) => response.json())
-            .catch((error) => {
-                console.error(error);
-            })
+        .then((response) => response.json())
 
-        setpinililoc(response?.location)
-        // console.log(weatherloc)
-        // setWeatherData
-        setpiniliDate(response?.forecast?.forecastday[0])
-        // console.log(weatherDate)
-        //Condition Text&Icon
-        setpiniliIcon(response?.forecast?.forecastday[0]?.day?.condition)
-        // console.log(weatherIcon)
-        setpiniliCondition(response?.forecast?.forecastday[0]?.day?.condition)
-        // console.log(weatherCondition)
-        // setWeatherData
-        setpiniliData(response?.forecast?.forecastday[0]?.day)
-        // console.log(weatherData)
-        // setCurrent(response?.current?.last_updated) //date&Time
-        setpiniliPerHour(response?.forecast?.forecastday[0]?.hour)
-        // console.log(weatherPerHour)
-        setpiniliPerDay(response?.forecast?.forecastday?.day)
+    setpinililoc(response?.location)
+    // console.log(weatherloc)
+    // setWeatherData
+    setpiniliDate(response?.forecast?.forecastday[0])
+    // console.log(weatherDate)
+    //Condition Text&Icon
+    setpiniliIcon(response?.forecast?.forecastday[0]?.day?.condition)
+    // console.log(weatherIcon)
+    setpiniliCondition(response?.forecast?.forecastday[0]?.day?.condition)
+    // console.log(weatherCondition)
+    // setWeatherData
+    setpiniliData(response?.forecast?.forecastday[0]?.day)
+    // console.log(weatherData)
+    // setCurrent(response?.current?.last_updated) //date&Time
+    setpiniliPerHour(response?.forecast?.forecastday[0]?.hour)
+    // console.log(weatherPerHour)
+    setpiniliPerDay(response?.forecast?.forecastday?.day)
+       }catch(error){
+        console.error('Error fetching Pinili Wdata:', error);
+       }
 
         //return locations
     }
 
     const lSanicolas = async () => {
-        const response = await fetch('http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=san nicolas , ilocos norte&days=10&aqi=yes&alerts=yes')
+        try {
+            const response = await fetch('http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=san nicolas , ilocos norte&days=10&aqi=yes&alerts=yes')
             .then((response) => response.json())
-            .catch((error) => {
-                console.error(error);
-            })
 
         setsanicolasloc(response?.location)
         // console.log(weatherloc)
@@ -2379,71 +2411,74 @@ export const LocationProvider = ({ children }) => {
         setsanicolasPerHour(response?.forecast?.forecastday[0]?.hour)
         // console.log(weatherPerHour)
         setsanicolasPerDay(response?.forecast?.forecastday[0]?.day)
+        }catch(error){
+            console.error('Error fetching San Nicolas Wdata:', error);
+        }
 
         //return locations
     }
 
     const lSarrat = async () => {
+       try {
         const response = await fetch('http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=sarrat , ilocos norte&days=10&aqi=yes&alerts=yes')
-            .then((response) => response.json())
-            .catch((error) => {
-                console.error(error);
-            })
+        .then((response) => response.json())
 
-        setsarratloc(response?.location)
-        // console.log(weatherloc)
-        // setWeatherData
-        setsarratDate(response?.forecast?.forecastday[0])   
-        // console.log(weatherDate)
-        //Condition Text&Icon
-        setsarratIcon(response?.forecast?.forecastday[0]?.day?.condition)
-        // console.log(weatherIcon)
-        setsarratCondition(response?.forecast?.forecastday[0]?.day?.condition)
-        // console.log(weatherCondition)
-        // setWeatherData
-        setsarratData(response?.forecast?.forecastday[0]?.day)
-        // console.log(weatherData)
-        // setCurrent(response?.current?.last_updated) //date&Time
-        setsarratPerHour(response?.forecast?.forecastday[0]?.hour)
-        // console.log(weatherPerHour)
-        setsarratPerDay(response?.forecast?.forecastday[0]?.day)
+    setsarratloc(response?.location)
+    // console.log(weatherloc)
+    // setWeatherData
+    setsarratDate(response?.forecast?.forecastday[0])   
+    // console.log(weatherDate)
+    //Condition Text&Icon
+    setsarratIcon(response?.forecast?.forecastday[0]?.day?.condition)
+    // console.log(weatherIcon)
+    setsarratCondition(response?.forecast?.forecastday[0]?.day?.condition)
+    // console.log(weatherCondition)
+    // setWeatherData
+    setsarratData(response?.forecast?.forecastday[0]?.day)
+    // console.log(weatherData)
+    // setCurrent(response?.current?.last_updated) //date&Time
+    setsarratPerHour(response?.forecast?.forecastday[0]?.hour)
+    // console.log(weatherPerHour)
+    setsarratPerDay(response?.forecast?.forecastday[0]?.day)
+       }catch(error){
+        console.error('Error fetching Sarrat Wdata:', error);
+       }
 
     }
 
     const lSolsona = async () => {
+       try {
         const response = await fetch('http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=solsona , ilocos norte&days=10&aqi=yes&alerts=yes')
-            .then((response) => response.json())
-            .catch((error) => {
-                console.error(error);
-            })
+        .then((response) => response.json())
 
-        setsolsonaloc(response?.location)
-        // console.log(weatherloc)
-        // setWeatherData
-        setsolsonaDate(response?.forecast?.forecastday[0])
-        // console.log(weatherDate)
-        //Condition Text&Icon
-        setsolsonaIcon(response?.forecast?.forecastday[0]?.day?.condition)
-        // console.log(weatherIcon)
-        setsolsonaCondition(response?.forecast?.forecastday[0]?.day?.condition)
-        // console.log(weatherCondition)
-        // setWeatherData
-        setsolsonaData(response?.forecast?.forecastday[0]?.day)
-        // console.log(weatherData)
-        // setCurrent(response?.current?.last_updated) //date&Time
-        setsolsonaPerHour(response?.forecast?.forecastday[0]?.hour)
-        // console.log(weatherPerHour)
-        setsolsonaPerDay(response?.forecast?.forecastday[0]?.day)
+    setsolsonaloc(response?.location)
+    // console.log(weatherloc)
+    // setWeatherData
+    setsolsonaDate(response?.forecast?.forecastday[0])
+    // console.log(weatherDate)
+    //Condition Text&Icon
+    setsolsonaIcon(response?.forecast?.forecastday[0]?.day?.condition)
+    // console.log(weatherIcon)
+    setsolsonaCondition(response?.forecast?.forecastday[0]?.day?.condition)
+    // console.log(weatherCondition)
+    // setWeatherData
+    setsolsonaData(response?.forecast?.forecastday[0]?.day)
+    // console.log(weatherData)
+    // setCurrent(response?.current?.last_updated) //date&Time
+    setsolsonaPerHour(response?.forecast?.forecastday[0]?.hour)
+    // console.log(weatherPerHour)
+    setsolsonaPerDay(response?.forecast?.forecastday[0]?.day)
+       }catch(error){
+        console.error('Error fetching Solsona Wdata:', error);
+       }
 
         //return locations
     }
 
     const lVintar = async () => {
-        const response = await fetch('http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=vintar , ilocos norte&days=10&aqi=yes&alerts=yes')
+        try {
+            const response = await fetch('http://api.weatherapi.com/v1/forecast.json?key=' + apiKey + '&q=vintar , ilocos norte&days=10&aqi=yes&alerts=yes')
             .then((response) => response.json())
-            .catch((error) => {
-                console.error(error);
-            })
 
         setvintarloc(response?.location)
         // console.log(weatherloc)
@@ -2462,6 +2497,9 @@ export const LocationProvider = ({ children }) => {
         setvintarPerHour(response?.forecast?.forecastday[0]?.hour)
         // console.log(weatherPerHour)
         setvintarPerDay(response?.forecast?.forecastday?.day)
+        }catch(error) {
+            console.error('Error fetching vintar Wdata:', error);
+        }
 
         //return locations
     }

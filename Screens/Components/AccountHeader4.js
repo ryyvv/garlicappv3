@@ -3,6 +3,7 @@ import React, { useContext, useState, useRef, useEffect } from 'react';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { AuthContext } from '../Context/AuthProvider';
 import RBSheet from "react-native-raw-bottom-sheet";
+//import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-alert-notification
 import {
     StyleSheet,
     ScrollView,
@@ -439,22 +440,18 @@ export default function AccountHeader({ navigation }) {
                                         Alert.alert('Modal has been closed.');
                                         setModalVisible(!modalVisible);
                                     }}>
-                                    <View style={styles.outerCard}>
-                                       
-                                        <View style={{padding:10,alignItems: 'center', }}>
-                                        <Image
-                                            source={require('../../src/images/done.png')}
-                                            style={{ width: 100, height: 100, position:'absolute', zIndex:2}}
-                                        />
-                                             <View style={styles.innerCard}>
-                                            <Text style={[{ marginTop:30,fontSize: 18, fontWeight: 'bold' }, styles.modalText]}>Update Personal Info</Text>
-                                            <Text style={[{ marginTop: 8 }, styles.modalText]}>Successfully updated your personal Information</Text>
+                                    <View style={styles.centeredView}>
+                                        <View style={styles.modalView}>
+                                            <Image
+                                                source={require('../../src/images/successCheck.png')}
+                                                style={{ width: 50, height: 50 }}
+                                            />
+                                            <Text style={styles.modalText}>Hello World!</Text>
                                             <Pressable
-                                                style={{ marginTop: 20 }}
+                                                style={[styles.button, styles.buttonClose]}
                                                 onPress={() => setModalVisible(!modalVisible)}>
-                                                <Text style={{ color: 'green', fontSize: 14, textDecorationLine: 'underline' }}>Close</Text>
+                                                <Text style={styles.textStyle}>Hide Modal</Text>
                                             </Pressable>
-                                            </View>
                                         </View>
                                     </View>
                                 </Modal>

@@ -879,6 +879,16 @@ export default globalStyles = StyleSheet.create({
         textAlign: 'center',
       },
 
+      innerCard : {
+        width:'90%', padding: 30,marginTop:45, backgroundColor: 'white', shadowColor: '#000',shadowOffset: {
+            width: 0,
+            height: 2,
+        },shadowOpacity: 0.25,shadowRadius: 4, elevation: 5, borderRadius: 20, alignItems: 'center'
+      },
+      outerCard: {
+        paddingTop: 0,paddingBottom: 20,paddingRightt: 20,paddingLeft: 20, flex: 1, justifyContent: 'center', alignItems: 'center',marginTop:22
+      }
+
     
 
 });
