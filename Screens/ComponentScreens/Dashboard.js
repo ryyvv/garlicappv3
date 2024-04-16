@@ -513,6 +513,7 @@ export default function Dashboard({ navigation }) {
                                               :
                                               (null)
                                           }
+                                          
                                           {
                                             gpsWeathCondition.code == 1003 ?
                                               (

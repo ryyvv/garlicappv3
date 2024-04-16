@@ -33,6 +33,7 @@ import styles from '../../src/css/styles';
 import database from '@react-native-firebase/database';
 import Storage from '@react-native-firebase/storage';
 import { LazyLoadImage } from 'react-native-lazy-load-image';
+import checkGIF from '../../src/images/CheckComplete.gif'
 
 export default function AccountHeader({ navigation }) {
     const refRBSheet = useRef();
@@ -330,7 +331,7 @@ export default function AccountHeader({ navigation }) {
                     <View style={{ margin: 15 }}>
                         <View style={styles.div2RowSpaceBetween}>
                             <Text style={{ color: '#276653', fontWeight: 'bold', fontSize: 30 }}>My Account</Text>
-                            {/* <Text>userID: {user.uid}</Text> */}
+                            
                         </View>
 
                         {/* icon */}
@@ -402,28 +403,6 @@ export default function AccountHeader({ navigation }) {
                             </View>
                         </RBSheet>
 
-                        {/* {
-                            uploadingImage ? (
-
-                                <Modal
-                                    animationType="fade"
-                                    transparent={true}
-                                    visible={true}
-                                    onRequestClose={() => {
-                                        Alert.alert("Modal has been closed.");
-                                        setModalVisible(!modalVisible);
-                                        profileClose()
-                                    }}
-                                >
-                                    <View style={styles.centeredView}>
-                                        <View style={styles.modalView}>
-                                            <Text>{transferedImage}% of Completed!</Text>
-                                            <ActivityIndicator size="small" color="#276653" />
-                                        </View>
-                                    </View>
-                                </Modal>) : null
-
-                        } */}
 
                         {/* form */}
                         <View>
@@ -464,7 +443,7 @@ export default function AccountHeader({ navigation }) {
                                     <View style={styles.centeredView}>
                                         <View style={styles.modalView}>
                                             <Image
-                                                source={require('../../src/gif/CheckComplete.gif')}
+                                                source={checkGIF}
                                                 style={{ width: 50, height: 50 }}
                                             />
                                             <Text style={styles.modalText}>Hello World!</Text>
