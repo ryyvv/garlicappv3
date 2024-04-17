@@ -29,6 +29,7 @@ import {
   Button,
   Animated,
   Alert,
+  Modal
 
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -72,6 +73,7 @@ function PlantDash({ route, navigation }) {
   const [plantDataCompleted, setPlantDataCompleted] = useState([])
   const [recent,setRecent] = useState(false)
   const [completed,setCompleted] = useState(false)
+  
 
   // const {plantData, setPlantData} =  route.params;
 
@@ -257,7 +259,7 @@ function PlantNew({ navigation }) {
   } = useContext(LocationContext);
 
 
-
+  const [modalVisible, setModalVisible] = useState(false);
   const [open, setOpen] = useState(false)
   const [plantTitle, setPlantTitle] = useState('')
   const [plantVariety, setPlantVariety] = useState('')
@@ -533,12 +535,9 @@ function PlantNew({ navigation }) {
             dateHarvested: 'false'  
           })
           .then(async () => {
-            alert('Plant data stored successfully!')
-            navigation.goBack()
+            setModalVisible(true)
           });
 
-          // irrigationSched();
-          // fertilizerSched();
       });
 
       try {
@@ -557,6 +556,8 @@ function PlantNew({ navigation }) {
   const displayListplant = async () => {
     const displayList = database().ref('/plants')
   }
+
+  
 
   const addressloc = weathloc.name + weathloc.region;
   return (
@@ -590,10 +591,45 @@ function PlantNew({ navigation }) {
           </View>
         </View>
 
+       
+
         {/* Content */}
         <ScrollView>
           <View>
             {/* Image */}
+             {/* Modal message 'Created data' */}
+            <View>
+              <Modal
+                animationType="fade"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                  Alert.alert('Modal has been closed.');
+                  setModalVisible(!modalVisible);
+                }}>
+                <View style={styles.outerCard}>
+
+                  <View style={{ padding: 10, alignItems: 'center', }}>
+                    <Image
+                      source={require('../../src/images/done.png')}
+                      style={{ width: 100, height: 100, position: 'absolute', zIndex: 2 }}
+                    />
+                    <View style={styles.innerCard}>
+                      <Text style={[{ marginTop: 30, fontSize: 18, fontWeight: 'bold' }, styles.modalText]}>Congratulations!🌱</Text>
+                      <Text style={[{ marginTop: 8 }, styles.modalText]}>Your garlic plant has been successfully added to your monitoring list! Keep an eye on its growth and health through our monitoring system. Happy gardening! 🌿</Text>
+                      <Pressable
+                        style={{ marginTop: 20 }}
+                        onPress={() => {setModalVisible(!modalVisible)
+                                        navigation.goBack()}}>
+                        <Text style={{ color: 'green', fontSize: 14, 
+                        textDecorationLine: 'underline' }}>Close</Text>
+                      </Pressable>
+                    </View>
+                  </View>
+                </View>
+              </Modal>
+            </View>
+
             <View>
               {
                 imagePathCapture == null ? <ImageDefault /> : <ImageChange />
@@ -699,6 +735,7 @@ function PlantID({ route, navigation }) {
   const [uploading, setUploading] = useState(false);    //setUploaders
   const [downloadURL, setDownloadURL] = useState(null);   //imagelink uploader getdownload image
   const [transferred, setTransferred] = useState(0);    //Progress upload  image
+
 
   const [mrhr3humidity, setMRHr3humidity] = useState([])
   const [afhr3humidity, setAFHr3humidity] = useState([])

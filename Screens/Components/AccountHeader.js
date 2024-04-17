@@ -126,7 +126,8 @@ export default function AccountHeader({ navigation }) {
                             dataSync: dateSync,
                         })
                         .then(async () => {
-                            alert('UserData updated successfully!') 
+                            //alert('UserData updated successfully!') 
+                            setModalVisible(true)
                         });
  
                 });
@@ -184,7 +185,8 @@ export default function AccountHeader({ navigation }) {
                             dataSync: dateSync,
                         })
                         .then(async () => {
-                            alert('UserData updated successfully!') 
+                            //alert('UserData updated successfully!') 
+                            setModalVisible(true)
                         });
  
                 });
@@ -211,7 +213,8 @@ export default function AccountHeader({ navigation }) {
                     dataSync: dateSync,
                 })
                 .then(async () => {
-                    alert('UserData updated successfully!') 
+                    //alert('UserData updated successfully!') 
+                    setModalVisible(true)
                 });
             }
         }
@@ -352,7 +355,8 @@ export default function AccountHeader({ navigation }) {
                                 </View>
                             </View>
                         </View>
-
+                        
+                        {/* Modal Camera */}
                         <RBSheet
                             ref={refRBSheet}
                             closeOnDragDown={true}
@@ -402,6 +406,37 @@ export default function AccountHeader({ navigation }) {
                             </View>
                         </RBSheet>
 
+                        {/* Modal message */}
+                        <View>
+                            <Modal
+                                animationType="fade"
+                                transparent={true}
+                                visible={modalVisible}
+                                onRequestClose={() => {
+                                    Alert.alert('Modal has been closed.');
+                                    setModalVisible(!modalVisible);
+                                }}>
+                                <View style={styles.outerCard}>
+
+                                    <View style={{ padding: 10, alignItems: 'center', }}>
+                                        <Image
+                                            source={require('../../src/images/done.png')}
+                                            style={{ width: 100, height: 100, position: 'absolute', zIndex: 2 }}
+                                        />
+                                        <View style={styles.innerCard}>
+                                            <Text style={[{ marginTop: 30, fontSize: 18, fontWeight: 'bold' }, styles.modalText]}>Update Personal Info</Text>
+                                            <Text style={[{ marginTop: 8 }, styles.modalText]}>Successfully updated your personal Information</Text>
+                                            <Pressable
+                                                style={{ marginTop: 20 }}
+                                                onPress={() => setModalVisible(!modalVisible)}>
+                                                <Text style={{ color: 'green', fontSize: 14, textDecorationLine: 'underline' }}>Close</Text>
+                                            </Pressable>
+                                        </View>
+                                    </View>
+                                </View>
+                            </Modal>
+                        </View>
+
 
                         {/* form */}
                         <View>
@@ -430,42 +465,8 @@ export default function AccountHeader({ navigation }) {
                                 </View>
                             </View>
 
-                            <View>
-                                <Modal
-                                    animationType="fade"
-                                    transparent={true}
-                                    visible={modalVisible}
-                                    onRequestClose={() => {
-                                        Alert.alert('Modal has been closed.');
-                                        setModalVisible(!modalVisible);
-                                    }}>
-                                    <View style={styles.outerCard}>
-                                       
-                                        <View style={{padding:10,alignItems: 'center', }}>
-                                        <Image
-                                            source={require('../../src/images/done.png')}
-                                            style={{ width: 100, height: 100, position:'absolute', zIndex:2}}
-                                        />
-                                             <View style={styles.innerCard}>
-                                            <Text style={[{ marginTop:30,fontSize: 18, fontWeight: 'bold' }, styles.modalText]}>Update Personal Info</Text>
-                                            <Text style={[{ marginTop: 8 }, styles.modalText]}>Successfully updated your personal Information</Text>
-                                            <Pressable
-                                                style={{ marginTop: 20 }}
-                                                onPress={() => setModalVisible(!modalVisible)}>
-                                                <Text style={{ color: 'green', fontSize: 14, textDecorationLine: 'underline' }}>Close</Text>
-                                            </Pressable>
-                                            </View>
-                                        </View>
-                                    </View>
-                                </Modal>
-                            </View>
-                           <View>
-                           <Pressable
-                                style={[styles.button, styles.buttonOpen]}
-                                onPress={() => setModalVisible(true)}>
-                                <Text style={styles.textStyle}>Show Modal</Text>
-                            </Pressable>
-                           </View>
+                            
+                           
                             <View style={{ marginTop: 10, alignItems: 'center' }}>
                                 <TouchableOpacity
                                     onPress={uploadUserData} >

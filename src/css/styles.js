@@ -837,6 +837,18 @@ export default globalStyles = StyleSheet.create({
         color: '#276653',
     },
 
+    addBtn: {
+        width: 60,
+        height: 60,
+        borderRadius: 30,
+        backgroundColor: '#7ABD87',
+        position: 'absolute',
+        bottom: 20,
+        right: 30,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+
     //Modal
     centeredView: {
         flex: 1,
