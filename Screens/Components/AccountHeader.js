@@ -152,7 +152,7 @@ export default function AccountHeader({ navigation }) {
                 setuploadingImage(true);
                 settransferedImage(0);
 
-                console.log('Upload new user profile! ', filename);
+                //console.log('Upload new user profile! ', imageName);
                  
                 // storagePath and imagePath
                 const imageURL = Storage().ref('userProfilepic/' + filename).putFile(uploadUri)
@@ -272,6 +272,7 @@ export default function AccountHeader({ navigation }) {
                 const resultImageCaptured = await launchCamera(optioncam)
                 if (resultImageCaptured.didCancel == true) {
                     alert('Please try again!')
+                    alert('No images in gallery selected!')
                 }
                 setimagePathCaptureUserProfile(resultImageCaptured.assets[0].uri);
 
