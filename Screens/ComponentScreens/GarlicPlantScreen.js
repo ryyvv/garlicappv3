@@ -876,7 +876,8 @@ function PlantID({ route, navigation }) {
         userdata.set({
             images: downloadURL,
             title: title,
-            name: 'James',
+            address: plantAddress,
+            name: 'James Ryan',
             datecreated: dates,
             dateuploaded: dates,
             result: 'Pending',
@@ -889,7 +890,8 @@ function PlantID({ route, navigation }) {
         imagedata.set({
             images: downloadURL,
             title: title,
-            name: 'James',
+            address: plantAddress,
+            name: 'James Ryan',
             datecreated: dates,
             dateuploaded: dates,
             result: 'pending',
@@ -1082,16 +1084,18 @@ function PlantID({ route, navigation }) {
           title: 'Storage Permission Required',
           message: 'This app needs access to your storage to upload images.',
           buttonPositive: 'OK',
+          buttonNeutral: "Ask Me Later",
+          buttonNegative: "Cancel",
         }
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         console.log('Storage permission granted');
         const resultImageToUpload = await launchImageLibrary(optioncam)
-        setimagePathCapture(resultImageToUpload.assets[0].uri);
         if (resultImageToUpload.didCancel == true) {
           alert('Please try again!')
           // alert('No images in gallery selected!')
         }
+        setimagePathCapture(resultImageToUpload.assets[0].uri);
         uploadimages(imagePathCapture);
         alert(imagePathCapture)
 
