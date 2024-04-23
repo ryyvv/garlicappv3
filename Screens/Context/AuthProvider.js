@@ -49,8 +49,9 @@ export const AuthProvider = ({ children }) => {
                                 email: email,
                                 Address: 'Please enter your address',
                                 dataSync: now,
-                                userProfile: '',
-                                message: 'Connected'
+                                userProfile: 'icon',
+                                message: 'Connected',
+                                DateCreated: now,
 
                             }).then(() => {
                                 console.log('user added to RDatabase')

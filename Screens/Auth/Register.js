@@ -25,6 +25,7 @@ import Login from './Login';
 
 const Register = ({ navigation }) => {
   LogBox.ignoreAllLogs();
+  const [name, setName] = useState('')
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmpass, setConfirmpass] = useState('');

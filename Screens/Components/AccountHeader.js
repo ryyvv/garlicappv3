@@ -39,8 +39,8 @@ export default function AccountHeader({ navigation }) {
     const { logout, user } = useContext(AuthContext)
     const hidden = true;
     const statusBarStyle = 'dark-content';
-    const [imagePathCaptureUserProfile, setimagePathCaptureUserProfile] = useState();
-    const [imageContent, setimageContent] = useState('');
+    const [imagePathCaptureUserProfile, setimagePathCaptureUserProfile] = useState('icon');
+    const [imageContent, setimageContent] = useState('icon');
     const [uploadingImage, setuploadingImage] = useState(false)
     const [transferedImage, settransferedImage] = useState(0)
     const [username, setUsername] = useState('')
@@ -65,8 +65,9 @@ export default function AccountHeader({ navigation }) {
         const dataImage = database().ref('/users/' + user.uid + '/userData/')
         dataImage.on('value', (snapshot) => {
             const userProfileVal = snapshot.val()
+
             setimageContent(userProfileVal.userProfile)
-            setName(userProfileVal.name)
+            setName(userProfileVal.userName)
             setEmail(userProfileVal.email)
             setAddress(userProfileVal.Address)
             setMessage(userProfileVal.message)
@@ -345,7 +346,7 @@ export default function AccountHeader({ navigation }) {
                                         <View style={{ borderRadius: 15 }}>
                                             <View style={{ justifyContent: 'center', alignItems: 'center', backgroundColor: 'white', borderRadius: 15 }}>
                                                 {
-                                                    imageContent == null ? <ImageDefault /> : <ImageChange />
+                                                    imageContent == 'icon' ? <ImageDefault /> : <ImageChange />
                                                 }
                                             </View>
                                             <View style={{ position: 'absolute', backgroundColor: 'white', marginTop: 48, marginLeft: -15, padding: 5, borderRadius: 10, borderWidth: 1, borderColor: '#AADCB6' }}>
