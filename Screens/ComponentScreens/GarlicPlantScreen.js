@@ -916,8 +916,7 @@ function PlantID({ route, navigation }) {
      path: 'images',
   };
   
-  useEffect(()=> {
-    console.log('useEffect: ',imagePathCapture)
+  useEffect(()=> { 
     uploadimages(imagePathCapture);
   },[imagePathCapture])
   
@@ -1005,11 +1004,6 @@ function PlantID({ route, navigation }) {
       setUploading(true);
       setTransferred2(0);
       
-      console.log('[Storage]: image-File-exits');
-      console.log('upload image URI: ', uri)
-      console.log('upload image filename: ', filename)
-      console.log('upload image uploadUri: ', uploadUri)
-      //const imageName = uploadUri+dates;
       
       const taskUpload = Storage().ref('garlicImageData/' + filename).putFile(uploadUri)
 
@@ -1037,7 +1031,6 @@ function PlantID({ route, navigation }) {
             result: 'Pending',
           })
           .then(async () => {
-           
             console.log('Userdata stored!'); 
             setStatus(false);
             setModalVisible(true)
@@ -1054,7 +1047,7 @@ function PlantID({ route, navigation }) {
             result: 'pending',
           })
           .then(async () => {
-            console.log('Imagedata stored!');
+            console.log('✅Passed: Image Identification');
             setStatus(false);
             setModalVisible(true)
           });
@@ -1065,7 +1058,6 @@ function PlantID({ route, navigation }) {
         await taskUpload;
 
       } catch (e) {
-        alert(e)
         setStatus(false);
         console.error(e); 
       }

@@ -30,7 +30,7 @@ export const AuthProvider = ({ children }) => {
                             console.error(e);
                         }
                     },
-                    register: async (email, password) => {
+                    register: async (email,name, address,  password) => {
                         try {
                             await auth().createUserWithEmailAndPassword(email, password);
                         } catch (e) {
@@ -45,9 +45,9 @@ export const AuthProvider = ({ children }) => {
                             .ref('users/' + userUid +'/userData')
                             .set({
                                 userid: userUid,
-                                userName: email.split('@')[0],
+                                name: name,
                                 email: email,
-                                Address: 'Please enter your address',
+                                ddress: address,
                                 dataSync: now,
                                 userProfile: 'icon',
                                 message: 'Connected',
@@ -56,7 +56,7 @@ export const AuthProvider = ({ children }) => {
                             }).then(() => {
                                 console.log('user added to RDatabase')
                             });
-                        alert('Please complete your user info to settings')
+                           alert('Please complete your user info to settings')
 
 
                     },

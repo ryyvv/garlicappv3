@@ -17,7 +17,9 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
-  LogBox
+  LogBox,
+  Modal,
+  Pressable
 } from 'react-native';
 import { AuthContext } from '../Context/AuthProvider';
 import auth from '@react-native-firebase/auth';
@@ -25,7 +27,9 @@ import Login from './Login';
 
 const Register = ({ navigation }) => {
   LogBox.ignoreAllLogs();
+  // const [username, setUsername] = useState('')
   const [name, setName] = useState('')
+  const [address, setAddress] = useState('')
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmpass, setConfirmpass] = useState('');
@@ -44,10 +48,19 @@ const Register = ({ navigation }) => {
   const registerquery = () => {
     // setErrortext('');
     const strongRegex = new RegExp("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$");
-    if (!strongRegex.test(email)) {
+   if (!strongRegex.test(email)) {
       alert('please enter a valid email address');
       return null;
     }
+    else if(name.length < 4) {
+      alert('please enter a valid name');
+      return null;
+    }
+    else if(address.length < 4) {
+      alert('please enter a valid  address');
+      return null;
+    }
+    
     else if (password.length < 8) {
       alert('Password should be min 8 char!');
       return null;
@@ -60,8 +73,9 @@ const Register = ({ navigation }) => {
       alert('Password not matched!');
       return null;
     } else {
-      register(email, password)
+      register(email,name, address, password) 
       console.log('User account created successfully!')
+
     }
   }
 
@@ -72,33 +86,64 @@ const Register = ({ navigation }) => {
       {/* <ImageBackground source={require('../resource/img/garlicLeaf.png')} resizeMode="cover" blurRadius={95} style={styles.image}> */}
       <View style={{
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'center',marginTop: 40
       }}>
+
         <Image
           source={require('../../src/images/garliclogo.png')}
           style={{ width: 210, height: 200 }}
         />
       </View>
+
+    
+
       <View style={{ marginLeft: 50, marginRight: 50 }}>
         <View>
           {/* username */}
           {/* <View style={styles.loginTextContainer}>
+            <Icon
+              name={'account-outline'}
+              style={{ color: 'green' }}
+              size={23}
+            />
+            <TextInput
+              placeholder="Username"
+              style={styles.loginTextinput}
+              onChangeText={text => setUsername(text)}
+              value={username}
+            />
+            <TouchableOpacity
+              onPress={() => {
+                setUsername('');
+              }}>
+              {username == '' ? null : (
+                <Icon
+                  name={'close-circle'}
+                  style={{ color: 'gray' }}
+                  size={23}
+                />
+              )}
+            </TouchableOpacity>
+          </View> */}
+
+              {/* name */}
+          <View style={styles.loginTextContainer}>
               <Icon
                 name={'account-outline'}
                 style={{color: 'green'}}
                 size={23}
               />
               <TextInput
-                placeholder="username"
+                placeholder="Name"
                 style={styles.loginTextinput}
-                onChangeText={text => setUsername(text)}
-                value={username}
+                onChangeText={text => setName(text)}
+                value={name}
               />
               <TouchableOpacity
                 onPress={() => {
-                  setUsername('');
+                  setName('');
                 }}>
-                {username == '' ? null : (
+                {name == '' ? null : (
                   <Icon
                     name={'close-circle'}
                     style={{color: 'gray'}}
@@ -106,7 +151,33 @@ const Register = ({ navigation }) => {
                   />
                 )}
               </TouchableOpacity>
-            </View> */}
+          </View>
+
+          <View style={styles.loginTextContainer}>
+            <Icon
+              name={'map-marker-outline'}
+              style={{ color: 'green' }}
+              size={23}
+            />
+            <TextInput
+              placeholder="Municipal, Province"
+              style={styles.loginTextinput}
+              onChangeText={text => setAddress(text)}
+              value={address}
+            />
+            <TouchableOpacity
+              onPress={() => {
+                setAddress('');
+              }}>
+              {address == '' ? null : (
+                <Icon
+                  name={'close-circle'}
+                  style={{ color: 'gray' }}
+                  size={23}
+                />
+              )}
+            </TouchableOpacity>
+          </View>
 
           {/* Email */}
           <View style={styles.loginTextContainer}>
@@ -116,7 +187,7 @@ const Register = ({ navigation }) => {
               size={23}
             />
             <TextInput
-              placeholder="email"
+              placeholder="Email"
               style={styles.loginTextinput}
               onChangeText={text => setEmail(text)}
               value={email}
@@ -139,7 +210,7 @@ const Register = ({ navigation }) => {
             <Icon name={'lock-outline'} style={{ color: 'green' }} size={23} />
             <TextInput
               name={password}
-              placeholder="password"
+              placeholder="Password"
               style={styles.loginTextinput}
               onChangeText={text => setPassword(text)}
               value={password}
@@ -156,6 +227,7 @@ const Register = ({ navigation }) => {
                   : eyeOff()}
             </TouchableOpacity>
           </View>
+
           {/* Confirmpassword */}
           <View style={styles.loginTextContainer}>
             <Icon name={'lock-outline'} style={{ color: 'green' }} size={23} />

@@ -57,7 +57,7 @@ export default function Login({ navigation }) {
       {/* <ImageBackground source={require('../resource/img/garlicLeaf.png')} resizeMode="cover" blurRadius={95} style={styles.image}> */}
       <View style={{
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'center',marginTop: 40
 
       }}>
         <Image source={require('../../src/images/garliclogo.png')} style={{ width: 210, height: 200 }} />
