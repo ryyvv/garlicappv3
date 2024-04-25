@@ -423,7 +423,7 @@ export default function Dashboard({ navigation }) {
                         closeDuration={100}
                         openDuration={100}
                         height={550}
-                        animationType={'slide'}
+                        animationType={'fade'}
                         customStyles={{
                           wrapper: {
                             backgroundColor: 'rgba(52, 52, 52, 0.4)',
