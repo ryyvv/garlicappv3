@@ -47,7 +47,7 @@ export const AuthProvider = ({ children }) => {
                                 userid: userUid,
                                 name: name,
                                 email: email,
-                                ddress: address,
+                                address: address,
                                 dataSync: now,
                                 userProfile: 'icon',
                                 message: 'Connected',

@@ -29,7 +29,8 @@ import {
   Button,
   Animated,
   Alert,
-  Modal
+  Modal, 
+  ActivityIndicator
 
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -64,7 +65,7 @@ import DecisionTree from '../ModelComponent/DecisionTree1';
 import database from '@react-native-firebase/database';
 import { AirbnbRating } from '@rneui/base';
 const dbRef = database().ref('images');
-
+import auth from '@react-native-firebase/auth';
 
 function PlantDash({ route, navigation }) {
   const { logout, user } = useContext(AuthContext)
@@ -73,7 +74,7 @@ function PlantDash({ route, navigation }) {
   const [plantDataCompleted, setPlantDataCompleted] = useState([])
   const [recent, setRecent] = useState(false)
   const [completed, setCompleted] = useState(false)
-
+  const userID = auth().currentUser.uid;
 
   // const {plantData, setPlantData} =  route.params;
 
@@ -123,7 +124,7 @@ function PlantDash({ route, navigation }) {
     });
   }
 
-
+  
   return (
     <View style={{ flex: 1, backgroundColor: '#cbdeda' }}>
       <StatusBar animated={true} barStyle={statusBarStyle} translucent={true} />
@@ -131,6 +132,8 @@ function PlantDash({ route, navigation }) {
         recent == true ? (<Text style={{ marginLeft: 25, marginTop: 20, marginBottom: 10, fontSize: 16, fontWeight: '900', color: '#276653', }}>Recent</Text>) : (null)
       }
       <ScrollView scrollEnabled={true} style={{ zIndex: 1 }}>
+     
+       
         <View >
           {
             plantData === null ? (
@@ -223,6 +226,7 @@ function PlantDash({ route, navigation }) {
             )
           }
         </View>
+         
       </ScrollView>
       <Pressable style={{ zIndex: 2, position: 'absolute', bottom: 0, right: 0, borderRadius: 30, width: 60, height: 60, justifyContent: 'center', alignItems: 'center', }}
         onPress={() => {
@@ -232,6 +236,7 @@ function PlantDash({ route, navigation }) {
         <View style={styles.addBtn}>
           <Icon name={"plus"} color={'white'} size={23} style={{ fontWeight: 'bold' }} />
         </View>
+     
       </Pressable>
     </View>
 
@@ -255,7 +260,7 @@ function PlantNew({ navigation }) {
     weathPerDay,
   } = useContext(LocationContext);
 
-
+  const userID = auth().currentUser.uid;
   const [modalVisible, setModalVisible] = useState(false);
   const [open, setOpen] = useState(false)
   const [plantTitle, setPlantTitle] = useState('')
@@ -268,10 +273,12 @@ function PlantNew({ navigation }) {
   const [completed, setCompleted] = useState([])
   const [dataloading, setDataloading] = useState(false);
   const [image, setImage] = useState(null); //Test
-  const [imagePathCapture, setimagePathCapture] = useState(null);  //ImagePicker
+  const [imagePathCapture, setimagePathCapture] = useState('');  //ImagePicker
   const [uploading, setUploading] = useState(false);    //setUploaders
   const [downloadURL, setDownloadURL] = useState(null);   //imagelink uploader getdownload image
   const [transferred, setTransferred] = useState(0);    //Progress upload  image
+  const [transferred2, setTransferred2] = useState(0);    //Progress upload  image
+
 
 
   // ImageDefault Display
@@ -357,7 +364,7 @@ function PlantNew({ navigation }) {
           alert('Please try again! No image selected')
         }
 
-        setimagePathCapture(resultImageToUpload.assets[0].uri);;
+        setimagePathCapture(resultImageToUpload.assets[0].uri); 
         // ::Warning message: backend display null value setImagepathCapture::Ignore first null
 
       } else {
@@ -464,6 +471,8 @@ function PlantNew({ navigation }) {
       setUploading(true);
       setTransferred(0);
 
+      console.log('New Filename: ', filename)
+      console.log('New Upload: ', uploadUri)
       const currentDate = new Date();
 
       // Spray foliar
@@ -519,8 +528,8 @@ function PlantNew({ navigation }) {
         const downloadURL = await Storage().ref('garlicImageProfile/' + filename).getDownloadURL();
 
         //store data in realtime database
-        //database().ref('/plants/' + user.uid + plantTitle)
-        database().ref('/users/' + user.uid + '/plants/' + user.uid + plantTitle)
+        //database().ref('/plants/' + user.uid + plantTitle) 
+        database().ref('/users/' + userID+ '/plants/' + userID + plantTitle)
           .set({
             image: downloadURL,
             title: plantTitle,
@@ -673,6 +682,7 @@ function PlantNew({ navigation }) {
             {/* Content */}
             <View style={{ padding: 20, marginTop: -10 }}>
               {/* TextInput */}
+              
               <View style={[styles.cardPlantcard, styles.cardPlantcardProp, { backgroundColor: 'white', padding: 20, borderRadius: 20 }]}>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   <Icon name={"sprout"} color={'#276653'} size={28} style={{ marginTop: 3, marginRight: 15, marginLeft: 1 }} />
@@ -741,11 +751,13 @@ function PlantNew({ navigation }) {
 }
 
 function PlantID({ route, navigation }) {
+
+  
   const [uploading, setUploading] = useState(false);    //setUploaders
   const [downloadURL, setDownloadURL] = useState(null);   //imagelink uploader getdownload image
-  const [transferred, setTransferred] = useState(0);    //Progress upload  image
+  const [transferred2, setTransferred2] = useState(0);    //Progress upload  image
   const [image, setImage] = useState(null); //Test
-  const [imagePathCapture, setimagePathCapture] = useState('');
+  const [imagePathCapture, setimagePathCapture] = useState(null);
 
   
   const [mrhr3humidity, setMRHr3humidity] = useState([])
@@ -759,6 +771,7 @@ function PlantID({ route, navigation }) {
   const [humis2, setHumis2] = useState('');
   const { title, imageIcons, area, variety, date, plantAddress } = route.params;
   const [plantDataID, setPlantDataID] = useState([])
+  const [modalVisible, setModalVisible] = useState(false);
 
   const { logout, user } = useContext(AuthContext)
   const {
@@ -780,6 +793,7 @@ function PlantID({ route, navigation }) {
     setWeatherHoldLocation,
     weatherD
   } = useContext(LocationContext);
+  const userID = auth().currentUser.uid;
 
   const { data, humi,
     predHumi,
@@ -790,7 +804,7 @@ function PlantID({ route, navigation }) {
     preci,
     predPreci
   } = useContext(WeatherContext);
-
+  const [status, setStatus] = useState(false);
   const [weathplantData, setWeathplantData] = useState('');
   const [findings, setFindings] = useState('')
   const [weathDataAstro, setWeathDataAstro] = useState('')
@@ -802,14 +816,11 @@ function PlantID({ route, navigation }) {
     plantDisplayList();
     weatherPlant();
     plantFindings();
-    //imageFetch();
-    //wfActivities()
 
     completedTaskfetch()
     irrigation()
     foliar()
     fungicide()
-    cDatas()
 
   }, []);
 
@@ -839,81 +850,7 @@ function PlantID({ route, navigation }) {
     });
   }
 
-  const uploadimages = async (imagePathCapture) => {
-    const currentDate = new Date();
-    const dates = moment(currentDate).format('MM-DD-YYYY');
-
-
-    if (imagePathCapture === null) {
-      alert('data not found')
-    } else {
-
-      const uri = imagePathCapture;
-      const filename = uri.substring(uri.lastIndexOf('/') + 1);
-      const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
-      setUploading(true);
-      setTransferred(0);
-      
-      //const imageName = uploadUri+dates;
-      
-      const taskUpload = Storage().ref('garlicImageData/' + filename).putFile(uploadUri)
-
-      taskUpload.on('state_changed', snapshot => {
-        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log(`Upload is ${progress}% done`);
-        console.log(`Upload complete!`);
-
-        setTransferred(
-          Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 100
-        );
-      });
-
-      taskUpload.then(async () => {
-        // get imageDownloadURL
-        const downloadURL = await Storage().ref('garlicImageData/' + filename).getDownloadURL();
-
-        const userdata = database().ref('/users/' + user.uid + '/plants/' + user.uid + title + '/images/').push();
-        userdata.set({
-            images: downloadURL,
-            title: title,
-            address: plantAddress,
-            name: 'James Ryan',
-            datecreated: dates,
-            dateuploaded: dates,
-            result: 'Pending',
-          })
-          .then(async () => {
-            console.log('Userdata stored!');
-          });
-
-        const imagedata = database().ref('/image analyze').push();
-        imagedata.set({
-            images: downloadURL,
-            title: title,
-            address: plantAddress,
-            name: 'James Ryan',
-            datecreated: dates,
-            dateuploaded: dates,
-            result: 'pending',
-          })
-          .then(async () => {
-            console.log('Imagedata stored!');
-          });
-
-
-      });
-      try {
-        await taskUpload;
-
-      } catch (e) {
-        console.error(e);
-      }
-
-      setUploading(false);
-      setImage(null);
-    }
-  }
-
+ 
 
   const apiKey = '096c5c5cfe81428389e33810241604';
   const weatherPlant = async () => {
@@ -929,87 +866,21 @@ function PlantID({ route, navigation }) {
 
   }
 
-  // datalist
-  const renderDisplayList = ({ item }) => {
-    return (
-      <TouchableOpacity onPress={() => {
-        navigation.navigate('PlantID', {
-          title: item.title,
-          image: item.image,
-          variety: item.variety,
-          area: item.area,
-          date: item.date,
-          plantAddress: item.plantAddress,
-        });
-      }}>
-        <View style={styles.cardDataPlant}>
-          <View style={styles.div2RowSpaceEvenNoAlignItems}>
-
-            <View style={styles.div2Row}>
-              {/* <Image source={{ uri: item.image }} style={{ width: 50, height: 50, borderRadius: 50 / 2, marginRight: 10 }}/> */}
-              <LazyLoadImage source={{ uri: item.image }} style={{ width: 50, height: 50, borderRadius: 50 / 2, marginRight: 10 }} />
-              <View>
-                <Text style={{ color: '#276653', fontWeight: 'bold', fontSize: 17 }}>{item.title}</Text>
-                <Text>{moment(item.date).format('MMMM D, YYYY')}</Text>
-              </View>
-            </View>
-
-
-            {/* Button option */}
-            <View style={[styles.div2RowDatalist, { padding: 10 }]}>
-              <Icon name={"bell-outline"} color={'#276653'} size={23} style={{ width: 20, marginRight: 20 }} />
-              <TouchableOpacity>
-                <Icon name={"dots-vertical"} color={'#276653'} size={23} style={{ width: 20 }} />
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </TouchableOpacity>
-    );
-  };
-
-  // datalist
-  const renderDisplayList2 = ({ item }) => {
-    return (
-      <TouchableOpacity onPress={() => {
-        navigation.navigate('PlantID', {
-          title: item.title,
-          image: item.image,
-          variety: item.variety,
-          date: item.date,
-          plantAddress: item.plantAddress,
-        });
-      }}>
-        <View style={styles.cardDataPlant}>
-          <View style={styles.div2RowSpaceEvenNoAlignItems}>
-
-            <View style={styles.div2Row}>
-              {/* <Image source={{ uri: item.image }} style={{ width: 50, height: 50, borderRadius: 50 / 2, marginRight: 10 }}/> */}
-              <LazyLoadImage source={{ uri: item.image }} style={{ width: 50, height: 50, borderRadius: 50 / 2, marginRight: 10 }} />
-              <View>
-                <Text style={{ color: '#276653', fontWeight: 'bold', fontSize: 17 }}>{item.title}</Text>
-                <Text>{moment(item.date).format('MMMM D, YYYY')}</Text>
-              </View>
-            </View>
-
-
-            {/* Button option */}
-            <View style={[styles.div2RowDatalist, { padding: 10 }]}>
-              <TouchableOpacity>
-                {/* Delete */}
-                <Icon name={"dots-vertical"} color={'#276653'} size={23} style={{ width: 20 }} />
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </TouchableOpacity>
-    );
-  };
-
 
   //================================================
   const refRBSheetAna = useRef();
   const refRBSheetCapture = useRef();
+ 
+  const [open, setOpen] = useState(false);
+  const onPress = () => {
+    if (!open) {
+      refRBSheetCapture.current.open();
+    } else {
+      refRBSheetCapture.current.close();
+    }
+  }; 
+
+
   let AnimatedHeaderValue = new Animated.Value(0);
   const HEADER_MAX_HEIGHT = 300;
   const HEADER_MIN_HEIGHT = 200;
@@ -1026,6 +897,8 @@ function PlantID({ route, navigation }) {
     extrapolate: 'clamp',
   });
 
+
+
   // CamProperties
   let optioncam = {
     saveToPhotos: true,
@@ -1033,26 +906,29 @@ function PlantID({ route, navigation }) {
     cameraType: 'back',
     selectionLimit: 1,
     includeBase64: false,
-    path: 'image',
+    path: 'images',
   };
 
   // UploadProperties
   let optionImageupload = {
     mediaType: 'photo',
     includeBase64: false,
-    path: 'image',
+     path: 'images',
   };
   
-  // imageCameraPermission
+  useEffect(()=> { 
+    uploadimages(imagePathCapture);
+  },[imagePathCapture])
+  
   const AndroidPermissionCamera = async () => {
     try {
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.CAMERA,
         {
-          title: "Camera Permission",
+          title: "Garlic App Camera Permission",
           message:
-            "Garlic App needs access to your camera " +
-            "so you can take garlic images.",
+            "Garlic photo App needs access to your camera " +
+            "so you can take awesome pictures.",
           buttonNeutral: "Ask Me Later",
           buttonNegative: "Cancel",
           buttonPositive: "OK"
@@ -1064,119 +940,130 @@ function PlantID({ route, navigation }) {
           alert('Please try again!')
         }
         setimagePathCapture(resultImageCaptured.assets[0].uri);
-        uploadimages(imagePathCapture);
+        setStatus(true);
+        onPress()
+        alert('URIssss: ', resultImageCaptured)
       } else {
         console.log("Camera permission denied");
         alert("Camera permission denied")
       }
     } catch (error) {
-      alert('Please try again!')
+      console('Catch: Please try again!'. error)
+      alert("Catch: ".imagePathCapture)
     }
   }
+ 
 
   // imageUploadPermission
   const imageLibrary = async () => {
 
     try {
       const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-        {
-          title: 'Storage Permission Required',
-          message: 'This app needs access to your storage to upload images.',
-          buttonPositive: 'OK',
-          buttonNeutral: "Ask Me Later",
-          buttonNegative: "Cancel",
-        }
-      );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log('Storage permission granted');
-        const resultImageToUpload = await launchImageLibrary(optioncam)
-        if (resultImageToUpload.didCancel == true) {
-          alert('Please try again!')
-          // alert('No images in gallery selected!')
-        }
-        setimagePathCapture(resultImageToUpload.assets[0].uri);
-        uploadimages(imagePathCapture);
-        alert(imagePathCapture)
-
-      } else {
-        console.log("Camera permission denied");
-        alert("Camera permission denied")
-      }
-    } catch (error) {
-      alert('Please try again!', error)
-    }
-  }
-
-
-  const [imageAna, setimageaAna] = useState();
-  // imageCameraPermission
-  const AndroidPermissionCameraAnalysis = async () => {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.CAMERA,
-        {
-          title: "Camera Permission",
-          message:
-            "Garlic App needs access to your camera " +
-            "so you can take garlic images.",
-          buttonNeutral: "Ask Me Later",
-          buttonNegative: "Cancel",
-          buttonPositive: "OK"
-        }
-      );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        const resultImageCaptured = await launchCamera(optioncam)
-        if (resultImageCaptured.didCancel == true) {
-          alert('Please try again!')
-        }
-        setimageaAna(resultImageCaptured.assets[0].uri);
-        console.log('Image URI: ', imageAna.uri);
-        uploadimages(title);
-      } else {
-        console.log("Camera permission denied");
-        alert("Camera permission denied")
-      }
-    } catch (error) {
-      alert('Please try again!')
-      console.log(error)
-    }
-  }
-
-  // imageUploadPermission
-  const imageLibraryAnalysis = async () => {
-
-    try {
-      const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.CAMERA,
         {
           title: "Garlic App Camera Permission",
-          message:
-            "Garlic App needs access to your Gallery ",
+          message: "Garlic App needs access to your Gallery ",
           buttonNeutral: "Ask Me Later",
           buttonNegative: "Cancel",
           buttonPositive: "OK"
         }
       );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        const resultImageToUpload = await launchImageLibrary(optioncam);
-        if (resultImageToUpload.didCancel == true) {
-          alert('Please try again!')
-          // alert('No images in gallery selected!')
-        }
-        setimageaAna(resultImageToUpload.assets[0].uri);
-        uploadimages(title);
-        RBSheet.close()
 
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        const resultImageToUpload = await launchImageLibrary(optioncam)
+        if (resultImageToUpload.didCancel == true) {
+          alert('Please try again! No image selected')
+        }
+
+        setimagePathCapture(resultImageToUpload.assets[0].uri); 
+        // ::Warning message: backend display null value setImagepathCapture::Ignore first null
+        setStatus(true);
+        onPress()
       } else {
         console.log("Camera permission denied");
         alert("Camera permission denied")
       }
     } catch (error) {
-      alert('Please try again!', error)
-      console.log(error)
+      console('Catch: Please try again!'. error)
+      alert("Catch: ".imagePathCapture)
     }
   }
+
+  const uploadimages = async (imagePathCap) => {
+    const currentDate = new Date();
+    const dates = moment(currentDate).format('MM-DD-YYYY');
+
+
+    if (imagePathCap === null) {
+      console.log('Refreshing image useState!');
+    } else {
+
+      const uri = imagePathCap;
+      const filename = uri.substring(uri.lastIndexOf('/') + 1);
+      const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
+      setUploading(true);
+      setTransferred2(0);
+      
+      
+      const taskUpload = Storage().ref('garlicImageData/' + filename).putFile(uploadUri)
+
+      taskUpload.on('state_changed', snapshot => {
+        const progress2 = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log(`Upload is ${progress2}% done`);
+        console.log(`Upload complete!`);
+
+        setTransferred2(
+          Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        );
+      });
+
+      taskUpload.then(async () => {
+        const downloadURL = await Storage().ref('garlicImageData/' + filename).getDownloadURL();
+
+        const userdata = database().ref('/users/' + userID + '/plants/' + user.uid + title + '/images').push();
+        userdata.set({
+            images: downloadURL,
+            title: title,
+            address: plantAddress,
+            name: 'James Ryan',
+            datecreated: dates,
+            dateuploaded: dates,
+            result: 'Pending',
+          })
+          .then(async () => {
+            console.log('Userdata stored!'); 
+            setStatus(false);
+            setModalVisible(true)
+          });
+
+        const imagedata = database().ref('/imageAnalyze/'+ user.uid ).push();
+        imagedata.set({
+            images: downloadURL,
+            title: title,
+            address: plantAddress,
+            name: 'James Ryan',
+            datecreated: dates,
+            dateuploaded: dates,
+            result: 'pending',
+          })
+          .then(async () => {
+            console.log('✅Passed: Image Identification');
+            setStatus(false);
+            setModalVisible(true)
+          });
+
+
+      });
+      try {
+        await taskUpload;
+
+      } catch (e) {
+        setStatus(false);
+        console.error(e); 
+      }
+    }
+  }
+  
 
   const Harea = () => {
     return (
@@ -1190,9 +1077,7 @@ function PlantID({ route, navigation }) {
     )
   }
 
-  const cDatas = () => {
-    console.log(weathData)
-  }
+
 
   const checkDatass = () => {
 
@@ -1302,38 +1187,11 @@ function PlantID({ route, navigation }) {
   }
 
 
-
-  // Add your Code here
-  // Sample data for Smart Air
-  const SmartAI = [
-    { id: 1, filename: '1707896281900.jpg', disease: 'Tangle Top', rate: '3' },
-    { id: 2, filename: '1707792324493.jpg', disease: 'Tangle Top', rate: '3' },
-    { id: 3, filename: 'IMG_20240207_083309.jpg', disease: 'Leaf Spot', rate: '5' },
-    { id: 4, filename: 'IMG_20240207_083258.jpg', disease: 'Leaf Spot', rate: '5' },
-    { id: 5, filename: 'IMG_20240207_0832147.jpg', disease: 'Tangle Top', rate: '2' },
-    { id: 6, filename: 'IMG_20240207_083023.jpg', disease: 'Purple Blotch', rate: '7' },
-    { id: 7, filename: 'IMG_20240207_083011.jpg', disease: 'Purple Blotch', rate: '7' },
-    { id: 8, filename: 'IMG_20240207_082956.jpg', disease: 'Leaf Spot', rate: '2' },
-    { id: 9, filename: 'IMG_20240207_082910.jpg', disease: 'Leaf Spot', rate: '2' },
-    { id: 10, filename: 'IMG_20240207_082748.jpg', disease: 'Purple Blotch', rate: '7' },
-    { id: 11, filename: 'IMG_20240207_082729.jpg', disease: 'Purple Blotch', rate: '5' },
-    { id: 12, filename: 'IMG_20240207_082706.jpg', disease: 'Purple Blotch', rate: '5' },
-    { id: 13, filename: 'IMG_20240207_082553.jpg', disease: 'Purple Blotch', rate: '4' },
-    { id: 14, filename: '1707896281 861.jpg', disease: 'Tangle Top', rate: '4' },
-    { id: 15, filename: '1707896281873.jpg', disease: 'Tangle Top', rate: '4' },
-    { id: 16, filename: '1707896281886.jpg', disease: 'Tangle Top', rate: '4' },
-    { id: 17, filename: '1707896281913.jpg', disease: 'Tangle Top', rate: '4' },
-  ]
-
-
   //create temporary varHolder 
   const [comActivity, setcomActivity] = useState(0)
   const [todayActivity, settodayActivity] = useState(0)
   const currentDate2 = new Date();
 
-
-  // if date today == date irri , date foliar, date fungicide
-  // display list
 
 
   //Date captured = loop starteds 
@@ -1402,15 +1260,7 @@ function PlantID({ route, navigation }) {
   //function uploading Completed Task
   useEffect(() => {
     checkerTodayTask()
-
-    //finddings image Fetching
-    //findings image upload
-
   }, []);
-
-
-  const [anaImage, setAnaImage] = useState(null)
-
 
 
   const [todays, setTodays] = useState([])
@@ -1438,88 +1288,6 @@ function PlantID({ route, navigation }) {
 
   }
 
-  const [completeds, setCompleteds] = useState([])
-  // const checkCompleted = () => {
-
-  //   const databaseurl = database().ref('null/plants/' + user.uid)
-  //   const userID = databaseurl.toString().split('/')[3];
-
-  //   if(user.uid == userID) {
-  //     const userTaskCompleted= database().ref('null/plants/' + user.uid + '/plants/' + user.uid+title+'/taskCompleted')
-  //     userTaskCompleted.on('value', (snapshot) => {
-  //       const firebaseData = snapshot.val();
-  //         const dataArray = Object.values(firebaseData);
-  //         const sortedStatus = dataArray.sort((a,b) => {
-  //           const dateA = new Date(`${a.dateAction}`).valueOf();
-  //           const dateB = new Date(`${b.dateAction}`).valueOf();
-  //           if (dateA > dateB) {
-  //             return 1; // return -1 here for DESC order
-  //           }
-  //           return -1 // return 1 here for DESC Order
-  //         });
-  //         setCompleteds(sortedStatus); 
-  //         console.log('CheckCompleted: ', completeds)
-  //     });
-  //   }
-
-  // } 
-
-  const [upcoming, setUpcoming] = useState([])
-  const [sortedTask, setsortedTaskUpcom] = useState([])
-  // const checkUpcoming = () => {
-
-  //   const currentDate = new Date();
-  //   const newDate = moment().toDate();
-  //   const DnewDate = moment(newDate).add(1, 'days');
-
-  //   const red = database().ref('null/plants/' + user.uid)
-  //   const blue = red.toString().split('/')[3];
-
-  //   if (user.uid == blue) {
-  //     const taskCom =  database().ref('users/' + user.uid + '/plants/' + user.uid + title + '/taskUpcoming')
-  //     taskCom.on('value', (snapshot) => {
-  //       const firebaseData = snapshot.val();
-  //       const dataArray = Object.values(firebaseData);
-  //       const sortedUpcoming = dataArray.sort((a, b) => {
-  //         const dateA = new Date(`${a.dateAction}`).valueOf();
-  //         const dateB = new Date(`${b.dateAction}`).valueOf();
-  //         if (dateA > dateB) {
-  //           return 1; // return -1 here for DESC order
-  //         }
-  //         return -1 // return 1 here for DESC Order
-  //       });
-  //       sortedUpcoming.forEach((index) => {
-
-  //         const dA = index.dateAction;
-  //         const dAnewDate = DnewDate;
-
-  //         //console.log('dAdAdAd: ',dA)
-  //         //console.log('current: ',dAnewDate )
-
-  //         const date1 = new Date(dA);
-  //         const date2 = new Date(dAnewDate);
-
-  //         if (date1 >  date2) {
-  //           sortedTask.push({ 
-  //             'id_completed': index.id_completed,
-  //             'action': index.action,
-  //             'dateAction': index.dateAction, 
-  //             'title': index.title,
-  //             'dateUpload' : index.dateUpload,
-  //             'image': index.image,
-  //             'imageResult' : index.imageResult,
-  //             'count' : index.count,
-  //             'plantstatus' : index.plantStatus
-  //           })
-  //           console.table('Push Date: ', dA)
-  //         } else {
-  //           console.table('Cannot Push Date: ', dA)
-  //         }
-  //       })
-  //       setUpcoming(sortedTask);
-  //     });
-  //   }
-  // }
 
   const [loadings, setLoadings] = useState(false);
   const [sortedToday, setsortedToday] = useState([])
@@ -1614,6 +1382,8 @@ function PlantID({ route, navigation }) {
     //console.log(taskcomplete);
   }
 
+ 
+
   return (
     <SafeAreaView >
       <ScrollView >
@@ -1657,12 +1427,12 @@ function PlantID({ route, navigation }) {
                         <Text style={{ fontWeight: 'bold' }}>Identify</Text>
                       </View>
                     </TouchableOpacity>
-                    <View>
-                      <Text>{imageAna}</Text>
-                    </View>
+                  
 
                     <RBSheet
                       ref={refRBSheetCapture}
+                      onOpen={() => setOpen(true)}
+                      onClose={() => setOpen(false)}
                       closeOnDragDown={true}
                       closeOnPressMask={true}
                       closeDuration={500}
@@ -1720,7 +1490,24 @@ function PlantID({ route, navigation }) {
         <View style={{
           flex: 2, padding: 10, borderTopRightRadius: 25,
           borderTopLeftRadius: 25, paddingTop: 30, marginTop: -160, height: undefined
-        }}>
+        }}> 
+
+          
+          <Modal
+            visible={status}
+            onRequestClose={() => setStatus(false)}
+            animationType="fade"
+            presentationStyle="pageSheet"
+          >
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white', opacity: 0.5 }}>
+              <ActivityIndicator animating={true} size="large" color="#377630" />
+              <Text style={{fontWeight:'bolder', fontSize:14 ,color:"#377630" }}>
+                Uploading data
+              </Text>
+            </View>
+
+        </Modal>
+
 
           {/* Details */}
           <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', justifyContent: 'center', borderRadius: 15, padding: 20, margin: 10 }]}>
@@ -1818,6 +1605,43 @@ function PlantID({ route, navigation }) {
             </View>
           </View>
 
+          
+            {/* Modal message 'Created data' */}
+            <View>
+              <Modal
+                animationType="fade"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                  Alert.alert('Modal has been closed.');
+                  setModalVisible(!modalVisible);
+                }}>
+                <View style={styles.outerCard}>
+
+                  <View style={{ padding: 10, alignItems: 'center', }}>
+                    <Image
+                      source={require('../../src/images/done.png')}
+                      style={{ width: 100, height: 100, position: 'absolute', zIndex: 2 }}
+                    />
+                    <View style={styles.innerCard}>
+                      <Text style={[{ marginTop: 30, fontSize: 18, fontWeight: 'bold' }, styles.modalText]}>Uploaded Successfully!🌱</Text>
+                      <Text style={[{ marginTop: 8 }, styles.modalText]}>Your garlic image has been uploaded to database. Please wait for a few minutes to analyze your image! 🌿</Text>
+                      <Pressable
+                        style={{ marginTop: 20 }}
+                        onPress={() => {
+                          setModalVisible(!modalVisible)
+                        }}>
+                        <Text style={{
+                          color: 'green', fontSize: 14,
+                          textDecorationLine: 'underline'
+                        }}>Close</Text>
+                      </Pressable>
+                    </View>
+                  </View>
+                </View>
+              </Modal>
+            </View>
+
           {/* Findings */}
           <View style={{ margin: 10, marginTop: 10 }}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingBottom: 5, alignItems: 'center' }}>
@@ -1831,7 +1655,7 @@ function PlantID({ route, navigation }) {
                     <View>
                       <View>
                         <Image source={require('../../src/images/Tangle1.jpg')} style={{ width: 155, height: 155, borderRadius: 5, }} />
-                        {/* <Image source={require('../../src/images/garlic1.jpg')} style={{ width: 175, height: 175, borderRadius: 5,zIndex:1,Bottom: -10,marginLeft: 30, opacity: 0.5}} /> */}
+                       
                       </View>
                     </View>
                     <View style={{ flexDirection: 'row', marginTop: 5, alignItems: 'center', paddingLeft: 5, paddingBottom: 8 }}>
@@ -2120,10 +1944,8 @@ function PlantIdentify({ route, navigation }) {
     //wfActivities()
 
     completedTaskfetch()
-    irrigation()
     foliar()
     fungicide()
-    cDatas()
 
   }, []);
 
@@ -2853,8 +2675,7 @@ function PlantCompleted({ route, navigation }) {
     completedTaskfetch()
     irrigation()
     foliar()
-    fungicide()
-    cDatas()
+    fungicide() 
 
   }, []);
 
@@ -2990,9 +2811,7 @@ function PlantCompleted({ route, navigation }) {
     )
   }
 
-  const cDatas = () => {
-    console.log(weathData)
-  }
+ 
 
   const checkDatass = () => {
 

@@ -9553,7 +9553,7 @@ react-native-date-picker@^4.2.6:
   dependencies:
     prop-types "^15.8.1"
 
-"react-native-fast-image@>= 8.3.6":
+react-native-fast-image@^8.6.3, "react-native-fast-image@>= 8.3.6":
   version "8.6.3"
   resolved "https://registry.npmjs.org/react-native-fast-image/-/react-native-fast-image-8.6.3.tgz"
   integrity sha512-Sdw4ESidXCXOmQ9EcYguNY2swyoWmx53kym2zRsvi+VeFCHEdkO+WG1DK+6W81juot40bbfLNhkc63QnWtesNg==

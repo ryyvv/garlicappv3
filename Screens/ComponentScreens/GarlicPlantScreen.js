@@ -7,6 +7,7 @@ import { FloatingAction } from "react-native-floating-action";
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import Storage from '@react-native-firebase/storage';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
+import FastImage from 'react-native-fast-image';
 
 import {
   useWindowDimensions,
@@ -66,6 +67,7 @@ import database from '@react-native-firebase/database';
 import { AirbnbRating } from '@rneui/base';
 const dbRef = database().ref('images');
 import auth from '@react-native-firebase/auth';
+import imagesFrame from '../../src/images/imageFrame.png';
 
 function PlantDash({ route, navigation }) {
   const { logout, user } = useContext(AuthContext)
@@ -138,6 +140,7 @@ function PlantDash({ route, navigation }) {
           {
             plantData === null ? (
               <View style={{ marginTop: 300, flexDirection: 'row', justifyContent: 'center', alignItem: 'center' }}>
+                <Image source={require('../../src/images/imageFrame.png')} style={{ width: 200, height: 200 }}/>
                 <Text style={{ fontSize: 20, fontWeight: 'bold', alignItem: 'center', justifyContent: 'center', }}><Icon name={"plus-circle"} color={'#276653'} size={30} style={{ width: 20 }} />There is no project available</Text>
                 <Text style={{ fontSize: 20, fontWeight: 'bold', alignItem: 'center', justifyContent: 'center', }}><Icon name={"plus-circle"} color={'#276653'} size={30} style={{ width: 20 }} />Press " + " to add new project</Text>
               </View>) : (
@@ -376,73 +379,6 @@ function PlantNew({ navigation }) {
     }
   }
 
-  const UserUpdate = async () => {
-    const uploadURI = imagePathCapture;
-    let filename = uploadURI.substring(uploadURI.lastIndexOf('/') + 1);
-    console.log(filename)
-
-    const pathToFile = `${utils.FilePath.PICTURES_DIRECTORY}/` + filename;
-    // uploads file
-    console.log(pathToFile)
-    await storage().ref('userProfilepic/').putFile(pathToFile);
-
-    const storage = getStorage();
-
-    // Create the file metadata
-    /** @type {any} */
-    const metadata = {
-      contentType: 'image/jpeg'
-    };
-
-    // Upload file and metadata to the object 'images/mountains.jpg'
-    const storageRef = ref(storage, 'images/' + file.name);
-    const uploadTask = uploadBytesResumable(storageRef, file, metadata);
-
-    // Listen for state changes, errors, and completion of the upload.
-    uploadTask.on('state_changed',
-      (snapshot) => {
-        // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log('Upload is ' + progress + '% done');
-        switch (snapshot.state) {
-          case 'paused':
-            console.log('Upload is paused');
-            break;
-          case 'running':
-            console.log('Upload is running');
-            break;
-        }
-      },
-      (error) => {
-        // A full list of error codes is available at
-        // https://firebase.google.com/docs/storage/web/handle-errors
-        switch (error.code) {
-          case 'storage/unauthorized':
-            // User doesn't have permission to access the object
-            break;
-          case 'storage/canceled':
-            // User canceled the upload
-            break;
-
-          // ...
-
-          case 'storage/unknown':
-            // Unknown error occurred, inspect error.serverResponse
-            break;
-        }
-      },
-      () => {
-        // Upload completed successfully, now we can get the download URL
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          console.log('File available at', downloadURL);
-        });
-      }
-    );
-  }
-
-
-
-
 
   // uploading trigger
   const imageUpload = async () => {
@@ -564,12 +500,9 @@ function PlantNew({ navigation }) {
   }
 
 
-
-
   const displayListplant = async () => {
     const displayList = database().ref('/plants')
   }
-
 
 
   const addressloc = weathloc.name + weathloc.region;
@@ -837,20 +770,6 @@ function PlantID({ route, navigation }) {
     });
   }
 
-  const plantFindings = async () => {
-    const dbRef = database().ref('/users/' + user.uid + '/plants/modelImages');
-    dbRef.on('value', (snapshot) => {
-      const firebaseData = snapshot.val();
-      if (firebaseData == null) {
-        setFindings(null);
-      } else {
-        const dataArrayfindings = Object.values(firebaseData);
-        setFindings(dataArrayfindings);
-      }
-    });
-  }
-
- 
 
   const apiKey = '096c5c5cfe81428389e33810241604';
   const weatherPlant = async () => {
@@ -1029,6 +948,7 @@ function PlantID({ route, navigation }) {
             datecreated: dates,
             dateuploaded: dates,
             result: 'Pending',
+            status: 'Pending'
           })
           .then(async () => {
             console.log('Userdata stored!'); 
@@ -1045,6 +965,7 @@ function PlantID({ route, navigation }) {
             datecreated: dates,
             dateuploaded: dates,
             result: 'pending',
+            status: 'Pending'
           })
           .then(async () => {
             console.log('✅Passed: Image Identification');
@@ -1187,13 +1108,6 @@ function PlantID({ route, navigation }) {
   }
 
 
-  //create temporary varHolder 
-  const [comActivity, setcomActivity] = useState(0)
-  const [todayActivity, settodayActivity] = useState(0)
-  const currentDate2 = new Date();
-
-
-
   //Date captured = loop starteds 
   //Date planted -- 
   const [irri, setIrri] = useState([]);
@@ -1260,6 +1174,7 @@ function PlantID({ route, navigation }) {
   //function uploading Completed Task
   useEffect(() => {
     checkerTodayTask()
+    imageFindings();
   }, []);
 
 
@@ -1382,7 +1297,37 @@ function PlantID({ route, navigation }) {
     //console.log(taskcomplete);
   }
 
- 
+
+
+//  findings
+const imageFindings = async() => {
+
+  const red = database().ref('null/plants/' + user.uid)
+  const blue = red.toString().split('/')[3];
+
+  if(user.uid == blue) {
+    const data = database().ref('users/'+ user.uid + '/plants/' + user.uid + title + '/images');
+    data.on('value', (snapshot) => {
+      const dataimage = snapshot.val();
+      const dataArray = object.values(dataimage);
+      const sorted = dataArray.sort((a, b) => {
+        const dateA = new Date(`${a.dateAction}`).valueOf();
+        const dateB = new Date(`${b.dateAction}`).valueOf();
+        if (dateA > dateB) {
+          return 1; // return -1 here for DESC order
+        }
+        return -1 // return 1 here for DESC Order
+
+      });
+      setFindings(sorted)
+    })
+  }
+}
+
+
+
+
+
 
   return (
     <SafeAreaView >
@@ -1643,59 +1588,23 @@ function PlantID({ route, navigation }) {
             </View>
 
           {/* Findings */}
-          <View style={{ margin: 10, marginTop: 10 }}>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingBottom: 5, alignItems: 'center' }}>
-              <Text style={{ fontSize: 17, color: '#276653', fontWeight: 'bold' }}>Uploaded samples</Text>
-            </View>
-            <View>
-              <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} snapToStart={true} >
 
-                <View style={{ marginRight: 10 }}>
-                  <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, margin: 4, marginBottom: 8, padding: 8 }]}>
-                    <View>
-                      <View>
-                        <Image source={require('../../src/images/Tangle1.jpg')} style={{ width: 155, height: 155, borderRadius: 5, }} />
-                       
-                      </View>
-                    </View>
-                    <View style={{ flexDirection: 'row', marginTop: 5, alignItems: 'center', paddingLeft: 5, paddingBottom: 8 }}>
-                      <Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 16, }}>Tangle Top</Text>
-                    </View>
-                    <View style={{ flexDirection: 'row', marginTop: -10, alignItems: 'center', paddingLeft: 8, paddingBottom: 8 }}>
-                      <Text style={{ fontWeight: 'bold', color: '#687773', fontSize: 14, }}>severe</Text>
-                    </View>
-                    <View style={{ flexDirection: 'row', paddingLeft: 8 }}>
-                      <Text style={{ fontWeight: 'bold', fontSize: 12, }}>Feb. 23, 2023 </Text>
-                    </View>
-                  </View>
+          {
+              findings === null ? null : (
+                <View style={{ margin: 10, marginTop: 10 }}>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingBottom: 5, alignItems: 'center' }}>
+                  <Text style={{ fontSize: 17, color: '#276653', fontWeight: 'bold' }}>Uploaded samples</Text>
                 </View>
-
-                {/* <View style={{ marginRight: 10 }}>
-                    <View style={[styles.cardDashboardPestDiseaseProp, { backgroundColor: 'white', borderRadius: 15, width: undefined, margin: 4, marginBottom: 8, padding: 20 }]}>
-                      <View style={{ flexDirection: 'row', }}>
-                        <Text style={{ fontWeight: 'bold' }}>Feb. 23, 2023 </Text>
-                      </View>
-                      <View style={{ flexDirection: 'row', marginTop: 5, alignItems: 'center' }}>
-                        <View style={{ flexDirection: 'row', }}>
-                          <Image source={require('../../src/images/garlic1.jpg')} style={{ width: 35, height: 35, borderRadius: 25 }} />
-                          <Image source={require('../../src/images/garlic1.jpg')} style={{ width: 35, height: 35, borderRadius: 25, marginLeft: -20, opacity: 0.5 }} />
-                        </View><Text style={{ fontWeight: 'bold', color: '#276653', fontSize: 18, marginLeft: 5 }}>Tangle Top</Text>
-                      </View>
-                      <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
-                        <View style={{ marginRight: 10, justifyContent: 'flex-end', marginLeft: 50 }}><View>
-                            <View style={{  marginRight: 10, borderRadius: 10, borderWidth: 1.5, borderColor: 'gray', width: 140 }}></View>
-                            <View style={{  marginRight: 10, borderRadius: 10, borderWidth: 3, borderColor: '#6fb96d', marginTop: -5, width: '40%' }}></View>
-                          </View>
-                        </View>
-                        <View style={{ flexDirection: 'row', }}>
-                          <Text style={{ fontWeight: 'bold', alignSelf: 'flex-end', color: '#276653' }}>40%</Text>
-                        </View>
-                      </View>
-                    </View>
-                  </View> */}
-              </ScrollView>
-            </View>
-          </View>
+                <View>
+                  <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} snapToStart={true} >
+            <Text>hlkjj;</Text>
+              
+                  </ScrollView>
+                </View>
+              </View>
+              )
+          }
+         
 
 
           {/* Task */}
@@ -1939,9 +1848,6 @@ function PlantIdentify({ route, navigation }) {
 
     plantDisplayList();
     weatherPlant();
-    plantFindings();
-    //imageFetch();
-    //wfActivities()
 
     completedTaskfetch()
     foliar()
