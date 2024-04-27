@@ -49,6 +49,7 @@ export const AuthProvider = ({ children }) => {
                                 email: email,
                                 address: address,
                                 dataSync: now,
+                                dataCreated: now,
                                 userProfile: 'icon',
                                 message: 'Connected',
                                 DateCreated: now,

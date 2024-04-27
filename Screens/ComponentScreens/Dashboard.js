@@ -216,8 +216,20 @@ export default function Dashboard({ navigation }) {
           imageb: require('../../src/images/Purple1.jpg'),
           spname: 'Alternaria, Ellis Lif',
           description: [
-            'Initial symptoms of purple blotch occurred at bulb initiation stage (development of 9th to 10th leaf) in early and regular planting while during late planting it started to appear during vegetative stage (development of 7th to 8th leaf). It first appear in older leaves as whitish sunken area that elongates and develop purplish centers and later become large and oval with concentric rings surrounded by zones of yellow and later covered with visible fruiting bodies (spores). Older leaves are more susceptible to purple blotch than younger ones. If purple blotch only attack the plant after bulb formation, then yield is not very much affected.',
+            ' Initial symptoms of purple blotch occurred at bulb initiation stage (development of 9th to 10th leaf) in early and regular planting while during late planting it started to appear during vegetative stage (development of 7th to 8th leaf). It first appear in older leaves as whitish sunken area that elongates and develop purplish centers and later become large and oval with concentric rings surrounded by zones of yellow and later covered with visible fruiting bodies (spores). Older leaves are more susceptible to purple blotch than younger ones. If purple blotch only attack the plant after bulb formation, then yield is not very much affected.',
             'Purple blotch infects garlic fields during periods of warm weather with high relative humidity. The disease spread rapidly reaching a very high damage when the relative humidity is consistently higher than 90% or there is an occurrence of rainfall but did not progress rapidly when the relative humidity is below 85%. There is no occurrence of this disease during the initial or early vegetative stages of the crop even if there is high relative humidity (>90%) and occurrence of rainfall'
+          ],
+          management: [
+            'Avoid planting infected bulbs',
+            'Crop Hygiene',
+            'rop Rotation', 
+            'Early Planting',
+            'Good soil drainage',
+            'Spray of fungicide when there are heavy rains',
+            'Chemical fungicides can be used if infestation is high',
+            'Spray at bolting stage especially when there is an occurrence of rainfall and a relative humidity of more than 85%',
+            'Spray compost tea (GM tea)',
+            'Plant Tolerant Varieties',
           ],
           images: [
             require('../../src/images/Purple1.jpg'),
@@ -230,10 +242,17 @@ export default function Dashboard({ navigation }) {
         {
           id: 2,
           pnd: 'Insect Pest',
-          name: 'Mites',
+          name: 'Tangle top ',
           imageb: require('../../src/images/Tangle1.jpg'),
           spname: 'Aceria tulipae',
           description: ['Aceria tulipae, locally known as ayam Tangle top is twisting or curling of the leaves, with yellowish or pale green streak. This damage is attributed to virus disease transmitted by mites Aceria Tulipae. Bulb development is slow, and the bulbs are small if the plants are attacked at the early stages of growth.'],
+          management: [
+            'Stretch the twisted and unextruded young leaves to minimize damage. This operation should be done in the afternoon.',
+            'Seed treatment with insecticides for an hour before planting',
+            'Overhead irrigation with the use of a sprinkler hose may also minimize infestation',
+            'Use of botanical insecticide extract alternate with chemical insecticides if infestation is high and colored (blue) sticky trap.',
+            'Always use stickers when spraying and the use of water and soap solution can also be effective in controlling the pest.',
+          ],
           images: [
             require('../../src/images/Tangle1.jpg'),
             require('../../src/images/Tangle2.jpg'),
@@ -244,44 +263,15 @@ export default function Dashboard({ navigation }) {
         },
         {
           id: 3,
-          pnd: 'Insect Pest',
-          name: 'Common worm',
-          imageb: require('../../src/images/Worm1.jpg'),
-          spname: 'Worm',
-          description: 'Insect pest',
-          images: [
-            require('../../src/images/Worm1.jpg'),
-            require('../../src/images/Worm2.jpg'),
-            require('../../src/images/Worm3.jpg'),
-            require('../../src/images/Worm4.jpg'),
-            require('../../src/images/Worm5.jpg'),
-          ],
-        },
-        {
-          id: 4,
-          pnd: 'Disease',
-          name: 'Garlic rust',
-          imageb: require('../../src/images/Rust1.jpg'),
-          spname: 'Rust',
-          description: 'Disease',
-          images: [
-            require('../../src/images/Rust1.jpg'),
-            require('../../src/images/Rust2.jpg'),
-            require('../../src/images/Rust3.jpg'),
-            require('../../src/images/Rust4.jpg'),
-            require('../../src/images/Rust5.jpg'),
-          ],
-        },
-        {
-          id: 5,
           pnd: 'Disease',
           name: 'Bulb/Root rot',
           imageb: require('../../src/images/Rootrot1.jpg'),
-          spname: 'Fusarium & Sclerotium',
+          spname: 'Fusarium & Sclerotium Species',
           description: [
             'The disease is caused by Fusarium and Sclerotium species. This is a soil borne fungus which attacks the basal part causing yellowing and wilting of the leaves followed by total collapse of the tops.',
             'Root rot disease increases in water-logged soils and it is more prevalent with prolong moisture in the soil.  Incidence is more visible at vegetative stage to bulb initiation stage during early planting  (October) and regular planting (November).  Lesser incidence is observe during late planting.'
           ],
+          management:'null',
           images: [
             require('../../src/images/Rootrot1.jpg'),
             require('../../src/images/Rootrot2.jpg'),
@@ -291,7 +281,7 @@ export default function Dashboard({ navigation }) {
           ],
         },
         {
-          id: 6,
+          id: 4,
           pnd: 'Disease',
           name: 'Cercospora leaf spot ',
           imageb: require('../../src/images/Leap1.jpg'),
@@ -301,7 +291,7 @@ export default function Dashboard({ navigation }) {
             'Initial symptoms of the pathogen is observe during bulb development to bulb maturity during early and regular planting, while during late planting symptoms started to appear as early as vegetative stage. Low infection is observed during early planting. During regular planting, a low infection is observed during bulb development.  Like purple blotch infection of the disease is higher during late planting, because it attacked all the different growth stages of the plant.',
             'Cercospora produces spores during warm, humid weather. The spores are transported primarily by wind carried by water or equipment. Favorable conditions such as overhead irrigation and rainy, windy weather increase the rate of spread.'
           ],
-          managementControl: [
+          management: [
             'Avoid planting infected bulbs',
             'Crop Hygiene',
             'Crop Rotation',
@@ -322,7 +312,7 @@ export default function Dashboard({ navigation }) {
           ],
         },
         {
-          id: 7,
+          id: 5,
           pnd: 'Insect Pest',
           name: 'Thrips',
           imageb: require('../../src/images/Insect1.jpg'),
@@ -331,7 +321,7 @@ export default function Dashboard({ navigation }) {
             'Thrips feed under the leaf folds and in the protected inner leaves, both adults and nymphs cause damage. They suck the sap of the plant from younger leaves to the growing points. The older leaves become withered or silvery white blotches/blasted in appearance. Thrips are most prevalent during dry and warmer condition.',
             'Thrips are most damaging when they feed during the early bulbing stage. Thrip damage appeared as early as the development of the 4th leaf (initial stage) when there is a change (low to high) in air temperature.'
           ],
-          managementControl: [
+          management: [
             'Early planting in October to November to avoid heavy infestation.',
             'Overhead irrigation with the use of a sprinkler hose may also minimize infestation buy washing off the thrips (Overhead irrigation should be followed by spraying if  infestation is high).',
             'Use of botanical extract  and colored (blue) sticky trap.',
@@ -348,12 +338,13 @@ export default function Dashboard({ navigation }) {
 
         },
         {
-          id: 8,
+          id: 6,
           pnd: 'Insect Pest',
           name: 'Leaf Folder     ',
           imageb: require('../../src/images/Insect1.jpg'),
           spname: 'Homona coffearia',
-          description: ['Insect PestLeaf folder larvae make leaf net by webbing the leaves using silken threads and feed from the inside leaf net. Young larva prefers tender leaves while older larva is seen in the mature leaves. Leaf folder can be observed regardless of planting dates, and varieties during vegetative and bulbing stages.  '],
+          description: ['Leaf folder larvae make leaf net by webbing the leaves using silken threads and feed from the inside leaf net. Young larva prefers tender leaves while older larva is seen in the mature leaves. Leaf folder can be observed regardless of planting dates, and varieties during vegetative and bulbing stages.  '],
+          management: 'null',
           images: [
             require('../../src/images/Insect1.jpg'),
             require('../../src/images/Insect2.jpg'),
@@ -361,7 +352,37 @@ export default function Dashboard({ navigation }) {
             require('../../src/images/Insect4.jpg'),
             require('../../src/images/Insect5.jpg'),
           ],
-        }
+        },
+        // {
+        //   id: 7,
+        //   pnd: 'Insect Pest',
+        //   name: 'Common worm',
+        //   imageb: require('../../src/images/Worm1.jpg'),
+        //   spname: 'Worm',
+        //   description: 'Insect pest',
+        //   images: [
+        //     require('../../src/images/Worm1.jpg'),
+        //     require('../../src/images/Worm2.jpg'),
+        //     require('../../src/images/Worm3.jpg'),
+        //     require('../../src/images/Worm4.jpg'),
+        //     require('../../src/images/Worm5.jpg'),
+        //   ],
+        // },
+        // {
+        //   id: 8,
+        //   pnd: 'Disease',
+        //   name: 'Garlic rust',
+        //   imageb: require('../../src/images/Rust1.jpg'),
+        //   spname: 'Rust',
+        //   description: 'Disease',
+        //   images: [
+        //     require('../../src/images/Rust1.jpg'),
+        //     require('../../src/images/Rust2.jpg'),
+        //     require('../../src/images/Rust3.jpg'),
+        //     require('../../src/images/Rust4.jpg'),
+        //     require('../../src/images/Rust5.jpg'),
+        //   ],
+        // },
       ];
     // data set to listPD
     setListPD(dataPD);
@@ -416,6 +437,7 @@ export default function Dashboard({ navigation }) {
                         </View>
                       </TouchableOpacity>
 
+                      {/* Location list */}
                       <RBSheet
                         ref={refRBSheets}
                         closeOnDragDown={true}
@@ -9947,6 +9969,7 @@ export default function Dashboard({ navigation }) {
             </View>
             
             {/* Garlic Insect pests and Diseases */}
+
             <View style={styles.dashboardRecent}>
               {
                 listPD == null ? (
