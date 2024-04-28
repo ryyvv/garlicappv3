@@ -202,6 +202,7 @@ export default function Dashboard({ navigation }) {
 
   useEffect(() => {
     setInterval(PNDiseases, 3500);
+    PNDiseases();
   }, []);
 
  
@@ -213,7 +214,7 @@ export default function Dashboard({ navigation }) {
           id: 1,
           pnd: 'Disease',
           name: 'Purple blotch',
-          imageb: require('../../src/images/Purple1.jpg'),
+          imageb: require('../../src/images/Purple7.jpg'),
           spname: 'Alternaria, Ellis Lif',
           description: [
             ' Initial symptoms of purple blotch occurred at bulb initiation stage (development of 9th to 10th leaf) in early and regular planting while during late planting it started to appear during vegetative stage (development of 7th to 8th leaf). It first appear in older leaves as whitish sunken area that elongates and develop purplish centers and later become large and oval with concentric rings surrounded by zones of yellow and later covered with visible fruiting bodies (spores). Older leaves are more susceptible to purple blotch than younger ones. If purple blotch only attack the plant after bulb formation, then yield is not very much affected.',
@@ -237,6 +238,11 @@ export default function Dashboard({ navigation }) {
             require('../../src/images/Purple3.jpg'),
             require('../../src/images/Purple4.jpg'),
             require('../../src/images/Purple5.jpg'),
+            require('../../src/images/Purple6.jpg'),
+            require('../../src/images/Purple7.jpg'),
+            require('../../src/images/Purple8.jpg'),
+            require('../../src/images/Purple9.jpg'),
+            require('../../src/images/Purple10.jpg'),
           ],
         },
         {
@@ -259,6 +265,16 @@ export default function Dashboard({ navigation }) {
             require('../../src/images/Tangle3.jpg'),
             require('../../src/images/Tangle4.jpg'),
             require('../../src/images/Tangle5.jpg'),
+            require('../../src/images/Tangle6.jpg'),
+            require('../../src/images/Tangle7.jpg'),
+            require('../../src/images/Tangle8.jpg'),
+            require('../../src/images/Tangle9.jpg'),
+            require('../../src/images/Tangle10.jpg'),
+            require('../../src/images/Tangle11.jpg'),
+            require('../../src/images/Tangle12.jpg'),
+            require('../../src/images/Tangle13.jpg'),
+            require('../../src/images/Tangle14.jpg'),
+            require('../../src/images/Tangle15.jpg'),
           ],
         },
         {
@@ -278,6 +294,12 @@ export default function Dashboard({ navigation }) {
             require('../../src/images/Rootrot3.jpg'),
             require('../../src/images/Rootrot4.jpg'),
             require('../../src/images/Rootrot5.jpg'),
+            require('../../src/images/Rootrot6.jpg'),
+            require('../../src/images/Rootrot7.jpg'),
+            require('../../src/images/Rootrot8.jpg'),
+            require('../../src/images/Rootrot9.jpg'),
+            require('../../src/images/Rootrot10.jpg'),
+            require('../../src/images/Rootrot11.jpg'),
           ],
         },
         {
@@ -309,13 +331,23 @@ export default function Dashboard({ navigation }) {
             require('../../src/images/Leap3.jpg'),
             require('../../src/images/Leap4.jpg'),
             require('../../src/images/Leap5.jpg'),
+            require('../../src/images/Leap6.jpg'),
+            require('../../src/images/Leap7.jpg'),
+            require('../../src/images/Leap8.jpg'),
+            require('../../src/images/Leap9.jpg'),
+            require('../../src/images/Leap10.jpg'),
+            require('../../src/images/Leap11.jpg'),
+            require('../../src/images/Leap12.jpg'),
+            require('../../src/images/Leap13.jpg'),
+            require('../../src/images/Leap14.jpg'),
+            require('../../src/images/Leap15.jpg'),
           ],
         },
         {
           id: 5,
           pnd: 'Insect Pest',
           name: 'Thrips',
-          imageb: require('../../src/images/Insect1.jpg'),
+          imageb: require('../../src/images/Thrips1.jpg'),
           spname: 'Thrips tabaci Lindeman',
           description: [
             'Thrips feed under the leaf folds and in the protected inner leaves, both adults and nymphs cause damage. They suck the sap of the plant from younger leaves to the growing points. The older leaves become withered or silvery white blotches/blasted in appearance. Thrips are most prevalent during dry and warmer condition.',
@@ -329,11 +361,11 @@ export default function Dashboard({ navigation }) {
             'Make sure that the spray material is getting into the center of the plant where thrips are found.'
           ],
           images: [
-            require('../../src/images/Insect1.jpg'),
-            require('../../src/images/Insect2.jpg'),
-            require('../../src/images/Insect3.jpg'),
-            require('../../src/images/Insect4.jpg'),
-            require('../../src/images/Insect5.jpg'),
+            require('../../src/images/Thrips1.jpg'),
+            require('../../src/images/Thrips2.jpg'),
+            require('../../src/images/Thrips3.jpg'),
+            require('../../src/images/Thrips4.jpg'),
+            require('../../src/images/Thrips5.jpg'),
           ]
 
         },
@@ -341,20 +373,35 @@ export default function Dashboard({ navigation }) {
           id: 6,
           pnd: 'Insect Pest',
           name: 'Leaf Folder     ',
-          imageb: require('../../src/images/Insect1.jpg'),
+          imageb: require('../../src/images/folder1.jpg'),
           spname: 'Homona coffearia',
           description: ['Leaf folder larvae make leaf net by webbing the leaves using silken threads and feed from the inside leaf net. Young larva prefers tender leaves while older larva is seen in the mature leaves. Leaf folder can be observed regardless of planting dates, and varieties during vegetative and bulbing stages.  '],
           management: 'null',
           images: [
-            require('../../src/images/Insect1.jpg'),
-            require('../../src/images/Insect2.jpg'),
-            require('../../src/images/Insect3.jpg'),
-            require('../../src/images/Insect4.jpg'),
-            require('../../src/images/Insect5.jpg'),
+            require('../../src/images/folder1.jpg'),
+            require('../../src/images/folder2.jpg'),
+            require('../../src/images/folder3.jpg'),
+            require('../../src/images/folder4.jpg'),
+            require('../../src/images/folder5.jpg'),
+          ],
+        },
+        {
+          id: 7,
+          pnd: 'Disease',
+          name: 'Garlic rust',
+          imageb: require('../../src/images/Garlicrust1.jpg'),
+          spname: 'Rust',
+          description: 'Disease',
+          images: [
+            require('../../src/images/Garlicrust1.jpg'),
+            require('../../src/images/Garlicrust2.jpg'),
+            require('../../src/images/Garlicrust3.jpg'),
+            require('../../src/images/Garlicrust4.jpg'),
+            require('../../src/images/Garlicrust5.jpg'),
           ],
         },
         // {
-        //   id: 7,
+        //   id: 8,
         //   pnd: 'Insect Pest',
         //   name: 'Common worm',
         //   imageb: require('../../src/images/Worm1.jpg'),
@@ -368,21 +415,7 @@ export default function Dashboard({ navigation }) {
         //     require('../../src/images/Worm5.jpg'),
         //   ],
         // },
-        // {
-        //   id: 8,
-        //   pnd: 'Disease',
-        //   name: 'Garlic rust',
-        //   imageb: require('../../src/images/Rust1.jpg'),
-        //   spname: 'Rust',
-        //   description: 'Disease',
-        //   images: [
-        //     require('../../src/images/Rust1.jpg'),
-        //     require('../../src/images/Rust2.jpg'),
-        //     require('../../src/images/Rust3.jpg'),
-        //     require('../../src/images/Rust4.jpg'),
-        //     require('../../src/images/Rust5.jpg'),
-        //   ],
-        // },
+
       ];
     // data set to listPD
     setListPD(dataPD);

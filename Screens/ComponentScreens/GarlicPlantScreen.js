@@ -1338,7 +1338,7 @@ const imageFindings = async() => {
     <SafeAreaView >
       <ScrollView >
         <ImageBackground
-          source={require('../../src/images/Insect4.jpg')}
+          source={require('../../src/images/Purple7.jpg')}
           resizeMode="cover"
           style={{ flex: 1, height: 430, }}
           imageStyle={{ borderBottomLeftRadius: 60, borderBottomRightRadius: 60 }}>
@@ -2198,7 +2198,7 @@ function PlantIdentify({ route, navigation }) {
     <SafeAreaView >
       <ScrollView >
         <ImageBackground
-          source={require('../../src/images/Insect4.jpg')}
+          source={require('../../src/images/Purple7.jpg')}
           resizeMode="cover"
           style={{ flex: 1, height: 430, }}
           imageStyle={{ borderBottomLeftRadius: 60, borderBottomRightRadius: 60 }}>
@@ -2789,7 +2789,7 @@ function PlantCam({ route, navigation }) {
       <ScrollView>
         <View style={{ backgroundColor: '#e6fae3', width: '100%', height: '100%' }}>
           <View style={{ alignItems: 'center', justifyContent: 'center', width: '100%', paddingBottom: 30 }}>
-            <Image source={require('../../src/images/Insect5.jpg')} style={{ marginTop: 40, width: 120, height: 120, borderRadius: 160, marginRight: 10 }} />
+            <Image source={require('../../src/images/Purple7.jpg')} style={{ marginTop: 40, width: 120, height: 120, borderRadius: 160, marginRight: 10 }} />
             <Text style={{ marginTop: 10, fontWeight: 'bold', fontSize: 18, color: '#528F56' }}>Batac, Ilocos White</Text>
             <Text style={{ fontSize: 14, fontWeight: 'bold', }}>July 08, 2023</Text>
           </View>

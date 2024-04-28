@@ -62,7 +62,7 @@ const { name, pnd, spname, description, images } = route.params;
         }}>
 
         <ImageBackground
-          source={require('../../src/images/Insect4.jpg')}
+          source={require('../../src/images/Purple7.jpg')}
           resizeMode="cover"
           style={{ flex: 1, justifyContent: 'center', }}>
           {/* opacity: 0.1 */}
